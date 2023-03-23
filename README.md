@@ -1,1 +1,1 @@
-# b2b_showcase
+# Emporix B2B Showcase
