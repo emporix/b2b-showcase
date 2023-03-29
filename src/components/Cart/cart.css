@@ -1,0 +1,93 @@
+.cart-caption-font {
+  @apply text-[20px] leading-[22px] font-bold font-inter;
+}
+.cart-product-content {
+  @apply pr-[33px];
+}
+.cart-product-item {
+  @apply w-full flex gap-4 pb-4 border-bgWhite border-b last:border-b-0;
+}
+.cart-product-image-and-quantity {
+  @apply w-[67px];
+}
+.cart-product-info {
+  @apply w-full;
+}
+.cart-product-caption {
+  @apply text-[14px] leading-[20px] font-bold align-middle w-full pt-[10px];
+}
+.price-exclude-vat {
+  @apply text-[12px] leading-[20px] text-tinBlue font-normal grid grid-cols-1 text-center;
+}
+.price-exclude-vat .caption {
+  @apply text-darkGray text-[14px];
+}
+
+.price-exclude-vat1 {
+  @apply text-[12px] leading-[20px] text-tinBlue font-normal grid grid-cols-1 text-right;
+}
+.price-exclude-vat1 .caption {
+  @apply text-darkGray text-[12px];
+}
+.price-exclude-vat1 .price {
+  @apply font-bold text-[16px];
+}
+
+.cart-product-basic-info {
+  @apply w-[270px];
+}
+.cart-product-image {
+  @apply w-[63px] h-[78px] px-2 pt-[10px] pb-[2px];
+}
+.cart-product-name {
+  @apply text-[16px] leading-[24px] font-bold;
+}
+.cart-product-sku-wrapper {
+  @apply text-[12px] leading-[16px] font-bold;
+}
+.cart-product-mobile-info-wrapper {
+  @apply text-[12px] leading-[16px] font-normal;
+}
+.cart-product-sku {
+  @apply font-normal;
+}
+.cart-product-stock-wrapper {
+  @apply text-[14px] leading-[20px] font-normal;
+}
+.cart-product-stock {
+  @apply font-bold;
+}
+.cart-product-lead-time {
+  @apply ml-[10px];
+}
+
+.cart-product-price-except-vat {
+  @apply text-[16px] leading-[20px] font-bold float-right;
+}
+.cart-action-panel {
+  @apply p-6 bg-bgWhite;
+}
+.cart-action-row {
+  @apply pb-4 grid grid-cols-1 gap-4 border-bgWhite border-b last:border-b-0;
+}
+.cart-action-panel {
+  @apply text-[16px] leading-[22px];
+}
+.cart-total-price-wrapper {
+  @apply text-[20px] leading-[22px] font-bold;
+}
+.cart-go-checkout-btn {
+  @apply w-full text-[14px] leading-[14px] text-center font-bold h-12 px-6 bg-brightRed text-[color:white];
+}
+.cart-go-cart-btn {
+  @apply w-full text-[14px] leading-[14px] text-center font-bold h-12 px-6 bg-lightRed text-white;
+}
+.cart-request-quote-btn {
+  @apply w-full text-[14px] leading-[14px] text-center font-bold h-12 px-6 bg-lightPink text-tinBlue;
+}
+.table-cart-product-image {
+  @apply w-[52px] h-[74px] p-0;
+}
+.cart-product-image-mobile {
+  @apply w-[56px] h-[74px] p-0;
+}

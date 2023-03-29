@@ -1,0 +1,6 @@
+.slick-slider {
+  @apply flex items-center;
+}
+.slick-list {
+  @apply w-full;
+}

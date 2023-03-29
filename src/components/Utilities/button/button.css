@@ -1,0 +1,43 @@
+.large-primary-btn {
+  @apply h-12 px-6 bg-brightRed text-white font-bold text-[14px] leading-[14px] tracking-[1px] hover:bg-emporixGold active:bg-brightRed w-full;
+}
+.large-primary-btn:disabled {
+  @apply bg-bgWhite text-gray;
+}
+.medium-primary-btn {
+  @apply h-10 px-6 bg-brightRed text-white font-bold text-[14px] leading-[14px] tracking-[1px] hover:bg-emporixGold active:bg-brightRed w-full;
+}
+
+.medium-secondary-btn {
+  @apply h-10 px-6 bg-bgWhite text-tinBlue font-bold text-[14px] leading-[14px] tracking-[1px] hover:text-white active:text-white hover:bg-lightBlue active:bg-tinBlue w-full;
+}
+
+.primary-blue-btn {
+  background: linear-gradient(#4db1fd, #128afb);
+  box-shadow: 0px 1px 1px 0px #c7c7c7;
+  @apply rounded-[2px] h-8 px-6 bg-tinBlue text-white font-bold text-[12px] leading-[14px] tracking-[1px] hover:bg-lightBlue active:bg-tinBlue;
+}
+.primary-blue-btn:hover {
+  background: linear-gradient(#128afb, #4db1fd);
+}
+.primary-blue-btn:active {
+  background: linear-gradient(#128afb, #4db1fd);
+  box-shadow: 2px 2px 2px 0px #c7c7c7;
+}
+.primary-blue-btn:focus {
+  background: linear-gradient(#128afb, #4db1fd);
+  box-shadow: 0px 0px 2px 0px #2b9ffd;
+}
+.secondary-outline-btn {
+  background: linear-gradient(#ffffff, #fafbfc);
+  @apply rounded-[2px] h-8 px-6 text-lightBlue border-lightBlue border text-[12px] leading-[14px] font-bold hover:border-darkGray hover:text-darkGray active:border-darkGray active:text-darkGray focus:border-darkGray focus:text-darkGray;
+}
+.secondary-outline-btn:hover {
+  background: linear-gradient(#ffffff, #f0f4f8);
+}
+.secondary-outline-btn:active {
+  background: linear-gradient(#ffffff, #dde6ee);
+}
+.secondary-outline-btn:focus {
+  background: linear-gradient(#ffffff, #f0f4f8);
+}

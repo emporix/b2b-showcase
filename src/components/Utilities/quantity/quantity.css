@@ -1,0 +1,28 @@
+.quantity-input {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding-bottom: 8px !important;
+  border-bottom: 1px solid #d7dade;
+  @apply items-center;
+}
+
+.quantity-input_modifier,
+.quantity-input_screen {
+  user-select: none;
+  outline: none;
+}
+
+.quantity-input_modifier {
+  width: 1rem;
+  cursor: pointer;
+}
+
+.quantity-input_screen {
+  width: 2rem;
+  text-align: center;
+  border: 0;
+}
+.quantity-input {
+  @apply align-middle text-[20px] leading-[24px] !font-normal;
+}

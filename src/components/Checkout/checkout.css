@@ -1,0 +1,22 @@
+.shipping_method {
+  @apply w-full md:flex bg-white border border-bgWhite p-4 mb-2  font-inter;
+}
+
+.shipping_method_selected {
+  @apply w-full p-4 md:flex bg-bgWhite border-tinBlue border mb-2 font-inter;
+}
+.payment-method-item-wrapper {
+  @apply lg:w-[492px] w-full p-6 border border-bgWhite bg-white;
+}
+.payment-method-item-wrapper.active {
+  @apply !border-tinBlue !bg-bgWhite;
+}
+.brand-primaryBlue{
+  @apply text-tinBlue;
+}
+.brand-gray {
+  @apply text-bgWhite;
+}
+/* .MuiButtonBase-root{
+    @apply !p-0
+} */

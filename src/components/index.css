@@ -1,0 +1,3 @@
+.border-bottom {
+  @apply border-bgWhite border-b;
+}

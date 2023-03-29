@@ -1,0 +1,213 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+li.item {
+  @apply w-full mt-6 h-[26px] font-inter text-base font-medium;
+}
+
+li.first-item {
+  @apply w-full h-[26px] font-inter text-base font-medium;
+}
+
+li.item-divide-line {
+  @apply h-0 border-b border-lightGray mt-6 border-solid;
+}
+li.item-active {
+  @apply font-bold text-lightBlue;
+}
+li.index-item-active {
+  @apply lg:font-bold lg:text-lightBlue;
+}
+.border-bottom-gray {
+  @apply border-lightGray border-b border-solid;
+}
+.personal-title,
+.change-password-title {
+  @apply w-[200px] gap-6;
+}
+
+.personal-info-catpion,
+.change-password-info-catpion {
+  @apply text-[20px] leading-[30px];
+}
+
+.personal-provide-caption,
+.change-password-provide-caption {
+  @apply font-normal text-[14px] leading-[21px];
+}
+
+.personal-photo {
+  @apply w-24 h-24 rounded-[48px];
+}
+
+.add-new-photo {
+  @apply text-[14px] leading-[18px] text-primaryBlue font-inter font-semibold underline;
+}
+
+.personal-info-content,
+.change-password-info-content {
+  @apply sm:w-[650px] gap-4 w-full;
+}
+
+.form-item {
+  @apply align-middle sm:flex;
+}
+.form-input-item {
+  @apply h-[38px] 2xl:w-[438px] xl:w-[438px] lg:w-[250px] rounded py-[7px] px-[13px] sm:w-[200px] w-full;
+}
+
+.border-gray {
+  @apply border-lightGray border border-solid;
+}
+.input-label {
+  @apply align-middle pt-[7px];
+}
+.action-save-button {
+  @apply mt-6 sm:mt-0 h-12 w-full sm:w-[327px] bg-tinBlue text-[white] font-inter font-bold text-[14px] leading-[14px];
+}
+
+.action-discard-button {
+  @apply mt-6 sm:mt-0 h-12 w-full sm:w-[327px] text-tinBlue font-inter font-bold text-[14px] leading-[14px] bg-bgWhite;
+}
+.account-action-bar {
+  @apply sm:flex justify-start gap-8 sm:flex-row-reverse;
+}
+.personal-and-summary-content-wrapper {
+  @apply pb-12;
+}
+.account-personal-info-wrapper {
+  @apply md:w-[50%] w-full pr-6  border-lightGray md:border-r md:border-solid pb-12 md:pb-0 md:border-b-0 border-b;
+}
+.account-summary-wrapper {
+  @apply md:w-[50%] w-full pl-0 md:pl-6 md:mt-0 mt-12;
+}
+.account-personal-info,
+.account-summary-info {
+  @apply h-10;
+}
+.account-personal-info-caption,
+.account-summary-caption {
+  @apply pb-[18px];
+}
+.account-profile {
+  @apply mt-6;
+}
+.account-personal-caption,
+.account-summary-title {
+  @apply xl:text-[24px] lg:text-[20px] md:text-[18px] text-[24px] leading-[40px] lg:leading-[40px] md:leading-[30px] font-bold font-inter text-tinBlue;
+}
+.account-edit-btn {
+  @apply font-inter font-semibold text-[14px] leading-[18px] text-primaryBlue;
+}
+.profile-edit-btn-arrow {
+  @apply font-black leading-[16.1px];
+}
+.profile-items {
+  @apply text-darkGray text-base font-normal font-inter;
+}
+.profile-items > p {
+  @apply text-right;
+}
+.profile-items-info {
+  @apply font-inter text-[black] font-normal text-base;
+}
+.payment-title {
+  @apply font-inter text-[16px] leading-[20px] font-normal;
+}
+.spent-amount {
+  @apply font-inter text-[24px] leading-[40px] font-bold;
+}
+.limit-status-text {
+  @apply font-inter text-[14px] leading-[14px] font-normal font-semibold text-darkGray;
+}
+.oustanding,
+.refunds {
+  @apply w-[50%];
+}
+.oustanding {
+  @apply pr-[50px] border-lightGray border-r border-solid;
+}
+.refunds {
+  @apply pl-[50px];
+}
+.price {
+  @apply text-[20px] leading-[32px] font-bold font-inter;
+}
+.location_item {
+  @apply mb-6 border border-lightGray p-6 font-inter h-60 md:h-40 md:flex;
+}
+
+.location-title {
+  @apply font-medium text-base text-darkGray;
+}
+
+.location-data {
+  @apply md:font-normal text-base text-black md:pt-4;
+}
+.portal-wrapper {
+  @apply w-full;
+}
+.portal-title {
+  @apply text-[24px] leading-[40px] font-bold font-inter text-tinBlue;
+}
+.portal-caption {
+  @apply pb-[18px];
+}
+.portal-action-btn {
+  @apply font-inter font-semibold text-[14px] leading-[18px] text-primaryBlue;
+}
+
+.portal-caption-content {
+  @apply h-10;
+}
+.SavedCarts-Mobile-Header {
+  @apply py-[5px] mb-[10px] font-inter font-bold;
+}
+.label {
+  @apply text-[20px] leading-[30px];
+}
+.company-input-wrapper,
+.company-info-wrapper {
+  @apply md:w-[63%] w-full;
+}
+.company-input {
+  @apply w-full rounded h-[38px] py-[7px] px-[13px] font-inter font-normal;
+}
+.company-label {
+  @apply md:w-[37%] w-full;
+}
+.sub-label {
+  @apply font-inter font-normal text-[14px] leading-[21px];
+}
+.company-info {
+  @apply xl:w-[61%] md:w-[40%] w-full;
+}
+.mobile-bar-wrapper {
+  @apply pt-20;
+}
+.mobile-bar {
+  background-image: conic-gradient(from 180deg at 50% 70%, #9bb9ca, #2c5c77);
+  @apply h-[72px] w-full p-6 font-inter font-semibold text-[24px] leading-[24px] pb-6 text-white;
+}
+.switch-item {
+  @apply !p-0 !w-[45px] !h-[24px] !rounded-[12px] !border border-gray;
+}
+.switch-item .MuiButtonBase-root {
+  @apply !p-0 !w-4 !h-4 !bg-lightGray !rounded-[12px];
+}
+.switch-item .MuiSwitch-thumb {
+  @apply !p-0 !w-4 !h-4 bg-lightGray !rounded-[12px];
+}
+.switch-item .MuiSwitch-track {
+  @apply hidden;
+}
+.switch-item .MuiButtonBase-root {
+  @apply m-[3px];
+}
+.switch-item .Mui-checked .MuiSwitch-thumb {
+  @apply !bg-lightBlue;
+}
+.switch-item:has(.Mui-checked) {
+  @apply !bg-gray !border-lightBlue;
+}

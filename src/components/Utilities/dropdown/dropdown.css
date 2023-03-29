@@ -1,0 +1,15 @@
+.react-dropdown-select {
+  @apply w-full;
+}
+.dropdown1 .react-dropdown-select {
+  border: 0px;
+  padding: 0px !important;
+  border-bottom: 1px solid #000000;
+}
+.dropdown1 .react-dropdown-select[aria-expanded='true'] {
+  border: 0px !important;
+  border-bottom: 1px solid #000000 !important;
+}
+.react-dropdown-select-dropdown {
+  border: 1px solid #ccc !important;
+}

@@ -1,0 +1,13 @@
+.quickorder-page-wrapper {
+  @apply md:pt-60 pt-20 px-6 md:px-0 pb-12 font-inter  max-w-screen-xl mx-auto;
+}
+.quickorder-add-to-cart-btn {
+  @apply bg-tinBlue text-[white] px-6 py-0 h-12 text-[14px] leading-[14px] w-full md:w-[300px] lg:mt-0 mt-2;
+}
+
+.quickorder-add-to-quote-btn {
+  @apply bg-[white] text-lightBlue underline px-6 py-0 h-12 text-[14px] leading-[14px] w-full md:w-[300px] mt-1 md:mt-2;
+}
+.quickorder-selection-btn {
+  @apply bg-bgWhite text-tinBlue font-bold  px-6 py-0 h-12 text-[14px] leading-[14px] w-full;
+}

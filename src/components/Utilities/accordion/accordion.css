@@ -1,0 +1,9 @@
+.accordition-wrapper {
+  @apply grid grid-cols-1 gap-12;
+}
+.accordion-title {
+  @apply flex justify-center items-center h-[42px] pb-2 pl-3 text-[20px] leading-[32px] border-bgWhite border-b-2 text-bgWhite font-inter font-normal;
+}
+.accordion-title.active {
+  @apply text-black !border-black !font-medium;
+}

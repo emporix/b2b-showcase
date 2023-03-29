@@ -1,0 +1,19 @@
+{
+  "projects": {},
+  "targets": {
+    "stage-2-7beeb": {
+      "hosting": {
+        "b2b-storefront-stage": [
+          "b2b-storefront-stage"
+        ]
+      }
+    },
+    "prod-2-14e62": {
+      "hosting": {
+        "b2b-storefront-prod": [
+          "b2b-storefront-prod"
+        ]
+      }
+    }
+  }
+}
