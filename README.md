@@ -4,12 +4,10 @@
 
 1. `yarn`
 2. Start
-    * `yarn start` for stage
     * `yarn start:prod` for production
 3. Application will run on http://localhost:3000
 4. Provide tenant/API-key from Devportal
     * Prod: https://app.emporix.io/api-keys
-    * Stage: https://stage-app.emporix.io/api-keys
 
 
 # Build and deployment
@@ -20,7 +18,6 @@
 
 # Emporix internal deployments
 
-* Automatic deployment to **STAGE** after PR merge
 * Manual deployments to **PROD** available on GH actions page in repostiory  
 
 # License note
