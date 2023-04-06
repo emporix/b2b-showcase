@@ -178,3 +178,34 @@ export const getAllParentCategories = async (categoryId) => {
   const categories = await api.get(url, { headers })
   return categories
 }
+
+export const getCategoryByName = async (categoryName) => {
+  const tenant = localStorage.getItem(TENANT)
+  const { data } = await api.get(
+    `/category/${tenant}/categories?localizedName=${categoryName}`,
+    {
+      headers: {
+        'X-Version': 'v2',
+      },
+    }
+  )
+
+  return data
+}
+
+export const getProductsFromCategory = async (categoryId) => {
+  console.log('categoryId: ', categoryId)
+  const tenant = localStorage.getItem(TENANT)
+  const { data } = await api.get(
+    `/category/${tenant}/categories/${categoryId}/assignments?withSubcategories=true`,
+    {
+      headers: {
+        'X-Version': 'v2',
+      },
+    }
+  )
+
+  console.log('product from a category By ID:', data)
+
+  return data
+}

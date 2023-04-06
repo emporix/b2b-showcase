@@ -4,6 +4,7 @@ import React, {
   useContext,
   useMemo,
   useState,
+  useEffect
 } from 'react'
 import Typography from '@mui/material/Typography'
 import Breadcrumbs from '@mui/material/Breadcrumbs'
@@ -31,6 +32,36 @@ import { PriceTierValues } from './VariantAccordion'
 import { useCart } from 'context/cart-provider'
 import { useAuth } from 'context/auth-provider'
 import { formatPrice } from 'helpers/price'
+import { getLanguageFromLocalStorage } from 'context/language-provider'
+import productService from '../../services/product/product.service'
+import priceService from '../../services/product/price.service'
+
+const getProducts = async (language) => {
+  const products = await productService.getProducts()
+  const productIds = products.map(product => product.id)
+  const prices = await priceService.getPriceWithProductIds(productIds)
+  
+  const prices_obj = {}
+  prices.forEach((p) => {
+    prices_obj[`p${p.itemId.id}`] = p
+  })
+  
+  let price_id
+  let result = []
+  for (let i = 0; i < products.length; i++) {
+    price_id = `p${products[i]['id']}`
+    if (prices_obj[price_id] !== undefined)
+      result.push({
+        id: products[i].id,
+        code: products[i].code,
+        name: prices_obj[price_id].itemId?.name[language] || "",
+        price: prices_obj[price_id].effectiveValue,
+        listprice: prices_obj[price_id].effectiveValue,
+        src: products[i].media[0].url
+      })
+  }
+  return result
+}
 
 const ProductContext = createContext()
 
@@ -550,72 +581,24 @@ const ProductDetailInfo = ({ product }) => {
   )
 }
 
-const products = [
-  {
-    stock: 'Low',
-    rating: 4,
-    count: 8,
-    src: '/products/hp_laser_printer.png',
-    code: 'TY2-B#M74A',
-    name: 'HP LaserJet 1*500-sheet Paper Feeder and Cabinet',
-    price: '341.89',
-    listPrice: '389.50',
-  },
-
-  {
-    stock: 'In',
-    rating: 4,
-    count: 8,
-    src: '/products/comfort_chair.png',
-    code: 'BB2-B3M987',
-    name: 'RP9 Retail Compact Stand Silver PC Multimedia stand',
-    price: '84.89',
-    listPrice: '94.10',
-  },
-  {
-    stock: 'In',
-    rating: 4,
-    count: 8,
-    src: '/products/pc_stand.png',
-    code: 'BB2-B3M987',
-    name: 'Zenith Plier stapler 548/E Silver',
-    price: '27.50',
-    listPrice: '34.99',
-  },
-  {
-    stock: 'Low',
-    rating: 4,
-    count: 8,
-    src: '/products/stapler.png',
-    code: 'TY2-B#M74A',
-    name: 'Comfort Ergo 2-Lever Operator Chairs',
-    price: '53.59',
-    listPrice: '59.99',
-  },
-  {
-    stock: 'Low',
-    rating: 4,
-    count: 8,
-    src: '/products/comfort_chair.png',
-    code: 'TY2-B#M74A',
-    name: 'Comfort Ergo 2-Lever Operator Chairs',
-    price: '53.59',
-    listPrice: '59.99',
-  },
-]
-
 const ProductMatchItems = () => {
+  const [products, setProducts] = useState([]); 
+  const language = getLanguageFromLocalStorage()
+  useEffect(() => {
+    getProducts(language).then(result => {
+        setProducts(result.slice(0, 12))
+    })
+  },[language])
+  
   return (
     <div className="product-match-items-wrapper grid grid-cols-1">
-      <div className="product-match-caption w-full">Match it with</div>
+      <div className="product-match-caption w-full p-0">Match it with</div>
       <div className="product-match-items-content w-full">
         <SliderComponent>
-          {products.map((item, index) => (
+          {products.map((item) => (
             <Product
-              key={index}
-              stock={item.stock}
-              rating={item.rating}
-              total_count={item.count}
+              id={item.id}
+              key={item.id}
               src={item.src}
               code={item.code}
               name={item.name}
@@ -639,7 +622,7 @@ const ProductDetailPage = ({ product, brand, labels }) => {
           <ProductVariants product={product} />
         )}
         <ProductDetailInfo product={product} />
-        <ProductMatchItems />
+        <ProductMatchItems/>
       </div>
     </div>
   )
