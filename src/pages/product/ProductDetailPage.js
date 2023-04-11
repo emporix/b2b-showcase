@@ -36,9 +36,15 @@ import { getLanguageFromLocalStorage } from 'context/language-provider'
 import productService from '../../services/product/product.service'
 import priceService from '../../services/product/price.service'
 
-const getProducts = async (language) => {
-  const products = await productService.getProducts()
-  const productIds = products.map(product => product.id)
+const getRelatedProducts = async (language, product) => {
+  let productIds = []
+  const relatedItems = product.relatedItems
+  if(!relatedItems ) return null
+
+  relatedItems.forEach((item) => {
+    productIds.push(item.refId)
+  })
+  const products = await productService.getProductsWithIds(productIds)
   const prices = await priceService.getPriceWithProductIds(productIds)
   
   const prices_obj = {}
@@ -581,34 +587,39 @@ const ProductDetailInfo = ({ product }) => {
   )
 }
 
-const ProductMatchItems = () => {
+const ProductMatchItems = ({productInput}) => {
   const [products, setProducts] = useState([]); 
   const language = getLanguageFromLocalStorage()
+
   useEffect(() => {
-    getProducts(language).then(result => {
-        setProducts(result.slice(0, 12))
+    getRelatedProducts(language, productInput).then(result => {
+        result ? setProducts(result.slice(0, 5)) : setProducts([])
     })
   },[language])
   
   return (
-    <div className="product-match-items-wrapper grid grid-cols-1">
-      <div className="product-match-caption w-full p-0">Match it with</div>
-      <div className="product-match-items-content w-full">
-        <SliderComponent>
-          {products.map((item) => (
-            <Product
-              id={item.id}
-              key={item.id}
-              src={item.src}
-              code={item.code}
-              name={item.name}
-              price={item.price}
-              listPrice={item.listPrice}
-            />
-          ))}
-        </SliderComponent>
+    <>
+      {products.length > 0 && 
+      <div className="product-match-items-wrapper grid grid-cols-1">
+        <div className="product-match-caption w-full p-0">Match it with</div>
+        <div className="product-match-items-content w-full">
+          <SliderComponent>
+            {products.map((item) => (
+              <Product
+                id={item.id}
+                key={item.id}
+                src={item.src}
+                code={item.code}
+                name={item.name}
+                price={item.price}
+                listPrice={item.listPrice}
+              />
+            ))}
+          </SliderComponent>
+        </div>
       </div>
-    </div>
+      }
+    </>
   )
 }
 
@@ -622,7 +633,7 @@ const ProductDetailPage = ({ product, brand, labels }) => {
           <ProductVariants product={product} />
         )}
         <ProductDetailInfo product={product} />
-        <ProductMatchItems/>
+        <ProductMatchItems productInput={product}/>
       </div>
     </div>
   )

@@ -37,21 +37,6 @@ const ProductService = () => {
     return res.data
   }
 
-  const getProducts = async () => {
-    const accessToken = localStorage.getItem(ACCESS_TOKEN)
-    const headers = {
-      'X-Version': 'v2',
-      Authorization: `Bearer ${accessToken}`,
-      'Accept-Language': getLanguageFromLocalStorage(),
-    }
-    const params = {
-      expand: 'template'
-    }
-   
-    const res = await ApiRequest(productApi(), 'get', {}, headers, params)
-    return res.data
-  }
-
   const getProductsWithCode = async (codes = []) => {
     const accessToken = localStorage.getItem(ACCESS_TOKEN)
     const headers = {
@@ -89,7 +74,6 @@ const ProductService = () => {
     return products
   }
   return {
-    getProducts,
 
     getProductsWithIds,
 
