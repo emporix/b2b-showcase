@@ -36,7 +36,6 @@ const ProductService = () => {
     const res = await ApiRequest(productApi(), 'get', {}, headers, params)
     return res.data
   }
-
   const getProductsWithCode = async (codes = []) => {
     const accessToken = localStorage.getItem(ACCESS_TOKEN)
     const headers = {
@@ -74,7 +73,6 @@ const ProductService = () => {
     return products
   }
   return {
-
     getProductsWithIds,
 
     getProductsWithYrns,
