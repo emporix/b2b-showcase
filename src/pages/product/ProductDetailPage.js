@@ -201,7 +201,7 @@ const ProductPriceAndAmount = ({ price, productCount, estimatedDelivery }) => {
             </CurrencyBeforeComponent>
           </div>
         ) : (
-          <span className="desktop-sm text-xs  text-brightRed font-bold">
+          <span className="desktop-sm text-xs  text-primaryBlue font-bold">
             No Price
           </span>
         )}

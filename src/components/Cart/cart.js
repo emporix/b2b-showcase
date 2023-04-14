@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import './cart.css'
 import '../index.css'
 import { Link } from 'react-router-dom'
@@ -133,7 +133,7 @@ export const CartMobileItem = ({ cartItem }) => {
               ? 'text-emporixGold'
               : cartItem.product.stock === 'In'
               ? 'text-brightGreen '
-              : 'text-brightRed')
+              : 'text-primaryBlue')
           }
         >
           {cartItem.product.stock} Stock
@@ -199,7 +199,7 @@ export const CartProductBasicInfo = ({ cart }) => {
                 ? 'text-emporixGold'
                 : cart.product.stock === 'In'
                 ? 'text-brightGreen '
-                : 'text-brightRed')
+                : 'text-primaryBlue')
             }
           >
             {cart.product.stock} Stock
@@ -359,17 +359,20 @@ const CartGoCart = () => {
     </Link>
   )
 }
-export const CartActionPanel = ({ subtotalWithoutVat, action }) => {
+export const CartActionPanel = ({ action }) => {
   const { cartAccount } = useCart()
+  console.log(cartAccount)
   return (
     <div className="cart-action-panel">
       <GridLayout className="gap-4">
         <CartActionRow>
           <LayoutBetween>
-            <CartSubTotalExcludeVat
-              value={subtotalWithoutVat}
-              currency={cartAccount.currency}
-            />
+            {cartAccount.subtotalAggregate?.netValue && (
+              <CartSubTotalExcludeVat
+                value={cartAccount.subtotalAggregate.netValue}
+                currency={cartAccount.currency}
+              />
+            )}
           </LayoutBetween>
         </CartActionRow>
 
@@ -379,7 +382,7 @@ export const CartActionPanel = ({ subtotalWithoutVat, action }) => {
               cartAccount?.taxAggregate &&
               cartAccount?.taxAggregate.lines.length > 0 && (
                 <CartVat
-                  value={subtotalWithoutVat}
+                  value={cartAccount.subtotalAggregate.netValue}
                   taxPercentage={cartAccount?.taxAggregate.lines[0].rate}
                   currency={cartAccount?.currency}
                 />
@@ -407,7 +410,10 @@ export const CartActionPanel = ({ subtotalWithoutVat, action }) => {
               <LayoutBetween>
                 {cartAccount.totalPrice && cartAccount.totalPrice.amount && (
                   <CartTotalPrice
-                    totalValue={cartAccount.totalPrice.amount}
+                    totalValue={
+                      cartAccount.totalPrice.amount +
+                      cartAccount?.taxAggregate.lines[0].amount
+                    }
                     currency={cartAccount.currency}
                   />
                 )}
@@ -438,17 +444,13 @@ const Cart = () => {
       </LayoutBetween>
       <CartProductContent>
         <GridLayout className="gap-4">
-          {cartAccount?.items.map((cartItem) => (
-            <CartProductWrapper key={cartItem.id} cartItem={cartItem} />
+          {cartAccount?.items.map((cartItem, idx) => (
+            <CartProductWrapper key={cartItem.id + idx} cartItem={cartItem} />
           ))}
         </GridLayout>
       </CartProductContent>
       {cartAccount?.subtotalAggregate
-        ? cartAccount?.subtotalAggregate.grossValue && (
-            <CartActionPanel
-              subtotalWithoutVat={cartAccount.subtotalAggregate.netValue}
-            />
-          )
+        ? cartAccount?.subtotalAggregate.grossValue && <CartActionPanel />
         : 'Error: Missing subtotal agregate'}
     </>
   )

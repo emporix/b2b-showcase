@@ -35,7 +35,7 @@ const Navbar = () => {
   const { userTenant: tenant } = useAuth()
   const { sites, onSiteChange, currentSite, currentSiteObject } = useSites()
   const { languages, currentLanguage, setLanguage } = useLanguage()
-  const { user: currentUser } = useSelector((state) => state.auth)
+  const { user } = useAuth()
   const { quotesTotal } = useQuotes()
   const [open, setOpen] = useState(false)
 
@@ -56,11 +56,11 @@ const Navbar = () => {
     return (
       <>
         <div className="pt-12 items-center ">
-          {currentUser ? (
+          {user ? (
             <div className="h-[75px] border-y w-full justify-between flex text-gray text-center items-center font-inter ">
               <div className="flex">
                 <HiOutlineUserCircle size={25} />
-                <div className="pl-2">{currentUser.username}</div>
+                <div className="pl-2">{user.username}</div>
               </div>
               <div>
                 <AiOutlineMail size={20} />
@@ -81,7 +81,7 @@ const Navbar = () => {
             ))}
           </ul>
         </div>
-        {currentUser && (
+        {user && (
           <div className="w-full h-[59px] border-y flex justify-between items-center mt-6 font-inter text-base">
             Site
             <select className="text-tinBlue appearance-none">
@@ -301,7 +301,7 @@ const Navbar = () => {
 
       {/* Dektop navigation selection */}
       <div className="desktop_only_flex font-inter font-normal text-sm text-white">
-        {!currentUser ? (
+        {!user ? (
           <ul className="flex">
             <li className="px-4 flex">
               {cartTotal !== 0 ? (
@@ -369,7 +369,7 @@ const Navbar = () => {
             </li>
             |
             <li className="px-4 flex">
-              <AccountMenu name={currentUser.username} />
+              <AccountMenu name={user.username} />
             </li>
           </ul>
         )}

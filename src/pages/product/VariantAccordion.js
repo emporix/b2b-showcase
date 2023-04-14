@@ -19,6 +19,7 @@ import { LargePrimaryButton } from '../../components/Utilities/button'
 import { useSites } from '../../context/sites-provider'
 import { useCart } from 'context/cart-provider'
 import { useCurrency } from 'context/currency-context'
+import { useAuth } from 'context/auth-provider'
 
 function VariantAttributes({ attributes }) {
   return (
@@ -108,61 +109,62 @@ const VariantSummary = ({ variant, setQuantity, quantity, price }) => {
   )
 }
 
-export const PriceTierValues = ({ price, quantity }) => (
-  <Grid container direction={'row'} wrap={'nowrap'} flexWrap={'nowrap'}>
-    <Grid
-      xs={12}
-      item
-      container
-      direction={'column'}
-      wrap={'nowrap'}
-      flexWrap={'nowrap'}
-    >
-      <Grid item xs={6}>
-        <b>Qty</b>
+export const PriceTierValues = ({ price, quantity }) => {
+  const { isLoggedIn } = useAuth()
+  const formattedPrice = useCallback(
+    (price, tierId) => {
+      return formatCurrency(
+        price.currency,
+        isLoggedIn
+          ? price.tierValues.find(
+              (tierWithValue) => tierWithValue.id === tierId
+            ).priceValue
+          : price.tierValues.find(
+              (tierWithValue) => tierWithValue.id === tierId
+            ).priceValue +
+              (price.tierValues.find(
+                (tierWithValue) => tierWithValue.id === tierId
+              ).priceValue *
+                price.tax.taxRate) /
+                100
+      )
+    },
+    [isLoggedIn]
+  )
+  return (
+    <Grid container direction={'row'} wrap={'nowrap'} flexWrap={'nowrap'}>
+      <Grid
+        xs={12}
+        item
+        container
+        direction={'column'}
+        wrap={'nowrap'}
+        flexWrap={'nowrap'}
+      >
+        <Grid item xs={6}>
+          <b>Qty</b>
+        </Grid>
+        {/*<Grid item xs={4}>*/}
+        {/*  <b>Discount</b>*/}
+        {/*</Grid>*/}
+        <Grid item xs={6}>
+          <b>Unit Price</b>
+        </Grid>
       </Grid>
-      {/*<Grid item xs={4}>*/}
-      {/*  <b>Discount</b>*/}
-      {/*</Grid>*/}
-      <Grid item xs={6}>
-        <b>Unit Price</b>
-      </Grid>
-    </Grid>
-    {price
-      ? price.priceModel.tierDefinition.tiers.map((tier, i) => (
-          <Grid
-            xs={12}
-            item
-            container
-            direction={'column'}
-            wrap={'nowrap'}
-            flexWrap={'nowrap'}
-          >
+      {price
+        ? price.priceModel.tierDefinition.tiers.map((tier, i) => (
             <Grid
+              xs={12}
               item
-              xs={6}
-              sx={{
-                fontWeight:
-                  (tier.minQuantity &&
-                    price.priceModel.tierDefinition.tiers[i + 1] ===
-                      undefined &&
-                    quantity >= tier.minQuantity.quantity) ||
-                  (price.priceModel.tierDefinition.tiers[i + 1] !== undefined &&
-                    quantity >= tier.minQuantity.quantity &&
-                    quantity <
-                      price.priceModel.tierDefinition.tiers[i + 1].minQuantity
-                        .quantity)
-                    ? 'bold'
-                    : 'normal',
-              }}
+              key={tier.id}
+              container
+              direction={'column'}
+              wrap={'nowrap'}
+              flexWrap={'nowrap'}
             >
-              <Typography>{tier.minQuantity.quantity}+</Typography>
-            </Grid>
-            {/*<Grid item xs={4}>*/}
-            {/*  CALCULATE ME!*/}
-            {/*</Grid>*/}
-            <Grid item xs={6}>
-              <Typography
+              <Grid
+                item
+                xs={6}
                 sx={{
                   fontWeight:
                     (tier.minQuantity &&
@@ -179,19 +181,35 @@ export const PriceTierValues = ({ price, quantity }) => (
                       : 'normal',
                 }}
               >
-                {formatCurrency(
-                  price.currency,
-                  price.tierValues.find(
-                    (tierWithValue) => tierWithValue.id === tier.id
-                  ).priceValue
-                )}
-              </Typography>
+                <Typography>{tier.minQuantity.quantity}+</Typography>
+              </Grid>
+              <Grid item xs={6}>
+                <Typography
+                  sx={{
+                    fontWeight:
+                      (tier.minQuantity &&
+                        price.priceModel.tierDefinition.tiers[i + 1] ===
+                          undefined &&
+                        quantity >= tier.minQuantity.quantity) ||
+                      (price.priceModel.tierDefinition.tiers[i + 1] !==
+                        undefined &&
+                        quantity >= tier.minQuantity.quantity &&
+                        quantity <
+                          price.priceModel.tierDefinition.tiers[i + 1]
+                            .minQuantity.quantity)
+                        ? 'bold'
+                        : 'normal',
+                  }}
+                >
+                  {formattedPrice(price, tier.id)}
+                </Typography>
+              </Grid>
             </Grid>
-          </Grid>
-        ))
-      : 'No price model for this item'}
-  </Grid>
-)
+          ))
+        : 'No price model for this item'}
+    </Grid>
+  )
+}
 
 PriceTierValues.propTypes = {}
 

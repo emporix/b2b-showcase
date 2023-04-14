@@ -36,8 +36,8 @@ const QuotesListMobile = ({ data }) => {
             <Status
               width={108}
               height={24}
-              title={row.status}
-              color={row.status === 'SHIPPED' ? '#FFA800' : '#4BCB67'}
+              title={row.status.value}
+              color={row.status.value === 'SHIPPED' ? '#FFA800' : '#4BCB67'}
             />
           </div>
           <div className="pt-2 font-bold">{row.id}</div>
@@ -151,7 +151,7 @@ export const QuotesList = (props) => {
                 </TableCell>
                 <TableCell align="left" className="!py-6">
                   <div className="flex flex-row justify-center items-center">
-                    <QuoteStatus status={row.status} className="mr-2" />
+                    <QuoteStatus status={row.status.value} className="mr-2" />
                     <LeftChevron />
                   </div>
                 </TableCell>

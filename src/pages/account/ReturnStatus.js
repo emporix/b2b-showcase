@@ -10,6 +10,8 @@ const statusColor = (status) => {
       return { bg: 'rgba(75, 203, 103, 0.2)', text: '#4BCB67' }
     case 'REJECTED':
       return { bg: 'rgba(243, 3, 3, 0.2)', text: '#F30303' }
+    case 'EXPIRED':
+      return { bg: 'rgba(243, 3, 3, 0.2)', text: '#F30303' }
     default:
       return { bg: 'rgba(86, 87, 89, 0.2)', text: '#565759' }
   }

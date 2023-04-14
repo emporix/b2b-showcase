@@ -8,7 +8,6 @@ import React, {
   useEffect,
 } from 'react'
 import { useSelector } from 'react-redux'
-import { sessionIdSelector } from 'redux/slices/authReducer'
 import productService from 'services/product/product.service'
 import CartService from 'services/cart.service'
 import { useAuth } from './auth-provider'
@@ -83,8 +82,7 @@ const getCartList = async (items) => {
 
 const CartProvider = ({ children }) => {
   const { context } = useAppContext()
-  const { userTenant } = useAuth()
-  const sessionId = useSelector(sessionIdSelector)
+  const { userTenant, sessionId } = useAuth()
   const [cartAccount, setCartAccount] = useState(DEFAULT_CART)
   const { currentSite } = useSites()
   const products = useMemo(() => {

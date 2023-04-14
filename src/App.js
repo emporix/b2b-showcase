@@ -25,6 +25,7 @@ import AccountReplenishmentEditOrders from './pages/account/AccountReplenishment
 import AccountSavedCarts from './pages/account/AccountSavedCarts'
 import AccountLocations from './pages/account/AccountLocations'
 import Brand from './pages/brand'
+import CreateReturn from './pages/returns/Return'
 import AccountAddLocations from './pages/account/AccountAddLocations'
 import AccountPayments from './pages/account/AccountPayments'
 import AccountReviews from './pages/account/AccountReviews'
@@ -35,6 +36,9 @@ import { clearMessage } from './redux/slices/messageReducer'
 import InvalidTenant from './pages/InvalidTenant'
 import QuoteCart from './pages/quote'
 import AccountReturns from 'pages/account/AccountReturns'
+import AccountReturnDetails from './pages/account/AccountReturnDetails'
+import ReturnsProvider from 'context/returns-provider'
+import UserAddressProvider from 'context/user-addresss-context'
 
 function App() {
   const dispatch = useDispatch()
@@ -68,9 +72,23 @@ function App() {
           <Route path="signup" exact element={<Signup />} />
           <Route path="brand" exact element={<Brand />} />
           <Route path="cart" exact element={<Cart />} />
+          <Route
+            path="create-return/:orderId"
+            exact
+            element={<CreateReturn />}
+          />
           <Route path="checkout" exact element={<Checkout />} />
           <Route path="quote" exact element={<QuoteCart />} />
-          <Route path="my-account" element={<Account />}>
+          <Route
+            path="my-account"
+            element={
+              <UserAddressProvider>
+                <ReturnsProvider>
+                  <Account />
+                </ReturnsProvider>
+              </UserAddressProvider>
+            }
+          >
             <Route index element={<AccountHome />} />
             <Route path="account-summary" element={<MyAccount />} />
             <Route
@@ -95,6 +113,11 @@ function App() {
               element={<AccountMyOrdersInvoice />}
             />
             <Route path="returns" exact element={<AccountReturns />} />
+            <Route
+              path="returns/:returnId"
+              exact
+              element={<AccountReturnDetails />}
+            />
             <Route
               path="replenishment-orders"
               exact

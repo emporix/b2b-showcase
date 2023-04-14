@@ -92,7 +92,7 @@ const EachProduct = ({ item, available, rating, productCount }) => {
                     </CurrencyBeforeComponent>
                   </>
                 ) : (
-                  <span className="text-xs text-brightRed font-bold">
+                  <span className="text-xs text-primaryBlue font-bold">
                     No Price
                   </span>
                 )}
@@ -123,7 +123,7 @@ const EachProduct = ({ item, available, rating, productCount }) => {
                   </span>
                 </>
               ) : (
-                <span className="text-xs  text-brightRed font-bold">
+                <span className="text-xs  text-primaryBlue font-bold">
                   No Price
                 </span>
               )}

@@ -1,20 +1,10 @@
-import React, { useCallback, useEffect, useState } from 'react'
+import React from 'react'
 import AccountLayout from './AccountLayout'
-import { fetchReturns } from '../../services/returns'
 import { ReturnsList } from './ReturnsList'
+import { useReturns } from 'context/returns-provider'
 
 const AccountReturns = () => {
-  const [returns, setReturns] = useState([])
-
-  const getReturns = useCallback(async () => {
-    const fetchedReturns = await fetchReturns()
-    setReturns(fetchedReturns)
-  }, [])
-
-  useEffect(() => {
-    getReturns()
-  }, [])
-
+  const { returns } = useReturns()
   return (
     <AccountLayout page="All Returns">
       <ReturnsList data={returns} invoiceAvailable={true} />

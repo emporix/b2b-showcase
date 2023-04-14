@@ -77,13 +77,13 @@
   @apply text-[20px] leading-[22px] font-bold;
 }
 .cart-go-checkout-btn {
-  @apply w-full text-[14px] leading-[14px] text-center font-bold h-12 px-6 bg-brightRed text-[color:white];
+  @apply w-full text-[14px] leading-[14px] text-center font-bold h-12 px-6 bg-darkBlue text-white;
 }
 .cart-go-cart-btn {
-  @apply w-full text-[14px] leading-[14px] text-center font-bold h-12 px-6 bg-lightRed text-white;
+  @apply w-full text-[14px] leading-[14px] text-center font-bold h-12 px-6 bg-primaryBlue text-white;
 }
 .cart-request-quote-btn {
-  @apply w-full text-[14px] leading-[14px] text-center font-bold h-12 px-6 bg-lightPink text-tinBlue;
+  @apply w-full text-[14px] leading-[14px] text-center font-bold h-12 px-6 bg-lightBlue text-white;
 }
 .table-cart-product-image {
   @apply w-[52px] h-[74px] p-0;

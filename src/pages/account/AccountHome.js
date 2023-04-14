@@ -5,8 +5,7 @@ import AccountLayout from './AccountLayout'
 const AccountHome = () => {
   return (
     <AccountLayout page="Index">
-      {' '}
-      <MyAccountContent />{' '}
+      <MyAccountContent />
     </AccountLayout>
   )
 }
