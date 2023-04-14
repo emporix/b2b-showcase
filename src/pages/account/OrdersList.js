@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useCallback, useState } from 'react'
 import TableContainer from '@mui/material/TableContainer'
 import Table from '@mui/material/Table'
 import TableHead from '@mui/material/TableHead'
@@ -10,11 +10,14 @@ import {
   CurrencyAfterValue,
   formatDateTime,
 } from '../../components/Utilities/common'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import {
   myAccountMyOrdersInvoiceUrl,
   myAccountMyOrdersViewUrl,
+  createReturnUrl,
 } from '../../services/service.config'
+import { useReturns } from 'context/returns-provider'
+import ReturnInfoStatus from './ReturnInfoStatus'
 
 const OrderListMobile = ({ orders }) => {
   return (
@@ -37,6 +40,9 @@ const OrderListMobile = ({ orders }) => {
                   Invoice
                 </Link>
               </div>
+              <div className="font-inter font-semibold text-[14px] underline ml-6">
+                <Link to={`${createReturnUrl()}${row.id}`}>Return</Link>
+              </div>
             </div>
           </div>
           <div className="pt-2 font-bold">{row.id}</div>
@@ -52,9 +58,31 @@ const OrderListMobile = ({ orders }) => {
 
 export const OrderList = (props) => {
   const { orders, invoiceAvailable } = props
+  const { returns } = useReturns()
+  const navigate = useNavigate()
 
+  const [showAlreadySubmittedError, setError] = useState(false)
+
+  const handleCreateReturn = useCallback(
+    (id) => {
+      setError(false)
+      if (
+        returns.some((r) => {
+          return r.orders.some((order) => order.id === id)
+        })
+      ) {
+        setError(true)
+      } else {
+        navigate(`${createReturnUrl()}${id}`, { replace: true })
+      }
+    },
+    [returns]
+  )
   return (
     <div className="md:mt-[60px]">
+      {showAlreadySubmittedError && (
+        <ReturnInfoStatus status="INTERNAL_ALREADY_SUBMITTED" />
+      )}
       <TableContainer className="desktop_only">
         <Table sx={{ minWidth: 650 }}>
           <TableHead>
@@ -125,6 +153,14 @@ export const OrderList = (props) => {
                         </Link>
                       </div>
                     )}
+                    <div className="font-inter font-semibold text-[14px] underline ml-6">
+                      <span
+                        onClick={() => handleCreateReturn(row.id)}
+                        className="cursor-pointer"
+                      >
+                        Return
+                      </span>
+                    </div>
                   </div>
                 </TableCell>
               </TableRow>

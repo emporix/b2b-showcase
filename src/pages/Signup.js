@@ -1,8 +1,6 @@
-import React, { useState } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
+import React, { useEffect, useMemo, useState } from 'react'
 import { Navigate, Link } from 'react-router-dom'
-import { login, register } from '../redux/slices/authReducer'
-import { setMessage } from '../redux/slices/messageReducer'
+import { login, register } from '../services/user/auth.service'
 import Snackbar from '@mui/material/Snackbar'
 import MuiAlert from '@mui/material/Alert'
 import CircularProgress from '@mui/material/CircularProgress'
@@ -12,9 +10,132 @@ import { Heading2, Heading4 } from '../components/Utilities/typography'
 import Box from '@mui/material/Box'
 import { TENANT } from '../constants/localstorage'
 import { homeUrl } from '../services/service.config'
+import { Logo } from '../components/Logo'
+import { useAuth } from 'context/auth-provider'
+import { createAddress } from 'services/user/adresses'
+
+const Input = ({ label, value, action, className, placeholder }) => {
+  return (
+    <div className={`!pt-6 w-full text-black text-base ${className}`}>
+      <label className="pb-2">{label}</label>
+      <br />
+      <input
+        placeholder={placeholder}
+        onChange={(e) => action(e.target.value)}
+        value={value}
+        type="text"
+        className="border w-full px-3 py-2"
+      />
+    </div>
+  )
+}
+
+const AddressForm = ({ form, handleUpdate }) => {
+  return (
+    <div className="grid grid-cols-4 gap-4">
+      <div className="col-span-4">Address</div>
+      <Input
+        label="Contact name"
+        className="col-span-4"
+        placeholder="Contact name"
+        value={form.contactName}
+        action={(val) =>
+          handleUpdate({
+            ...form,
+            contactName: val,
+          })
+        }
+      />
+      <Input
+        label="Street"
+        className="col-span-2"
+        placeholder="Street"
+        value={form.street}
+        action={(val) =>
+          handleUpdate({
+            ...form,
+            street: val,
+          })
+        }
+      />
+      <Input
+        label="St. Number"
+        placeholder="Sreet Number"
+        className="col-span-1"
+        value={form.streetNumber}
+        action={(val) =>
+          handleUpdate({
+            ...form,
+            streetNumber: val,
+          })
+        }
+      />
+      <Input
+        label="St. Appendix"
+        className="col-span-1"
+        value={form.streetAppendix}
+        action={(val) =>
+          handleUpdate({
+            ...form,
+            streetAppendix: val,
+          })
+        }
+      />
+      <Input
+        label="Zip Code"
+        placeholder="Zip Code"
+        className="col-span-2"
+        value={form.zipCode}
+        action={(val) =>
+          handleUpdate({
+            ...form,
+            zipCode: val,
+          })
+        }
+      />
+      <Input
+        label="City"
+        placeholder="City"
+        className="col-span-2"
+        value={form.city}
+        action={(val) =>
+          handleUpdate({
+            ...form,
+            city: val,
+          })
+        }
+      />
+      <Input
+        label="State"
+        placeholder="State"
+        className="col-span-3"
+        value={form.state}
+        action={(val) =>
+          handleUpdate({
+            ...form,
+            state: val,
+          })
+        }
+      />
+      <Input
+        label="Country"
+        placeholder="Country"
+        className="col-span-1"
+        value={form.country}
+        action={(val) =>
+          handleUpdate({
+            ...form,
+            country: val,
+          })
+        }
+      />
+    </div>
+  )
+}
 
 const Signup = (props) => {
   const [loading, setLoading] = useState(false)
+  const [message, setMessage] = useState(null)
   const [userEmail, setUserEmail] = useState('')
   const [openNotification, setOpenNotification] = useState(false)
   const [password, setPassword] = useState('')
@@ -24,9 +145,28 @@ const Signup = (props) => {
   const [company, setCompany] = useState('')
   const [phoneNumber, setPhoneNumber] = useState('')
   const [emailMessage, setEmailMessage] = useState('')
-  const { isLoggedIn } = useSelector((state) => state.auth)
-  const dispatch = useDispatch()
-  const { message } = useSelector((state) => state.message)
+  const [address, setAddress] = useState({
+    contactName: '',
+    street: '',
+    streetNumber: '',
+    streetAppendix: '',
+    zipCode: '',
+    country: '',
+    state: '',
+    city: '',
+  })
+  const isAddressValid = useMemo(() => {
+    return (
+      address.contactName.length > 0 &&
+      address.street.length > 0 &&
+      address.streetNumber.length > 0 &&
+      address.zipCode.length > 0 &&
+      address.city.length > 0 &&
+      address.country.length > 0
+    )
+  }, [address])
+
+  const { isLoggedIn, syncAuth } = useAuth()
 
   function isValidEmail(email) {
     return /\S+@\S+\.\S+/.test(email)
@@ -57,18 +197,17 @@ const Signup = (props) => {
     setPassword(password)
   }
 
-  const handleSignup = (e) => {
+  const handleSignup = async (e) => {
     e.preventDefault()
-
-    if (password.length < 6) {
-      dispatch(setMessage('password must have at least 6 characters!'))
-      setOpenNotification(true)
-    } else {
-      if (userEmail && password && confirmPassword) {
-        if (password === confirmPassword) {
-          setLoading(true)
-          dispatch(
-            register(
+    try {
+      if (password.length < 6) {
+        setMessage('password must have at least 6 characters!')
+        setOpenNotification(true)
+      } else {
+        if (userEmail && password && confirmPassword) {
+          if (password === confirmPassword) {
+            setLoading(true)
+            await register(
               userEmail,
               password,
               firstName,
@@ -77,32 +216,27 @@ const Signup = (props) => {
               company,
               phoneNumber
             )
-          )
-            .then(() => {
-              dispatch(login(userEmail, password, tenant))
-                .then(() => {
-                  props.history.push(`/${tenant}`)
-                  window.location.reload()
-                  setOpenNotification(true)
-                  setLoading(false)
-                })
-                .catch(() => {
-                  setOpenNotification(true)
-                  setLoading(false)
-                })
-            })
-            .catch(() => {
-              setOpenNotification(true)
-              setLoading(false)
-            })
+            await login(userEmail, password, tenant)
+
+            syncAuth()
+            await createAddress({ ...address, tags: ['billing', 'shipping'] })
+            props.history.push(`/${tenant}`)
+            window.location.reload()
+            setOpenNotification(true)
+            setLoading(false)
+          } else {
+            setMessage('Confirm password is incorrect!')
+            setOpenNotification(true)
+          }
         } else {
-          dispatch(setMessage('Confirm password is incorrect!'))
+          setMessage('Please enter at least useremail and password')
           setOpenNotification(true)
         }
-      } else {
-        dispatch(setMessage('Please enter at least useremail and password'))
-        setOpenNotification(true)
       }
+    } catch {
+      setOpenNotification(true)
+    } finally {
+      setLoading(false)
     }
   }
 
@@ -126,8 +260,10 @@ const Signup = (props) => {
         <Container className="w-full h-[110px] items-center  text-center text-white font-bold  text-7xl ">
           <Container className="mx-auto">
             <Link to={homeUrl()} className="flex">
-              <img src="/login_atom.png" className="w-[78px] h-[86px] mr-5" />
-              atom
+              <Logo
+                size={'w-[78px] h-[86px] mr-5'}
+                text={'px-4 flex text-white text-[48px]'}
+              />
             </Link>
           </Container>
         </Container>
@@ -222,11 +358,17 @@ const Signup = (props) => {
                 onChange={(value) => setPhoneNumber(value)}
               />
             </Box>
-
+            <AddressForm
+              form={address}
+              handleUpdate={(newAddress) => {
+                setAddress(newAddress)
+              }}
+            />
             <Box className="w-full !pt-12">
               <button
-                className="w-full text-white bg-tinBlue h-12 hover:bg-lightBlue"
+                className="w-full text-white bg-tinBlue h-12 enabled:hover:bg-darkBlue disabled:bg-gray-400 disabled:lightGray"
                 type="submit"
+                disabled={loading || !isAddressValid}
               >
                 {loading ? <CircularProgress color="secondary" /> : 'Sign Up'}
               </button>

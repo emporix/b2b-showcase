@@ -1,7 +1,6 @@
 import React, { useState } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
-import { Navigate, Link } from 'react-router-dom'
-import { login } from '../redux/slices/authReducer'
+import { Navigate, Link, useNavigate } from 'react-router-dom'
+import { login } from '../services/user/auth.service'
 import Snackbar from '@mui/material/Snackbar'
 import MuiAlert from '@mui/material/Alert'
 import CircularProgress from '@mui/material/CircularProgress'
@@ -15,17 +14,18 @@ import Box from '@mui/material/Box'
 import { homeUrl, signupUrl } from '../services/service.config'
 import { useAuth } from 'context/auth-provider'
 import { TENANT } from '../constants/localstorage'
+import { Logo } from '../components/Logo'
 
-const Login = (props) => {
+const Login = () => {
   const { syncAuth } = useAuth()
   const [loading, setLoading] = useState(false)
   const [userEmail, setUserEmail] = useState('')
   const [openNotification, setOpenNotification] = useState(false)
   const [password, setPassword] = useState('')
   const [emailMessage, setEmailMessage] = useState('')
-  const { isLoggedIn } = useSelector((state) => state.auth)
-  const dispatch = useDispatch()
-  const { message } = useSelector((state) => state.message)
+  const { isLoggedIn } = useAuth()
+  const [message, setMessage] = useState()
+  const navigate = useNavigate()
 
   function isValidEmail(email) {
     return /\S+@\S+\.\S+/.test(email)
@@ -54,24 +54,21 @@ const Login = (props) => {
   }
   const userTenant = localStorage.getItem(TENANT)
 
-  const handleLogin = (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault()
-
-    if (userEmail && password) {
-      setLoading(true)
-      dispatch(login(userEmail, password, userTenant))
-        .then(() => {
-          syncAuth()
-          props.history.push(`/${userTenant}`)
-          window.location.reload()
-          setOpenNotification(true)
-          setLoading(false)
-        })
-        .catch(() => {
-          setOpenNotification(true)
-          setLoading(false)
-        })
-    } else {
+    try {
+      if (userEmail && password) {
+        setLoading(true)
+        const user = await login(userEmail, password, userTenant)
+        syncAuth(user)
+        navigate(`/${userTenant}`)
+        setOpenNotification(true)
+      }
+    } catch (e) {
+      console.error(e)
+      setOpenNotification(true)
+    } finally {
+      setLoading(false)
     }
   }
 
@@ -95,8 +92,10 @@ const Login = (props) => {
         <Container className="w-full h-[110px] items-center  text-center text-white font-bold  text-7xl ">
           <Container className="mx-auto">
             <Link to={homeUrl} className="flex">
-              <img src="/login_atom.png" className="w-[78px] h-[86px] mr-5" />
-              atom
+              <Logo
+                size={'w-[78px] h-[86px] mr-5'}
+                text={'px-4 flex text-white text-[48px]'}
+              />
             </Link>
           </Container>
         </Container>

@@ -2,20 +2,19 @@ import React, { useEffect } from 'react'
 import { Link } from 'react-router-dom'
 
 import './checkout.css'
-import { userSelector } from 'redux/slices/authReducer'
-import { useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import { loginUrl } from 'services/service.config'
 import { homeUrl, myAccountMyOrders } from '../../services/service.config'
 import { LargePrimaryButton } from '../../components/Utilities/button'
+import { useAuth } from 'context/auth-provider'
 
 const CheckoutSummary = ({ setFinal, order }) => {
-  const currentUser = useSelector(userSelector)
+  const { user } = useAuth()
 
   const navigate = useNavigate()
 
   useEffect(() => {
-    if (!currentUser) {
+    if (!user) {
       navigate(loginUrl())
     }
   })
@@ -27,7 +26,7 @@ const CheckoutSummary = ({ setFinal, order }) => {
             Your Order has been received
           </div>
           <div>
-            <button className="bg-brightRed text-[white] px-6 py-0 h-[50px] text-[14px] leading-[14px] md:w-[400px] w-full">
+            <button className="bg-primaryBlue text-[white] px-6 py-0 h-[50px] text-[14px] leading-[14px] md:w-[400px] w-full">
               VIEW INVOICE
             </button>
           </div>

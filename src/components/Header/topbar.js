@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
 import Navbar from './navigationbar'
 import { ChevronDownIcon } from '@heroicons/react/solid'
@@ -8,37 +8,8 @@ import './topbar.css'
 import { addTenantToUrl, homeUrl } from '../../services/service.config'
 import AlgoliaSearchbar from '../AlgoliaSearchbar'
 import { useContentful } from '../../context/contentful-provider'
+import {Logo} from "../Logo";
 
-const Logo = ({ onMouseOver }) => {
-  const { fields } = useContentful()
-
-  const [logoUrl, setLogoUrl] = useState('')
-  const { companyLogo } = fields
-
-  useEffect(() => {
-    ;(async () => {
-      if (
-        companyLogo &&
-        companyLogo.fields &&
-        companyLogo.fields.file &&
-        companyLogo.fields.file.url
-      ) {
-        setLogoUrl(companyLogo.fields.file.url)
-      }
-    })()
-  }, [companyLogo])
-
-  return (
-    <Link to={homeUrl()} className="flex" onMouseOver={onMouseOver}>
-      <div className="w-[37px]">
-        <img src={logoUrl} alt={'Logo'} className="w-[37px]" />
-      </div>
-      <div className="px-4 text-white text-[25px] font-medium items-center">
-        <span>{fields.companyNameLabel}</span>
-      </div>
-    </Link>
-  )
-}
 
 const MegaNav = ({ showMegaMenuContent, setShowMegaMenuContent }) => {
   const [subMenuItems, setSubMenuItems] = useState([])

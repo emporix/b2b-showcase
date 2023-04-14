@@ -40,6 +40,8 @@ export const priceApi = () =>
 export const currencyApi = () => `${API_URL}/currency/${getTenant()}/currencies`
 export const triggerCheckoutApi = () =>
   `${API_URL}/checkout/${getTenant()}/checkouts/order`
+export const countriesApi = () =>
+  `${API_URL}/country/${getTenant()}/countries`
 // URLS
 export const addLocationUrl = () => `/${getTenant()}/my-account/locations/add`
 export const myAccountLocationUrl = () => `/${getTenant()}/my-account/locations`
@@ -58,6 +60,8 @@ export const myAccountMyOrdersViewUrl = () =>
   `/${getTenant()}/my-account/my-orders/view/`
 export const myAccountMyOrdersInvoiceUrl = () =>
   `/${getTenant()}/my-account/my-orders/invoice/`
+  export const createReturnUrl = () =>
+  `/${getTenant()}/create-return/`
 export const checkoutUrl = () => `/${getTenant()}/checkout`
 export const quoteUrl = () => `/${getTenant()}/quote`
 export const cartUrl = () => `/${getTenant()}/cart`
@@ -68,3 +72,4 @@ export const productUrl = () => `/${getTenant()}/product`
 export const addTenantToUrl = (url) => `/${getTenant()}/${url}`
 
 export const fetchReturnsUrl = () => `/return/${getTenant()}/returns`
+export const fetchSingleReturnUrl = (id) => `/return/${getTenant()}/returns/${id}`

@@ -7,6 +7,8 @@ import AccountMenu from './AccountMenu'
 import { formatDateTime } from '../../components/Utilities/common'
 import { formatCurrency } from 'helpers/currency'
 import QuoteStatus from './QuoteStatus'
+import { getLanguageFromLocalStorage } from 'context/language-provider'
+import { getCountry } from 'services/country.service'
 
 const Subtitle = ({ children }) => {
   return <div className="text-tinBlue text-xl font-bold">{children}</div>
@@ -34,15 +36,25 @@ const AccountMyOrdersDetails = () => {
   const { quoteId } = useParams()
   const [quote, setQuote] = useState()
   const [isLoading, setIsLoading] = useState(true)
+  const [shippingCountry, setshippingCountry] = useState()
+  const [billingCountry, setBillingCountry] = useState()
 
   const getQuote = useCallback(async () => {
     try {
-      const quote = await fetchQuoteDetails(userTenant, quoteId)
-      setQuote(quote)
+      const fetchedQuote = await fetchQuoteDetails(userTenant, quoteId)
+      setQuote(fetchedQuote)
+      getAddressCountries(fetchedQuote)
     } finally {
       setIsLoading(false)
     }
   }, [userTenant, quoteId])
+
+  const getAddressCountries = useCallback (async (q) => {
+    const shippingAddress =  await getCountry(q.shippingAddress.countryCode)
+    const billingAddress =  await getCountry(q.billingAddress.countryCode)
+    setshippingCountry(shippingAddress.name[getLanguageFromLocalStorage()])
+    setBillingCountry(billingAddress.name[getLanguageFromLocalStorage()])
+  })
 
   useEffect(() => {
     getQuote()
@@ -98,7 +110,7 @@ const AccountMyOrdersDetails = () => {
           <Column label="Contact" value={`Power Zone`} />
           <Column
             label="Status"
-            value={<QuoteStatus status={quote.status} />}
+            value={<QuoteStatus status={quote.status.value} />}
           />
         </div>
 
@@ -111,9 +123,10 @@ const AccountMyOrdersDetails = () => {
             label="Billing Address"
             content={
               <div className="text-sm">
-                <div>Barer Str. 27</div>
-                <div>80333 München</div>
-                <div>Germany</div>
+                <div>{quote.billingAddress.name}</div>
+                <div>{`${quote.billingAddress.addressLine1} ${quote.billingAddress.addressLine2}`}</div>
+                <div>{`${quote.billingAddress.postcode} ${quote.billingAddress.city}`}</div>
+                <div>{billingCountry}</div>
               </div>
             }
           />
@@ -122,9 +135,10 @@ const AccountMyOrdersDetails = () => {
             label="Shipping Details"
             content={
               <div className="text-sm">
-                <div>Barer Str. 27</div>
-                <div>80333 München</div>
-                <div>Germany</div>
+                <div>{quote.shippingAddress.name}</div>
+                <div>{`${quote.shippingAddress.addressLine1} ${quote.shippingAddress.addressLine2}`}</div>
+                <div>{`${quote.shippingAddress.postcode} ${quote.shippingAddress.city}`}</div>
+                <div>{shippingCountry}</div>
               </div>
             }
           />
@@ -143,14 +157,16 @@ const AccountMyOrdersDetails = () => {
               {quote.items.map((item) => {
                 return (
                   <div className="flex">
-                    <img
-                      src={item.product.media.url}
-                      alt="product-img"
-                      style={{
-                        objectFit: 'contain',
-                      }}
-                      className="w-[72px] mr-4"
-                    />
+                    {item.product.media?.url && (
+                      <img
+                        src={item.product.media.url}
+                        alt="product-img"
+                        style={{
+                          objectFit: 'contain',
+                        }}
+                        className="w-[72px] mr-4"
+                      />
+                    )}
                     <div className="grow">
                       <div className="text-md font-bold">
                         {item.product.name.en}
@@ -230,7 +246,7 @@ const AccountMyOrdersDetails = () => {
                 </div>
               </div>
             </div>
-            {quote.status !== 'ACCEPTED' && quote.status !== 'DECLINED' && (
+            {quote.status.value === 'OPEN' && (
               <div className="mt-4">
                 <button
                   onClick={handleAcceptQuote}

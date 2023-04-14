@@ -10,7 +10,7 @@ const statusColor = (status) => {
       return { bg: 'rgba(255, 168, 0, 0.2)', text: '#FFA800' }
     case 'OPEN':
     case 'CREATING':
-    case 'IN_PROGRESS':
+    case 'PENDING':
     default:
       return {
         bg: '#5F8FAA',
@@ -20,7 +20,11 @@ const statusColor = (status) => {
 }
 
 const QuoteStatus = ({ status, className }) => {
-  const { bg, text } = useMemo(() => statusColor(status), [status])
+  const resolvedStatus = resolveStatus(status)
+  const { bg, text } = useMemo(
+    () => statusColor(resolvedStatus),
+    [resolvedStatus]
+  )
   return (
     <div
       className={`font-bold uppercase text-center flex justify-center items-center ${className}`}
@@ -32,9 +36,17 @@ const QuoteStatus = ({ status, className }) => {
         borderRadius: '18px',
       }}
     >
-      {status}
+      {resolvedStatus}
     </div>
   )
 }
 
+const resolveStatus = (status) => {
+  if (status === 'DECLINED_BY_MERCHANT') {
+    return 'DECLINED'
+  } else if (status === 'IN_PROGRESS') {
+    return 'PENDING'
+  }
+  return status
+}
 export default QuoteStatus

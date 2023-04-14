@@ -22,7 +22,9 @@ export const patchQuoteById = async (tenant, id, status) => {
     {
       op: 'replace',
       path: '/status',
-      value: status,
+      value: {
+        value: status,
+      }
     },
   ]
   return await api.patch(`/quote/${tenant}/quotes/${id}`, payload)

@@ -6,10 +6,11 @@ import {
   CUSTOMER_TOKEN,
   SAAS_TOKEN,
 } from 'constants/localstorage'
+import CartService from '../cart.service'
 
 const API_URL = process.env.REACT_APP_API_URL
 
-const register = async (
+export const register = async (
   email,
   password,
   firstName,
@@ -42,11 +43,14 @@ const register = async (
   }
   const signupApi = `${API_URL}/customer/${tenantName}/signup`
   response = await ApiRequest(signupApi, 'post', payload, headers)
-
-  return response
+  if (response.status === 201) {
+    return Promise.resolve()
+  } else {
+    return Promise.reject()
+  }
 }
 
-const login = async (username, password, userTenant) => {
+export const login = async (username, password, userTenant) => {
   let responseData = null
   const anonymousToken = localStorage.getItem(ANONYMOUS_TOKEN)
   const { data } = await axios.post(
@@ -90,17 +94,14 @@ const login = async (username, password, userTenant) => {
     }
   }
 
+  let userdata = {
+    ...responseData,
+    userTenant: userTenant,
+    username: responseData.firstName + ' ' + responseData.lastName,
+  }
+  const { data: anonymousCart } = await CartService.getAnnonymousCart()
+  // save anonymous cart to merge
+  localStorage.setItem('anonymousCart', JSON.stringify(anonymousCart))
+  localStorage.setItem('user', JSON.stringify(userdata))
   return responseData
 }
-
-const logout = () => {
-  localStorage.removeItem('user')
-  localStorage.removeItem(CUSTOMER_TOKEN)
-  localStorage.removeItem(CUSTOMER_TOKEN_EXPIRES_IN)
-}
-const auth_services = {
-  register,
-  login,
-  logout,
-}
-export default auth_services

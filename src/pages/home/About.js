@@ -34,7 +34,7 @@ const About = () => {
         </div>
 
         <div className="pt-[78px] desktop_only text-sm">
-          <button className="px-6 py-4 border bg-brightRed font-bold">
+          <button className="px-6 py-4 border font-bold">
             {fields.startShoppingButtonLabel}
           </button>
         </div>

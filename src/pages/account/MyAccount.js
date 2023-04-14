@@ -1,15 +1,15 @@
 import React, { useCallback, useEffect, useState } from 'react'
 import AccountLayout from './AccountLayout'
 import { SavedCarts } from './common'
-import { useSelector } from 'react-redux'
 import { Navigate } from 'react-router-dom'
 import { CurrencyBeforeValue } from 'components/Utilities/common'
 import { getRecentOrders } from '../../services/orders.service'
 import { OrderList } from './OrdersList'
+import { useAuth } from 'context/auth-provider'
 
 const AccountPersonalInfo = () => {
-  const { user: currentUser } = useSelector((state) => state.auth)
-  if (!currentUser) {
+  const { user } = useAuth()
+  if (!user) {
     return <Navigate to="/login" />
   }
   return (
@@ -38,10 +38,10 @@ const AccountPersonalInfo = () => {
               <p>Email</p>
             </div>
             <div className="profile-items-info gap-2 flex flex-col justify-items-start">
-              <p className="font-bold">{currentUser.username}</p>
-              <p>{currentUser.company}</p>
-              <p>{currentUser.contactPhone}</p>
-              <p>{currentUser.contactEmail}</p>
+              <p className="font-bold">{user.username}</p>
+              <p>{user.company}</p>
+              <p>{user.contactPhone}</p>
+              <p>{user.contactEmail}</p>
             </div>
           </div>
         </div>

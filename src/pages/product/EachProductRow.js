@@ -40,7 +40,7 @@ const EachProductRow = ({ item, type, available, rating, productCount }) => {
     if (price) {
       return <CurrencyBeforeValue value={price} />
     } else {
-      return <span className="text-xs text-brightRed font-bold">No Price</span>
+      return <span className="text-xs text-primaryBlue font-bold">No Price</span>
     }
   }
   return (
@@ -89,7 +89,7 @@ const EachProductRow = ({ item, type, available, rating, productCount }) => {
           className={
             available
               ? 'text-brightGreen font-inter font-bold text-xs mt-[90px] float-right'
-              : 'text-brightRed font-inter font-bold text-xs mt-[90px] float-right'
+              : 'text-primaryBlue font-inter font-bold text-xs mt-[90px] float-right'
           }
         >
           {available ? 'In Stock' : 'Out Of Stock'}

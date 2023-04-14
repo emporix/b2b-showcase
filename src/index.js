@@ -17,27 +17,27 @@ import ProductListProvider from 'context/product-list-context'
 
 const root = ReactDOM.createRoot(document.getElementById('root'))
 root.render(
-  <Provider store={Store}>
-    <AuthProvider>
-      <AppContextProvider>
-        <SitesProvider>
-          <CartProvider>
-            <CurrencyProvider>
-              <QuotesProvider>
-                <LanguageProvider>
-                  <ContentfulProvider>
-                    <ProductListProvider>
-                      <App />
-                    </ProductListProvider>
-                  </ContentfulProvider>
-                </LanguageProvider>
-              </QuotesProvider>
-            </CurrencyProvider>
-          </CartProvider>
-        </SitesProvider>
-      </AppContextProvider>
-    </AuthProvider>
-  </Provider>
+    <Provider store={Store}>
+        <AuthProvider>
+            <AppContextProvider>
+                <SitesProvider>
+                    <CartProvider>
+                        <CurrencyProvider>
+                            <QuotesProvider>
+                                <LanguageProvider>
+                                    <ContentfulProvider>
+                                        <ProductListProvider>
+                                            <App />
+                                        </ProductListProvider>
+                                    </ContentfulProvider>
+                                </LanguageProvider>
+                            </QuotesProvider>
+                        </CurrencyProvider>
+                    </CartProvider>
+                </SitesProvider>
+            </AppContextProvider>
+        </AuthProvider>
+    </Provider>
 )
 
 // If you want to start measuring performance in your app, pass a function

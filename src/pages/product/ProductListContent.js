@@ -1,6 +1,6 @@
 import { CgMenuGridR } from 'react-icons/cg'
 import { BiMenu } from 'react-icons/bi'
-import React, { useState } from 'react'
+import React, { useMemo, useState } from 'react'
 import { useSelector } from 'react-redux'
 import { IconContext } from 'react-icons'
 import { ChevronDownIcon } from '@heroicons/react/solid'
@@ -10,6 +10,7 @@ import { availabilityDataSelector } from '../../redux/slices/availabilityReducer
 import { useProductList } from 'context/product-list-context'
 import EachProduct from './EachProduct'
 import EachProductRow from './EachProductRow'
+import { useAuth } from 'context/auth-provider'
 
 const ProductListViewSettingBar = ({
   changeDisplayType,
@@ -378,8 +379,7 @@ const ProductListPagination = ({
 }
 
 const ProductListContent = () => {
-  const { user: currentUser } = useSelector((state) => state.auth)
-
+  const { user } = useAuth()
   const [displayType, SetDisplayType] = useState(true)
 
   const {
@@ -392,6 +392,10 @@ const ProductListContent = () => {
     productsPerPage,
     setProductsPerPage,
   } = useProductList()
+
+  const productsWithoutVariants = useMemo(() => {
+    return products.filter((p) => p.productType !== 'VARIANT')
+  }, [products])
 
   const changeDisplayType = (status) => {
     SetDisplayType(status)
@@ -418,8 +422,8 @@ const ProductListContent = () => {
       ) : (
         <>
           <ProductListItems
-            products={products}
-            auth={currentUser ? true : false}
+            products={productsWithoutVariants}
+            auth={!!user}
             displayType={displayType}
             productListCount={total}
             pageNumber={pageNumber}

@@ -21,7 +21,7 @@ code {
   @apply w-full h-20  md:h-12 z-20 fixed  bg-darkBlue sm:px-5 md:px-7 lg:px-24 flex justify-between items-center;
 }
 .home_category {
-  @apply bg-gradient-to-b from-lightBlue to-blueGray  w-full h-[1752px] md:h-[682px]  text-white;
+  @apply bg-gradient-to-b from-tinBlue to-blueGray  w-full h-[1752px] md:h-[682px]  text-white;
 }
 
 .desktop_only {
@@ -53,7 +53,7 @@ code {
 }
 
 .subscribe {
-  @apply bg-gradient-to-b from-lightBlue to-blueGray w-full h-[328px] md:h-[336px] text-center text-white;
+  @apply bg-gradient-to-b from-tinBlue to-blueGray w-full h-[328px] md:h-[336px] text-center text-white;
 }
 
 .footer {
@@ -96,7 +96,7 @@ code {
   @apply w-full h-[1024px] bg-[length:100%_100%] bg-[url('./assets/landing_bg.png')];
 }
 .signup_container {
-  @apply w-full h-[1480px] bg-[length:100%_150%] bg-[url('./assets/landing_bg.png')];
+  @apply w-full h-[1680px] bg-[length:100%_150%] bg-[url('./assets/landing_bg.png')];
 }
 .border-grey-bottom {
   @apply border-b border-lightGray;

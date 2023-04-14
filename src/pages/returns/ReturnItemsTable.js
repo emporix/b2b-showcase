@@ -12,9 +12,6 @@ import {
   PriceExcludeVAT,
 } from '../../components/Cart/cart'
 
-import './cart.css'
-import { useCart } from 'context/cart-provider'
-
 const CartProductInfo = ({ cart }) => {
   return (
     <div className="cart-product-info-wrapper flex gap-6">
@@ -31,9 +28,12 @@ const CartProductInfo = ({ cart }) => {
   )
 }
 
-const CartTable = ({ cartList, classname }) => {
-  const { removeCartItem, incrementCartItemQty, decrementCartItemQty } =
-    useCart()
+const ReturnIitemsTable = ({
+  order,
+  classname,
+  incrementQty,
+  decrementQty,
+}) => {
   return (
     <TableContainer className={classname}>
       <Table sx={{ minWidth: 650 }}>
@@ -64,34 +64,30 @@ const CartTable = ({ cartList, classname }) => {
           </TableRow>
         </TableHead>
         <TableBody>
-          {cartList.map((cartItem, index) => (
+          {order.entries.map((orderEntry, index) => (
             <TableRow
               key={index}
               sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
             >
               <TableCell sx={{ width: '356px' }}>
-                <CartProductInfo cart={cartItem} />
+                <CartProductInfo cart={orderEntry} />
               </TableCell>
               <TableCell className="cart-row-item">
-                <PriceExcludeVAT
-                  price={cartItem.product.price.effectiveValue}
-                />
+                <PriceExcludeVAT price={orderEntry.price.originalAmount} />
               </TableCell>
               <TableCell align="center">
                 <div className="quantity-wrapper">
                   <Quantity
-                    value={cartItem.quantity}
-                    increase={() => incrementCartItemQty(cartItem.id)}
-                    decrease={() => decrementCartItemQty(cartItem.id)}
+                    value={orderEntry.amount}
+                    increase={() => incrementQty(orderEntry.id)}
+                    decrease={() => decrementQty(orderEntry.id)}
                   />
                 </div>
               </TableCell>
 
               <TableCell className="cart-row-item">
                 <PriceExcludeVAT
-                  price={
-                    cartItem.product.price.originalAmount * cartItem.quantity
-                  }
+                  price={orderEntry.price.originalAmount * orderEntry.amount}
                 />
               </TableCell>
 
@@ -100,29 +96,35 @@ const CartTable = ({ cartList, classname }) => {
               </TableCell>
 
               <TableCell className="cart-row-item">
-                {cartItem.itemTaxInfo && (
+                {orderEntry.itemTaxInfo && (
                   <PriceExcludeVAT
-                    price={cartItem.itemTaxInfo[0].value.amount}
-                    caption={`${cartItem.itemTaxInfo[0].rate} %`}
+                    price={orderEntry.tax?.lines[0].amount || '-'}
+                    caption={`${orderEntry.tax.lines[0].rate} %`}
                   />
                 )}
               </TableCell>
 
               <TableCell className="cart-row-item">
-                <PriceExcludeVAT
-                  price={Math.round(
-                    cartItem.product.price.originalAmount * cartItem.quantity +
-                      cartItem.product.price.originalAmount *
-                        cartItem.quantity *
-                        (cartItem.itemTaxInfo[0].rate / 100)
-                  )}
-                  caption="incl. VAT"
-                />
+                {orderEntry.tax ? (
+                  <PriceExcludeVAT
+                    price={
+                      Math.trunc(
+                        orderEntry.price.originalAmount *
+                          orderEntry.amount *
+                          (1 + orderEntry.tax.lines[0].rate / 100) *
+                          100
+                      ) / 100
+                    }
+                    caption="incl. VAT"
+                  />
+                ) : (
+                  '-'
+                )}
               </TableCell>
 
               <TableCell className="cart-row-item">
                 <span
-                  onClick={() => removeCartItem(cartItem)}
+                  //   onClick={() => removeCartItem(cartItem)}
                   className="cursor-pointer"
                 >
                   &#10060;
@@ -136,4 +138,4 @@ const CartTable = ({ cartList, classname }) => {
   )
 }
 
-export default CartTable
+export default ReturnIitemsTable
