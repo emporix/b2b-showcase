@@ -46,9 +46,10 @@ export const DropdownWithLabel = ({
   placeholder,
   onChange,
   defaultValue,
+  className,
 }) => {
   return (
-    <GridLayout className="_dropdown_">
+    <GridLayout className={`_dropdown_ ${className}`}>
       <TextRegular1>{label}</TextRegular1>
       <GridLayout className="mt-2">
         <Dropdown

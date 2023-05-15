@@ -69,69 +69,70 @@ export const ProductDetails = () => {
 
   useEffect(() => {
     ;(async () => {
-      let res = await getProduct(productId)
-      let prices = await priceService.getPriceWithProductIds([productId])
-      const category = await getRetrieveAllCategoriesWithResoureceId(productId)
-      if (category.length > 0) {
-        let { data: categories } = await getAllParentCategories(
-          category[0]['id']
-        )
-        categories.push(category[0])
+      try {
+        let res = await getProduct(productId)
+        res.src = res.media[0] === undefined ? '' : res.media[0]['url']
+        let stock,
+          stockLevel = 0
 
-        let rootCategory, subCategory
-        let childCategories = {}
-
-        for (let c in categories) {
-          if (categories[c].parentId === undefined) rootCategory = categories[c]
-          else childCategories[categories[c].parentId] = categories[c]
+        if (availability['k' + res.id] === undefined) {
+          stock = 'Out Of'
+        } else {
+          stockLevel = parseInt(availability['k' + res.id]['stockLevel'])
+          if (stockLevel < minProductInStockCount) stock = 'Low'
+          else stock = 'In'
         }
-        let productCategory = []
-        productCategory.push(rootCategory.name)
 
-        let loop = 0 // loop < 2
-        while (true) {
+        res.stock = stock
+        res.estimatedDelivery = '23.05.2022'
+        res.subImages = []
+        res.rating = 4
+        res.count = 4
+        res.productCount = stockLevel
+        res.media.forEach((row, index) => {
+          if (!index) {
+            return
+          }
+          res.subImages.push(row['url'])
+        })
+
+        setProduct({
+          loading: true,
+          data: res,
+        })
+        let prices = await priceService.getPriceWithProductIds([productId])
+
+        // Set price...
+        if (prices.length > 0) res.price = prices[0]
+        const category = await getRetrieveAllCategoriesWithResoureceId(
+          productId
+        )
+        if (category.length > 0) {
+          let { data: categories } = await getAllParentCategories(
+            category[0]['id']
+          )
+          categories.push(category[0])
+          let rootCategory, subCategory
+          let childCategories = {}
+          for (let c in categories) {
+            if (categories[c].parentId === undefined)
+              rootCategory = categories[c]
+            else childCategories[categories[c].parentId] = categories[c]
+          }
+          let productCategory = []
+          productCategory.push(rootCategory.name)
+
           subCategory = childCategories[rootCategory.id]
-          if (subCategory === undefined) break
+
           rootCategory = subCategory
           productCategory.push(subCategory.name)
-          loop++
+
+          res.category = productCategory
+          setProduct((prev) => ({ ...prev, data: res }))
         }
-
-        res.category = productCategory
+      } finally {
+        setProduct((prev) => ({ ...prev, loading: false }))
       }
-
-      res.src = res.media[0] === undefined ? '' : res.media[0]['url']
-      let stock,
-        stockLevel = 0
-
-      if (availability['k' + res.id] === undefined) {
-        stock = 'Out Of'
-      } else {
-        stockLevel = parseInt(availability['k' + res.id]['stockLevel'])
-        if (stockLevel < minProductInStockCount) stock = 'Low'
-        else stock = 'In'
-      }
-
-      // Set price...
-      if (prices.length > 0) res.price = prices[0]
-
-      res.stock = stock
-      res.estimatedDelivery = '23.05.2022'
-      res.subImages = []
-      res.rating = 4
-      res.count = 4
-      res.productCount = stockLevel
-      res.media.forEach((row, index) => {
-        if (!index) {
-          return
-        }
-        res.subImages.push(row['url'])
-      })
-
-      setProduct({
-        loading: false,
-        data: res,
-      })
     })()
   }, [productId, currentSite, currentLanguage, activeCurrency])
 

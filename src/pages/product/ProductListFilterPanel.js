@@ -1,7 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react'
-import { ChevronUpIcon, ChevronDownIcon } from '@heroicons/react/solid'
+import { HiChevronDown, HiChevronUp } from "react-icons/hi";
 import { useParams } from 'react-router-dom'
-import { useDispatch } from 'react-redux'
 import { LoadingCircleProgress1 } from '../../components/Utilities/progress'
 import { getProductCategoryDetail } from '../../services/product/category.service'
 import { useProductList } from 'context/product-list-context'
@@ -40,9 +39,9 @@ const Category = ({ item }) => {
       <button className="category_pan" onClick={handleToggle}>
         <span className="category_pan_title">{title}</span>
         {clicked ? (
-          <ChevronDownIcon className="h-4" />
+            <HiChevronDown size={20} className="h-4" />
         ) : (
-          <ChevronUpIcon className="h-4" />
+            <HiChevronUp size={20} className="h-4" />
         )}
       </button>
       <div

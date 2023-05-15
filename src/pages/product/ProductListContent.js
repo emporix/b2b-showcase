@@ -3,8 +3,7 @@ import { BiMenu } from 'react-icons/bi'
 import React, { useMemo, useState } from 'react'
 import { useSelector } from 'react-redux'
 import { IconContext } from 'react-icons'
-import { ChevronDownIcon } from '@heroicons/react/solid'
-import { HiOutlineArrowLeft, HiOutlineArrowRight } from 'react-icons/hi'
+import { HiOutlineArrowLeft, HiOutlineArrowRight, HiChevronDown } from 'react-icons/hi'
 import { LoadingCircleProgress1 } from '../../components/Utilities/progress'
 import { availabilityDataSelector } from '../../redux/slices/availabilityReducer'
 import { useProductList } from 'context/product-list-context'
@@ -93,7 +92,8 @@ const ProductListViewSettingBar = ({
               </div>
               <div className="md:hidden  flex">
                 <div className="font-bold">Sort:</div>
-                <ChevronDownIcon
+                  <HiChevronDown
+                  size={20}
                   className="ml-1 mt-0 h-6 w-6 font-normal"
                   aria-hidden="true"
                 />
@@ -385,7 +385,6 @@ const ProductListContent = () => {
   const {
     isProductsLoading,
     products,
-    total,
     setPageNumber,
     pageNumber,
     productListCountsPerPage,
@@ -414,7 +413,7 @@ const ProductListContent = () => {
         displayType={displayType}
         changePerPageCount={changePerPageCount}
         changeDisplayType={changeDisplayType}
-        productListCount={total}
+        productListCount={productsWithoutVariants.length}
         productListCountsPerPage={productListCountsPerPage}
       />
       {isProductsLoading ? (
@@ -425,14 +424,14 @@ const ProductListContent = () => {
             products={productsWithoutVariants}
             auth={!!user}
             displayType={displayType}
-            productListCount={total}
+            productListCount={productsWithoutVariants.length}
             pageNumber={pageNumber}
             countPerPage={productsPerPage}
           />
           <ProductListPagination
             changePageNumber={changePageNumber}
             countPerPage={productsPerPage}
-            productListCount={total}
+            productListCount={productsWithoutVariants.length}
             pageNumber={pageNumber}
           />
         </>

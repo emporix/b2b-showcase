@@ -1,18 +1,15 @@
 import { GridLayout } from '../common'
-import { useState, useEffect } from 'react'
 import { TextRegular1 } from '../typography'
 import './input.css'
 
 export const TextInput = ({ label, value, placeholder, action, className }) => {
-  const [inputValue, setInputValue] = useState(value)
   return (
     <GridLayout className="">
       <TextRegular1 className="text-left">{label}</TextRegular1>
       <GridLayout className="mt-2">
         <input
-          value={inputValue}
+          value={value}
           onChange={(e) => {
-            setInputValue(e.target.value)
             if (action !== undefined) action(e.target.value)
           }}
           placeholder={placeholder}
@@ -33,14 +30,12 @@ export const TextInputOnly = ({
   onBlur,
   autoFocus,
 }) => {
-  const [inputValue, setInputValue] = useState(value)
   return (
     <input
       autoFocus={autoFocus}
-      value={inputValue}
+      value={value}
       onChange={(e) => {
         if (action !== undefined) {
-          setInputValue(e.target.value)
           action(e.target.value)
         }
       }}
@@ -67,13 +62,9 @@ export const TextInputOnlyWithEnterKey = ({
   action,
   className,
 }) => {
-  const [inputValue, setInputValue] = useState(value)
   return (
     <input
-      value={inputValue}
-      onChange={(e) => {
-        setInputValue(e.target.value)
-      }}
+      value={value}
       onKeyDown={(e) => {
         if (e.key !== 'Enter') return
         if (action !== undefined) action(e.target.value)

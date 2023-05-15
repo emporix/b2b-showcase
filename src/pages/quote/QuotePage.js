@@ -10,6 +10,7 @@ import { LargePrimaryButton } from '../../components/Utilities/button'
 import './quote.css'
 import QuoteSummary from './QuoteSummary'
 import { useCart } from 'context/cart-provider'
+import Dialog from '../../components/Utilities/Dialog'
 
 const QuotePage = () => {
   const [quoteId, setQuoteId] = useState()

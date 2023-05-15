@@ -6,6 +6,8 @@ import {
   getCartAccountApi,
   getCartById,
   getCartMergeUrl,
+  getRedeemOptions,
+  getRewardPoints, redeemCouponForPoints,
 } from './service.config'
 import ApiRequest from './index'
 import { ACCESS_TOKEN } from '../constants/localstorage'
@@ -53,6 +55,25 @@ const CartService = () => {
     return cart
   }
 
+  const getRewardPointsForLoggedUser = async () => {
+    const { data } = await api.get(getRewardPoints())
+    return data
+  }
+
+  const getRedeemOptionsForLoggedUser = async () => {
+    const { data } = await api.get(getRedeemOptions())
+    return data
+  }
+  const getCouponForPointsForLoggedUser = async (optionId) => {
+    const payload = { id: optionId }
+    const params = {
+      siteCode: localStorage.getItem('siteCode'),
+    }
+    const { data } = await api.post(redeemCouponForPoints(), payload, { params })
+    console.log('returned coupon code: ', data)
+    return data
+  }
+
   const applyDiscount = async (cartAccountId, code) => {
     const accessToken = localStorage.getItem(ACCESS_TOKEN)
     const headers = {
@@ -83,6 +104,7 @@ const CartService = () => {
     )
     return res.data
   }
+
   const changeCurrency = async (newCurrency, cartAccountId) => {
     const accessToken = localStorage.getItem(ACCESS_TOKEN)
     const headers = {
@@ -200,6 +222,9 @@ const CartService = () => {
     removeCart,
     addMultipleProductsToCart,
     updateCartProduct,
+    getRewardPointsForLoggedUser,
+    getRedeemOptionsForLoggedUser,
+    getCouponForPointsForLoggedUser,
   }
 }
 export default CartService()

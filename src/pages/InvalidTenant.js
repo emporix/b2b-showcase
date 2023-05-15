@@ -1,5 +1,5 @@
 import { GridLayout, Center } from '../components/Utilities/common'
-import { Heading4, Heading5 } from "../components/Utilities/typography";
+import { Heading4, Heading5 } from '../components/Utilities/typography'
 import { TextInput } from '../components/Utilities/input'
 import { LargePrimaryButton } from '../components/Utilities/button'
 import { useCallback, useState } from 'react'
@@ -40,7 +40,12 @@ const InvalidTenant = () => {
             onClick={() => saveTenantAndClientID()}
           />
         </Center>
-        <Heading5 className="text-black">You can obtain api keys <a target="_blank" className="text-tinBlue" href={DEVPORTAL_URL}>here</a> </Heading5>
+        <Heading5 className="text-black">
+          You can obtain api keys{' '}
+          <a target="_blank" className="text-tinBlue" href={DEVPORTAL_URL}>
+            here
+          </a>{' '}
+        </Heading5>
       </GridLayout>
     </GridLayout>
   )

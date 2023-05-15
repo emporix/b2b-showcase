@@ -1,7 +1,7 @@
 import React, { useState, useRef } from 'react'
 import { AiOutlineClose } from 'react-icons/ai'
-import { ChevronRightIcon, ChevronDownIcon } from '@heroicons/react/solid'
-import MultiRangeSlider from '../../components/MultiRangeSlider/'
+import { HiChevronRight , HiChevronDown } from "react-icons/hi";
+import MultiRangeSlider from "../../components/MultiRangeSlider/";
 import ReactStars from 'react-stars'
 
 const filterList = [
@@ -93,9 +93,9 @@ const FilterItem = ({ item }) => {
       <button className="button" onClick={handleToggle}>
         {title}
         {clicked ? (
-          <ChevronDownIcon className="h-8" />
+            <HiChevronDown size={20}  className="h-8" />
         ) : (
-          <ChevronRightIcon className="h-8" />
+            <HiChevronRight size={20} className="h-8" />
         )}
       </button>
 
@@ -130,9 +130,9 @@ const PriceRangeFilter = () => {
       <button className="button" onClick={handleToggle}>
         Price Range
         {clicked ? (
-          <ChevronDownIcon className="h-8" />
+            <HiChevronDown size={20} className="h-8" />
         ) : (
-          <ChevronRightIcon className="h-8" />
+            <HiChevronRight size={20} className="h-8" />
         )}
       </button>
       <div
@@ -185,9 +185,9 @@ const RatingFilter = () => {
       <button className="button" onClick={handleToggle}>
         Rating
         {clicked ? (
-          <ChevronDownIcon className="h-8" />
+            <HiChevronDown size={20} className="h-8" />
         ) : (
-          <ChevronRightIcon className="h-8" />
+            <HiChevronRight size={20} className="h-8" />
         )}
       </button>
       <div

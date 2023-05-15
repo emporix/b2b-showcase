@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useContentful } from '../../context/contentful-provider'
+import DemoBanner from './DemoBanner'
 import landingBg from '../../assets/landing_bg.png'
 const About = () => {
   const { fields } = useContentful()
@@ -25,7 +26,8 @@ const About = () => {
       style={{ backgroundImage: `url(${landingBg})` }}
       className="home_about"
     >
-      <div className="px-6 md:pl-16 pt-[48px] md:pt-[363px]  ">
+      <div className="px-6 md:pl-16 pt-[48px] md:pt-[363px]">
+        <DemoBanner />
         <div className="text-[40px] md:text-[56px] font-inter font-semibold leading-[48px] md:leading-[64px]">
           {fields.mainTitle}
         </div>
@@ -39,10 +41,14 @@ const About = () => {
           </button>
         </div>
       </div>
-      <img
-        src={introImageUrl}
-        className=" mt-[60px] hidden xl:block w-[530px] h-[818px] "
-      />
+      <div className="mt-[60px] hidden xl:block w-[530px] h-[818px] flex min-w-[50%]">
+        <img
+            alt="intro image"
+            src={introImageUrl}
+            className="mx-auto "
+        />
+      </div>
+
     </div>
   )
 }

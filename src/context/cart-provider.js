@@ -99,6 +99,7 @@ const CartProvider = ({ children }) => {
       }
     })
   }, [cartAccount])
+
   const discounts = useMemo(() => {
     return cartAccount.discounts
   }, [cartAccount.discounts])

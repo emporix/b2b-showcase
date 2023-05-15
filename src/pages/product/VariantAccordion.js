@@ -1,6 +1,7 @@
 import { Grid } from '@mui/material'
 import React, { useCallback, useEffect, useState } from 'react'
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
+import { HiChevronDown } from "react-icons/hi";
+
 import {
   GridLayout,
   Item,
@@ -371,8 +372,9 @@ export const VariantAccordion = ({ variant }) => {
       sx={{ paddingBottom: '8px', borderBottom: '1px solid #DFE1E5' }}
     >
       <Grid item xs={1}>
-        <ExpandMoreIcon
-          className={{ rotatable: true, rotate: expanded }}
+        <HiChevronDown
+            size={20}
+          className={ expanded && 'rotated' }
           onClick={() => toggleExpand()}
         />
       </Grid>

@@ -6,6 +6,11 @@
   border-bottom: 1px solid #dfe1e5;
 }
 
+.rotated {
+    transform: rotate(180deg);
+    transition: transform 0.2s ease-in-out;
+}
+
 .button {
   font-size: 16px;
   color: black;
@@ -16,7 +21,7 @@
   width: 100%;
   justify-content: space-between;
   align-items: center;
-  padding: 24px 0px;
+  padding: 24px 0;
   cursor: pointer;
   border: none;
 }
@@ -55,9 +60,6 @@
   overflow: hidden;
   transition: height ease 0.2s;
 }
-/* .answer_wrapper.open {
-    height: auto;
-  } */
 
 .sidebarFilter {
   position: fixed;

@@ -2,7 +2,6 @@ import React, { useCallback, useMemo, useState } from 'react'
 import ReactStars from 'react-stars'
 import Quantity from '../../components/Utilities/quantity/quantity'
 import { maxProductDescriptionLength } from '../../constants/page'
-import parse from 'html-react-parser'
 import { CurrencyBeforeValue } from 'components/Utilities/common'
 import { trimImage } from '../../helpers/images'
 import { useAuth } from 'context/auth-provider'
@@ -58,7 +57,7 @@ const EachProductRow = ({ item, type, available, rating, productCount }) => {
           {productCount})
         </div>
         <div className="text-sm mt-4  text-gray text-normal">
-          {parse(`<span>${trimmedDescription}</span>`)}
+          <span>${trimmedDescription}</span>
         </div>
       </div>
       <div className="flex-auto w-[30%]">

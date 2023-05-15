@@ -39,6 +39,7 @@ import AccountReturns from 'pages/account/AccountReturns'
 import AccountReturnDetails from './pages/account/AccountReturnDetails'
 import ReturnsProvider from 'context/returns-provider'
 import UserAddressProvider from 'context/user-addresss-context'
+import MyDiscounts from 'pages/account/MyDiscounts'
 
 function App() {
   const dispatch = useDispatch()
@@ -98,6 +99,8 @@ function App() {
             <Route path="company-details" element={<AccountCompanyDetails />} />
             <Route path="my-orders" exact element={<AccountMyOrders />} />
             <Route path="my-quotes" exact element={<AccountMyQuotes />} />
+            <Route path="discounts" exact element={<MyDiscounts />} />
+
             <Route
               path="my-quotes/:quoteId"
               element={<AccountMyQuoteDetails />}

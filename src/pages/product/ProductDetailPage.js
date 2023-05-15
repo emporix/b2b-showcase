@@ -2,6 +2,7 @@ import React, {
   createContext,
   useCallback,
   useContext,
+  useEffect,
   useMemo,
   useState,
 } from 'react'
@@ -31,6 +32,10 @@ import { PriceTierValues } from './VariantAccordion'
 import { useCart } from 'context/cart-provider'
 import { useAuth } from 'context/auth-provider'
 import { formatPrice } from 'helpers/price'
+import { useLanguage } from 'context/language-provider'
+import productService from '../../services/product/product.service'
+import priceService from '../../services/product/price.service'
+import { useNavigate } from 'react-router-dom'
 
 const ProductContext = createContext()
 
@@ -497,7 +502,7 @@ const ProductDetailTabContent = ({ product }) => {
         <ProductDetailsTabContent product={product} />
       </TabPanel>
       <TabPanel value={tab} index={1}>
-        {product.description}
+        <div dangerouslySetInnerHTML={{ __html: product.description }} />
       </TabPanel>
       <TabPanel value={tab} index={2}>
         Reviews
@@ -604,27 +609,81 @@ const products = [
   },
 ]
 
-const ProductMatchItems = () => {
+const getRelatedProducts = async (language, product) => {
+  let productIds = []
+  console.log(product)
+  const relatedItems = product.relatedItems
+  if (!relatedItems) return null
+
+  relatedItems.forEach((item) => {
+    productIds.push(item.refId)
+  })
+  const products = await productService.getProductsWithIds(productIds)
+  const prices = await priceService.getPriceWithProductIds(productIds)
+
+  const prices_obj = {}
+  prices.forEach((p) => {
+    prices_obj[`p${p.itemId.id}`] = p
+  })
+
+  let price_id
+  let result = []
+  for (let i = 0; i < products.length; i++) {
+    price_id = `p${products[i]['id']}`
+    if (prices_obj[price_id] !== undefined)
+      result.push({
+        id: products[i].id,
+        code: products[i].code,
+        name: prices_obj[price_id].itemId?.name[language] || '',
+        price: prices_obj[price_id].effectiveValue,
+        listprice: prices_obj[price_id].effectiveValue,
+        src: products[i].media[0].url,
+      })
+  }
+  return result
+}
+
+const ProductMatchItems = ({ productInput }) => {
+  const [products, setProducts] = useState([])
+  const { currentLanguage } = useLanguage()
+
+  const navigate = useNavigate()
+  const { userTenant } = useAuth()
+
+  useEffect(() => {
+    getRelatedProducts(currentLanguage, productInput).then((result) => {
+      result ? setProducts(result.slice(0, 5)) : setProducts([])
+    })
+  }, [currentLanguage, productInput])
   return (
     <div className="product-match-items-wrapper grid grid-cols-1">
-      <div className="product-match-caption w-full">Match it with</div>
-      <div className="product-match-items-content w-full">
-        <SliderComponent>
-          {products.map((item, index) => (
-            <Product
-              key={index}
-              stock={item.stock}
-              rating={item.rating}
-              total_count={item.count}
-              src={item.src}
-              code={item.code}
-              name={item.name}
-              price={item.price}
-              listPrice={item.listPrice}
-            />
-          ))}
-        </SliderComponent>
-      </div>
+      <div className="product-match-caption w-full">Related products</div>
+      {products.length > 0 ? (
+        <div className="product-match-items-content w-full">
+          <SliderComponent>
+            {products.map((item, index) => (
+              <Product
+                key={index}
+                stock={item.stock}
+                rating={item.rating}
+                total_count={item.count}
+                src={item.src}
+                code={item.code}
+                name={item.name}
+                price={item.price}
+                listPrice={item.listPrice}
+                onClick={() => {
+                  navigate(`/${userTenant}/product/details/${item.id}`, {
+                    replace: true,
+                  })
+                }}
+              />
+            ))}
+          </SliderComponent>
+        </div>
+      ) : (
+        <div className="w-full text-center">No matchig products</div>
+      )}
     </div>
   )
 }
@@ -639,7 +698,7 @@ const ProductDetailPage = ({ product, brand, labels }) => {
           <ProductVariants product={product} />
         )}
         <ProductDetailInfo product={product} />
-        <ProductMatchItems />
+        <ProductMatchItems productInput={product} />
       </div>
     </div>
   )

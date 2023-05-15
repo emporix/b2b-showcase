@@ -361,7 +361,6 @@ const CartGoCart = () => {
 }
 export const CartActionPanel = ({ action }) => {
   const { cartAccount } = useCart()
-  console.log(cartAccount)
   return (
     <div className="cart-action-panel">
       <GridLayout className="gap-4">
@@ -376,13 +375,31 @@ export const CartActionPanel = ({ action }) => {
           </LayoutBetween>
         </CartActionRow>
 
+        {cartAccount.totalDiscount?.amount > 0 && (
+          <CartActionRow>
+            <LayoutBetween>
+              <span className="font-semibold text-green-600">
+                Discount amount
+              </span>
+              <span className="font-semibold text-green-600">
+                <CurrencyBeforeValue
+                  value={
+                    Math.trunc(cartAccount.totalDiscount.amount * 100) / 100
+                  }
+                  currency={cartAccount.totalDiscount.currency}
+                />
+              </span>
+            </LayoutBetween>
+          </CartActionRow>
+        )}
+
         <CartActionRow>
           <LayoutBetween>
             {cartAccount &&
               cartAccount?.taxAggregate &&
               cartAccount?.taxAggregate.lines.length > 0 && (
                 <CartVat
-                  value={cartAccount.subtotalAggregate.netValue}
+                  value={cartAccount.totalPrice.amount}
                   taxPercentage={cartAccount?.taxAggregate.lines[0].rate}
                   currency={cartAccount?.currency}
                 />
@@ -392,7 +409,7 @@ export const CartActionPanel = ({ action }) => {
             {cartAccount?.subtotalAggregate &&
               cartAccount?.subtotalAggregate.grossValue && (
                 <CartSubTotalIncludeVat
-                  grossValue={cartAccount.subtotalAggregate.grossValue}
+                  grossValue={cartAccount.totalPrice.amount + cartAccount.totalPrice.amount * cartAccount?.taxAggregate.lines[0].rate / 100 }
                   currency={cartAccount.currency}
                 />
               )}
@@ -404,22 +421,25 @@ export const CartActionPanel = ({ action }) => {
             <CartShipingCost />
           </LayoutBetween>
         </CartActionRow>
+
+        <CartActionRow>
+          <div className="cart-total-price-wrapper">
+            <LayoutBetween>
+              {cartAccount.totalPrice && cartAccount.totalPrice.amount && (
+                <CartTotalPrice
+                  totalValue={
+                    cartAccount.totalPrice.amount +
+                      + cartAccount.totalPrice.amount * cartAccount?.taxAggregate.lines[0].rate / 100
+                  }
+                  currency={cartAccount.currency}
+                />
+              )}
+            </LayoutBetween>
+          </div>
+        </CartActionRow>
+
         {action === undefined || action === true ? (
           <CartActionRow>
-            <div className="cart-total-price-wrapper">
-              <LayoutBetween>
-                {cartAccount.totalPrice && cartAccount.totalPrice.amount && (
-                  <CartTotalPrice
-                    totalValue={
-                      cartAccount.totalPrice.amount +
-                      cartAccount?.taxAggregate.lines[0].amount
-                    }
-                    currency={cartAccount.currency}
-                  />
-                )}
-              </LayoutBetween>
-            </div>
-
             <CartRequestQuote />
             <CartGoCart />
             <CartGoCheckout />
@@ -451,7 +471,7 @@ const Cart = () => {
       </CartProductContent>
       {cartAccount?.subtotalAggregate
         ? cartAccount?.subtotalAggregate.grossValue && <CartActionPanel />
-        : 'Error: Missing subtotal agregate'}
+        : 'Error: Missing subtotal agregate. Some products are probably unavailiable on this site'}
     </>
   )
 }
