@@ -31,6 +31,10 @@ import { PriceTierValues } from './VariantAccordion'
 import { useCart } from 'context/cart-provider'
 import { useAuth } from 'context/auth-provider'
 import { formatPrice } from 'helpers/price'
+import { Button } from '@mui/material'
+import { CircularProgress } from '@material-ui/core'
+import { mapEmporixUserToVoucherifyCustomer } from '../../voucherify-integration/mapEmporixUserToVoucherifyCustomer'
+import { Qualification } from '../shared/Qualification'
 
 const ProductContext = createContext()
 
@@ -629,12 +633,26 @@ const ProductMatchItems = () => {
   )
 }
 
-const ProductDetailPage = ({ product, brand, labels }) => {
+const ProductDetailPage = ({ product, brand, labels, qualifications }) => {
   return (
     <div className="product-detail-page-wrapper ">
       <div className="product-detail-page-content">
         <ProductDetailCategoryCaptionBar category={product.category} />
         <ProductContent product={product} brand={brand} labels={labels} />
+        <Box sx={{ mt: -10, display: 'flex', flexDirection: 'column', gap: 1 }}>
+          {qualifications.length ? (
+            <span style={{ fontSize: 20, fontWeight: 'bold' }}>
+              Promotion{qualifications.length > 1 ? 's' : ''} related to this
+              product:
+            </span>
+          ) : undefined}
+          {qualifications?.map((qualification) => (
+            <Qualification
+              key={qualification.id}
+              qualification={qualification}
+            />
+          ))}
+        </Box>
         {product.productType === 'PARENT_VARIANT' && (
           <ProductVariants product={product} />
         )}

@@ -1,7 +1,27 @@
 import React, { useEffect, useState } from 'react'
 import { useContentful } from '../../context/contentful-provider'
 import landingBg from '../../assets/landing_bg.png'
+import { Box } from '@mui/system'
+import { useAuth } from '../../context/auth-provider'
+import { mapEmporixUserToVoucherifyCustomer } from '../../voucherify-integration/mapEmporixUserToVoucherifyCustomer'
+import { getQualificationsWithItemsExtended } from '../../voucherify-integration/voucherifyApi'
+import { Qualification } from '../shared/Qualification'
 const About = () => {
+  const { user } = useAuth()
+  const [qualifications, setQualifications] = useState([])
+
+  useEffect(() => {
+    ;(async () => {
+      const customer =
+        user instanceof Object
+          ? mapEmporixUserToVoucherifyCustomer(user)
+          : undefined
+      setQualifications(
+        await getQualificationsWithItemsExtended('AUDIENCE_ONLY', [], customer)
+      )
+    })()
+  }, [user])
+
   const { fields } = useContentful()
   const [introImageUrl, setIntroImageUrl] = useState('')
 
@@ -21,11 +41,12 @@ const About = () => {
   }, [mainImageRight])
 
   return (
-    <div
+    <Box
       style={{ backgroundImage: `url(${landingBg})` }}
       className="home_about"
+      sx={{ minWidth: '500px' }}
     >
-      <div className="px-6 md:pl-16 pt-[48px] md:pt-[363px]  ">
+      <Box className="px-6 md:pl-16 pt-[48px]" sx={{ m: 3, mt: 20 }}>
         <div className="text-[40px] md:text-[56px] font-inter font-semibold leading-[48px] md:leading-[64px]">
           {fields.mainTitle}
         </div>
@@ -33,17 +54,36 @@ const About = () => {
           {fields.companyMission}
         </div>
 
-        <div className="pt-[78px] desktop_only text-sm">
+        <div
+          className="pt-[78px] desktop_only text-sm"
+          style={{ marginTop: -50 }}
+        >
           <button className="px-6 py-4 border font-bold">
             {fields.startShoppingButtonLabel}
           </button>
         </div>
-      </div>
+        <Box
+          sx={{
+            mt: 3,
+            mb: 3,
+            display: 'flex',
+            flexDirection: 'column',
+            gap: 2,
+          }}
+        >
+          {qualifications.map((qualification) => (
+            <Qualification
+              key={qualification.id}
+              qualification={qualification}
+            />
+          ))}
+        </Box>
+      </Box>
       <img
         src={introImageUrl}
         className=" mt-[60px] hidden xl:block w-[530px] h-[818px] "
       />
-    </div>
+    </Box>
   )
 }
 

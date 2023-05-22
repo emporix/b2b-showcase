@@ -40,7 +40,6 @@ const ProductPage = () => {
       {showFilterContentForMobile && (
         <MobileFilterpanel closeNav={handleMobileFilterContentClose} />
       )}
-
       <ProductListBanner className="w-screen pt-24 md:pt-64 px-4" />
       <div className="px-4 md:px-24 pb-12">
         <div

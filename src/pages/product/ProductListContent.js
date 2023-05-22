@@ -1,6 +1,6 @@
 import { CgMenuGridR } from 'react-icons/cg'
 import { BiMenu } from 'react-icons/bi'
-import React, { useMemo, useState } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 import { useSelector } from 'react-redux'
 import { IconContext } from 'react-icons'
 import { ChevronDownIcon } from '@heroicons/react/solid'
@@ -11,6 +11,9 @@ import { useProductList } from 'context/product-list-context'
 import EachProduct from './EachProduct'
 import EachProductRow from './EachProductRow'
 import { useAuth } from 'context/auth-provider'
+import { mapEmporixUserToVoucherifyCustomer } from '../../voucherify-integration/mapEmporixUserToVoucherifyCustomer'
+import { getQualificationsWithItemsExtended } from '../../voucherify-integration/voucherifyApi'
+import { mapEmporixItemsToVoucherifyProducts } from '../../voucherify-integration/buildCartFromEmporixCart'
 
 const ProductListViewSettingBar = ({
   changeDisplayType,
@@ -108,6 +111,64 @@ const ProductListViewSettingBar = ({
 }
 
 const ProductListItems = ({ products, auth, displayType }) => {
+  const { user } = useAuth()
+  const [qualifications, setQualifications] = useState([])
+  useEffect(() => {
+    const productsIds = products.map((product) => product.id)
+
+    ;(async () => {
+      const customer =
+        user instanceof Object
+          ? mapEmporixUserToVoucherifyCustomer(user)
+          : undefined
+      const allQualifications = await getQualificationsWithItemsExtended(
+        'PRODUCTS',
+        productsIds.map((productId) => {
+          return {
+            quantity: 1,
+            product_id: productId,
+          }
+        }),
+        customer
+      )
+      let allQualificationsPerProducts = productsIds.map((productId) => {
+        return {
+          id: productId,
+          qualifications: [],
+        }
+      })
+      allQualifications.forEach((qualificationExtended) => {
+        const applicable_to =
+          qualificationExtended.qualification?.applicable_to?.data || []
+        const sourceIds =
+          applicable_to
+            .map((applicableTo) => applicableTo.source_id)
+            .filter((e) => e) || []
+        sourceIds.forEach((sourceId) => {
+          if (
+            allQualificationsPerProducts.find(
+              (allQualificationsPerProduct) =>
+                allQualificationsPerProduct.id === sourceId
+            )
+          ) {
+            allQualificationsPerProducts = allQualificationsPerProducts.map(
+              (allQualificationsPerProducts) => {
+                if (allQualificationsPerProducts.id === sourceId) {
+                  allQualificationsPerProducts.qualifications = [
+                    ...allQualificationsPerProducts.qualifications,
+                    qualificationExtended,
+                  ]
+                }
+                return allQualificationsPerProducts
+              }
+            )
+          }
+        })
+      })
+      setQualifications(allQualificationsPerProducts)
+    })()
+  }, [])
+
   const availability = useSelector(availabilityDataSelector)
   let itemArr = []
   let subItemArr = []
@@ -124,9 +185,12 @@ const ProductListItems = ({ products, auth, displayType }) => {
               <EachProduct
                 key={item.id}
                 available={available}
-                rating={4}
-                productCount={8}
                 item={item}
+                qualifications={
+                  qualifications.find(
+                    (qualificationWithId) => qualificationWithId?.id === item.id
+                  )?.qualifications || []
+                }
               />
             </div>
           )
@@ -140,9 +204,12 @@ const ProductListItems = ({ products, auth, displayType }) => {
               <EachProduct
                 key={item.id}
                 available={available}
-                rating={4}
-                productCount={8}
                 item={item}
+                qualifications={
+                  qualifications.find(
+                    (qualificationWithId) => qualificationWithId?.id === item.id
+                  )?.qualifications || []
+                }
               />
             </div>
           )
@@ -156,9 +223,12 @@ const ProductListItems = ({ products, auth, displayType }) => {
               <EachProduct
                 key={item.id}
                 available={available}
-                rating={4}
-                productCount={8}
                 item={item}
+                qualifications={
+                  qualifications.find(
+                    (qualificationWithId) => qualificationWithId?.id === item.id
+                  )?.qualifications || []
+                }
               />
             </div>
           )
@@ -199,9 +269,12 @@ const ProductListItems = ({ products, auth, displayType }) => {
               <EachProduct
                 key={item.id}
                 available={available}
-                rating={4}
-                productCount={8}
                 item={item}
+                qualifications={
+                  qualifications.find(
+                    (qualificationWithId) => qualificationWithId?.id === item.id
+                  )?.qualifications || []
+                }
               />
             </div>
           )
@@ -215,9 +288,12 @@ const ProductListItems = ({ products, auth, displayType }) => {
               <EachProduct
                 key={item.id}
                 available={available}
-                rating={4}
-                productCount={8}
                 item={item}
+                qualifications={
+                  qualifications.find(
+                    (qualificationWithId) => qualificationWithId?.id === item.id
+                  )?.qualifications || []
+                }
               />
             </div>
           )
@@ -254,13 +330,7 @@ const ProductListItems = ({ products, auth, displayType }) => {
       available = availability['k' + item.id]?.available
       itemArr.push(
         <div key={i} className="w-full h-[215px] lg:my-12 my-6 items-center">
-          <EachProductRow
-            key={item.id}
-            available={available}
-            rating={4}
-            productCount={8}
-            item={item}
-          />
+          <EachProductRow key={item.id} available={available} item={item} />
         </div>
       )
       if (i !== products.length - 1)
@@ -354,7 +424,6 @@ const ProductListPagination = ({
           <li
             className="cursor-pointer"
             onClick={() => {
-              console.log('click')
               if (pageNumber < totalPage) {
                 changePageNumber(pageNumber + 1)
               }

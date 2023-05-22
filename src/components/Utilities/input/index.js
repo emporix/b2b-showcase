@@ -3,13 +3,21 @@ import { useState, useEffect } from 'react'
 import { TextRegular1 } from '../typography'
 import './input.css'
 
-export const TextInput = ({ label, value, placeholder, action, className }) => {
+export const TextInput = ({
+  label,
+  value,
+  placeholder,
+  action,
+  className,
+  disabled = false,
+}) => {
   const [inputValue, setInputValue] = useState(value)
   return (
     <GridLayout className="">
       <TextRegular1 className="text-left">{label}</TextRegular1>
       <GridLayout className="mt-2">
         <input
+          disabled={disabled}
           value={inputValue}
           onChange={(e) => {
             setInputValue(e.target.value)

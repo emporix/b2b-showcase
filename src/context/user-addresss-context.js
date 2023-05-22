@@ -11,7 +11,6 @@ const UserAddressProvider = ({ children }) => {
   const syncAddresses = async () => {
     try {
       const addresses = await fetchAddresses()
-      console.log('addresses', addresses)
       setAddresses(addresses)
     } catch (error) {
       console.error(error)

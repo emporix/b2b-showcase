@@ -11,6 +11,7 @@ import ApiRequest from './index'
 import { ACCESS_TOKEN } from '../constants/localstorage'
 import { api } from './axios'
 import { getLanguageFromLocalStorage } from '../context/language-provider'
+import { updateCart } from '../voucherify-integration/updateCart'
 
 const CartService = () => {
   const mergeCarts = async (targetCartId, sourceCartId) => {
@@ -53,35 +54,34 @@ const CartService = () => {
     return cart
   }
 
-  const applyDiscount = async (cartAccountId, code) => {
-    const accessToken = localStorage.getItem(ACCESS_TOKEN)
-    const headers = {
-      'X-Version': 'v2',
-      Authorization: `Bearer ${accessToken}`,
-      'Accept-Language': getLanguageFromLocalStorage(),
-    }
-
-    const res = await ApiRequest(
-      `${cartProductsApi()}/${cartAccountId}/discounts`,
-      'post',
-      { code: code },
-      headers
-    )
-    return res.data
+  const recheckCart = async (cartAccountId, customer) => {
+    return await updateCart({
+      emporixCartId: cartAccountId,
+      customer,
+    })
   }
-  const removeDiscount = async (cartAccountId, discountId) => {
-    const accessToken = localStorage.getItem(ACCESS_TOKEN)
-    const headers = {
-      'X-Version': 'v2',
-      Authorization: `Bearer ${accessToken}`,
-      'Accept-Language': getLanguageFromLocalStorage(),
-    }
 
-    const res = await api.delete(
-      `${cartProductsApi()}/${cartAccountId}/discounts/${discountId}`,
-      { headers }
-    )
-    return res.data
+  const applyPromotionTier = async (cartAccountId, code, customer) => {
+    return await updateCart({
+      emporixCartId: cartAccountId,
+      newPromotionCodes: [code],
+      customer,
+    })
+  }
+
+  const applyDiscount = async (cartAccountId, code, customer) => {
+    return await updateCart({
+      emporixCartId: cartAccountId,
+      newCodes: [code],
+      customer,
+    })
+  }
+  const removeDiscount = async (cartAccountId, code, customer) => {
+    return await updateCart({
+      emporixCartId: cartAccountId,
+      codesToRemove: [code],
+      customer,
+    })
   }
   const changeCurrency = async (newCurrency, cartAccountId) => {
     const accessToken = localStorage.getItem(ACCESS_TOKEN)
@@ -190,7 +190,9 @@ const CartService = () => {
   return {
     getCart,
     changeCurrency,
+    recheckCart,
     applyDiscount,
+    applyPromotionTier,
     getUserCart,
     getAnnonymousCart,
     mergeCarts,

@@ -195,15 +195,15 @@ const AccountMyOrdersDetails = () => {
           </Grid>
           <Grid xs={5} item className="p-4">
             <div className="bg-bgWhite p-4 text-md border-gray-600">
-              <div className="flex justify-between font-bold border-b pb-4">
-                <div>Subtotal without VAT</div>
-                <div>
-                  {formatCurrency(
-                    quote.subtotalPrice.currency,
-                    quote.subtotalPrice.netValue
-                  )}
-                </div>
-              </div>
+              {/*<div className="flex justify-between font-bold border-b pb-4">*/}
+              {/*  <div>Subtotal without VAT</div>*/}
+              {/*  <div>*/}
+              {/*    {formatCurrency(*/}
+              {/*      quote.subtotalPrice.currency,*/}
+              {/*      quote.subtotalPrice.netValue*/}
+              {/*    )}*/}
+              {/*  </div>*/}
+              {/*</div>*/}
               <div className="flex justify-between font-light mt-4 pb-4">
                 <div>{`VAT ${
                   quote.taxAggregate.lines[0].rate

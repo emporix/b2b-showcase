@@ -13,6 +13,8 @@ import CartService from 'services/cart.service'
 import { useAuth } from './auth-provider'
 import { useSites } from './sites-provider'
 import { useAppContext } from './app-context'
+import { mapEmporixUserToVoucherifyCustomer } from '../voucherify-integration/mapEmporixUserToVoucherifyCustomer'
+import { nanoid } from '@reduxjs/toolkit'
 
 const CartContext = createContext()
 
@@ -99,9 +101,14 @@ const CartProvider = ({ children }) => {
       }
     })
   }, [cartAccount])
+
   const discounts = useMemo(() => {
     return cartAccount.discounts
   }, [cartAccount.discounts])
+
+  const mixins = useMemo(() => {
+    return cartAccount.metadata?.mixins || {}
+  }, [cartAccount.metadata?.mixins])
 
   useEffect(() => {
     syncCart()
@@ -114,8 +121,9 @@ const CartProvider = ({ children }) => {
       prev.items = newItems
       return { ...prev }
     })
-    syncCart()
+    await recheckCart()
   }
+
   const incrementCartItemQty = useCallback(
     async (itemId) => {
       const item = cartAccount.items.find((item) => item.id === itemId)
@@ -131,10 +139,11 @@ const CartProvider = ({ children }) => {
         { quantity },
         true
       )
-      syncCart()
+      await recheckCart()
     },
     [cartAccount]
   )
+
   const decrementCartItemQty = useCallback(
     async (itemId) => {
       const item = cartAccount.items.find((item) => item.id === itemId)
@@ -149,7 +158,7 @@ const CartProvider = ({ children }) => {
         { quantity },
         true
       )
-      syncCart()
+      await recheckCart()
     },
     [cartAccount]
   )
@@ -166,27 +175,83 @@ const CartProvider = ({ children }) => {
     async (newCurrency) => {
       if (cartAccount.id) {
         await CartService.changeCurrency(newCurrency, cartAccount.id)
-        await syncCart()
+        await recheckCart()
       }
     },
     [cartAccount?.id]
   )
 
-  const applyDiscount = useCallback(
-    async (code) => {
-      if (cartAccount.id) {
-        await CartService.applyDiscount(cartAccount.id, code)
-        await syncCart()
+  const recheckCart = async (customer) => {
+    const user = JSON.parse(localStorage.getItem(USER))
+    if (cartAccount?.id) {
+      const data = await CartService.recheckCart(
+        cartAccount.id,
+        customer || user || {}
+      )
+      if (data.cart) {
+        setCartAccount({
+          ...data.cart,
+          items: await getCartList(data.cart.items || []),
+        })
       }
-    },
-    [cartAccount?.id]
-  )
+      if (data.inapplicableCoupons) {
+        return { inapplicableCoupons: data.inapplicableCoupons }
+      }
+    }
+  }
+
+  const applyDiscount = async (code, customer) => {
+    if (cartAccount?.id) {
+      const data = await CartService.applyDiscount(
+        cartAccount.id,
+        code,
+        customer
+      )
+      if (data.cart) {
+        setCartAccount({
+          ...data.cart,
+          items: await getCartList(data.cart.items || []),
+        })
+      }
+      if (data.inapplicableCoupons) {
+        return { inapplicableCoupons: data.inapplicableCoupons }
+      }
+    }
+  }
+
+  const applyPromotion = async (code, customer) => {
+    if (cartAccount?.id) {
+      const data = await CartService.applyPromotionTier(
+        cartAccount.id,
+        code,
+        customer
+      )
+      if (data.cart) {
+        setCartAccount({
+          ...data.cart,
+          items: await getCartList(data.cart.items || []),
+        })
+      }
+      if (data.inapplicableCoupons) {
+        return { inapplicableCoupons: data.inapplicableCoupons }
+      }
+    }
+  }
 
   const removeDiscount = useCallback(
-    async (discountId) => {
+    async (discountId, customer) => {
       if (cartAccount.id) {
-        await CartService.removeDiscount(cartAccount.id, discountId)
-        await syncCart()
+        const data = await CartService.removeDiscount(
+          cartAccount.id,
+          discountId,
+          customer
+        )
+        if (data.cart) {
+          setCartAccount({
+            ...data.cart,
+            items: await getCartList(data.cart.items || []),
+          })
+        }
       }
     },
     [cartAccount?.id]
@@ -199,7 +264,7 @@ const CartProvider = ({ children }) => {
       })
       if (matchCart.length === 0) {
         await CartService.addProductToCart(cartAccount.id, product)
-        syncCart()
+        await recheckCart()
       }
     },
     [cartAccount.id, cartAccount]
@@ -207,9 +272,11 @@ const CartProvider = ({ children }) => {
 
   const deleteCart = async (cartAccountId, cartItemId) => {
     await CartService.removeCart(cartAccountId, cartItemId)
-    removeCartItem(cartItemId)
+    await removeCartItem(cartItemId)
     syncCart()
   }
+
+  const [cartSyncedRandomId, setCartSyncedRandomId] = useState(0)
 
   const syncCart = useCallback(async () => {
     const user = JSON.parse(localStorage.getItem(USER))
@@ -219,16 +286,24 @@ const CartProvider = ({ children }) => {
     } else {
       newCart = await getCartAccount({ sessionId })
     }
-    const items = await getCartList(newCart.items || [])
-    newCart.items = items
+    newCart.items = await getCartList(newCart.items || [])
     setCartAccount(newCart)
+    setCartSyncedRandomId(() => cartSyncedRandomId + 1)
   }, [sessionId])
+
+  useEffect(() => {
+    if (cartSyncedRandomId === 0) {
+      return
+    }
+    recheckCart()
+  }, [cartSyncedRandomId])
 
   const value = {
     removeCartItem,
     changeCurrency,
     putCartProduct,
     applyDiscount,
+    applyPromotion,
     removeDiscount,
     deleteCart,
     clearCart,
@@ -238,6 +313,7 @@ const CartProvider = ({ children }) => {
     cartAccount,
     products,
     discounts,
+    mixins,
   }
   return <CartContext.Provider value={value}>{children}</CartContext.Provider>
 }

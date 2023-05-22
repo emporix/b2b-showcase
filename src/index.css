@@ -41,7 +41,7 @@ code {
 }
 
 .home_about {
-  @apply flex bg-[length:100%_167%] md:bg-[length:100%_100%] pt-20 md:pt-0 w-full h-[513px] md:h-[988px] justify-between text-white;
+  @apply flex bg-[length:100%_167%] md:bg-[length:100%_100%] pt-20 md:pt-0 w-full justify-between text-white;
 }
 
 .home_service {

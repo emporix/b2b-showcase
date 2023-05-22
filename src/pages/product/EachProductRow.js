@@ -40,7 +40,9 @@ const EachProductRow = ({ item, type, available, rating, productCount }) => {
     if (price) {
       return <CurrencyBeforeValue value={price} />
     } else {
-      return <span className="text-xs text-primaryBlue font-bold">No Price</span>
+      return (
+        <span className="text-xs text-primaryBlue font-bold">No Price</span>
+      )
     }
   }
   return (

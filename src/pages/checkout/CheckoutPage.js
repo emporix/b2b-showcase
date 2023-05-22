@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo, useState } from 'react'
+import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import { CartActionPanel } from '../../components/Cart/cart'
 import { LargePrimaryButton } from '../../components/Utilities/button'
 import {
@@ -14,6 +14,11 @@ import { useUserAddress } from './AddressProvider'
 import { useCart } from 'context/cart-provider'
 import { Button, Chip, Grid } from '@mui/material'
 import { TextInput } from '../../components/Utilities/input'
+import { Box } from '@mui/system'
+import { CircularProgress } from '@material-ui/core'
+import { useAuth } from '../../context/auth-provider'
+import { mapEmporixUserToVoucherifyCustomer } from '../../voucherify-integration/mapEmporixUserToVoucherifyCustomer'
+import { Qualification } from '../shared/Qualification'
 
 const PaymentAction = ({ action, disabled }) => {
   return (
@@ -55,58 +60,188 @@ const ReviewOrderAction = ({ action }) => {
   )
 }
 
-const AppliedCoupon = ({ discount }) => {
+const AppliedCoupon = ({ appliedCoupon, user }) => {
   const { removeDiscount } = useCart()
 
   const deleteDiscountFromCart = useCallback(() => {
-    removeDiscount(discount.id)
-  }, [discount])
+    removeDiscount(appliedCoupon.code, user)
+  }, [appliedCoupon])
 
   return (
     <Chip
-      label={discount.code}
+      sx={{ mb: 1, mr: 1 }}
+      label={appliedCoupon?.banner || appliedCoupon.code}
       variant="outlined"
       onDelete={deleteDiscountFromCart}
     />
   )
 }
 
-const Coupon = () => {
-  const [code, setCode] = useState('')
-  const { applyDiscount, discounts } = useCart()
+const AvailablePromotion = ({ availablePromotion, user }) => {
+  const { applyPromotion } = useCart()
 
-  const redeemCode = useCallback(async () => {
+  const applyPromotionOnCart = useCallback(() => {
+    applyPromotion(availablePromotion.code, user)
+  }, [availablePromotion])
+
+  return (
+    <Chip
+      sx={{ mb: 1, mr: 1 }}
+      label={availablePromotion?.banner || availablePromotion.code}
+      variant="outlined"
+      onClick={applyPromotionOnCart}
+    />
+  )
+}
+
+export const Coupon = () => {
+  const [code, setCode] = useState('')
+  const [error, setError] = useState('')
+  const [keyValue, setKeyValue] = useState(Math.random())
+  const { applyDiscount, mixins } = useCart()
+  const appliedCoupons = mixins.appliedCoupons || []
+  const availablePromotions =
+    appliedCoupons.length >= 5 ? [] : mixins.availablePromotions || []
+  const [isBeingApplied, setIsBeingApplied] = useState(false)
+  const { user } = useAuth()
+
+  useEffect(() => {
+    setError('')
+  }, [code])
+
+  const redeemCode = async (code, user) => {
+    if (!code || isBeingApplied) {
+      return
+    }
+    setIsBeingApplied(true)
     try {
-      await applyDiscount(code)
-      setCode('')
+      const result = await applyDiscount(code, user)
+      if (result.inapplicableCoupons?.length) {
+        const { inapplicableCoupons } = result
+        const error = inapplicableCoupons
+          .map?.(
+            (inapplicableCoupon) => inapplicableCoupon?.result?.error?.details
+          )
+          .filter((e) => e)
+          .join(', ')
+        setError(error)
+      } else {
+        setKeyValue(Math.random())
+        setCode('')
+      }
     } catch (e) {
       console.error(e)
     }
-  }, [code])
+    setIsBeingApplied(false)
+  }
+
+  const availablePromotionsComponent = () => {
+    if (availablePromotions?.length) {
+      return (
+        <Grid item xs={12} sx={{}}>
+          <Grid item xs={12} sx={{ mb: 2 }}>
+            <span className="font-bold ">
+              Available promotion{availablePromotions.length > 1 ? 's' : ''}
+            </span>
+          </Grid>
+          <Grid item xs={12}>
+            {availablePromotions.map((availablePromotion) => (
+              <AvailablePromotion
+                key={availablePromotion.code}
+                availablePromotion={availablePromotion}
+                user={user}
+              />
+            ))}
+          </Grid>
+        </Grid>
+      )
+    }
+  }
+
+  const appliedCouponsComponent = () => {
+    const counter = {
+      promotion_tier: 0,
+      voucher: 0,
+    }
+    appliedCoupons?.forEach((appliedCoupon) => {
+      switch (appliedCoupon.type) {
+        case 'promotion_tier':
+          counter.promotion_tier = counter.promotion_tier + 1
+          break
+        case 'voucher':
+          counter.voucher = counter.voucher + 1
+          break
+        default:
+          break
+      }
+    })
+    if (appliedCoupons?.length) {
+      return (
+        <Grid item xs={12} sx={{}}>
+          <Grid item xs={12} sx={{ mb: 2 }}>
+            <span className="font-bold ">
+              Applied{' '}
+              {counter.voucher && counter.promotion_tier
+                ? `voucher${counter.voucher > 1 ? 's' : ''} and promotion${
+                    counter.promotion_tier > 1 ? 's' : ''
+                  }`
+                : counter.voucher
+                ? `voucher${counter.voucher > 1 ? 's' : ''}`
+                : `promotion${counter.promotion_tier > 1 ? 's' : ''}`}
+            </span>
+          </Grid>
+          <Grid item xs={12}>
+            {appliedCoupons.map((appliedCoupon) => (
+              <AppliedCoupon
+                key={appliedCoupon.code}
+                appliedCoupon={appliedCoupon}
+                user={user}
+              ></AppliedCoupon>
+            ))}
+          </Grid>
+        </Grid>
+      )
+    }
+  }
 
   return (
-    <Grid container spacing={2} sx={{ marginBottom: '1rem' }}>
+    <Grid container spacing={2} sx={{ mb: 0 }}>
       <Grid item xs={12}>
-        <TextInput
-          label="Coupon"
-          value={code}
-          placeholder="Put coupon code here"
-          action={setCode}
-        />
-        <Button title="Apply Coupon" onClick={redeemCode}>
-          Apply
-        </Button>
+        <div key={keyValue}>
+          {appliedCoupons.length < 5 && (
+            <TextInput
+              label=""
+              value={code}
+              placeholder="Put voucher code here"
+              action={setCode}
+              disabled={isBeingApplied || appliedCoupons.length >= 5}
+            />
+          )}
+        </div>
+        <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
+          <Box sx={{ display: 'flex' }}>
+            <Box>
+              <Button
+                title="Apply Coupon"
+                disabled={isBeingApplied || appliedCoupons.length >= 5}
+                onClick={() => redeemCode(code, user)}
+              >
+                {appliedCoupons.length >= 5
+                  ? 'You have reached coupon limit'
+                  : 'Apply'}
+              </Button>
+            </Box>
+            {isBeingApplied && (
+              <Box sx={{ mb: -'7px', mt: '9px' }}>
+                <CircularProgress size={18} />
+              </Box>
+            )}
+          </Box>
+          <span style={{ color: 'red' }}>{error}</span>
+        </Box>
       </Grid>
-      {discounts && (
-        <Grid item xs={12}>
-          {discounts.map((discount) => (
-            <AppliedCoupon
-              key={discount.code}
-              discount={discount}
-            ></AppliedCoupon>
-          ))}
-        </Grid>
-      )}
+      {appliedCouponsComponent()}
+      {/*{availablePromotionsComponent()}*/}
     </Grid>
   )
 }
@@ -144,6 +279,23 @@ const CheckoutPage = () => {
     setFinal(order.orderId)
     syncCart()
   }
+
+  const { user } = useAuth()
+  const [qualifications, setQualifications] = useState([])
+  useEffect(() => {
+    const productIds = (cartAccount?.items || [])
+      .map((product) => product.itemYrn?.split?.(';')?.at?.(-1))
+      .filter((e) => e)
+
+    ;(async () => {
+      const customer =
+        user instanceof Object
+          ? mapEmporixUserToVoucherifyCustomer(user)
+          : undefined
+      setQualifications([])
+    })()
+  }, [cartAccount])
+
   return (
     <div className="checkout-page-wrapper ">
       <div className="checkout-page-content">
@@ -157,16 +309,19 @@ const CheckoutPage = () => {
                     subtotalWithoutVat={subtotalWithoutVat}
                     action={false}
                   />
+
                   {status === 'shipping' ? (
                     <>
                       <DesktopMDContainer>
                         <Coupon />
-                        <LargePrimaryButton
-                          className="md:block hidden"
-                          title="GO TO PAYMENT"
-                          disabled={addresses.length === 0}
-                          onClick={handlePayment}
-                        />
+                        <Box sx={{ mt: 1 }}>
+                          <LargePrimaryButton
+                            className="md:block hidden"
+                            title="GO TO PAYMENT"
+                            disabled={addresses.length === 0}
+                            onClick={handlePayment}
+                          />
+                        </Box>
                       </DesktopMDContainer>
 
                       <MobileMDContainer>
@@ -180,13 +335,10 @@ const CheckoutPage = () => {
                     ''
                   )}
                   {status === 'payment' ? (
-                    <>
-                      <Coupon />
-                      <PaymentAction
-                        action={handleReview}
-                        disabled={addresses.length === 0}
-                      />
-                    </>
+                    <PaymentAction
+                      action={handleReview}
+                      disabled={addresses.length === 0}
+                    />
                   ) : (
                     ''
                   )}
@@ -202,6 +354,20 @@ const CheckoutPage = () => {
             <CheckoutSummary setFinal={setFinal} order={order} />
           )}
         </div>
+        <Box sx={{ mt: -2, display: 'flex', flexDirection: 'column', gap: 1 }}>
+          {qualifications.length ? (
+            <span style={{ fontSize: 20, fontWeight: 'bold' }}>
+              Promotion{qualifications.length > 1 ? 's' : ''} related to all
+              products in your cart:
+            </span>
+          ) : undefined}
+          {qualifications.map((qualification) => (
+            <Qualification
+              key={qualification.id}
+              qualification={qualification}
+            />
+          ))}
+        </Box>
       </div>
     </div>
   )
