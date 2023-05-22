@@ -9,7 +9,11 @@ import { Qualification } from '../shared/Qualification'
 import { Box } from '@mui/system'
 import { useAuth } from '../../context/auth-provider'
 import { mapEmporixUserToVoucherifyCustomer } from '../../voucherify-integration/mapEmporixUserToVoucherifyCustomer'
-import { getQualificationsWithItemsExtended } from '../../voucherify-integration/voucherifyApi'
+import {
+  asyncMap,
+  getQualificationsWithItemsExtended,
+  getValidationRule,
+} from '../../voucherify-integration/voucherifyApi'
 import useMediaQuery from '@mui/material/useMediaQuery'
 import { buildCartFromEmporixCart } from '../../voucherify-integration/buildCartFromEmporixCart'
 import { getCart } from '../../voucherify-integration/emporixApi'
@@ -58,6 +62,62 @@ const CartPage = () => {
     )
   }
 
+  const setBundleQualificationsEnriched = async (bundleQualifications) => {
+    setBundleQualifications(bundleQualifications)
+    const enrichedBundleQualifications = await asyncMap(
+      bundleQualifications,
+      async (bundleQualification) => {
+        const allValidationRuleIds = (
+          bundleQualification?.validation_rule_assignments?.data || []
+        )
+          .map((validationRule) => validationRule.rule_id)
+          .filter((e) => e)
+        const allValidationRules = await Promise.all(
+          await asyncMap(allValidationRuleIds, (id) => getValidationRule(id))
+        )
+        const allValidationRulesEnriched = allValidationRules.map(
+          (validationRule) => {
+            const rules = validationRule?.rules || {}
+            const conditions = Object.values(rules)
+              .filter((rule) => rule?.conditions instanceof Object)
+              .map((rule) => Object.values(rule.conditions))
+              .flat()
+              .flat()
+              .filter(
+                (condition) =>
+                  condition instanceof Object && condition?.source_id
+              )
+            validationRule.productIdsFoundInValidationRules = conditions.map(
+              (condition) => condition.source_id
+            )
+            return validationRule
+          }
+        )
+        const productIdsFoundInValidationRules = allValidationRulesEnriched
+          .filter(
+            (enrichedValidationRule) =>
+              enrichedValidationRule?.productIdsFoundInValidationRules?.length
+          )
+          .map(
+            (enrichedValidationRule) =>
+              enrichedValidationRule?.productIdsFoundInValidationRules
+          )
+          .flat()
+
+        const promotionApplicableTo =
+          bundleQualification.qualification?.applicable_to?.data || []
+        bundleQualification.relatedTo = [
+          ...productIdsFoundInValidationRules,
+          ...(promotionApplicableTo
+            .map((applicableTo) => applicableTo.source_id)
+            .filter((e) => e) || []),
+        ]
+        return bundleQualification
+      }
+    )
+    setBundleQualifications(enrichedBundleQualifications)
+  }
+
   const setProductsQualificationsFunction = async (items, customer) => {
     const productsIds = items.map((item) => item.source_id).filter((e) => e)
     const allQualifications = await getQualificationsWithItemsExtended(
@@ -78,7 +138,7 @@ const CartPage = () => {
           qualification?.metadata?.bundle === true
       )
     )
-    setBundleQualifications(bundles)
+    setBundleQualificationsEnriched(bundles)
     const allQualificationsWithoutBundles = allQualifications.filter(
       (qualification) =>
         !(
@@ -117,6 +177,7 @@ const CartPage = () => {
     setProductQualifications(allQualificationsPerProducts)
     return allQualifications
   }
+  const [cartItemIds, setCartItemIds] = useState([])
 
   useEffect(() => {
     ;(async () => {
@@ -146,6 +207,15 @@ const CartPage = () => {
       )
     })()
   }, [cartAccount?.id])
+
+  useEffect(() => {
+    const items = cartAccount?.items || []
+    const itemIds = items
+      .map((item) => item?.itemYrn?.split?.(';')?.at?.(-1))
+      .filter((e) => e)
+    setCartItemIds(itemIds)
+  }, [cartAccount?.items])
+
   const [open, setOpen] = useState(false)
 
   return (
@@ -223,6 +293,9 @@ const CartPage = () => {
                       key={qualification.id}
                       qualification={qualification}
                       hideApply={false}
+                      addProducts={(qualification?.relatedTo || []).filter(
+                        (id) => !cartItemIds.includes(id)
+                      )}
                     />
                   ))}
                 </Box>

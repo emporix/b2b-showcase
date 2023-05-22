@@ -2,7 +2,7 @@ import { mapItemsToVoucherifyOrdersItems } from './validateCouponsAndGetAvailabl
 import { VoucherifyServerSide } from '@voucherify/sdk'
 import { getContentfulEntryFields } from './contentfulApi'
 
-function asyncMap(arr, asyncFn) {
+export function asyncMap(arr, asyncFn) {
   return Promise.all(arr.map(asyncFn))
 }
 
@@ -13,6 +13,10 @@ export const getClient = () => {
     secretKey: process.env.REACT_APP_VOUCHERIFY_SECRET_KEY,
     dangerouslySetSecretKeyInBrowser: true,
   })
+}
+
+export const getValidationRule = async (validationRuleId) => {
+  return await getClient().validationRules.get(validationRuleId)
 }
 
 const getQualificationsWithItems = async (
