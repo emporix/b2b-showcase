@@ -83,6 +83,7 @@ const CartService = () => {
       customer,
     })
   }
+
   const changeCurrency = async (newCurrency, cartAccountId) => {
     const accessToken = localStorage.getItem(ACCESS_TOKEN)
     const headers = {

@@ -1,4 +1,4 @@
-import React, { useCallback, useContext, useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import {
   AiOutlineClose,
@@ -11,8 +11,7 @@ import { CgNotes } from 'react-icons/cg'
 import { useSelector } from 'react-redux'
 import Badge from '@mui/material/Badge'
 import AccountMenu from './accountmenu'
-import { HiOutlineUserCircle } from 'react-icons/hi'
-import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/solid'
+import { HiOutlineUserCircle, HiChevronLeft, HiChevronRight } from 'react-icons/hi'
 import LayoutContext from '../../pages/context'
 import { LargePrimaryButton } from '../Utilities/button'
 import { pageMenuSelector } from '../../redux/slices/pageReducer'
@@ -137,7 +136,7 @@ const Navbar = () => {
         onClick={() => parentMenuClicked(item.title, item.items)}
       >
         {item.title}
-        <ChevronRightIcon
+        <HiChevronRight size={20}
           className={item.items.length ? 'h-8 w-8' : 'hidden'}
         />
       </li>
@@ -165,7 +164,7 @@ const Navbar = () => {
             onClick={() => parentMenuClicked(item.title, item.items)}
           >
             {item.title}
-            <ChevronRightIcon className={'h-8 w-8'} />
+            <HiChevronRight size={20} className={'h-8 w-8'} />
           </li>
         )}
       </>
@@ -179,7 +178,7 @@ const Navbar = () => {
           className="w-full flex text-center items-center border-b pt-[50px] pb-6 text-4"
           onClick={() => setDisplaySubItems(false)}
         >
-          <ChevronLeftIcon className="h-8 w-8 pr-1" />
+          <HiChevronLeft size={20} className="h-8 w-8 pr-1" />
           Back
         </div>
         <div className="pt-6 text-left text-black text-xl">{title}</div>
@@ -229,7 +228,8 @@ const Navbar = () => {
       cartAccount.subtotalAggregate &&
       cartAccount.subtotalAggregate.grossValue
     ) {
-      setCartTotalPrice(cartAccount.subtotalAggregate.grossValue)
+      setCartTotalPrice(cartAccount.totalPrice.amount +
+          + cartAccount.totalPrice.amount * cartAccount?.taxAggregate.lines[0].rate / 100)
     } else {
       setCartTotalPrice(0)
     }

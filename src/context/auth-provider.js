@@ -58,13 +58,16 @@ export const AuthProvider = ({ children }) => {
       setIsLoading(true)
     }
     if (userTenant === '') return
+
     const token = await AccessToken(userTenant)
     const oldTenant = localStorage.getItem(TENANT)
 
-    const { algoliaCredentials } = await getAlgoliaSearchCredentials()
-    localStorage.setItem(APPLICATION_ID, algoliaCredentials.applicationId)
-    localStorage.setItem(INDEX_NAME, algoliaCredentials.indexName)
-    localStorage.setItem(SEARCH_KEY, algoliaCredentials.searchKey)
+    if (userTenant) {
+      const { algoliaCredentials } = await getAlgoliaSearchCredentials()
+      localStorage.setItem(APPLICATION_ID, algoliaCredentials.applicationId)
+      localStorage.setItem(INDEX_NAME, algoliaCredentials.indexName)
+      localStorage.setItem(SEARCH_KEY, algoliaCredentials.searchKey)
+    }
 
     if (oldTenant !== userTenant) {
       setIsLoggedIn(false)

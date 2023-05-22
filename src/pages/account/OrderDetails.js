@@ -85,7 +85,7 @@ const OrderDetails = ({ entries }) => {
                   {entry.tax && entry.tax.lines[0] ? (
                     <PriceWithInfo
                       price={
-                        (entry.totalPrice - entry.tax.lines[0].amount) /
+                          (entry.totalPrice - entry.totalDiscount.amount) /
                         entry.effectiveQuantity
                       }
                     />
@@ -97,7 +97,7 @@ const OrderDetails = ({ entries }) => {
                 <TableCell className="cart-row-item">
                   {entry.tax && entry.tax.lines[0] ? (
                     <PriceWithInfo
-                      price={entry.totalPrice - entry.tax.lines[0].amount}
+                      price={(entry.totalPrice - entry.totalDiscount.amount)}
                     />
                   ) : (
                     '-'
@@ -109,7 +109,7 @@ const OrderDetails = ({ entries }) => {
                 <TableCell className="cart-row-item">
                   {entry.tax && entry.tax.lines[0] ? (
                     <PriceWithInfo
-                      price={entry.tax.lines[0].amount}
+                      price={(entry.totalPrice -entry.totalDiscount.amount) * entry.tax.lines[0].rate / 100}
                       caption={`${entry.tax.lines[0].rate}%`}
                     />
                   ) : (
@@ -117,7 +117,8 @@ const OrderDetails = ({ entries }) => {
                   )}
                 </TableCell>
                 <TableCell className="cart-row-item">
-                  <PriceWithInfo price={entry.totalPrice} includeVat={true} />
+                  <PriceWithInfo price={(entry.totalPrice - entry.totalDiscount.amount) +
+                      + (entry.totalPrice -entry.totalDiscount.amount) * entry.tax.lines[0].rate / 100} includeVat={true} />
                 </TableCell>
               </TableRow>
             ))}

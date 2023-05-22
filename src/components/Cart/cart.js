@@ -11,7 +11,6 @@ import Quantity from 'components/Utilities/quantity/quantity'
 import { cartUrl, checkoutUrl, quoteUrl } from 'services/service.config'
 import { useCart } from 'context/cart-provider'
 import { Coupon } from '../../pages/checkout/CheckoutPage'
-import { Discount } from '@mui/icons-material'
 
 const CartProductContent = ({ children }) => {
   return <div className="cart-product-content">{children}</div>
@@ -401,6 +400,7 @@ const CartGoCart = () => {
 }
 export const CartActionPanel = ({ action }) => {
   const { cartAccount } = useCart()
+  console.log(cartAccount)
   return (
     <div className="cart-action-panel">
       <GridLayout className="gap-4">
