@@ -25,9 +25,9 @@ const CartPage = () => {
   const [customerWalletQualifications, setCustomerWalletQualifications] =
     useState([])
   const [bundleQualifications, setBundleQualifications] = useState([])
+  const [allOtherQualifications, setAllOtherQualifications] = useState([])
 
   const setCustomerWalletQualificationsFunction = async (items, customer) => {
-    console.log(123)
     const customerWalletQualifications =
       await getQualificationsWithItemsExtended(
         'CUSTOMER_WALLET',
@@ -38,8 +38,24 @@ const CartPage = () => {
     return customerWalletQualifications
   }
 
-  const setALLQualificationsFunction = async (items, customer) => {
-    return await getQualificationsWithItemsExtended('ALL', items, customer)
+  const setALLQualificationsFunction = async (
+    items,
+    customer,
+    allQualificationsSoFar
+  ) => {
+    const qualificationsIdsSoFar = allQualificationsSoFar.map(
+      (qualification) => qualification.id
+    )
+    const qualificationsAllScenario = await getQualificationsWithItemsExtended(
+      'ALL',
+      items,
+      customer
+    )
+    setAllOtherQualifications(
+      qualificationsAllScenario.filter(
+        (qualification) => !qualificationsIdsSoFar.includes(qualification.id)
+      )
+    )
   }
 
   const setProductsQualificationsFunction = async (items, customer) => {
@@ -99,7 +115,7 @@ const CartPage = () => {
       })
     })
     setProductQualifications(allQualificationsPerProducts)
-    return allQualificationsPerProducts
+    return allQualifications
   }
 
   useEffect(() => {
@@ -117,12 +133,17 @@ const CartPage = () => {
         customer,
       })
       const items = mapItemsToVoucherifyOrdersItems(cart.items || [])
-      const x = Promise.all([
-        await setProductsQualificationsFunction(items, customer),
-        await setCustomerWalletQualificationsFunction(items, customer),
-      ])
-      console.log(x, 'aaa')
-      // console.log(await setALLQualificationsFunction(items, customer))
+      const allQualificationsSoFar = [].concat(
+        ...(await Promise.all([
+          await setProductsQualificationsFunction(items, customer),
+          await setCustomerWalletQualificationsFunction(items, customer),
+        ]))
+      )
+      await setALLQualificationsFunction(
+        items,
+        customer,
+        allQualificationsSoFar
+      )
     })()
   }, [cartAccount?.id])
   const [open, setOpen] = useState(false)
@@ -188,8 +209,47 @@ const CartPage = () => {
                 >
                   Bundles:
                 </Box>
-                <Box sx={{ mt: -1, p: '20px!important' }}>
+                <Box
+                  sx={{
+                    mt: -1,
+                    p: '20px!important',
+                    gap: '10px!important',
+                    display: 'flex',
+                    flexDirection: 'column',
+                  }}
+                >
                   {bundleQualifications?.map((qualification) => (
+                    <Qualification
+                      key={qualification.id}
+                      qualification={qualification}
+                      hideApply={false}
+                    />
+                  ))}
+                </Box>
+              </Box>
+            ) : undefined}
+            {allOtherQualifications.length ? (
+              <Box>
+                <Box
+                  sx={{
+                    fontWeight: 'bold',
+                    fontSize: '20px',
+                    width: '100%',
+                    textAlign: 'center',
+                  }}
+                >
+                  Available promotions:
+                </Box>
+                <Box
+                  sx={{
+                    mt: -1,
+                    p: '20px!important',
+                    gap: '10px!important',
+                    display: 'flex',
+                    flexDirection: 'column',
+                  }}
+                >
+                  {allOtherQualifications?.map((qualification) => (
                     <Qualification
                       key={qualification.id}
                       qualification={qualification}
