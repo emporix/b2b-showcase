@@ -9,7 +9,7 @@ import { useAuth } from 'context/auth-provider'
 const Product = (props) => {
   const { isLoggedIn } = useAuth()
   return (
-    <div className="mx-3">
+    <div className="mx-3 cursor-pointer" onClick={() => props.onClick()}>
       <div className="w-full h-3 flex justify-between ">
         <div
           className={

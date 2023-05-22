@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react'
+import React, { useCallback, useState } from 'react'
 import TableContainer from '@mui/material/TableContainer'
 import Table from '@mui/material/Table'
 import TableHead from '@mui/material/TableHead'
@@ -8,7 +8,7 @@ import TableBody from '@mui/material/TableBody'
 import Status from './common'
 import { formatDateTime } from '../../components/Utilities/common'
 import { useNavigate } from 'react-router-dom'
-import QuoteStatus from './QuoteStatus'
+import { renderStatus } from './AccountMyQuoteDetails'
 
 const LeftChevron = () => {
   return (
@@ -151,8 +151,10 @@ export const QuotesList = (props) => {
                 </TableCell>
                 <TableCell align="left" className="!py-6">
                   <div className="flex flex-row justify-center items-center">
-                    <QuoteStatus status={row.status.value} className="mr-2" />
-                    <LeftChevron />
+                    {renderStatus(row.status.value)}
+                    <div className="ml-2">
+                      <LeftChevron />
+                    </div>
                   </div>
                 </TableCell>
               </TableRow>
@@ -160,7 +162,6 @@ export const QuotesList = (props) => {
           </TableBody>
         </Table>
       </TableContainer>
-
       <div className="mobile_only">
         <QuotesListMobile data={data} />
       </div>

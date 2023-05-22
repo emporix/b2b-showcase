@@ -96,7 +96,7 @@ code {
   @apply w-full h-[1024px] bg-[length:100%_100%] bg-[url('./assets/landing_bg.png')];
 }
 .signup_container {
-  @apply w-full h-[1680px] bg-[length:100%_150%] bg-[url('./assets/landing_bg.png')];
+  @apply w-full h-[1980px] bg-[length:100%_150%] bg-[url('./assets/landing_bg.png')];
 }
 .border-grey-bottom {
   @apply border-b border-lightGray;

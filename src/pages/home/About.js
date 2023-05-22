@@ -1,27 +1,12 @@
 import React, { useEffect, useState } from 'react'
 import { useContentful } from '../../context/contentful-provider'
 import landingBg from '../../assets/landing_bg.png'
-import { Box } from '@mui/system'
-import { useAuth } from '../../context/auth-provider'
-import { mapEmporixUserToVoucherifyCustomer } from '../../voucherify-integration/mapEmporixUserToVoucherifyCustomer'
-import { getQualificationsWithItemsExtended } from '../../voucherify-integration/voucherifyApi'
-import { Qualification } from '../shared/Qualification'
+import {useAuth} from "../../context/auth-provider";
+import {mapEmporixUserToVoucherifyCustomer} from "../../voucherify-integration/mapEmporixUserToVoucherifyCustomer";
+import {Box} from "@mui/system";
+import {getQualificationsWithItemsExtended} from "../../voucherify-integration/voucherifyApi";
+import {Qualification} from "../shared/Qualification";
 const About = () => {
-  const { user } = useAuth()
-  const [qualifications, setQualifications] = useState([])
-
-  useEffect(() => {
-    ;(async () => {
-      const customer =
-        user instanceof Object
-          ? mapEmporixUserToVoucherifyCustomer(user)
-          : undefined
-      setQualifications(
-        await getQualificationsWithItemsExtended('AUDIENCE_ONLY', [], customer)
-      )
-    })()
-  }, [user])
-
   const { fields } = useContentful()
   const [introImageUrl, setIntroImageUrl] = useState('')
 
@@ -39,6 +24,21 @@ const About = () => {
       }
     })()
   }, [mainImageRight])
+
+  const { user } = useAuth()
+  const [qualifications, setQualifications] = useState([])
+
+  useEffect(() => {
+    ;(async () => {
+      const customer =
+          user instanceof Object
+              ? mapEmporixUserToVoucherifyCustomer(user)
+              : undefined
+      setQualifications(
+          await getQualificationsWithItemsExtended('AUDIENCE_ONLY', [], customer)
+      )
+    })()
+  }, [user])
 
   return (
     <Box

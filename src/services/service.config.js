@@ -28,6 +28,9 @@ export const getCartById = (cartId) =>
   `${API_URL}/cart/${getTenant()}/carts/${cartId}`
 export const getCartMergeUrl = (cartId) =>
   `${API_URL}/cart/${getTenant()}/carts/${cartId}/merge`
+export const getRewardPoints = () => `${API_URL}/reward-points/public/customer`
+export const getRedeemOptions = () => `${API_URL}/reward-points/public/customer/redeemOptions`
+export const redeemCouponForPoints = () => `${API_URL}/reward-points/public/customer/redeem`
 export const cartItemApi = () => `${API_URL}/cart/${getTenant()}/carts`
 export const cartApi = () => `${API_URL}/cart/${getTenant()}/carts`
 export const cartProductsApi = () => `${API_URL}/cart/${getTenant()}/carts`

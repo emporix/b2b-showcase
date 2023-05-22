@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useState } from 'react'
-import { Navigate, Link } from 'react-router-dom'
+import { Navigate, Link, useNavigate } from 'react-router-dom'
 import { login, register } from '../services/user/auth.service'
 import Snackbar from '@mui/material/Snackbar'
 import MuiAlert from '@mui/material/Alert'
@@ -16,7 +16,7 @@ import { createAddress } from 'services/user/adresses'
 
 const Input = ({ label, value, action, className, placeholder }) => {
   return (
-    <div className={`!pt-6 w-full text-black text-base ${className}`}>
+    <div className={`!pt-2 w-full text-black text-base ${className}`}>
       <label className="pb-2">{label}</label>
       <br />
       <input
@@ -32,8 +32,7 @@ const Input = ({ label, value, action, className, placeholder }) => {
 
 const AddressForm = ({ form, handleUpdate }) => {
   return (
-    <div className="grid grid-cols-4 gap-4">
-      <div className="col-span-4">Address</div>
+    <div className="grid grid-cols-4 gap-x-4">
       <Input
         label="Contact name"
         className="col-span-4"
@@ -133,6 +132,16 @@ const AddressForm = ({ form, handleUpdate }) => {
   )
 }
 
+const addressValid = (address) => {
+  return (
+    address.contactName.length > 0 &&
+    address.street.length > 0 &&
+    address.streetNumber.length > 0 &&
+    address.zipCode.length > 0 &&
+    address.city.length > 0 &&
+    address.country.length > 0
+  )
+}
 const Signup = (props) => {
   const [loading, setLoading] = useState(false)
   const [message, setMessage] = useState(null)
@@ -145,7 +154,7 @@ const Signup = (props) => {
   const [company, setCompany] = useState('')
   const [phoneNumber, setPhoneNumber] = useState('')
   const [emailMessage, setEmailMessage] = useState('')
-  const [address, setAddress] = useState({
+  const [shippingAddress, setShippingAddress] = useState({
     contactName: '',
     street: '',
     streetNumber: '',
@@ -155,23 +164,30 @@ const Signup = (props) => {
     state: '',
     city: '',
   })
-  const isAddressValid = useMemo(() => {
-    return (
-      address.contactName.length > 0 &&
-      address.street.length > 0 &&
-      address.streetNumber.length > 0 &&
-      address.zipCode.length > 0 &&
-      address.city.length > 0 &&
-      address.country.length > 0
-    )
-  }, [address])
+  const [billingAddress, setBillingAddress] = useState({
+    contactName: '',
+    street: '',
+    streetNumber: '',
+    streetAppendix: '',
+    zipCode: '',
+    country: '',
+    state: '',
+    city: '',
+  })
 
-  const { isLoggedIn, syncAuth } = useAuth()
+  const isAddressValid = useMemo(() => {
+    return addressValid(shippingAddress) && addressValid(billingAddress)
+  }, [shippingAddress, billingAddress])
+
+  const { syncAuth } = useAuth()
 
   function isValidEmail(email) {
     return /\S+@\S+\.\S+/.test(email)
   }
-
+  const [isSignedUp, setIsSignedUp] = useState(false)
+  const [shippingAddressCreated, setShippingAddressCreated] = useState(false)
+  const [billingAddressCreated, setBillingAddressCreated] = useState(false)
+  const navigate = useNavigate()
   const handleClose = (event, reason) => {
     if (reason === 'clickaway') {
       return
@@ -207,22 +223,32 @@ const Signup = (props) => {
         if (userEmail && password && confirmPassword) {
           if (password === confirmPassword) {
             setLoading(true)
-            await register(
-              userEmail,
-              password,
-              firstName,
-              lastName,
-              tenant,
-              company,
-              phoneNumber
-            )
-            await login(userEmail, password, tenant)
-
-            syncAuth()
-            await createAddress({ ...address, tags: ['billing', 'shipping'] })
-            props.history.push(`/${tenant}`)
-            window.location.reload()
-            setOpenNotification(true)
+            if (!isSignedUp) {
+              await register(
+                userEmail,
+                password,
+                firstName,
+                lastName,
+                tenant,
+                company,
+                phoneNumber
+              )
+              await login(userEmail, password, tenant)
+              syncAuth()
+              setIsSignedUp(true)
+            }
+            if (!shippingAddressCreated) {
+              await createAddress({ ...shippingAddress, tags: ['shipping'] })
+              setShippingAddressCreated(true)
+            }
+            if (!billingAddressCreated) {
+              await createAddress({ ...billingAddress, tags: ['billing'] })
+              setBillingAddressCreated(true)
+            }
+            if (isSignedUp && shippingAddressCreated && billingAddressCreated) {
+              props.history.replace(`/${tenant}`)
+            }
+            navigate('/{tenant}')
             setLoading(false)
           } else {
             setMessage('Confirm password is incorrect!')
@@ -233,15 +259,13 @@ const Signup = (props) => {
           setOpenNotification(true)
         }
       }
-    } catch {
+    } catch (e) {
+      console.log(e)
+      setMessage(e.response.data.message)
       setOpenNotification(true)
     } finally {
       setLoading(false)
     }
-  }
-
-  if (isLoggedIn) {
-    return <Navigate to={homeUrl()} />
   }
 
   return (
@@ -358,10 +382,19 @@ const Signup = (props) => {
                 onChange={(value) => setPhoneNumber(value)}
               />
             </Box>
+            <div className="mt-2 text-black">Shipping Address</div>
             <AddressForm
-              form={address}
+              form={shippingAddress}
               handleUpdate={(newAddress) => {
-                setAddress(newAddress)
+                setShippingAddress(newAddress)
+              }}
+            />
+
+            <div className="mt-2 text-black">Billing Address</div>
+            <AddressForm
+              form={billingAddress}
+              handleUpdate={(newAddress) => {
+                setBillingAddress(newAddress)
               }}
             />
             <Box className="w-full !pt-12">

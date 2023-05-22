@@ -12,7 +12,7 @@ const QuoteCart = () => {
   useEffect(() => {
     if (isLoggedIn) return
     navigate(loginUrl())
-  })
+  }, [isLoggedIn])
 
   return (
     <Layout title="My Request Cart">

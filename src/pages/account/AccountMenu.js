@@ -13,6 +13,7 @@ const AccountMenu = ({ page, className }) => {
     'Replenishment Orders',
     'Saved Carts',
     'My Returns',
+    'My Discounts',
     'Locations',
     'Payment Methods',
   ]
@@ -26,6 +27,7 @@ const AccountMenu = ({ page, className }) => {
     'replenishment-orders',
     'saved-carts',
     'returns',
+    'discounts',
     'locations',
     'payments',
   ]

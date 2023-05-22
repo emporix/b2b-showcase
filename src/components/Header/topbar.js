@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
 import Navbar from './navigationbar'
-import { ChevronDownIcon } from '@heroicons/react/solid'
+import { HiChevronDown } from "react-icons/hi";
 import { useSelector } from 'react-redux'
 import { pageMenuSelector } from '../../redux/slices/pageReducer'
 import './topbar.css'
@@ -48,7 +48,7 @@ const MegaNav = ({ showMegaMenuContent, setShowMegaMenuContent }) => {
             </div>
           </Link>
 
-          <ChevronDownIcon
+			<HiChevronDown size={20}
             className={item.items.length ? 'ml-2 mt-1 h-5 w-5' : 'hidden'}
             aria-hidden="true"
           />

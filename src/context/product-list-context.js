@@ -72,13 +72,14 @@ const ProductListProvider = ({ children, id }) => {
       let rootCategoryIds = catalogs.flatMap((catalog) => {
         return catalog.categoryIds
       })
-      const category = await getProductCategoryTrees([
-        ...new Set(rootCategoryIds),
-      ])
+      const category = await getProductCategoryTrees(
+        [...new Set(rootCategoryIds)],
+        currentLanguage
+      )
       setCategory(category)
       dispatch(putShopItems(category))
     })()
-  }, [])
+  }, [currentLanguage, currentSite])
 
   useEffect(() => {
     ;(async () => {
