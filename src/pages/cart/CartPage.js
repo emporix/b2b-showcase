@@ -21,19 +21,25 @@ const CartPage = () => {
   const minWidth900px = useMediaQuery('(min-width:900px)')
   const { cartAccount } = useCart()
   const { user } = useAuth()
-  const [qualifications, setQualifications] = useState([])
+  const [productQualifications, setProductQualifications] = useState([])
   const [customerWalletQualifications, setCustomerWalletQualifications] =
     useState([])
   const [bundleQualifications, setBundleQualifications] = useState([])
 
   const setCustomerWalletQualificationsFunction = async (items, customer) => {
-    setCustomerWalletQualifications(
+    console.log(123)
+    const customerWalletQualifications =
       await getQualificationsWithItemsExtended(
         'CUSTOMER_WALLET',
         items,
         customer
       )
-    )
+    setCustomerWalletQualifications(customerWalletQualifications)
+    return customerWalletQualifications
+  }
+
+  const setALLQualificationsFunction = async (items, customer) => {
+    return await getQualificationsWithItemsExtended('ALL', items, customer)
   }
 
   const setProductsQualificationsFunction = async (items, customer) => {
@@ -56,7 +62,6 @@ const CartPage = () => {
           qualification?.metadata?.bundle === true
       )
     )
-    console.log(bundles)
     setBundleQualifications(bundles)
     const allQualificationsWithoutBundles = allQualifications.filter(
       (qualification) =>
@@ -93,7 +98,8 @@ const CartPage = () => {
         }
       })
     })
-    setQualifications(allQualificationsPerProducts)
+    setProductQualifications(allQualificationsPerProducts)
+    return allQualificationsPerProducts
   }
 
   useEffect(() => {
@@ -111,8 +117,12 @@ const CartPage = () => {
         customer,
       })
       const items = mapItemsToVoucherifyOrdersItems(cart.items || [])
-      setProductsQualificationsFunction(items, customer)
-      setCustomerWalletQualificationsFunction(items, customer)
+      const x = Promise.all([
+        await setProductsQualificationsFunction(items, customer),
+        await setCustomerWalletQualificationsFunction(items, customer),
+      ])
+      console.log(x, 'aaa')
+      // console.log(await setALLQualificationsFunction(items, customer))
     })()
   }, [cartAccount?.id])
   const [open, setOpen] = useState(false)
@@ -125,14 +135,12 @@ const CartPage = () => {
           <CartTable
             cartList={cartAccount.items}
             cart={cartAccount}
-            qualifications={qualifications}
+            qualifications={productQualifications}
           />
         </div>
-
         <div className="lg:hidden">
           <CartMobileContent cartList={cartAccount.items} cart={cartAccount} />
         </div>
-
         <div
           className="float-right"
           style={{
@@ -168,7 +176,7 @@ const CartPage = () => {
                 </Box>
               ) : undefined}
             </Box>
-            {bundleQualifications.length && (
+            {bundleQualifications.length ? (
               <Box>
                 <Box
                   sx={{
@@ -190,7 +198,7 @@ const CartPage = () => {
                   ))}
                 </Box>
               </Box>
-            )}
+            ) : undefined}
             <Modal
               open={open}
               aria-labelledby="modal-modal-title"
