@@ -49,8 +49,8 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "build:prod": "env-cmd -f .env.prod react-scripts build",
-    "migrate:products": "node migrate-products-to-voucherify",
-    "migrate:all-promotions": "node migrate-campaigns-to-contentfull;node migrate-promotion-tiers-to-contentfull;node migrate-standalone-vouchers-to-contentfull"
+    "migrate:products": "node CLI/migrate-products-to-voucherify",
+    "migrate:all-promotions": "node CLI/migrate-campaigns-to-contentfull;node CLI/migrate-promotion-tiers-to-contentfull;node CLI/migrate-standalone-vouchers-to-contentfull"
   },
   "eslintConfig": {
     "extends": [

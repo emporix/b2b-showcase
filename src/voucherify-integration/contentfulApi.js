@@ -15,17 +15,6 @@ const getEntry = async (entryId) => {
   }
 }
 
-const getFields = (entry, language) => {
-  const fields = entry?.fields || {}
-  const result = {}
-  for (const key of Object.keys(fields)) {
-    if (fields[key]?.[language]) {
-      result[key] = fields[key][language]
-    }
-  }
-  return result
-}
-
 export const getContentfulEntryFields = async (entryId) => {
   return await getEntry(entryId)
 }

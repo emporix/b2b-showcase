@@ -1,5 +1,5 @@
 import { GridLayout } from '../common'
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import { TextRegular1 } from '../typography'
 import './input.css'
 
@@ -11,16 +11,14 @@ export const TextInput = ({
   className,
   disabled = false,
 }) => {
-  const [inputValue, setInputValue] = useState(value)
   return (
     <GridLayout className="">
       <TextRegular1 className="text-left">{label}</TextRegular1>
       <GridLayout className="mt-2">
         <input
           disabled={disabled}
-          value={inputValue}
+          value={value}
           onChange={(e) => {
-            setInputValue(e.target.value)
             if (action !== undefined) action(e.target.value)
           }}
           placeholder={placeholder}

@@ -35,7 +35,7 @@ const CartPage = () => {
   const [allOtherQualifications, setAllOtherQualifications] = useState([])
   const [cartId, setCartId] = useState(undefined)
 
-  const setCustomerWalletQualificationsFunction = async (items, customer) => {
+  const loadCustomerWalletQualifications = async (items, customer) => {
     const customerWalletQualifications =
       await getQualificationsWithItemsExtended(
         'CUSTOMER_WALLET',
@@ -46,7 +46,7 @@ const CartPage = () => {
     return customerWalletQualifications
   }
 
-  const setALLQualificationsFunction = async (
+  const loadALLQualifications = async (
     items,
     customer,
     allQualificationsSoFar
@@ -67,8 +67,10 @@ const CartPage = () => {
   }
 
   const setBundleQualificationsEnriched = async (bundleQualifications) => {
+    //It is intended
+    //We shall show promotion asap, later update promotion with more data when found.
     setBundleQualifications(bundleQualifications)
-    const enrichedBundleQualifications = await asyncMap(
+    const enrichedBundleQualificationsByProductsRelatedTo = await asyncMap(
       bundleQualifications,
       async (bundleQualification) => {
         const allValidationRuleIds = (
@@ -79,8 +81,8 @@ const CartPage = () => {
         const allValidationRules = await Promise.all(
           await asyncMap(allValidationRuleIds, (id) => getValidationRule(id))
         )
-        const allValidationRulesEnriched = allValidationRules.map(
-          (validationRule) => {
+        const allValidationRulesEnrichedByProductIdsFoundInValidationRules =
+          allValidationRules.map((validationRule) => {
             const rules = validationRule?.rules || {}
             const conditions = Object.values(rules)
               .filter((rule) => rule?.conditions instanceof Object)
@@ -95,18 +97,18 @@ const CartPage = () => {
               (condition) => condition.source_id
             )
             return validationRule
-          }
-        )
-        const productIdsFoundInValidationRules = allValidationRulesEnriched
-          .filter(
-            (enrichedValidationRule) =>
-              enrichedValidationRule?.productIdsFoundInValidationRules?.length
-          )
-          .map(
-            (enrichedValidationRule) =>
-              enrichedValidationRule?.productIdsFoundInValidationRules
-          )
-          .flat()
+          })
+        const productIdsFoundInValidationRules =
+          allValidationRulesEnrichedByProductIdsFoundInValidationRules
+            .filter(
+              (enrichedValidationRule) =>
+                enrichedValidationRule?.productIdsFoundInValidationRules?.length
+            )
+            .map(
+              (enrichedValidationRule) =>
+                enrichedValidationRule?.productIdsFoundInValidationRules
+            )
+            .flat()
 
         const promotionApplicableTo =
           bundleQualification.qualification?.applicable_to?.data || []
@@ -119,7 +121,7 @@ const CartPage = () => {
         return bundleQualification
       }
     )
-    setBundleQualifications(enrichedBundleQualifications)
+    setBundleQualifications(enrichedBundleQualificationsByProductsRelatedTo)
   }
 
   const setProductsQualificationsFunction = async (items, customer) => {
@@ -202,14 +204,10 @@ const CartPage = () => {
       const allQualificationsSoFar = [].concat(
         ...(await Promise.all([
           await setProductsQualificationsFunction(items, customer),
-          await setCustomerWalletQualificationsFunction(items, customer),
+          await loadCustomerWalletQualifications(items, customer),
         ]))
       )
-      await setALLQualificationsFunction(
-        items,
-        customer,
-        allQualificationsSoFar
-      )
+      await loadALLQualifications(items, customer, allQualificationsSoFar)
     })()
   }, [cartAccount?.id])
 
