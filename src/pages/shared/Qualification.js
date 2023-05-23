@@ -236,7 +236,7 @@ export const Qualification = ({
                       }}
                       onClick={() => addMissingProducts()}
                     >
-                      Add missing products
+                      Add missing product{addProducts?.length > 1 ? 's' : ''}
                     </Button>
                     {areProductsBeingAdded && (
                       <Box sx={{ mb: '-60px', mt: '9px', ml: 1 }}>
