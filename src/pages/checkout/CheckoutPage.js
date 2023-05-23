@@ -391,7 +391,7 @@ const CheckoutPage = () => {
                   <Qualification
                     key={qualification.id}
                     qualification={qualification}
-                    hideApply={false}
+                    allowVoucherApply={true}
                   />
                 ))}
               </Box>

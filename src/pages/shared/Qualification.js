@@ -1,7 +1,6 @@
 import { useAuth } from '../../context/auth-provider'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useCart } from '../../context/cart-provider'
-import { mapEmporixUserToVoucherifyCustomer } from '../../voucherify-integration/mapEmporixUserToVoucherifyCustomer'
 import Box from '@mui/material/Box'
 import { Button, Link } from '@mui/material'
 import { CircularProgress } from '@material-ui/core'
@@ -10,27 +9,76 @@ import { asyncMap } from '../../voucherify-integration/voucherifyApi'
 import CartService from '../../services/cart.service'
 import priceService from '../../services/product/price.service'
 
+const getUserId = (user) => {
+  return user?.id || 'anonymous'
+}
+
+const getSavedQualifications = () => {
+  const rawLocalStorageSavedQualifications = localStorage.getItem(
+    'savedQualifications'
+  )
+  try {
+    const localStorageSavedQualifications = JSON.parse(
+      rawLocalStorageSavedQualifications
+    )
+    return localStorageSavedQualifications instanceof Object
+      ? localStorageSavedQualifications
+      : {}
+  } catch (e) {
+    return {}
+  }
+}
+
+export const getUsersSavedQualifications = (user) => {
+  const userId = getUserId(user)
+  const localStorageSavedQualifications = getSavedQualifications()
+  const usersSavedQualifications =
+    localStorageSavedQualifications?.[userId]?.filter?.(
+      (qualification) => qualification?.code
+    ) || []
+  return Array.isArray(usersSavedQualifications) ? usersSavedQualifications : []
+}
+
+const setUsersSavedQualifications = (user, codes) => {
+  const userId = getUserId(user)
+  const localStorageSavedQualifications = getSavedQualifications()
+  localStorageSavedQualifications[userId] = codes
+  localStorage.setItem(
+    'savedQualifications',
+    JSON.stringify(localStorageSavedQualifications)
+  )
+  return localStorageSavedQualifications[userId]
+}
+
 export const Qualification = ({
   qualification,
-  hideApply,
-  customer,
   addProducts,
   cartId,
+  allowVoucherApply,
 }) => {
-  function updateClipboard(newClip) {
-    return navigator.clipboard.writeText(newClip).then(
-      () => {
-        console.log('copied to clipboard')
-        return true
-      },
-      () => {
-        console.log('failed to copy to clipboard')
-        return false
-      }
-    )
+  const { user } = useAuth()
+  const [usersSavedQualificationsState, setUsersSavedQualificationsState] =
+    useState(getUsersSavedQualifications(user))
+
+  useEffect(() => {
+    setUsersSavedQualificationsState(getUsersSavedQualifications(user))
+  }, [user])
+  function addToUsersSavedQualifications(qualification) {
+    const usersSavedQualifications = getUsersSavedQualifications(user)
+    usersSavedQualifications.push(qualification)
+    setUsersSavedQualificationsState(usersSavedQualifications)
+    setUsersSavedQualifications(user, usersSavedQualifications)
   }
 
-  const { user } = useAuth()
+  function removeFromUsersSavedQualifications(code) {
+    const usersSavedQualifications = getUsersSavedQualifications(user)
+    const updatedUsersSavedQualifications = usersSavedQualifications.filter(
+      (qualification) => qualification?.code !== code
+    )
+    setUsersSavedQualificationsState(updatedUsersSavedQualifications)
+    setUsersSavedQualifications(user, updatedUsersSavedQualifications)
+  }
+
   const [isBeingApplied, setIsBeingApplied] = useState(false)
   const [areProductsBeingAdded, setAreProductsBeingAdded] = useState(false)
   const { applyPromotion, applyDiscount, cartAccount, recheckCart } = useCart()
@@ -110,8 +158,6 @@ export const Qualification = ({
     setIsBeingApplied(false)
   }
 
-  const [copied, setCopied] = useState(false)
-
   return (
     <Box
       sx={{
@@ -146,110 +192,127 @@ export const Qualification = ({
             </span>
           </Box>
         )}
-        {!hideApply && (
-          <>
-            {isAlreadyApplied ? (
-              <Box>
-                <Button
-                  title="Applied"
-                  disabled={true}
-                  variant={'contained'}
-                  sx={{ mt: 1, mb: '14px', borderRadius: 0 }}
-                >
-                  Applied
-                </Button>
-              </Box>
-            ) : (
-              <Box sx={{ display: 'flex', gap: '10px' }}>
-                <Box sx={{ display: 'flex' }}>
-                  {qualification.object === 'voucher' ? (
-                    <Box>
-                      <Button
-                        title="Copy Voucher"
-                        disabled={copied}
-                        variant={'contained'}
-                        sx={{ mt: 1, mb: '14px', borderRadius: 0 }}
-                        onClick={() => {
-                          const updateClipboardResult = updateClipboard(
-                            qualification.code
-                          )
-                          if (updateClipboardResult) {
-                            setCopied(true)
-                            setTimeout(() => {
-                              setCopied(false)
-                            }, 3000)
-                          }
-                        }}
-                      >
-                        {copied ? 'Copied to clipboard' : 'Copy voucher code'}
-                      </Button>
-                    </Box>
-                  ) : (
-                    <>
-                      {canApply && (
-                        <Box>
-                          <Button
-                            title="Apply Coupon"
-                            disabled={
-                              isBeingApplied || alreadyAppliedCodes.length >= 5
-                            }
-                            variant={'contained'}
-                            sx={{ mt: 1, mb: '14px', borderRadius: 0 }}
-                            onClick={() =>
-                              alreadyAppliedCodes.length < 5 &&
-                              apply(
-                                qualification.object === 'voucher'
-                                  ? qualification.code
-                                  : qualification.id,
-                                user
-                              )
-                            }
-                          >
-                            {alreadyAppliedCodes.length >= 5
-                              ? 'You have reached coupon limit'
-                              : 'Apply'}
-                          </Button>
-                        </Box>
-                      )}
-                    </>
-                  )}
-                  {isBeingApplied && (
-                    <Box sx={{ mb: '-60px', mt: '9px', ml: 1 }}>
-                      <CircularProgress size={36.5} />
-                    </Box>
-                  )}
-                </Box>
-                {addProducts?.length > 0 ? (
-                  <Box sx={{ display: 'flex' }}>
+        <>
+          {isAlreadyApplied ? (
+            <Box>
+              <Button
+                title="Applied"
+                disabled={true}
+                variant={'contained'}
+                sx={{ mt: 1, mb: '14px', borderRadius: 0 }}
+              >
+                Applied
+              </Button>
+            </Box>
+          ) : (
+            <Box sx={{ display: 'flex', gap: '10px' }}>
+              <Box sx={{ display: 'flex' }}>
+                {qualification.object === 'voucher' && !allowVoucherApply ? (
+                  <Box>
                     <Button
-                      title="Apply Coupon"
-                      disabled={!addProducts}
+                      title="Save voucher"
                       variant={'contained'}
                       sx={{
                         mt: 1,
                         mb: '14px',
                         borderRadius: 0,
-                        background: '#097e12',
+                        background: !usersSavedQualificationsState
+                          .map((qualification) => qualification?.code)
+                          .includes(qualification.code)
+                          ? '#1976d2'
+                          : '#19ccd2',
                         '&:hover': {
-                          backgroundColor: '#07670f',
+                          background: !usersSavedQualificationsState
+                            .map((qualification) => qualification?.code)
+                            .includes(qualification.code)
+                            ? '#11589f'
+                            : '#14a3a8',
                         },
                       }}
-                      onClick={() => addMissingProducts()}
+                      onClick={() => {
+                        if (
+                          !usersSavedQualificationsState
+                            .map((qualification) => qualification?.code)
+                            .includes(qualification.code)
+                        ) {
+                          addToUsersSavedQualifications(qualification)
+                        } else {
+                          removeFromUsersSavedQualifications(qualification.code)
+                        }
+                      }}
                     >
-                      Add missing product{addProducts?.length > 1 ? 's' : ''}
+                      {usersSavedQualificationsState
+                        .map((qualification) => qualification?.code)
+                        .includes(qualification.code)
+                        ? 'Saved for later'
+                        : 'Save for later'}
                     </Button>
-                    {areProductsBeingAdded && (
-                      <Box sx={{ mb: '-60px', mt: '9px', ml: 1 }}>
-                        <CircularProgress size={36.5} />
+                  </Box>
+                ) : (
+                  <>
+                    {canApply && (
+                      <Box>
+                        <Button
+                          title="Apply Coupon"
+                          disabled={
+                            isBeingApplied || alreadyAppliedCodes.length >= 5
+                          }
+                          variant={'contained'}
+                          sx={{ mt: 1, mb: '14px', borderRadius: 0 }}
+                          onClick={() =>
+                            alreadyAppliedCodes.length < 5 &&
+                            apply(
+                              qualification.object === 'voucher'
+                                ? qualification.code
+                                : qualification.id,
+                              user
+                            )
+                          }
+                        >
+                          {alreadyAppliedCodes.length >= 5
+                            ? 'You have reached coupon limit'
+                            : 'Apply'}
+                        </Button>
                       </Box>
                     )}
+                  </>
+                )}
+                {isBeingApplied && (
+                  <Box sx={{ mb: '-60px', mt: '9px', ml: 1 }}>
+                    <CircularProgress size={36.5} />
                   </Box>
-                ) : undefined}
-                <Box sx={{ color: 'red' }}>{error}</Box>
+                )}
               </Box>
-            )}
-          </>
-        )}
+              {addProducts?.length > 0 ? (
+                <Box sx={{ display: 'flex' }}>
+                  <Button
+                    title="Apply Coupon"
+                    disabled={!addProducts}
+                    variant={'contained'}
+                    sx={{
+                      mt: 1,
+                      mb: '14px',
+                      borderRadius: 0,
+                      background: '#097e12',
+                      '&:hover': {
+                        backgroundColor: '#07670f',
+                      },
+                    }}
+                    onClick={() => addMissingProducts()}
+                  >
+                    Add missing product{addProducts?.length > 1 ? 's' : ''}
+                  </Button>
+                  {areProductsBeingAdded && (
+                    <Box sx={{ mb: '-60px', mt: '9px', ml: 1 }}>
+                      <CircularProgress size={36.5} />
+                    </Box>
+                  )}
+                </Box>
+              ) : undefined}
+              <Box sx={{ color: 'red' }}>{error}</Box>
+            </Box>
+          )}
+        </>
       </Box>
     </Box>
   )

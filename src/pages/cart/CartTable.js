@@ -241,7 +241,7 @@ const CartTable = ({ cartList, cart, classname, qualifications }) => {
             <Qualification
               key={qualification.id}
               qualification={qualification}
-              hideApply={false}
+              allowVoucherApply={true}
             />
           ))}
         </div>
