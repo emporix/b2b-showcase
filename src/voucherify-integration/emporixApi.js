@@ -9,6 +9,23 @@ export const deleteDiscount = async (code) => {
   })
 }
 
+export const getProduct = async (productId) => {
+  const resultRaw = await fetch(
+    `https://api.emporix.io/product/piotr/products/${productId}`,
+    {
+      method: 'Get',
+      headers: {
+        Authorization: `Bearer ${await getEmporixAPIAccessToken()}`,
+      },
+    }
+  )
+  if (resultRaw.status !== 200) {
+    console.log({ error: `product could not be retrieved` })
+    return
+  }
+  return await resultRaw.json()
+}
+
 export const removeAllDiscountsFromCart = async (cartId) => {
   const resultRaw = await fetch(
     `https://api.emporix.io/cart/piotr/carts/${cartId}/discounts`,

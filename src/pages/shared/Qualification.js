@@ -5,8 +5,18 @@ import { mapEmporixUserToVoucherifyCustomer } from '../../voucherify-integration
 import Box from '@mui/material/Box'
 import { Button, Link } from '@mui/material'
 import { CircularProgress } from '@material-ui/core'
+import { getProduct } from '../../voucherify-integration/emporixApi'
+import { asyncMap } from '../../voucherify-integration/voucherifyApi'
+import CartService from '../../services/cart.service'
+import priceService from '../../services/product/price.service'
 
-export const Qualification = ({ qualification, hideApply, addProducts }) => {
+export const Qualification = ({
+  qualification,
+  hideApply,
+  customer,
+  addProducts,
+  cartId,
+}) => {
   function updateClipboard(newClip) {
     return navigator.clipboard.writeText(newClip).then(
       () => {
@@ -22,7 +32,8 @@ export const Qualification = ({ qualification, hideApply, addProducts }) => {
 
   const { user } = useAuth()
   const [isBeingApplied, setIsBeingApplied] = useState(false)
-  const { applyPromotion, applyDiscount, cartAccount } = useCart()
+  const [areProductsBeingAdded, setAreProductsBeingAdded] = useState(false)
+  const { applyPromotion, applyDiscount, cartAccount, recheckCart } = useCart()
   const cartMixins = cartAccount.metadata?.mixins || {}
   const { availablePromotions, appliedCoupons } = cartMixins
   const availablePromotionsCodes = (availablePromotions || []).map(
@@ -50,6 +61,27 @@ export const Qualification = ({ qualification, hideApply, addProducts }) => {
     : qualification.object === 'voucher'
     ? '#9fe7a5'
     : '#9bcfef'
+
+  const addMissingProducts = async () => {
+    if (areProductsBeingAdded || !cartId) {
+      return
+    }
+    setAreProductsBeingAdded(true)
+    const products = (
+      await Promise.all(
+        await asyncMap(addProducts, async (productId) => {
+          const product = await getProduct(productId)
+          const prices = await priceService.getPriceWithProductIds([productId])
+          return { ...product, price: prices?.[0] }
+        })
+      )
+    ).filter((product) => product)
+    for (const product of products) {
+      await CartService.addProductToCart(cartId, { ...product, quantity: 1 })
+    }
+    await recheckCart()
+    setAreProductsBeingAdded(false)
+  }
 
   const apply = async (code, user) => {
     if (!code || isBeingApplied) {
@@ -128,7 +160,7 @@ export const Qualification = ({ qualification, hideApply, addProducts }) => {
                 </Button>
               </Box>
             ) : (
-              <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
+              <Box sx={{ display: 'flex', gap: '10px' }}>
                 <Box sx={{ display: 'flex' }}>
                   {qualification.object === 'voucher' ? (
                     <Box>
@@ -187,6 +219,32 @@ export const Qualification = ({ qualification, hideApply, addProducts }) => {
                     </Box>
                   )}
                 </Box>
+                {addProducts?.length > 0 ? (
+                  <Box sx={{ display: 'flex' }}>
+                    <Button
+                      title="Apply Coupon"
+                      disabled={!addProducts}
+                      variant={'contained'}
+                      sx={{
+                        mt: 1,
+                        mb: '14px',
+                        borderRadius: 0,
+                        background: '#097e12',
+                        '&:hover': {
+                          backgroundColor: '#07670f',
+                        },
+                      }}
+                      onClick={() => addMissingProducts()}
+                    >
+                      Add missing products
+                    </Button>
+                    {areProductsBeingAdded && (
+                      <Box sx={{ mb: '-60px', mt: '9px', ml: 1 }}>
+                        <CircularProgress size={36.5} />
+                      </Box>
+                    )}
+                  </Box>
+                ) : undefined}
                 <Box sx={{ color: 'red' }}>{error}</Box>
               </Box>
             )}

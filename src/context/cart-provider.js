@@ -302,6 +302,7 @@ const CartProvider = ({ children }) => {
     removeCartItem,
     changeCurrency,
     putCartProduct,
+    recheckCart,
     applyDiscount,
     applyPromotion,
     removeDiscount,

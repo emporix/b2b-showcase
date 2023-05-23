@@ -30,6 +30,8 @@ const CartPage = () => {
     useState([])
   const [bundleQualifications, setBundleQualifications] = useState([])
   const [allOtherQualifications, setAllOtherQualifications] = useState([])
+  const [customer, setCustomer] = useState({})
+  const [cartId, setCartId] = useState(undefined)
 
   const setCustomerWalletQualificationsFunction = async (items, customer) => {
     const customerWalletQualifications =
@@ -184,10 +186,12 @@ const CartPage = () => {
       if (!cartAccount?.id) {
         return
       }
+      setCartId(cartAccount?.id)
       const customer =
         user instanceof Object
           ? mapEmporixUserToVoucherifyCustomer(user)
           : undefined
+      setCustomer(customer)
       const emporixCart = await getCart(cartAccount.id)
       const cart = buildCartFromEmporixCart({
         emporixCart,
@@ -293,6 +297,8 @@ const CartPage = () => {
                       key={qualification.id}
                       qualification={qualification}
                       hideApply={false}
+                      cartId={cartId}
+                      customer={customer}
                       addProducts={(qualification?.relatedTo || []).filter(
                         (id) => !cartItemIds.includes(id)
                       )}
