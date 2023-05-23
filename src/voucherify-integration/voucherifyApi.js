@@ -56,7 +56,7 @@ const getPromotionTiersOrVoucher = async (qualification) => {
   if (object === 'promotion_tier') {
     const response = await voucherifyFetchAPI({
       method: 'GET',
-      path: `promotions/tiers/${qualification.id}`,
+      path: `promotions/tiers/${encodeURIComponent(qualification.id)}`,
     })
     if (response.status !== 200) {
       return
@@ -66,7 +66,7 @@ const getPromotionTiersOrVoucher = async (qualification) => {
   if (object === 'voucher') {
     const response = await voucherifyFetchAPI({
       method: 'GET',
-      path: `vouchers/${qualification.id}`,
+      path: `vouchers/${encodeURIComponent(qualification.id)}`,
     })
     if (response.status !== 200) {
       return
