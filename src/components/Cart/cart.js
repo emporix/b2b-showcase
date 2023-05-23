@@ -400,7 +400,6 @@ const CartGoCart = () => {
 }
 export const CartActionPanel = ({ action }) => {
   const { cartAccount } = useCart()
-  console.log(cartAccount)
   return (
     <div className="cart-action-panel">
       <GridLayout className="gap-4">

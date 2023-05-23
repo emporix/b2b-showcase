@@ -6,7 +6,7 @@ import Box from '@mui/material/Box'
 import { Button, Link } from '@mui/material'
 import { CircularProgress } from '@material-ui/core'
 
-export const Qualification = ({ qualification, hideApply }) => {
+export const Qualification = ({ qualification, hideApply, addProducts }) => {
   function updateClipboard(newClip) {
     return navigator.clipboard.writeText(newClip).then(
       () => {

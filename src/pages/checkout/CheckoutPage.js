@@ -19,6 +19,10 @@ import { CircularProgress } from '@material-ui/core'
 import { useAuth } from '../../context/auth-provider'
 import { mapEmporixUserToVoucherifyCustomer } from '../../voucherify-integration/mapEmporixUserToVoucherifyCustomer'
 import { Qualification } from '../shared/Qualification'
+import { getCart } from '../../voucherify-integration/emporixApi'
+import { buildCartFromEmporixCart } from '../../voucherify-integration/buildCartFromEmporixCart'
+import { mapItemsToVoucherifyOrdersItems } from '../../voucherify-integration/validateCouponsAndGetAvailablePromotions/product'
+import { getQualificationsWithItemsExtended } from '../../voucherify-integration/voucherifyApi'
 
 const PaymentAction = ({ action, disabled }) => {
   return (
@@ -283,16 +287,23 @@ const CheckoutPage = () => {
   const { user } = useAuth()
   const [qualifications, setQualifications] = useState([])
   useEffect(() => {
-    const productIds = (cartAccount?.items || [])
-      .map((product) => product.itemYrn?.split?.(';')?.at?.(-1))
-      .filter((e) => e)
-
     ;(async () => {
+      if (!cartAccount?.id) {
+        return
+      }
       const customer =
         user instanceof Object
           ? mapEmporixUserToVoucherifyCustomer(user)
           : undefined
-      setQualifications([])
+      const emporixCart = await getCart(cartAccount.id)
+      const cart = buildCartFromEmporixCart({
+        emporixCart,
+        customer,
+      })
+      const items = mapItemsToVoucherifyOrdersItems(cart.items || [])
+      setQualifications(
+        await getQualificationsWithItemsExtended('ALL', items, customer)
+      )
     })()
   }, [cartAccount])
 
@@ -356,17 +367,36 @@ const CheckoutPage = () => {
         </div>
         <Box sx={{ mt: -2, display: 'flex', flexDirection: 'column', gap: 1 }}>
           {qualifications.length ? (
-            <span style={{ fontSize: 20, fontWeight: 'bold' }}>
-              Promotion{qualifications.length > 1 ? 's' : ''} related to all
-              products in your cart:
-            </span>
+            <Box>
+              <Box
+                sx={{
+                  fontWeight: 'bold',
+                  fontSize: '20px',
+                  width: '100%',
+                  textAlign: 'left',
+                }}
+              >
+                Available promotions:
+              </Box>
+              <Box
+                sx={{
+                  mt: -1,
+                  p: '20px!important',
+                  gap: '10px!important',
+                  display: 'flex',
+                  flexDirection: 'column',
+                }}
+              >
+                {qualifications?.map((qualification) => (
+                  <Qualification
+                    key={qualification.id}
+                    qualification={qualification}
+                    hideApply={false}
+                  />
+                ))}
+              </Box>
+            </Box>
           ) : undefined}
-          {qualifications.map((qualification) => (
-            <Qualification
-              key={qualification.id}
-              qualification={qualification}
-            />
-          ))}
         </Box>
       </div>
     </div>
