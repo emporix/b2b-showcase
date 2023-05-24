@@ -14,7 +14,6 @@ import { useAuth } from '../../context/auth-provider'
 import { mapEmporixUserToVoucherifyCustomer } from '../../integration/voucherify/mappers/mapEmporixUserToVoucherifyCustomer'
 import { getQualificationsWithItemsExtended } from '../../integration/voucherify/voucherifyApi'
 import useMediaQuery from '@mui/material/useMediaQuery'
-import { buildCartFromEmporixCart } from '../../integration/mappers/buildCartFromEmporixCart'
 import { getCart } from '../../integration/emporix/emporixApi'
 import { mapItemsToVoucherifyOrdersItems } from '../../integration/voucherify/validateCouponsAndGetAvailablePromotions/mappers/product'
 import { Modal } from '@mui/material'
@@ -24,6 +23,7 @@ import {
   getOnlyBundleQualifications,
 } from '../../integration/voucherify/mappers/bundleQualifications'
 import { getQualificationsPerProducts } from '../../integration/voucherify/mappers/getQualificationsPerProducts'
+import { mapEmporixItemsToVoucherifyProducts } from '../../integration/buildIntegrationCartFromEmporixCart'
 
 const CartPage = () => {
   const minWidth900px = useMediaQuery('(min-width:900px)')
@@ -107,11 +107,9 @@ const CartPage = () => {
       setCartId(cartAccount?.id)
       const customer = mapEmporixUserToVoucherifyCustomer(user)
       const emporixCart = await getCart(cartAccount.id)
-      const cart = buildCartFromEmporixCart({
-        emporixCart,
-        customer,
-      })
-      const items = mapItemsToVoucherifyOrdersItems(cart.items || [])
+      const items = mapItemsToVoucherifyOrdersItems(
+        mapEmporixItemsToVoucherifyProducts(emporixCart?.items || [])
+      )
       const allQualificationsSoFar = [].concat(
         ...(await Promise.all([
           await setProductsQualificationsFunction(items, customer),
