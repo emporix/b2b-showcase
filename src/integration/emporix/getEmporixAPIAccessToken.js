@@ -1,4 +1,6 @@
 export const getEmporixAPIAccessToken = async () => {
+  //This shall be stored in memory cache.
+  //However, this is PoC based on React, so we must use localstorage to not lose data, after we close a cart.
   const accessToken = localStorage.getItem('emporixAccessToken')
   const expiresAt = parseInt(
     localStorage.getItem('emporixAccessTokenExpiresAt')
