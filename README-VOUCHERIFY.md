@@ -25,15 +25,16 @@ Qualification scenarios we use:
 - CUSTOMER_WALLET - gives all redeemables that are belong to the given customer and match the given context (customer, cart). Verifies the most number of rules.
 - ALL - gives all redeemables that match the given context (customer, cart). Verify the most number of rules.
 
-1. On home screen you will see `AUDIENCE_ONLY` Voucherify qualification scenario.
-2. On products page we show `PRODUCTS` scenario.
-3. On product details page we show `PRODUCTS` scenario.
-4. On cart page in products table we show `PRODUCTS` scenario.
-5. On products page below products table we show `CUSTOMER_WALLET` scenario.
-6. Below `CUSTOMER_WALLET` scenario holder, you will see saved vouchers(saved qualifications).
-7. Bundles section show qualifications `PRODUCTS` scenario but only if in promotion_tier metadata there is `bundle: true` key.
+1. On home screen you will see `AUDIENCE_ONLY` Voucherify qualification scenario. *(readme-images/Integration-1.png)*
+2. On products page we show `PRODUCTS` scenario. *(readme-images/Integration-2.png)*
+3. On product details page we show `PRODUCTS` scenario. *(readme-images/Integration-3.png)*
+4. On cart page in products table we show `PRODUCTS` scenario. *(readme-images/Integration-4.png)*
+5. On products page below products table we show `CUSTOMER_WALLET` scenario. *(readme-images/Integration-5.png)*
+6. Below `CUSTOMER_WALLET` scenario holder, you will see saved vouchers(saved qualifications). *(readme-images/Integration-6.png)*
+7. Bundles section show qualifications `PRODUCTS` scenario but only if in promotion_tier metadata there is `bundle: true` key. *(readme-images/Integration-7.png)*
 8. Below bundle holder, we show `ALL` scenario, but we filter out all `PRODUCTS` and `CUSTOMER_WALLET` scenario, so there should be no duplicates.
-9. On the checkout page we show `ALL` scenario.
+   *(readme-images/Integration-8.png)*
+9. On the checkout page we show `ALL` scenario. *(readme-images/Integration-9.png)*
 
 ### Applying vouchers and promotion tiers
 
@@ -43,6 +44,11 @@ Applying vouchers on the other hand can happen only from cart page, cart sidebar
 So please notice that vouchers qualifications (green container) sometimes have `SAVE FOR LATER` button, that is because we don't
 want you to lose the promotion you see, but also we cannot guarantee that the voucher you see is valid, so we want just to remind you later
 about that voucher, so you will try to apply later on (on cart page).
+
+### Bundles
+
+We implemented additional functionality to bundle type of promotions. You may add missing products to your cart directly from promotion holder.
+A missing product is a product that is missing to receive a discount. *(readme-images/Bundles-1.png)*
 
 ## Pre Requirements 
 
@@ -67,6 +73,8 @@ Create 3 content models:
   - code - short text
   - description - short text
   - termsAndConditions - short text
+
+See `readme-images/Contentful-X.png` for more information.
 
 ## How to start:
 
