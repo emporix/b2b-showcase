@@ -39,9 +39,9 @@ Create 3 content models:
   - description - short text
   - termsAndConditions - short text
 
-![Screenshot 2023-05-18 at 17.53.52.png](Screenshot%202023-05-18%20at%2017.53.52.png)
-![Screenshot 2023-05-18 at 17.52.30.png](Screenshot%202023-05-18%20at%2017.52.30.png)
-![Screenshot 2023-05-18 at 17.53.56.png](Screenshot%202023-05-18%20at%2017.53.56.png)
+![Screenshot 2023-05-18 at 17.53.52.png](readme-images%2FScreenshot%202023-05-18%20at%2017.53.52.png)
+![Screenshot 2023-05-18 at 17.52.30.png](readme-images%2FScreenshot%202023-05-18%20at%2017.52.30.png)
+![Screenshot 2023-05-18 at 17.53.56.png](readme-images%2FScreenshot%202023-05-18%20at%2017.53.56.png)
 
 ## How to obtain those keys:
 
@@ -106,4 +106,7 @@ Qualification scenarios we use:
 
 ![Screenshot 2023-05-24 at 12.02.33.png](readme-images%2FScreenshot%202023-05-24%20at%2012.02.33.png)
 
+9. On the checkout page we show `ALL` scenario.
+
+![Screenshot 2023-05-24 at 12.17.33.png](readme-images%2FScreenshot%202023-05-24%20at%2012.17.33.png)
 
