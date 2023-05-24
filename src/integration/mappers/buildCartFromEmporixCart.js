@@ -1,5 +1,5 @@
 import { uniqBy } from 'lodash'
-import { mapEmporixUserToVoucherifyCustomer } from './mapEmporixUserToVoucherifyCustomer'
+import { mapEmporixUserToVoucherifyCustomer } from '../voucherify/mappers/mapEmporixUserToVoucherifyCustomer'
 
 const mapEmporixItemsToVoucherifyProducts = (items) => {
   if (!Array.isArray(items)) {

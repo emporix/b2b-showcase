@@ -11,18 +11,19 @@ import {
 } from '../shared/Qualification'
 import { Box } from '@mui/system'
 import { useAuth } from '../../context/auth-provider'
-import { mapEmporixUserToVoucherifyCustomer } from '../../voucherify-integration/mapEmporixUserToVoucherifyCustomer'
-import {
-  asyncMap,
-  getQualificationsWithItemsExtended,
-  getValidationRule,
-} from '../../voucherify-integration/voucherifyApi'
+import { mapEmporixUserToVoucherifyCustomer } from '../../integration/voucherify/mappers/mapEmporixUserToVoucherifyCustomer'
+import { getQualificationsWithItemsExtended } from '../../integration/voucherify/voucherifyApi'
 import useMediaQuery from '@mui/material/useMediaQuery'
-import { buildCartFromEmporixCart } from '../../voucherify-integration/buildCartFromEmporixCart'
-import { getCart } from '../../voucherify-integration/emporixApi'
-import { mapItemsToVoucherifyOrdersItems } from '../../voucherify-integration/validateCouponsAndGetAvailablePromotions/product'
+import { buildCartFromEmporixCart } from '../../integration/mappers/buildCartFromEmporixCart'
+import { getCart } from '../../integration/emporix/emporixApi'
+import { mapItemsToVoucherifyOrdersItems } from '../../integration/voucherify/validateCouponsAndGetAvailablePromotions/mappers/product'
 import { Modal } from '@mui/material'
-import { uniq } from 'lodash'
+import { enrichBundleQualificationsByProductIdsRelatedTo } from '../../integration/voucherify/mappers/enrichBundleQualificationsByProductIdsRelatedTo'
+import {
+  filterOutBundleQualifications,
+  getOnlyBundleQualifications,
+} from '../../integration/voucherify/mappers/bundleQualifications'
+import { getQualificationsPerProducts } from '../../integration/voucherify/mappers/getQualificationsPerProducts'
 
 const CartPage = () => {
   const minWidth900px = useMediaQuery('(min-width:900px)')
@@ -70,58 +71,11 @@ const CartPage = () => {
     //It is intended
     //We shall show promotion asap, later update promotion with more data when found.
     setBundleQualifications(bundleQualifications)
-    const enrichedBundleQualificationsByProductsRelatedTo = await asyncMap(
-      bundleQualifications,
-      async (bundleQualification) => {
-        const allValidationRuleIds = (
-          bundleQualification?.validation_rule_assignments?.data || []
-        )
-          .map((validationRule) => validationRule.rule_id)
-          .filter((e) => e)
-        const allValidationRules = await Promise.all(
-          await asyncMap(allValidationRuleIds, (id) => getValidationRule(id))
-        )
-        const allValidationRulesEnrichedByProductIdsFoundInValidationRules =
-          allValidationRules.map((validationRule) => {
-            const rules = validationRule?.rules || {}
-            const conditions = Object.values(rules)
-              .filter((rule) => rule?.conditions instanceof Object)
-              .map((rule) => Object.values(rule.conditions))
-              .flat()
-              .flat()
-              .filter(
-                (condition) =>
-                  condition instanceof Object && condition?.source_id
-              )
-            validationRule.productIdsFoundInValidationRules = conditions.map(
-              (condition) => condition.source_id
-            )
-            return validationRule
-          })
-        const productIdsFoundInValidationRules =
-          allValidationRulesEnrichedByProductIdsFoundInValidationRules
-            .filter(
-              (enrichedValidationRule) =>
-                enrichedValidationRule?.productIdsFoundInValidationRules?.length
-            )
-            .map(
-              (enrichedValidationRule) =>
-                enrichedValidationRule?.productIdsFoundInValidationRules
-            )
-            .flat()
-
-        const promotionApplicableTo =
-          bundleQualification.qualification?.applicable_to?.data || []
-        bundleQualification.relatedTo = [
-          ...productIdsFoundInValidationRules,
-          ...(promotionApplicableTo
-            .map((applicableTo) => applicableTo.source_id)
-            .filter((e) => e) || []),
-        ]
-        return bundleQualification
-      }
+    setBundleQualifications(
+      await enrichBundleQualificationsByProductIdsRelatedTo(
+        bundleQualifications
+      )
     )
-    setBundleQualifications(enrichedBundleQualificationsByProductsRelatedTo)
   }
 
   const setProductsQualificationsFunction = async (items, customer) => {
@@ -131,56 +85,15 @@ const CartPage = () => {
       items,
       customer
     )
-    let allQualificationsPerProducts = productsIds.map((productId) => {
-      return {
-        productId: productId,
-        qualifications: [],
-      }
-    })
-    const bundles = uniq(
-      allQualifications.filter(
-        (qualification) =>
-          qualification?.metadata?.bundle === 'true' ||
-          qualification?.metadata?.bundle === true
-      )
-    )
+    const bundleQualifications = getOnlyBundleQualifications(allQualifications)
     //don't wait
-    setBundleQualificationsEnriched(bundles)
-    const allQualificationsWithoutBundles = allQualifications.filter(
-      (qualification) =>
-        !(
-          qualification?.metadata?.bundle === 'true' ||
-          qualification?.metadata?.bundle === true
-        )
+    setBundleQualificationsEnriched(bundleQualifications)
+    const allQualificationsWithoutBundles =
+      filterOutBundleQualifications(allQualifications)
+    const allQualificationsPerProducts = getQualificationsPerProducts(
+      allQualificationsWithoutBundles,
+      productsIds
     )
-    allQualificationsWithoutBundles.forEach((qualificationExtended) => {
-      const applicable_to =
-        qualificationExtended.qualification?.applicable_to?.data || []
-      const sourceIds =
-        applicable_to
-          .map((applicableTo) => applicableTo.source_id)
-          .filter((e) => e) || []
-      sourceIds.forEach((sourceId) => {
-        if (
-          allQualificationsPerProducts.find(
-            (allQualificationsPerProduct) =>
-              allQualificationsPerProduct.productId === sourceId
-          )
-        ) {
-          allQualificationsPerProducts = allQualificationsPerProducts.map(
-            (allQualificationsPerProducts) => {
-              if (allQualificationsPerProducts.productId === sourceId) {
-                allQualificationsPerProducts.qualifications = [
-                  ...allQualificationsPerProducts.qualifications,
-                  qualificationExtended,
-                ]
-              }
-              return allQualificationsPerProducts
-            }
-          )
-        }
-      })
-    })
     setProductQualifications(allQualificationsPerProducts)
     return allQualifications
   }
@@ -192,10 +105,7 @@ const CartPage = () => {
         return
       }
       setCartId(cartAccount?.id)
-      const customer =
-        user instanceof Object
-          ? mapEmporixUserToVoucherifyCustomer(user)
-          : undefined
+      const customer = mapEmporixUserToVoucherifyCustomer(user)
       const emporixCart = await getCart(cartAccount.id)
       const cart = buildCartFromEmporixCart({
         emporixCart,
@@ -210,7 +120,7 @@ const CartPage = () => {
       )
       await loadALLQualifications(items, customer, allQualificationsSoFar)
     })()
-  }, [cartAccount?.id])
+  }, [cartAccount?.id, user])
 
   useEffect(() => {
     const items = cartAccount?.items || []

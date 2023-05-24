@@ -11,7 +11,7 @@ import ApiRequest from './index'
 import { ACCESS_TOKEN } from '../constants/localstorage'
 import { api } from './axios'
 import { getLanguageFromLocalStorage } from '../context/language-provider'
-import { updateCart } from '../voucherify-integration/updateCart'
+import { updateCart } from '../integration/updateCart'
 
 const CartService = () => {
   const mergeCarts = async (targetCartId, sourceCartId) => {
