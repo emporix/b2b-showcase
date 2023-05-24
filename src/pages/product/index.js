@@ -19,10 +19,7 @@ import { getBrand } from 'services/product/brand.service'
 import { getLabel } from 'services/product/labels'
 import { useCurrency } from 'context/currency-context'
 import { useAuth } from '../../context/auth-provider'
-import {
-  getAllProductQualificationsExtended,
-  getQualificationsWithItemsExtended,
-} from '../../voucherify-integration/voucherifyApi'
+import { getQualificationsWithItemsExtended } from '../../voucherify-integration/voucherifyApi'
 import { mapEmporixUserToVoucherifyCustomer } from '../../voucherify-integration/mapEmporixUserToVoucherifyCustomer'
 
 const ProductList = () => {

@@ -81,21 +81,54 @@ const AppliedCoupon = ({ appliedCoupon, user }) => {
   )
 }
 
-const AvailablePromotion = ({ availablePromotion, user }) => {
-  const { applyPromotion } = useCart()
-
-  const applyPromotionOnCart = useCallback(() => {
-    applyPromotion(availablePromotion.code, user)
-  }, [availablePromotion])
-
-  return (
-    <Chip
-      sx={{ mb: 1, mr: 1 }}
-      label={availablePromotion?.banner || availablePromotion.code}
-      variant="outlined"
-      onClick={applyPromotionOnCart}
-    />
+const AppliedCouponsComponent = ({ appliedCoupons, user }) => {
+  const counter = (appliedCoupons ?? []).reduce(
+    (accumulator, appliedCoupon) => {
+      switch (appliedCoupon.type) {
+        case 'promotion_tier':
+          accumulator.promotion_tier = accumulator.promotion_tier + 1
+          break
+        case 'voucher':
+          accumulator.voucher = accumulator.voucher + 1
+          break
+        default:
+          break
+      }
+      return accumulator
+    },
+    {
+      promotion_tier: 0,
+      voucher: 0,
+    }
   )
+
+  if (appliedCoupons?.length) {
+    return (
+      <Grid item xs={12} sx={{}}>
+        <Grid item xs={12} sx={{ mb: 2 }}>
+          <span className="font-bold ">
+            Applied{' '}
+            {counter.voucher && counter.promotion_tier
+              ? `voucher${counter.voucher > 1 ? 's' : ''} and promotion${
+                  counter.promotion_tier > 1 ? 's' : ''
+                }`
+              : counter.voucher
+              ? `voucher${counter.voucher > 1 ? 's' : ''}`
+              : `promotion${counter.promotion_tier > 1 ? 's' : ''}`}
+          </span>
+        </Grid>
+        <Grid item xs={12}>
+          {appliedCoupons.map((appliedCoupon) => (
+            <AppliedCoupon
+              key={appliedCoupon.code}
+              appliedCoupon={appliedCoupon}
+              user={user}
+            ></AppliedCoupon>
+          ))}
+        </Grid>
+      </Grid>
+    )
+  }
 }
 
 export const Coupon = () => {
@@ -139,75 +172,6 @@ export const Coupon = () => {
     setIsBeingApplied(false)
   }
 
-  const availablePromotionsComponent = () => {
-    if (availablePromotions?.length) {
-      return (
-        <Grid item xs={12} sx={{}}>
-          <Grid item xs={12} sx={{ mb: 2 }}>
-            <span className="font-bold ">
-              Available promotion{availablePromotions.length > 1 ? 's' : ''}
-            </span>
-          </Grid>
-          <Grid item xs={12}>
-            {availablePromotions.map((availablePromotion) => (
-              <AvailablePromotion
-                key={availablePromotion.code}
-                availablePromotion={availablePromotion}
-                user={user}
-              />
-            ))}
-          </Grid>
-        </Grid>
-      )
-    }
-  }
-
-  const appliedCouponsComponent = () => {
-    const counter = {
-      promotion_tier: 0,
-      voucher: 0,
-    }
-    appliedCoupons?.forEach((appliedCoupon) => {
-      switch (appliedCoupon.type) {
-        case 'promotion_tier':
-          counter.promotion_tier = counter.promotion_tier + 1
-          break
-        case 'voucher':
-          counter.voucher = counter.voucher + 1
-          break
-        default:
-          break
-      }
-    })
-    if (appliedCoupons?.length) {
-      return (
-        <Grid item xs={12} sx={{}}>
-          <Grid item xs={12} sx={{ mb: 2 }}>
-            <span className="font-bold ">
-              Applied{' '}
-              {counter.voucher && counter.promotion_tier
-                ? `voucher${counter.voucher > 1 ? 's' : ''} and promotion${
-                    counter.promotion_tier > 1 ? 's' : ''
-                  }`
-                : counter.voucher
-                ? `voucher${counter.voucher > 1 ? 's' : ''}`
-                : `promotion${counter.promotion_tier > 1 ? 's' : ''}`}
-            </span>
-          </Grid>
-          <Grid item xs={12}>
-            {appliedCoupons.map((appliedCoupon) => (
-              <AppliedCoupon
-                key={appliedCoupon.code}
-                appliedCoupon={appliedCoupon}
-                user={user}
-              ></AppliedCoupon>
-            ))}
-          </Grid>
-        </Grid>
-      )
-    }
-  }
-
   return (
     <Grid container spacing={2} sx={{ mb: 0 }}>
       <Grid item xs={12}>
@@ -244,8 +208,7 @@ export const Coupon = () => {
           <span style={{ color: 'red' }}>{error}</span>
         </Box>
       </Grid>
-      {appliedCouponsComponent()}
-      {/*{availablePromotionsComponent()}*/}
+      <AppliedCouponsComponent appliedCoupons={appliedCoupons} user={user} />
     </Grid>
   )
 }
@@ -305,7 +268,7 @@ const CheckoutPage = () => {
         await getQualificationsWithItemsExtended('ALL', items, customer)
       )
     })()
-  }, [cartAccount])
+  }, [cartAccount, user])
 
   return (
     <div className="checkout-page-wrapper ">

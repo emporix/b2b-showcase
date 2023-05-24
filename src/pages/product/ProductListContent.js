@@ -3,7 +3,11 @@ import { BiMenu } from 'react-icons/bi'
 import React, { useEffect, useMemo, useState } from 'react'
 import { useSelector } from 'react-redux'
 import { IconContext } from 'react-icons'
-import { HiOutlineArrowLeft, HiOutlineArrowRight, HiChevronDown } from 'react-icons/hi'
+import {
+  HiOutlineArrowLeft,
+  HiOutlineArrowRight,
+  HiChevronDown,
+} from 'react-icons/hi'
 import { LoadingCircleProgress1 } from '../../components/Utilities/progress'
 import { availabilityDataSelector } from '../../redux/slices/availabilityReducer'
 import { useProductList } from 'context/product-list-context'
@@ -12,7 +16,6 @@ import EachProductRow from './EachProductRow'
 import { useAuth } from 'context/auth-provider'
 import { mapEmporixUserToVoucherifyCustomer } from '../../voucherify-integration/mapEmporixUserToVoucherifyCustomer'
 import { getQualificationsWithItemsExtended } from '../../voucherify-integration/voucherifyApi'
-import { mapEmporixItemsToVoucherifyProducts } from '../../voucherify-integration/buildCartFromEmporixCart'
 
 const ProductListViewSettingBar = ({
   changeDisplayType,
@@ -95,7 +98,7 @@ const ProductListViewSettingBar = ({
               </div>
               <div className="md:hidden  flex">
                 <div className="font-bold">Sort:</div>
-                  <HiChevronDown
+                <HiChevronDown
                   size={20}
                   className="ml-1 mt-0 h-6 w-6 font-normal"
                   aria-hidden="true"
