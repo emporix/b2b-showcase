@@ -19,8 +19,8 @@ import { getBrand } from 'services/product/brand.service'
 import { getLabel } from 'services/product/labels'
 import { useCurrency } from 'context/currency-context'
 import { useAuth } from '../../context/auth-provider'
-import { getQualificationsWithItemsExtended } from '../../voucherify-integration/voucherifyApi'
-import { mapEmporixUserToVoucherifyCustomer } from '../../voucherify-integration/mapEmporixUserToVoucherifyCustomer'
+import { getQualificationsWithItemsExtended } from '../../integration/voucherify/voucherifyApi'
+import { mapEmporixUserToVoucherifyCustomer } from '../../integration/voucherify/mappers/mapEmporixUserToVoucherifyCustomer'
 
 const ProductList = () => {
   return (

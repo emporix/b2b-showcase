@@ -5,11 +5,11 @@ import {
   getCart,
   removeAllDiscountsFromCart,
   updateCartMetadataMixins,
-} from './emporixApi'
-import { buildCartFromEmporixCart } from './buildCartFromEmporixCart'
-import { CartUpdateActions } from './cartUpdateActions'
-import { validateCouponsAndGetAvailablePromotions } from './validateCouponsAndGetAvailablePromotions/validateCouponsAndGetAvailablePromotions'
-import { getDiscountsValues } from './getDiscountsValues'
+} from './emporix/emporixApi'
+import { buildCartFromEmporixCart } from './mappers/buildCartFromEmporixCart'
+import { CartUpdateActions } from './voucherify/cartUpdateActions'
+import { validateCouponsAndGetAvailablePromotions } from './voucherify/validateCouponsAndGetAvailablePromotions/validateCouponsAndGetAvailablePromotions'
+import { getDiscountsValues } from './voucherify/mappers/getDiscountsValues'
 
 export const updateCart = async ({
   emporixCartId,

@@ -5,25 +5,24 @@ import {
   filterOutCouponsIfCodeIn,
   filterOutCouponsTypePromotionTier,
   uniqueCouponsByCodes,
-} from './couponsOperationFunctions'
+} from './mappers/couponsOperationFunctions'
 import {
   filterOutRedeemablesIfCodeIn,
   getRedeemablesByStatus,
   redeemablesToCodes,
   stackableRedeemablesResponseToUnitStackableRedeemablesResultDiscountUnitWithCodes,
   stackableResponseToUnitTypeRedeemables,
-} from './redeemableOperationFunctions'
-import { getCodesIfProductNotFoundIn } from './getCodesIfProductNotFoundIn'
-import { buildValidationsValidateStackableParamsForVoucherify } from './buildValidationsValidateStackableParamsForVoucherify'
-import { mapItemsToVoucherifyOrdersItems } from './product'
-import { getProductsToAdd } from './getProductsToAdd'
-import { getItemsWithCorrectedPrices } from './getItemsWithPricesCorrected'
+} from './mappers/redeemableOperationFunctions'
+import { getCodesIfProductNotFoundIn } from './mappers/getCodesIfProductNotFoundIn'
+import { buildValidationsValidateStackableParamsForVoucherify } from './mappers/buildValidationsValidateStackableParamsForVoucherify'
+import { mapItemsToVoucherifyOrdersItems } from './mappers/product'
+import { getItemsWithCorrectedPrices } from './mappers/getItemsWithPricesCorrected'
 import {
   calculateTotalDiscountAmount,
   getPromotions,
   setBannerOnValidatedPromotions,
-} from './helperFunctions'
-import { replaceCodesWithInapplicableCoupons } from './replaceCodesWithInapplicableCoupons'
+} from './mappers/helperFunctions'
+import { replaceCodesWithInapplicableCoupons } from './mappers/replaceCodesWithInapplicableCoupons'
 import {
   releaseValidationSession,
   validateStackableVouchers,

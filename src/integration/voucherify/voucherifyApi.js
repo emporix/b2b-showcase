@@ -1,6 +1,6 @@
-import { mapItemsToVoucherifyOrdersItems } from './validateCouponsAndGetAvailablePromotions/product'
+import { mapItemsToVoucherifyOrdersItems } from './validateCouponsAndGetAvailablePromotions/mappers/product'
 import { VoucherifyServerSide } from '@voucherify/sdk'
-import { getContentfulEntryFields } from './contentfulApi'
+import getContentfulEntryFields from './getContentfulEntryFields'
 
 export function asyncMap(arr, asyncFn) {
   return Promise.all(arr.map(asyncFn))

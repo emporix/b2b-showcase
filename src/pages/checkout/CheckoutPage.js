@@ -17,12 +17,12 @@ import { TextInput } from '../../components/Utilities/input'
 import { Box } from '@mui/system'
 import { CircularProgress } from '@material-ui/core'
 import { useAuth } from '../../context/auth-provider'
-import { mapEmporixUserToVoucherifyCustomer } from '../../voucherify-integration/mapEmporixUserToVoucherifyCustomer'
+import { mapEmporixUserToVoucherifyCustomer } from '../../integration/voucherify/mappers/mapEmporixUserToVoucherifyCustomer'
 import { Qualification } from '../shared/Qualification'
-import { getCart } from '../../voucherify-integration/emporixApi'
-import { buildCartFromEmporixCart } from '../../voucherify-integration/buildCartFromEmporixCart'
-import { mapItemsToVoucherifyOrdersItems } from '../../voucherify-integration/validateCouponsAndGetAvailablePromotions/product'
-import { getQualificationsWithItemsExtended } from '../../voucherify-integration/voucherifyApi'
+import { getCart } from '../../integration/emporix/emporixApi'
+import { buildCartFromEmporixCart } from '../../integration/mappers/buildCartFromEmporixCart'
+import { mapItemsToVoucherifyOrdersItems } from '../../integration/voucherify/validateCouponsAndGetAvailablePromotions/mappers/product'
+import { getQualificationsWithItemsExtended } from '../../integration/voucherify/voucherifyApi'
 
 const PaymentAction = ({ action, disabled }) => {
   return (
