@@ -12,18 +12,18 @@ import {
 import { Box } from '@mui/system'
 import { useAuth } from '../../context/auth-provider'
 import { mapEmporixUserToVoucherifyCustomer } from '../../integration/voucherify/mappers/mapEmporixUserToVoucherifyCustomer'
-import {
-  asyncMap,
-  getQualificationsWithItemsExtended,
-  getValidationRule,
-} from '../../integration/voucherify/voucherifyApi'
+import { getQualificationsWithItemsExtended } from '../../integration/voucherify/voucherifyApi'
 import useMediaQuery from '@mui/material/useMediaQuery'
 import { buildCartFromEmporixCart } from '../../integration/mappers/buildCartFromEmporixCart'
 import { getCart } from '../../integration/emporix/emporixApi'
 import { mapItemsToVoucherifyOrdersItems } from '../../integration/voucherify/validateCouponsAndGetAvailablePromotions/mappers/product'
 import { Modal } from '@mui/material'
-import { uniq } from 'lodash'
 import { enrichBundleQualificationsByProductIdsRelatedTo } from '../../integration/voucherify/mappers/enrichBundleQualificationsByProductIdsRelatedTo'
+import {
+  filterOutBundleQualifications,
+  getOnlyBundleQualifications,
+} from '../../integration/voucherify/mappers/bundleQualifications'
+import { getQualificationsPerProducts } from '../../integration/voucherify/mappers/getQualificationsPerProducts'
 
 const CartPage = () => {
   const minWidth900px = useMediaQuery('(min-width:900px)')
@@ -85,57 +85,14 @@ const CartPage = () => {
       items,
       customer
     )
-
-    const bundles = uniq(
-      allQualifications.filter(
-        (qualification) =>
-          qualification?.metadata?.bundle === 'true' ||
-          qualification?.metadata?.bundle === true
-      )
-    )
+    const bundleQualifications = getOnlyBundleQualifications(allQualifications)
     //don't wait
-    setBundleQualificationsEnriched(bundles)
-    const allQualificationsWithoutBundles = allQualifications.filter(
-      (qualification) =>
-        !(
-          qualification?.metadata?.bundle === 'true' ||
-          qualification?.metadata?.bundle === true
-        )
-    )
-    const allQualificationsPerProducts = allQualificationsWithoutBundles.reduce(
-      (accumulator, qualificationExtended) => {
-        const applicable_to =
-          qualificationExtended.qualification?.applicable_to?.data || []
-        const sourceIds =
-          applicable_to
-            .map((applicableTo) => applicableTo.source_id)
-            .filter((e) => e) || []
-        sourceIds.forEach((sourceId) => {
-          if (
-            accumulator.find(
-              (allQualificationsPerProduct) =>
-                allQualificationsPerProduct.productId === sourceId
-            )
-          ) {
-            return accumulator.map((allQualificationsPerProducts) => {
-              if (allQualificationsPerProducts.productId === sourceId) {
-                allQualificationsPerProducts.qualifications = [
-                  ...allQualificationsPerProducts.qualifications,
-                  qualificationExtended,
-                ]
-              }
-              return allQualificationsPerProducts
-            })
-          }
-        })
-        return accumulator
-      },
-      productsIds.map((productId) => {
-        return {
-          productId: productId,
-          qualifications: [],
-        }
-      })
+    setBundleQualificationsEnriched(bundleQualifications)
+    const allQualificationsWithoutBundles =
+      filterOutBundleQualifications(allQualifications)
+    const allQualificationsPerProducts = getQualificationsPerProducts(
+      allQualificationsWithoutBundles,
+      productsIds
     )
     setProductQualifications(allQualificationsPerProducts)
     return allQualifications
@@ -148,10 +105,7 @@ const CartPage = () => {
         return
       }
       setCartId(cartAccount?.id)
-      const customer =
-        user instanceof Object
-          ? mapEmporixUserToVoucherifyCustomer(user)
-          : undefined
+      const customer = mapEmporixUserToVoucherifyCustomer(user)
       const emporixCart = await getCart(cartAccount.id)
       const cart = buildCartFromEmporixCart({
         emporixCart,
@@ -166,7 +120,7 @@ const CartPage = () => {
       )
       await loadALLQualifications(items, customer, allQualificationsSoFar)
     })()
-  }, [cartAccount?.id])
+  }, [cartAccount?.id, user])
 
   useEffect(() => {
     const items = cartAccount?.items || []

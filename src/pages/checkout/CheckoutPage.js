@@ -254,10 +254,7 @@ const CheckoutPage = () => {
       if (!cartAccount?.id) {
         return
       }
-      const customer =
-        user instanceof Object
-          ? mapEmporixUserToVoucherifyCustomer(user)
-          : undefined
+      const customer = mapEmporixUserToVoucherifyCustomer(user)
       const emporixCart = await getCart(cartAccount.id)
       const cart = buildCartFromEmporixCart({
         emporixCart,

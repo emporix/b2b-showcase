@@ -30,10 +30,7 @@ const About = () => {
 
   useEffect(() => {
     ;(async () => {
-      const customer =
-        user instanceof Object
-          ? mapEmporixUserToVoucherifyCustomer(user)
-          : undefined
+      const customer = mapEmporixUserToVoucherifyCustomer(user)
       setQualifications(
         await getQualificationsWithItemsExtended('AUDIENCE_ONLY', [], customer)
       )

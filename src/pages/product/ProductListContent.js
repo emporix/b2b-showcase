@@ -120,10 +120,7 @@ const ProductListItems = ({ products, auth, displayType }) => {
     const productsIds = products.map((product) => product.id)
 
     ;(async () => {
-      const customer =
-        user instanceof Object
-          ? mapEmporixUserToVoucherifyCustomer(user)
-          : undefined
+      const customer = mapEmporixUserToVoucherifyCustomer(user)
       const allQualifications = await getQualificationsWithItemsExtended(
         'PRODUCTS',
         productsIds.map((productId) => {

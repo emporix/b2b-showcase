@@ -38,18 +38,18 @@ export const ProductDetails = () => {
   useEffect(() => {
     setQualifications([])
     ;(async () => {
-      const customer =
-        user instanceof Object
-          ? mapEmporixUserToVoucherifyCustomer(user)
-          : undefined
+      const customer = mapEmporixUserToVoucherifyCustomer(user)
       setQualifications(
-        await getQualificationsWithItemsExtended('PRODUCTS', [
-          {
-            quantity: 1,
-            product_id: productId,
-          },
-        ]),
-        customer
+        await getQualificationsWithItemsExtended(
+          'PRODUCTS',
+          [
+            {
+              quantity: 1,
+              product_id: productId,
+            },
+          ],
+          customer
+        )
       )
     })()
   }, [productId])
