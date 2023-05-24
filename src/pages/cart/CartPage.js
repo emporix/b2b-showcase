@@ -144,6 +144,7 @@ const CartPage = () => {
           qualification?.metadata?.bundle === true
       )
     )
+    //don't wait
     setBundleQualificationsEnriched(bundles)
     const allQualificationsWithoutBundles = allQualifications.filter(
       (qualification) =>
