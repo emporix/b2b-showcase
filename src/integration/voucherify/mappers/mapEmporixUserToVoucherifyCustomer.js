@@ -1,5 +1,5 @@
 export const mapEmporixUserToVoucherifyCustomer = (user) => {
-  if (!user instanceof Object) {
+  if (!(user instanceof Object)) {
     return undefined
   }
   const customer = {
