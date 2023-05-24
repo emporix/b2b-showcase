@@ -20,7 +20,10 @@ import { useAuth } from '../../context/auth-provider'
 import { mapEmporixUserToVoucherifyCustomer } from '../../integration/voucherify/mappers/mapEmporixUserToVoucherifyCustomer'
 import { Qualification } from '../shared/Qualification'
 import { getCart } from '../../integration/emporix/emporixApi'
-import { buildCartFromEmporixCart } from '../../integration/mappers/buildCartFromEmporixCart'
+import {
+  buildIntegrationCartFromEmporixCart,
+  mapEmporixItemsToVoucherifyProducts,
+} from '../../integration/buildIntegrationCartFromEmporixCart'
 import { mapItemsToVoucherifyOrdersItems } from '../../integration/voucherify/validateCouponsAndGetAvailablePromotions/mappers/product'
 import { getQualificationsWithItemsExtended } from '../../integration/voucherify/voucherifyApi'
 
@@ -256,11 +259,9 @@ const CheckoutPage = () => {
       }
       const customer = mapEmporixUserToVoucherifyCustomer(user)
       const emporixCart = await getCart(cartAccount.id)
-      const cart = buildCartFromEmporixCart({
-        emporixCart,
-        customer,
-      })
-      const items = mapItemsToVoucherifyOrdersItems(cart.items || [])
+      const items = mapEmporixItemsToVoucherifyProducts(
+        emporixCart?.items || []
+      )
       setQualifications(
         await getQualificationsWithItemsExtended('ALL', items, customer)
       )

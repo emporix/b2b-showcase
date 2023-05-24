@@ -6,7 +6,7 @@ import {
   removeAllDiscountsFromCart,
   updateCartMetadataMixins,
 } from './emporix/emporixApi'
-import { buildCartFromEmporixCart } from './mappers/buildCartFromEmporixCart'
+import { buildIntegrationCartFromEmporixCart } from './buildIntegrationCartFromEmporixCart'
 import { CartUpdateActions } from './voucherify/cartUpdateActions'
 import { validateCouponsAndGetAvailablePromotions } from './voucherify/validateCouponsAndGetAvailablePromotions/validateCouponsAndGetAvailablePromotions'
 import { getDiscountsValues } from './voucherify/mappers/getDiscountsValues'
@@ -28,7 +28,7 @@ export const updateCart = async ({
   const emporixCart = await getCart(emporixCartId)
   try {
     await validateCouponsAndGetAvailablePromotions(
-      buildCartFromEmporixCart({
+      buildIntegrationCartFromEmporixCart({
         emporixCart,
         newCodes,
         codesToRemove,
@@ -42,7 +42,7 @@ export const updateCart = async ({
   }
   const validationResult = cartUpdateActions.getValidationResult() || {}
   const { applicableCoupons } = validationResult
-  const { items } = buildCartFromEmporixCart({ emporixCart })
+  const { items } = buildIntegrationCartFromEmporixCart({ emporixCart })
   const discountsDetails = getDiscountsValues(applicableCoupons, items)
   if (emporixCart.discounts?.length) {
     await removeAllDiscountsFromCart(emporixCart.id)
