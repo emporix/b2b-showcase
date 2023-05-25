@@ -1,14 +1,14 @@
+let emporixAccessToken
+let emporixAccessTokenExpiresAt
+
 export const getEmporixAPIAccessToken = async () => {
-  const accessToken = localStorage.getItem('emporixAccessToken')
-  const expiresAt = parseInt(
-    localStorage.getItem('emporixAccessTokenExpiresAt')
-  )
   if (
-    !isNaN(expiresAt) &&
-    typeof expiresAt === 'number' &&
-    new Date().getTime() <= expiresAt
+    !isNaN(emporixAccessTokenExpiresAt) &&
+    typeof emporixAccessTokenExpiresAt === 'number' &&
+    new Date().getTime() <= emporixAccessTokenExpiresAt &&
+    emporixAccessToken
   ) {
-    return accessToken
+    return emporixAccessToken
   }
   const formData = {
     client_id: process.env.REACT_APP_EMPORIX_CLIENT_ID,
@@ -30,9 +30,9 @@ export const getEmporixAPIAccessToken = async () => {
     }
     const responseJSON = await responseRaw.json()
     const { expires_in, access_token: newAccessToken } = responseJSON
-    const newExpiresAt = new Date().getTime() + (expires_in - 180) * 1000 //180 second error margin
-    localStorage.setItem('emporixAccessToken', newAccessToken)
-    localStorage.setItem('emporixAccessTokenExpiresAt', newExpiresAt.toString())
+    emporixAccessToken = newAccessToken
+    emporixAccessTokenExpiresAt =
+      new Date().getTime() + (expires_in - 180) * 1000 //180 second error margin
     return newAccessToken
   } catch (e) {
     console.log(e)
