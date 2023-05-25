@@ -8,9 +8,15 @@ const getContentfulEntryFields = async (entryId) => {
     method: 'GET',
   })
   try {
-    return (await response.json())?.fields || {}
-  } catch (e) {
+    const responseJSON = await response.json()
+    if (responseJSON?.fields) {
+      return responseJSON.fields
+    }
     //someone had to remove the entry
+    console.log(responseJSON)
+    //Voucherify fallback will be used
+    return {}
+  } catch (e) {
     console.log(e)
     return {}
   }
