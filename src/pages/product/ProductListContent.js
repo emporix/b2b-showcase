@@ -356,11 +356,13 @@ const ProductListPagination = ({
   productListCount,
   pageNumber,
 }) => {
-  let totalPage = Math.round(productListCount / countPerPage)
+  let totalPage = Math.ceil(productListCount / countPerPage)
   let previousPageitems = []
   let next_page_items = []
 
-  if (totalPage < pageNumber) pageNumber = 1
+  if (totalPage < pageNumber) {
+    pageNumber = 1
+  }
 
   for (let i = pageNumber - 1; i > 1 && i > pageNumber - 3; i--)
     previousPageitems.unshift(
@@ -459,6 +461,7 @@ const ProductListContent = () => {
     productListCountsPerPage,
     productsPerPage,
     setProductsPerPage,
+    total,
   } = useProductList()
 
   const productsWithoutVariants = useMemo(() => {
@@ -493,14 +496,14 @@ const ProductListContent = () => {
             products={productsWithoutVariants}
             auth={!!user}
             displayType={displayType}
-            productListCount={productsWithoutVariants.length}
+            productListCount={total}
             pageNumber={pageNumber}
             countPerPage={productsPerPage}
           />
           <ProductListPagination
             changePageNumber={changePageNumber}
             countPerPage={productsPerPage}
-            productListCount={productsWithoutVariants.length}
+            productListCount={total}
             pageNumber={pageNumber}
           />
         </>
