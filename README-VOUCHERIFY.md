@@ -88,18 +88,27 @@ change name and add description or terms and conditions to all promotions.
 ### 2.1.3. How to configure Contentful service
 
 Create 3 content models:
-- campaign
-  - name - short text
-  - description - short text
-  - termsAndConditions - short text
-- promotion_tier
-  - name - short text
-  - description - short text
-  - termsAndConditions - short text
-- standalone voucher
-  - code - short text
-  - description - short text
-  - termsAndConditions - short text
+- CAMPAIGN
+  - name: campaign
+  - content id: campaign
+  - fields
+    - name - short text
+    - description - short text
+    - termsAndConditions - short text
+- PROMOTION TIER
+  - name: promotion_tier
+  - content id: promotion
+  - fields
+    - name - short text
+    - description - short text
+    - termsAndConditions - short text
+- STANDALONE CODE
+  - name: standalone voucher
+  - content id: voucher
+  - fields
+    - code - short text
+    - description - short text
+    - termsAndConditions - short text
 
 See `readme-images/Contentful-X.png` for more information.
 
