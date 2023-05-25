@@ -1,23 +1,44 @@
 # Emporix B2B Showcase
 
-## Quick introduction
+1. [Introduction](#1-Introduction)
+   1. [Contentful role in this integration](#11-Contentful-role-in-this-integration)
+   2. [Qualifications](#12-Qualifications)
+2. [How to prepare the environment](#2-How-to-prepare-the-environment)
+   1. [Prepare Emporix, Voucherify and Contentful services](#21-Prepare-Emporix-Voucherify-and-Contentful-services)
+      1. [Migrations](#211-Migrations)
+      2. [How to get API keys](#212-How-to-get-API-keys)
+   2. [How to prepare showcase application](#22-How-to-prepare-showcase-application)
+      1. [Requirements](#221-Requirements)
+      2. [Installation process](#222-Installation-process)
+      3. [Commands](#223-Commands)
+3. [How it works](#3-How-it-works)
+   1. [Applying vouchers and promotion tiers](#31-Applying-vouchers-and-promotion-tiers)
+   2. [Bundles](#32-Bundles)
+   3. [Integration from a technical perspective](#33-Integration-from-a-technical-perspective)
+4. [Changes made to integrate with Voucherify and Contentful](#4-Changes-made-to-integrate-with-Voucherify-and-Contentful)
 
-This is a PoC of integration Emporix with Voucherify and Contentful. We want to show you how you could use Voucherify promotion engine
-if you have Emporix store. Additionally, Voucherify uses Contentful to manage vouchers, promotion tiers and campaigns descriptions.
+## 1. Introduction
 
-**As this is a PoC we use SERVER SIDE Emporix, Voucherify and Contentful AUTHORIZATION on frontend which is UNACCEPTABLE on production!**
+This showcase application is a Proof of Concept of integration between Emporix, Voucherify and Contentful. This showcase shows how you could use Voucherify promotion engine
+if you have Emporix store. Additionally, this integration uses Contentful to manage vouchers, promotion tiers and campaigns descriptions. This is possible because
+Voucherify standalone codes, promotion tiers and campaigns contains references to CMS documents in the metadata.
 
-## Contentful role in this integration
+**The Emporix showcase is a client-side application. We have used direct connections to server-side APIs from the front-end application to build this PoC
+integration faster. Please remember that it's not recommended for production applications as it exposes Emporix, Voucherify and Contentful server-side API keys,
+which is a major security threat. So please, keep access to this showcase only for trusted users and do not use API keys to production environments.**
+
+### 1.1. Contentful role in this integration
 
 We use contentful to store descriptions of each voucher, promotion tier and campaign. So simply, when we get qualification, we do a request
 asking contentful for the promotion description to show to a client.
 We do that because CMS like Contentful itself makes it easy to manage any content.
 
-Note: If we have not migrated a voucher, promotion tier or campaign to Contentful, we will simply use Voucherify as a fallback.
+Each standalone code, promotion tier and campaign in Voucherify needs a reference to a corresponding document in Contentful. We have prepared a migration
+script that creates Contentful documents to make an initial configuration easier. Please refer to [2.2.1 section](#211-Migrations) where are more details.
 
-## Integration from business perspective
+### 1.2. Qualifications
 
-### Qualifications
+Qualifications are vouchers and promotions that a customer can use immediately or after meeting certain conditions.
 
 Qualification scenarios we use:
 - AUDIENCE_ONLY - gives all redeemables that match the given context(customer) considering only the customer's audiences. Does not verify other rules.
@@ -36,29 +57,35 @@ Qualification scenarios we use:
    *(readme-images/Integration-8.png)*
 9. On the checkout page we show `ALL` scenario. *(readme-images/Integration-9.png)*
 
-### Applying vouchers and promotion tiers
+## 2. How to prepare the environment
 
-The limit of promotions is 5 per cart/order.
-We allow you to apply promotion tier (blue container) from anywhere as long as you are eligible for the promotion.
-Applying vouchers on the other hand can happen only from cart page, cart sidebar view or checkout page.
-So please notice that vouchers qualifications (green container) sometimes have `SAVE FOR LATER` button, that is because we don't
-want you to lose the promotion you see, but also we cannot guarantee that the voucher you see is valid, so we want just to remind you later
-about that voucher, so you will try to apply later on (on cart page).
+### 2.1. Prepare Emporix, Voucherify and Contentful services
 
-### Bundles
-
-We implemented additional functionality to bundle type of promotions. You may add missing products to your cart directly from promotion holder.
-A missing product is a product that is missing to receive a discount. *(readme-images/Bundles-1.png)*
-
-## Pre Requirements 
-
-### General
+You must have access to following services:
 
 - Voucherify account (with access to Qualification API v3)
 - Emporix account
 - Contentful account
 
-### Contentful
+### 2.1.1. Migrations
+
+Must .env file be filled out correctly.
+
+- yarn migrate:products - this will migrate products from Emporix to Voucherify, so you will be able to create promotions based on certain products.
+- yarn migrate:all-promotions - this will migrate all campaigns, promotion tiers and standalone vouchers to Contentful, so you will be able to
+change name and add description or terms and conditions to all promotions.
+
+### 2.1.2. How to get API keys
+
+- Emporix
+  - Manage API Keys
+- Voucherify
+  - Project Settings -> Application Keys
+- Contentful
+  - Account Settings -> Tokens -> Generate personal token
+  - Go to space -> Settings -> API keys -> Add API key
+
+### 2.1.3. How to configure Contentful service
 
 Create 3 content models:
 - campaign
@@ -76,11 +103,16 @@ Create 3 content models:
 
 See `readme-images/Contentful-X.png` for more information.
 
-## How to start:
+### 2.2. How to prepare showcase application
 
-### Environment variables
+### 2.2.1. Requirements
 
-- Copy .env.example to .env 
+- yarn
+- node 16.x
+
+### 2.2.2. Installation process
+
+- Copy .env.example to .env
 - Fill out .env file.
   - `REACT_APP_VOUCHERIFY_API_URL` - Voucherify API endpoint
   - `REACT_APP_VOUCHERIFY_API_URL` - Voucherify Application ID
@@ -95,31 +127,39 @@ See `readme-images/Contentful-X.png` for more information.
   - `REACT_APP_CONTENTFUL_DELIVERY_API_ACCESS_TOKEN` - Contentful Content Delivery API - access token
   - `REACT_APP_CONTENTFUL_SPACE_ID` - Contentful Space ID
 
-### How to obtain environment variables
+### 2.2.3. Commands
 
-- Emporix
-  - Manage API Keys
-- Voucherify
-  - Project Settings -> Application Keys
-- Contentful
-  - Account Settings -> Tokens -> Generate personal token
-  - Go to space -> Settings -> API keys -> Add API key
+- `yarn install` - will install required packages
+- `yarn start` - will start application
 
-## Migrating standalone vouchers, promotion tiers and campaigns to Contentful
+## 3. How it works
 
-Must .env file be filled out correctly.
+### 3.1. Applying vouchers and promotion tiers
 
-- yarn migrate:products - this will migrate products from Emporix to Voucherify, so you will be able to create promotions based on certain products.
-- yarn migrate:all-promotions - this will migrate all campaigns, promotion tiers and standalone vouchers to Contentful, so you will be able to change name and add description or terms and conditions to all promotions.
+The limit of promotions is 5 per cart/order.
+We allow you to apply promotion tier (blue container) from anywhere as long as you are eligible for the promotion.
+Applying vouchers on the other hand can happen only from cart page, cart sidebar view or checkout page.
+So please notice that vouchers qualifications (green container) sometimes have `SAVE FOR LATER` button, that is because we don't
+want you to lose the promotion you see, but also we cannot guarantee that the voucher you see is valid, so we want just to remind you later
+about that voucher, so you will try to apply later on (on cart page).
 
-## Local setup
+### 3.2. Bundles
 
-1. `yarn install`
-2. `yarn start`
+We implemented additional functionality to bundle type of promotions. You may add missing products to your cart directly from promotion holder.
+A missing product is a product that is missing to receive a discount. *(readme-images/Bundles-1.png)*
 
-## Changes made
+### 3.3. Integration from a technical perspective
 
-We made changes in following files.
+- Each time a cart changes (products, quantity, etc.) we must recheck cart (see function `recheckCart` in `src/context/cart-provider.js`)
+- From emporix cart perspective we apply maximum 1 coupon to a cart. That is because at first integration is calculating the discount that
+  should be applied, we create single coupon for the total discount amount that should be applied. We apply the coupon. And the information about what
+  coupons are really applied to the cart from Voucherify perspective, are saved in cart `metadata/mixins`.
+- Additionally, in cart `metadata/mixins` we save `applicable promtion tiers`, so we know later on, what promotions (blue containers) can be applied,
+  so we can show `apply` button, and what promotions we cannot apply, so the button should not be shown.
+
+## 4. Changes made to integrate with Voucherify and Contentful
+
+Following files were modified from the original repository:
 
 - package.json
 - src
@@ -154,13 +194,7 @@ We made changes in following files.
     - cart.service.js
 - yarn.lock
 
-Additionally, we added some files, please see PR https://github.com/rspective/emporix-b2b-showcase/pull/5/files
+Additionally, we added some files, please see PR https://github.com/rspective/emporix-b2b-showcase/pull/5/files for details.
 
-## Integration from technical perspective
 
-- Each time a cart changes (products, quantity, etc.) we must recheck cart (see function `recheckCart` in `src/context/cart-provider.js`)
-- From emporix cart perspective we apply maximum 1 coupon to a cart. That is because at first integration is calculating the discount that 
-should be applied, we create single coupon for the total discount amount that should be applied. We apply the coupon. And the information about what
-coupons are really applied to the cart from Voucherify perspective, are saved in cart `metadata/mixins`. 
-- Additionally, in cart `metadata/mixins` we save `applicable promtion tiers`, so we know later on, what promotions (blue containers) can be applied,
-so we can show `apply` button, and what promotions we cannot apply, so the button should not be shown.
+
