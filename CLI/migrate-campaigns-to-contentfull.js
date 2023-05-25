@@ -20,6 +20,11 @@ const getCampaigns = async (page, campaign_type) => {
     )?.campaigns || []
   )
 }
+
+const updateCampaignMetadata = async (nameOrId, metadata) => {
+  await voucherifyClient.campaigns.update(nameOrId, { metadata })
+}
+
 const getAllCampaigns = async () => {
   let page = 1
   let allCampaigns = []
@@ -149,7 +154,7 @@ const createContent = async (
       continue
     }
     try {
-      await voucherifyClient.campaigns.update(campaign.id || campaign.name, {
+      await updateCampaignMetadata(campaign.id || campaign.name, {
         ...(campaign?.metadata || {}),
         contentfulEntryId,
       })

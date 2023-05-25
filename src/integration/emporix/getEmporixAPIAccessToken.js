@@ -3,10 +3,10 @@ let emporixAccessTokenExpiresAt
 
 export const getEmporixAPIAccessToken = async () => {
   if (
-    !isNaN(emporixAccessTokenExpiresAt) &&
-    typeof emporixAccessTokenExpiresAt === 'number' &&
-    new Date().getTime() <= emporixAccessTokenExpiresAt &&
-    emporixAccessToken
+      !isNaN(emporixAccessTokenExpiresAt) &&
+      typeof emporixAccessTokenExpiresAt === 'number' &&
+      new Date().getTime() <= emporixAccessTokenExpiresAt &&
+      emporixAccessToken
   ) {
     return emporixAccessToken
   }
@@ -32,7 +32,7 @@ export const getEmporixAPIAccessToken = async () => {
     const { expires_in, access_token: newAccessToken } = responseJSON
     emporixAccessToken = newAccessToken
     emporixAccessTokenExpiresAt =
-      new Date().getTime() + (expires_in - 180) * 1000 //180 second error margin
+        new Date().getTime() + (expires_in - 180) * 1000 //180 second error margin
     return newAccessToken
   } catch (e) {
     console.log(e)
