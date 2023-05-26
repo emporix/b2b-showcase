@@ -34,7 +34,7 @@ const CartProductInfo = ({ cart }) => {
   )
 }
 
-const CartTable = ({ cartList, cart, classname, qualifications }) => {
+const CartTable = ({ cartList, cart, classname, qualifications = [] }) => {
   const [open, setOpen] = useState(false)
   const [currentProductQualifications, setCurrentProductQualifications] =
     useState([])

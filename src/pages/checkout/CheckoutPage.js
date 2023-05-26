@@ -259,8 +259,8 @@ const CheckoutPage = () => {
       }
       const customer = mapEmporixUserToVoucherifyCustomer(user)
       const emporixCart = await getCart(cartAccount.id)
-      const items = mapEmporixItemsToVoucherifyProducts(
-        emporixCart?.items || []
+      const items = mapItemsToVoucherifyOrdersItems(
+        mapEmporixItemsToVoucherifyProducts(emporixCart?.items || [])
       )
       setQualifications(
         await getQualificationsWithItemsExtended('ALL', items, customer)
