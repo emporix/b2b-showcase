@@ -194,7 +194,7 @@ export const Qualification = ({
         )}
         <>
           {isAlreadyApplied ? (
-            <Box>
+            <Box sx={{ display: 'flex', gap: '10px' }}>
               <Button
                 title="Applied"
                 disabled={true}
@@ -203,6 +203,32 @@ export const Qualification = ({
               >
                 Applied
               </Button>
+              {addProducts?.length > 0 ? (
+                <Box sx={{ display: 'flex' }}>
+                  <Button
+                    title="Apply Coupon"
+                    disabled={!addProducts}
+                    variant={'contained'}
+                    sx={{
+                      mt: 1,
+                      mb: '14px',
+                      borderRadius: 0,
+                      background: '#097e12',
+                      '&:hover': {
+                        backgroundColor: '#07670f',
+                      },
+                    }}
+                    onClick={() => addMissingProducts()}
+                  >
+                    Add missing product{addProducts?.length > 1 ? 's' : ''}
+                  </Button>
+                  {areProductsBeingAdded && (
+                    <Box sx={{ mb: '-60px', mt: '9px', ml: 1 }}>
+                      <CircularProgress size={36.5} />
+                    </Box>
+                  )}
+                </Box>
+              ) : undefined}
             </Box>
           ) : (
             <Box sx={{ display: 'flex', gap: '10px' }}>
