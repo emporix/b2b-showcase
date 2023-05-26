@@ -17,8 +17,15 @@ import { TextInput } from '../../components/Utilities/input'
 import { Box } from '@mui/system'
 import { CircularProgress } from '@material-ui/core'
 import { useAuth } from '../../context/auth-provider'
-import { mapEmporixUserToVoucherifyCustomer } from '../../voucherify-integration/mapEmporixUserToVoucherifyCustomer'
+import { mapEmporixUserToVoucherifyCustomer } from '../../integration/voucherify/mappers/mapEmporixUserToVoucherifyCustomer'
 import { Qualification } from '../shared/Qualification'
+import { getCart } from '../../integration/emporix/emporixApi'
+import {
+  buildIntegrationCartFromEmporixCart,
+  mapEmporixItemsToVoucherifyProducts,
+} from '../../integration/buildIntegrationCartFromEmporixCart'
+import { mapItemsToVoucherifyOrdersItems } from '../../integration/voucherify/validateCouponsAndGetAvailablePromotions/mappers/product'
+import { getQualificationsWithItemsExtended } from '../../integration/voucherify/voucherifyApi'
 
 const PaymentAction = ({ action, disabled }) => {
   return (
@@ -77,21 +84,54 @@ const AppliedCoupon = ({ appliedCoupon, user }) => {
   )
 }
 
-const AvailablePromotion = ({ availablePromotion, user }) => {
-  const { applyPromotion } = useCart()
-
-  const applyPromotionOnCart = useCallback(() => {
-    applyPromotion(availablePromotion.code, user)
-  }, [availablePromotion])
-
-  return (
-    <Chip
-      sx={{ mb: 1, mr: 1 }}
-      label={availablePromotion?.banner || availablePromotion.code}
-      variant="outlined"
-      onClick={applyPromotionOnCart}
-    />
+const AppliedCouponsComponent = ({ appliedCoupons, user }) => {
+  const counter = (appliedCoupons ?? []).reduce(
+    (accumulator, appliedCoupon) => {
+      switch (appliedCoupon.type) {
+        case 'promotion_tier':
+          accumulator.promotion_tier = accumulator.promotion_tier + 1
+          break
+        case 'voucher':
+          accumulator.voucher = accumulator.voucher + 1
+          break
+        default:
+          break
+      }
+      return accumulator
+    },
+    {
+      promotion_tier: 0,
+      voucher: 0,
+    }
   )
+
+  if (appliedCoupons?.length) {
+    return (
+      <Grid item xs={12} sx={{}}>
+        <Grid item xs={12} sx={{ mb: 2 }}>
+          <span className="font-bold ">
+            Applied{' '}
+            {counter.voucher && counter.promotion_tier
+              ? `voucher${counter.voucher > 1 ? 's' : ''} and promotion${
+                  counter.promotion_tier > 1 ? 's' : ''
+                }`
+              : counter.voucher
+              ? `voucher${counter.voucher > 1 ? 's' : ''}`
+              : `promotion${counter.promotion_tier > 1 ? 's' : ''}`}
+          </span>
+        </Grid>
+        <Grid item xs={12}>
+          {appliedCoupons.map((appliedCoupon) => (
+            <AppliedCoupon
+              key={appliedCoupon.code}
+              appliedCoupon={appliedCoupon}
+              user={user}
+            ></AppliedCoupon>
+          ))}
+        </Grid>
+      </Grid>
+    )
+  }
 }
 
 export const Coupon = () => {
@@ -135,75 +175,6 @@ export const Coupon = () => {
     setIsBeingApplied(false)
   }
 
-  const availablePromotionsComponent = () => {
-    if (availablePromotions?.length) {
-      return (
-        <Grid item xs={12} sx={{}}>
-          <Grid item xs={12} sx={{ mb: 2 }}>
-            <span className="font-bold ">
-              Available promotion{availablePromotions.length > 1 ? 's' : ''}
-            </span>
-          </Grid>
-          <Grid item xs={12}>
-            {availablePromotions.map((availablePromotion) => (
-              <AvailablePromotion
-                key={availablePromotion.code}
-                availablePromotion={availablePromotion}
-                user={user}
-              />
-            ))}
-          </Grid>
-        </Grid>
-      )
-    }
-  }
-
-  const appliedCouponsComponent = () => {
-    const counter = {
-      promotion_tier: 0,
-      voucher: 0,
-    }
-    appliedCoupons?.forEach((appliedCoupon) => {
-      switch (appliedCoupon.type) {
-        case 'promotion_tier':
-          counter.promotion_tier = counter.promotion_tier + 1
-          break
-        case 'voucher':
-          counter.voucher = counter.voucher + 1
-          break
-        default:
-          break
-      }
-    })
-    if (appliedCoupons?.length) {
-      return (
-        <Grid item xs={12} sx={{}}>
-          <Grid item xs={12} sx={{ mb: 2 }}>
-            <span className="font-bold ">
-              Applied{' '}
-              {counter.voucher && counter.promotion_tier
-                ? `voucher${counter.voucher > 1 ? 's' : ''} and promotion${
-                    counter.promotion_tier > 1 ? 's' : ''
-                  }`
-                : counter.voucher
-                ? `voucher${counter.voucher > 1 ? 's' : ''}`
-                : `promotion${counter.promotion_tier > 1 ? 's' : ''}`}
-            </span>
-          </Grid>
-          <Grid item xs={12}>
-            {appliedCoupons.map((appliedCoupon) => (
-              <AppliedCoupon
-                key={appliedCoupon.code}
-                appliedCoupon={appliedCoupon}
-                user={user}
-              ></AppliedCoupon>
-            ))}
-          </Grid>
-        </Grid>
-      )
-    }
-  }
-
   return (
     <Grid container spacing={2} sx={{ mb: 0 }}>
       <Grid item xs={12}>
@@ -240,8 +211,7 @@ export const Coupon = () => {
           <span style={{ color: 'red' }}>{error}</span>
         </Box>
       </Grid>
-      {appliedCouponsComponent()}
-      {/*{availablePromotionsComponent()}*/}
+      <AppliedCouponsComponent appliedCoupons={appliedCoupons} user={user} />
     </Grid>
   )
 }
@@ -283,18 +253,20 @@ const CheckoutPage = () => {
   const { user } = useAuth()
   const [qualifications, setQualifications] = useState([])
   useEffect(() => {
-    const productIds = (cartAccount?.items || [])
-      .map((product) => product.itemYrn?.split?.(';')?.at?.(-1))
-      .filter((e) => e)
-
     ;(async () => {
-      const customer =
-        user instanceof Object
-          ? mapEmporixUserToVoucherifyCustomer(user)
-          : undefined
-      setQualifications([])
+      if (!cartAccount?.id) {
+        return
+      }
+      const customer = mapEmporixUserToVoucherifyCustomer(user)
+      const emporixCart = await getCart(cartAccount.id)
+      const items = mapEmporixItemsToVoucherifyProducts(
+        emporixCart?.items || []
+      )
+      setQualifications(
+        await getQualificationsWithItemsExtended('ALL', items, customer)
+      )
     })()
-  }, [cartAccount])
+  }, [cartAccount, user])
 
   return (
     <div className="checkout-page-wrapper ">
@@ -356,17 +328,36 @@ const CheckoutPage = () => {
         </div>
         <Box sx={{ mt: -2, display: 'flex', flexDirection: 'column', gap: 1 }}>
           {qualifications.length ? (
-            <span style={{ fontSize: 20, fontWeight: 'bold' }}>
-              Promotion{qualifications.length > 1 ? 's' : ''} related to all
-              products in your cart:
-            </span>
+            <Box>
+              <Box
+                sx={{
+                  fontWeight: 'bold',
+                  fontSize: '20px',
+                  width: '100%',
+                  textAlign: 'left',
+                }}
+              >
+                Available promotions:
+              </Box>
+              <Box
+                sx={{
+                  mt: -1,
+                  p: '20px!important',
+                  gap: '10px!important',
+                  display: 'flex',
+                  flexDirection: 'column',
+                }}
+              >
+                {qualifications?.map((qualification) => (
+                  <Qualification
+                    key={qualification.id}
+                    qualification={qualification}
+                    allowVoucherApply={true}
+                  />
+                ))}
+              </Box>
+            </Box>
           ) : undefined}
-          {qualifications.map((qualification) => (
-            <Qualification
-              key={qualification.id}
-              qualification={qualification}
-            />
-          ))}
         </Box>
       </div>
     </div>

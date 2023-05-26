@@ -1,4 +1,4 @@
-import { getAvailablePromotions } from '../voucherifyApi'
+import { getAvailablePromotions } from '../../voucherifyApi'
 
 export function checkIfAllInapplicableCouponsArePromotionTier(
   notApplicableCoupons

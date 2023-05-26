@@ -188,7 +188,6 @@ const EachProduct = ({ item, qualifications }) => {
             <Qualification
               key={qualification.id}
               qualification={qualification}
-              hideApply={true}
             />
           ))}
         </div>

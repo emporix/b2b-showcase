@@ -1,4 +1,3 @@
-const fetch = require('node-fetch')
 const contentful = require('contentful-management')
 require('dotenv').config()
 const { VoucherifyServerSide } = require('@voucherify/sdk')

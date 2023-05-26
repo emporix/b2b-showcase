@@ -5,33 +5,75 @@ import CartTable from './CartTable'
 import CartMobileContent from './CartMobileContent'
 import { CartActionPanel } from '../../components/Cart/cart'
 import { useCart } from 'context/cart-provider'
-import { Qualification } from '../shared/Qualification'
+import {
+  getUsersSavedQualifications,
+  Qualification,
+} from '../shared/Qualification'
 import { Box } from '@mui/system'
 import { useAuth } from '../../context/auth-provider'
-import { mapEmporixUserToVoucherifyCustomer } from '../../voucherify-integration/mapEmporixUserToVoucherifyCustomer'
-import { getQualificationsWithItemsExtended } from '../../voucherify-integration/voucherifyApi'
+import { mapEmporixUserToVoucherifyCustomer } from '../../integration/voucherify/mappers/mapEmporixUserToVoucherifyCustomer'
+import { getQualificationsWithItemsExtended } from '../../integration/voucherify/voucherifyApi'
 import useMediaQuery from '@mui/material/useMediaQuery'
-import { buildCartFromEmporixCart } from '../../voucherify-integration/buildCartFromEmporixCart'
-import { getCart } from '../../voucherify-integration/emporixApi'
-import { mapItemsToVoucherifyOrdersItems } from '../../voucherify-integration/validateCouponsAndGetAvailablePromotions/product'
+import { getCart } from '../../integration/emporix/emporixApi'
+import { mapItemsToVoucherifyOrdersItems } from '../../integration/voucherify/validateCouponsAndGetAvailablePromotions/mappers/product'
 import { Modal } from '@mui/material'
-import { uniq } from 'lodash'
+import { enrichBundleQualificationsByProductIdsRelatedTo } from '../../integration/voucherify/mappers/enrichBundleQualificationsByProductIdsRelatedTo'
+import {
+  filterOutBundleQualifications,
+  getOnlyBundleQualifications,
+} from '../../integration/voucherify/mappers/bundleQualifications'
+import { getQualificationsPerProducts } from '../../integration/voucherify/mappers/getQualificationsPerProducts'
+import { mapEmporixItemsToVoucherifyProducts } from '../../integration/buildIntegrationCartFromEmporixCart'
 
 const CartPage = () => {
   const minWidth900px = useMediaQuery('(min-width:900px)')
   const { cartAccount } = useCart()
   const { user } = useAuth()
-  const [qualifications, setQualifications] = useState([])
+  const [productQualifications, setProductQualifications] = useState([])
   const [customerWalletQualifications, setCustomerWalletQualifications] =
     useState([])
   const [bundleQualifications, setBundleQualifications] = useState([])
+  const [allOtherQualifications, setAllOtherQualifications] = useState([])
+  const [cartId, setCartId] = useState(undefined)
 
-  const setCustomerWalletQualificationsFunction = async (items, customer) => {
-    setCustomerWalletQualifications(
+  const loadCustomerWalletQualifications = async (items, customer) => {
+    const customerWalletQualifications =
       await getQualificationsWithItemsExtended(
         'CUSTOMER_WALLET',
         items,
         customer
+      )
+    setCustomerWalletQualifications(customerWalletQualifications)
+    return customerWalletQualifications
+  }
+
+  const loadALLQualifications = async (
+    items,
+    customer,
+    allQualificationsSoFar
+  ) => {
+    const qualificationsIdsSoFar = allQualificationsSoFar.map(
+      (qualification) => qualification.id
+    )
+    const qualificationsAllScenario = await getQualificationsWithItemsExtended(
+      'ALL',
+      items,
+      customer
+    )
+    setAllOtherQualifications(
+      qualificationsAllScenario.filter(
+        (qualification) => !qualificationsIdsSoFar.includes(qualification.id)
+      )
+    )
+  }
+
+  const setBundleQualificationsEnriched = async (bundleQualifications) => {
+    //It is intended
+    //We shall show promotion asap, later update promotion with more data when found.
+    setBundleQualifications(bundleQualifications)
+    setBundleQualifications(
+      await enrichBundleQualificationsByProductIdsRelatedTo(
+        bundleQualifications
       )
     )
   }
@@ -43,79 +85,64 @@ const CartPage = () => {
       items,
       customer
     )
-    let allQualificationsPerProducts = productsIds.map((productId) => {
-      return {
-        productId: productId,
-        qualifications: [],
-      }
-    })
-    const bundles = uniq(
-      allQualifications.filter(
-        (qualification) =>
-          qualification?.metadata?.bundle === 'true' ||
-          qualification?.metadata?.bundle === true
-      )
+    const bundleQualifications = getOnlyBundleQualifications(allQualifications)
+    //don't wait
+    setBundleQualificationsEnriched(bundleQualifications)
+    const allQualificationsWithoutBundles =
+      filterOutBundleQualifications(allQualifications)
+    const allQualificationsPerProducts = getQualificationsPerProducts(
+      allQualificationsWithoutBundles,
+      productsIds
     )
-    console.log(bundles)
-    setBundleQualifications(bundles)
-    const allQualificationsWithoutBundles = allQualifications.filter(
-      (qualification) =>
-        !(
-          qualification?.metadata?.bundle === 'true' ||
-          qualification?.metadata?.bundle === true
-        )
-    )
-    allQualificationsWithoutBundles.forEach((qualificationExtended) => {
-      const applicable_to =
-        qualificationExtended.qualification?.applicable_to?.data || []
-      const sourceIds =
-        applicable_to
-          .map((applicableTo) => applicableTo.source_id)
-          .filter((e) => e) || []
-      sourceIds.forEach((sourceId) => {
-        if (
-          allQualificationsPerProducts.find(
-            (allQualificationsPerProduct) =>
-              allQualificationsPerProduct.productId === sourceId
-          )
-        ) {
-          allQualificationsPerProducts = allQualificationsPerProducts.map(
-            (allQualificationsPerProducts) => {
-              if (allQualificationsPerProducts.productId === sourceId) {
-                allQualificationsPerProducts.qualifications = [
-                  ...allQualificationsPerProducts.qualifications,
-                  qualificationExtended,
-                ]
-              }
-              return allQualificationsPerProducts
-            }
-          )
-        }
-      })
-    })
-    setQualifications(allQualificationsPerProducts)
+    setProductQualifications(allQualificationsPerProducts)
+    return allQualifications
   }
+  const [cartItemIds, setCartItemIds] = useState([])
 
   useEffect(() => {
     ;(async () => {
       if (!cartAccount?.id) {
         return
       }
-      const customer =
-        user instanceof Object
-          ? mapEmporixUserToVoucherifyCustomer(user)
-          : undefined
+      setCartId(cartAccount?.id)
+      const customer = mapEmporixUserToVoucherifyCustomer(user)
       const emporixCart = await getCart(cartAccount.id)
-      const cart = buildCartFromEmporixCart({
-        emporixCart,
-        customer,
-      })
-      const items = mapItemsToVoucherifyOrdersItems(cart.items || [])
-      setProductsQualificationsFunction(items, customer)
-      setCustomerWalletQualificationsFunction(items, customer)
+      const items = mapItemsToVoucherifyOrdersItems(
+        mapEmporixItemsToVoucherifyProducts(emporixCart?.items || [])
+      )
+      const allQualificationsSoFar = [].concat(
+        ...(await Promise.all([
+          await setProductsQualificationsFunction(items, customer),
+          await loadCustomerWalletQualifications(items, customer),
+        ]))
+      )
+      await loadALLQualifications(items, customer, allQualificationsSoFar)
     })()
-  }, [cartAccount?.id])
-  const [open, setOpen] = useState(false)
+  }, [cartAccount?.id, user])
+
+  useEffect(() => {
+    const items = cartAccount?.items || []
+    const itemIds = items
+      .map((item) => item?.itemYrn?.split?.(';')?.at?.(-1))
+      .filter((e) => e)
+    setCartItemIds(itemIds)
+  }, [cartAccount?.items])
+
+  const [usersSavedQualifications, setUsersSavedQualifications] = useState(
+    getUsersSavedQualifications(user)
+  )
+
+  useEffect(() => {
+    setUsersSavedQualifications(getUsersSavedQualifications(user))
+  }, [user])
+
+  const [
+    openCustomerWalletQualifications,
+    setOpenCustomerWalletQualifications,
+  ] = useState(false)
+
+  const [openUsersSavedQualifications, setOpenUsersSavedQualifications] =
+    useState(false)
 
   return (
     <div className="cart-page-wrapper ">
@@ -125,14 +152,12 @@ const CartPage = () => {
           <CartTable
             cartList={cartAccount.items}
             cart={cartAccount}
-            qualifications={qualifications}
+            qualifications={productQualifications}
           />
         </div>
-
         <div className="lg:hidden">
           <CartMobileContent cartList={cartAccount.items} cart={cartAccount} />
         </div>
-
         <div
           className="float-right"
           style={{
@@ -149,26 +174,40 @@ const CartPage = () => {
               gap: 1,
             }}
           >
-            <Box>
-              {customerWalletQualifications.length ? (
-                <Box
-                  sx={{
-                    m: 2,
-                    p: '20px!important',
-                    background: '#9fe7a5',
-                    textAlign: 'center',
-                    cursor: 'pointer',
-                    textWeight: '800!important',
-                  }}
-                  onClick={() => setOpen(true)}
-                >
-                  Found {customerWalletQualifications.length} promotion
-                  {customerWalletQualifications.length > 1 ? 's' : ''} related
-                  to customer
-                </Box>
-              ) : undefined}
-            </Box>
-            {bundleQualifications.length && (
+            {customerWalletQualifications.length ? (
+              <Box
+                sx={{
+                  m: 2,
+                  p: '20px!important',
+                  background: '#9fe7a5',
+                  textAlign: 'center',
+                  cursor: 'pointer',
+                  textWeight: '800!important',
+                }}
+                onClick={() => setOpenCustomerWalletQualifications(true)}
+              >
+                Found {customerWalletQualifications.length} promotion
+                {customerWalletQualifications.length > 1 ? 's' : ''} related to
+                customer
+              </Box>
+            ) : undefined}
+            {usersSavedQualifications.length ? (
+              <Box
+                sx={{
+                  m: 2,
+                  p: '20px!important',
+                  background: '#9fe7a5',
+                  textAlign: 'center',
+                  cursor: 'pointer',
+                  textWeight: '800!important',
+                }}
+                onClick={() => setOpenUsersSavedQualifications(true)}
+              >
+                You have {usersSavedQualifications.length} voucher
+                {usersSavedQualifications.length > 1 ? 's' : ''} saved
+              </Box>
+            ) : undefined}
+            {bundleQualifications.length ? (
               <Box>
                 <Box
                   sx={{
@@ -180,19 +219,64 @@ const CartPage = () => {
                 >
                   Bundles:
                 </Box>
-                <Box sx={{ mt: -1, p: '20px!important' }}>
+                <Box
+                  sx={{
+                    mt: -1,
+                    p: '20px!important',
+                    gap: '10px!important',
+                    display: 'flex',
+                    flexDirection: 'column',
+                  }}
+                >
                   {bundleQualifications?.map((qualification) => (
                     <Qualification
                       key={qualification.id}
                       qualification={qualification}
-                      hideApply={false}
+                      cartId={cartId}
+                      allowVoucherApply={true}
+                      addProducts={(qualification?.relatedTo || []).filter(
+                        (id) => !cartItemIds.includes(id)
+                      )}
                     />
                   ))}
                 </Box>
               </Box>
-            )}
+            ) : undefined}
+            {allOtherQualifications.length ? (
+              <Box>
+                <Box
+                  sx={{
+                    fontWeight: 'bold',
+                    fontSize: '20px',
+                    width: '100%',
+                    textAlign: 'center',
+                  }}
+                >
+                  Available promotions:
+                </Box>
+                <Box
+                  sx={{
+                    mt: -1,
+                    p: '20px!important',
+                    gap: '10px!important',
+                    display: 'flex',
+                    flexDirection: 'column',
+                  }}
+                >
+                  {allOtherQualifications?.map((qualification) => (
+                    <Qualification
+                      key={qualification.id}
+                      qualification={qualification}
+                      allowVoucherApply={true}
+                    />
+                  ))}
+                </Box>
+              </Box>
+            ) : undefined}
             <Modal
-              open={open}
+              open={
+                openCustomerWalletQualifications || openUsersSavedQualifications
+              }
               aria-labelledby="modal-modal-title"
               aria-describedby="modal-modal-description"
             >
@@ -210,7 +294,6 @@ const CartPage = () => {
                   background: `white`,
                   border: 0,
                   padding: 10,
-                  whiteSpace: `nowrap`,
                 }}
               >
                 <Box
@@ -223,21 +306,42 @@ const CartPage = () => {
                     cursor: 'pointer',
                     maxWidth: '40px',
                   }}
-                  onClick={() => setOpen(false)}
+                  onClick={() => {
+                    setOpenCustomerWalletQualifications(false)
+                    setOpenUsersSavedQualifications(false)
+                  }}
                 >
                   &#10060;
                 </Box>
-                <span style={{ fontSize: 20, fontWeight: 'bold' }}>
-                  Available promotion
-                  {customerWalletQualifications.length > 1 ? 's' : ''}:
-                </span>
-                {customerWalletQualifications?.map((qualification) => (
-                  <Qualification
-                    key={qualification.id}
-                    qualification={qualification}
-                    hideApply={false}
-                  />
-                ))}
+                {openCustomerWalletQualifications ? (
+                  <>
+                    <span style={{ fontSize: 20, fontWeight: 'bold' }}>
+                      Available promotion
+                      {customerWalletQualifications.length > 1 ? 's' : ''}:
+                    </span>
+                    {customerWalletQualifications?.map((qualification) => (
+                      <Qualification
+                        key={qualification.id}
+                        qualification={qualification}
+                        allowVoucherApply={true}
+                      />
+                    ))}
+                  </>
+                ) : (
+                  <>
+                    <span style={{ fontSize: 20, fontWeight: 'bold' }}>
+                      Saved voucher
+                      {usersSavedQualifications.length > 1 ? 's' : ''}:
+                    </span>
+                    {usersSavedQualifications?.map((qualification) => (
+                      <Qualification
+                        key={qualification.id}
+                        qualification={qualification}
+                        allowVoucherApply={true}
+                      />
+                    ))}
+                  </>
+                )}
               </div>
             </Modal>
           </Box>

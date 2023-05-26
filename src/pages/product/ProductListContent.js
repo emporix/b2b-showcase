@@ -3,16 +3,19 @@ import { BiMenu } from 'react-icons/bi'
 import React, { useEffect, useMemo, useState } from 'react'
 import { useSelector } from 'react-redux'
 import { IconContext } from 'react-icons'
-import { HiOutlineArrowLeft, HiOutlineArrowRight, HiChevronDown } from 'react-icons/hi'
+import {
+  HiOutlineArrowLeft,
+  HiOutlineArrowRight,
+  HiChevronDown,
+} from 'react-icons/hi'
 import { LoadingCircleProgress1 } from '../../components/Utilities/progress'
 import { availabilityDataSelector } from '../../redux/slices/availabilityReducer'
 import { useProductList } from 'context/product-list-context'
 import EachProduct from './EachProduct'
 import EachProductRow from './EachProductRow'
 import { useAuth } from 'context/auth-provider'
-import { mapEmporixUserToVoucherifyCustomer } from '../../voucherify-integration/mapEmporixUserToVoucherifyCustomer'
-import { getQualificationsWithItemsExtended } from '../../voucherify-integration/voucherifyApi'
-import { mapEmporixItemsToVoucherifyProducts } from '../../voucherify-integration/buildCartFromEmporixCart'
+import { mapEmporixUserToVoucherifyCustomer } from '../../integration/voucherify/mappers/mapEmporixUserToVoucherifyCustomer'
+import { getQualificationsWithItemsExtended } from '../../integration/voucherify/voucherifyApi'
 
 const ProductListViewSettingBar = ({
   changeDisplayType,
@@ -95,7 +98,7 @@ const ProductListViewSettingBar = ({
               </div>
               <div className="md:hidden  flex">
                 <div className="font-bold">Sort:</div>
-                  <HiChevronDown
+                <HiChevronDown
                   size={20}
                   className="ml-1 mt-0 h-6 w-6 font-normal"
                   aria-hidden="true"
@@ -117,10 +120,7 @@ const ProductListItems = ({ products, auth, displayType }) => {
     const productsIds = products.map((product) => product.id)
 
     ;(async () => {
-      const customer =
-        user instanceof Object
-          ? mapEmporixUserToVoucherifyCustomer(user)
-          : undefined
+      const customer = mapEmporixUserToVoucherifyCustomer(user)
       const allQualifications = await getQualificationsWithItemsExtended(
         'PRODUCTS',
         productsIds.map((productId) => {
@@ -356,11 +356,13 @@ const ProductListPagination = ({
   productListCount,
   pageNumber,
 }) => {
-  let totalPage = Math.round(productListCount / countPerPage)
+  let totalPage = Math.ceil(productListCount / countPerPage)
   let previousPageitems = []
   let next_page_items = []
 
-  if (totalPage < pageNumber) pageNumber = 1
+  if (totalPage < pageNumber) {
+    pageNumber = 1
+  }
 
   for (let i = pageNumber - 1; i > 1 && i > pageNumber - 3; i--)
     previousPageitems.unshift(
@@ -459,6 +461,7 @@ const ProductListContent = () => {
     productListCountsPerPage,
     productsPerPage,
     setProductsPerPage,
+    total,
   } = useProductList()
 
   const productsWithoutVariants = useMemo(() => {
@@ -493,14 +496,14 @@ const ProductListContent = () => {
             products={productsWithoutVariants}
             auth={!!user}
             displayType={displayType}
-            productListCount={productsWithoutVariants.length}
+            productListCount={total}
             pageNumber={pageNumber}
             countPerPage={productsPerPage}
           />
           <ProductListPagination
             changePageNumber={changePageNumber}
             countPerPage={productsPerPage}
-            productListCount={productsWithoutVariants.length}
+            productListCount={total}
             pageNumber={pageNumber}
           />
         </>

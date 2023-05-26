@@ -1,8 +1,8 @@
-import { mapItemsToVoucherifyOrdersItems } from './validateCouponsAndGetAvailablePromotions/product'
+import { mapItemsToVoucherifyOrdersItems } from './validateCouponsAndGetAvailablePromotions/mappers/product'
 import { VoucherifyServerSide } from '@voucherify/sdk'
-import { getContentfulEntryFields } from './contentfulApi'
+import getContentfulEntryFields from './getContentfulEntryFields'
 
-function asyncMap(arr, asyncFn) {
+export function asyncMap(arr, asyncFn) {
   return Promise.all(arr.map(asyncFn))
 }
 
@@ -13,6 +13,10 @@ export const getClient = () => {
     secretKey: process.env.REACT_APP_VOUCHERIFY_SECRET_KEY,
     dangerouslySetSecretKeyInBrowser: true,
   })
+}
+
+export const getValidationRule = async (validationRuleId) => {
+  return await getClient().validationRules.get(validationRuleId)
 }
 
 const getQualificationsWithItems = async (
@@ -52,7 +56,7 @@ const getPromotionTiersOrVoucher = async (qualification) => {
   if (object === 'promotion_tier') {
     const response = await voucherifyFetchAPI({
       method: 'GET',
-      path: `promotions/tiers/${qualification.id}`,
+      path: `promotions/tiers/${encodeURIComponent(qualification.id)}`,
     })
     if (response.status !== 200) {
       return
@@ -62,7 +66,7 @@ const getPromotionTiersOrVoucher = async (qualification) => {
   if (object === 'voucher') {
     const response = await voucherifyFetchAPI({
       method: 'GET',
-      path: `vouchers/${qualification.id}`,
+      path: `vouchers/${encodeURIComponent(qualification.id)}`,
     })
     if (response.status !== 200) {
       return

@@ -7,14 +7,11 @@ import React, {
   useMemo,
   useEffect,
 } from 'react'
-import { useSelector } from 'react-redux'
 import productService from 'services/product/product.service'
 import CartService from 'services/cart.service'
 import { useAuth } from './auth-provider'
 import { useSites } from './sites-provider'
 import { useAppContext } from './app-context'
-import { mapEmporixUserToVoucherifyCustomer } from '../voucherify-integration/mapEmporixUserToVoucherifyCustomer'
-import { nanoid } from '@reduxjs/toolkit'
 
 const CartContext = createContext()
 
@@ -183,39 +180,41 @@ const CartProvider = ({ children }) => {
 
   const recheckCart = async (customer) => {
     const user = JSON.parse(localStorage.getItem(USER))
-    if (cartAccount?.id) {
-      const data = await CartService.recheckCart(
-        cartAccount.id,
-        customer || user || {}
-      )
-      if (data.cart) {
-        setCartAccount({
-          ...data.cart,
-          items: await getCartList(data.cart.items || []),
-        })
+    if (!cartAccount?.id) {
+      return {
+        inapplicableCoupons: [],
       }
-      if (data.inapplicableCoupons) {
-        return { inapplicableCoupons: data.inapplicableCoupons }
+    }
+    const cartAndInapplicableCoupons = await CartService.recheckCart(
+      cartAccount.id,
+      customer || user || {}
+    )
+    if (cartAndInapplicableCoupons.cart) {
+      setCartAccount({
+        ...cartAndInapplicableCoupons.cart,
+        items: await getCartList(cartAndInapplicableCoupons.cart.items || []),
+      })
+    }
+    if (cartAndInapplicableCoupons.inapplicableCoupons) {
+      return {
+        inapplicableCoupons: cartAndInapplicableCoupons.inapplicableCoupons,
       }
     }
   }
 
   const applyDiscount = async (code, customer) => {
-    if (cartAccount?.id) {
-      const data = await CartService.applyDiscount(
-        cartAccount.id,
-        code,
-        customer
-      )
-      if (data.cart) {
-        setCartAccount({
-          ...data.cart,
-          items: await getCartList(data.cart.items || []),
-        })
-      }
-      if (data.inapplicableCoupons) {
-        return { inapplicableCoupons: data.inapplicableCoupons }
-      }
+    if (!cartAccount?.id) {
+      return { inapplicableCoupons: [] }
+    }
+    const data = await CartService.applyDiscount(cartAccount.id, code, customer)
+    if (data.cart) {
+      setCartAccount({
+        ...data.cart,
+        items: await getCartList(data.cart.items || []),
+      })
+    }
+    if (data.inapplicableCoupons) {
+      return { inapplicableCoupons: data.inapplicableCoupons }
     }
   }
 
@@ -302,6 +301,7 @@ const CartProvider = ({ children }) => {
     removeCartItem,
     changeCurrency,
     putCartProduct,
+    recheckCart,
     applyDiscount,
     applyPromotion,
     removeDiscount,

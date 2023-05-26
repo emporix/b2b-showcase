@@ -31,9 +31,6 @@ import { PriceTierValues } from './VariantAccordion'
 import { useCart } from 'context/cart-provider'
 import { useAuth } from 'context/auth-provider'
 import { formatPrice } from 'helpers/price'
-import { Button } from '@mui/material'
-import { CircularProgress } from '@material-ui/core'
-import { mapEmporixUserToVoucherifyCustomer } from '../../voucherify-integration/mapEmporixUserToVoucherifyCustomer'
 import { Qualification } from '../shared/Qualification'
 
 const ProductContext = createContext()

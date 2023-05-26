@@ -19,11 +19,8 @@ import { getBrand } from 'services/product/brand.service'
 import { getLabel } from 'services/product/labels'
 import { useCurrency } from 'context/currency-context'
 import { useAuth } from '../../context/auth-provider'
-import {
-  getAllProductQualificationsExtended,
-  getQualificationsWithItemsExtended,
-} from '../../voucherify-integration/voucherifyApi'
-import { mapEmporixUserToVoucherifyCustomer } from '../../voucherify-integration/mapEmporixUserToVoucherifyCustomer'
+import { getQualificationsWithItemsExtended } from '../../integration/voucherify/voucherifyApi'
+import { mapEmporixUserToVoucherifyCustomer } from '../../integration/voucherify/mappers/mapEmporixUserToVoucherifyCustomer'
 
 const ProductList = () => {
   return (
@@ -41,18 +38,18 @@ export const ProductDetails = () => {
   useEffect(() => {
     setQualifications([])
     ;(async () => {
-      const customer =
-        user instanceof Object
-          ? mapEmporixUserToVoucherifyCustomer(user)
-          : undefined
+      const customer = mapEmporixUserToVoucherifyCustomer(user)
       setQualifications(
-        await getQualificationsWithItemsExtended('PRODUCTS', [
-          {
-            quantity: 1,
-            product_id: productId,
-          },
-        ]),
-        customer
+        await getQualificationsWithItemsExtended(
+          'PRODUCTS',
+          [
+            {
+              quantity: 1,
+              product_id: productId,
+            },
+          ],
+          customer
+        )
       )
     })()
   }, [productId])

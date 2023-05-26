@@ -20,6 +20,11 @@ const getCampaigns = async (page, campaign_type) => {
     )?.campaigns || []
   )
 }
+
+const updateCampaignMetadata = async (nameOrId, metadata) => {
+  await voucherifyClient.campaigns.update(nameOrId, { metadata })
+}
+
 const getAllCampaigns = async () => {
   let page = 1
   let allCampaigns = []
@@ -47,10 +52,6 @@ const getAllCampaigns = async () => {
   return allCampaigns
 }
 
-const updateCampaignMetadata = async (id, metadata) => {
-  await voucherifyClient.campaigns.update(id, { metadata })
-}
-
 const contentfulClient = contentful.createClient({
   // This is the space ID. A space is like a project folder in Contentful terms
   accessToken: process.env.CONTENTFUL_ACCESS_TOKEN,
@@ -68,10 +69,6 @@ const getContentfulEnvironment = async () => {
   const space = await contentfulClient.getSpace(spaceId)
   contentfulEnvironment = await space.getEnvironment('master')
   return contentfulEnvironment
-}
-
-const createContentfulEnvironment = async () => {
-  await getContentfulEnvironment()
 }
 
 const getAllContentfulLocales = async () => {
@@ -139,7 +136,7 @@ const createContent = async (
 
 ;(async () => {
   const campaigns = await getAllCampaigns()
-  await createContentfulEnvironment()
+  await getContentfulEnvironment()
   for (const campaign of campaigns.filter((campaign) => !campaign.protected)) {
     if (campaign?.metadata?.contentfulEntryId) {
       continue

@@ -5,34 +5,41 @@ import {
   filterOutCouponsIfCodeIn,
   filterOutCouponsTypePromotionTier,
   uniqueCouponsByCodes,
-} from './couponsOperationFunctions'
+} from './mappers/couponsOperationFunctions'
 import {
   filterOutRedeemablesIfCodeIn,
   getRedeemablesByStatus,
   redeemablesToCodes,
   stackableRedeemablesResponseToUnitStackableRedeemablesResultDiscountUnitWithCodes,
   stackableResponseToUnitTypeRedeemables,
-} from './redeemableOperationFunctions'
-import { getCodesIfProductNotFoundIn } from './getCodesIfProductNotFoundIn'
-import { buildValidationsValidateStackableParamsForVoucherify } from './buildValidationsValidateStackableParamsForVoucherify'
-import { mapItemsToVoucherifyOrdersItems } from './product'
-import { getProductsToAdd } from './getProductsToAdd'
-import { getItemsWithCorrectedPrices } from './getItemsWithPricesCorrected'
+} from './mappers/redeemableOperationFunctions'
+import { getCodesIfProductNotFoundIn } from './mappers/getCodesIfProductNotFoundIn'
+import { buildValidationsValidateStackableParamsForVoucherify } from './mappers/buildValidationsValidateStackableParamsForVoucherify'
+import { mapItemsToVoucherifyOrdersItems } from './mappers/product'
+import { getItemsWithCorrectedPrices } from './mappers/getItemsWithPricesCorrected'
 import {
   calculateTotalDiscountAmount,
+  checkIfAllInapplicableCouponsArePromotionTier,
   getPromotions,
   setBannerOnValidatedPromotions,
-} from './helperFunctions'
-import { replaceCodesWithInapplicableCoupons } from './replaceCodesWithInapplicableCoupons'
+} from './mappers/helperFunctions'
+import { replaceCodesWithInapplicableCoupons } from './mappers/replaceCodesWithInapplicableCoupons'
 import {
   releaseValidationSession,
   validateStackableVouchers,
 } from '../voucherifyApi'
 
-export const validateCouponsAndGetAvailablePromotions = async (
-  cart,
-  cartUpdateActions
-) => {
+const defaultResponse = {
+  availablePromotions: [],
+  totalDiscountAmount: 0,
+  productsToAdd: [],
+  applicableCoupons: [],
+  inapplicableCoupons: [],
+  sessionKey: undefined,
+  allInapplicableCouponsArePromotionTier: undefined,
+}
+
+export const validateCouponsAndGetAvailablePromotions = async (cart) => {
   const {
     id,
     customerId,
@@ -53,15 +60,11 @@ export const validateCouponsAndGetAvailablePromotions = async (
     uniqueCoupons
   )
 
-  if (typeof cartUpdateActions?.setAvailablePromotions === 'function') {
-    cartUpdateActions.setAvailablePromotions(availablePromotions)
-  }
-
   if (!uniqueCoupons.length) {
     console.log({
       msg: 'No coupons applied, skipping voucherify call',
     })
-    return
+    return { ...defaultResponse, availablePromotions }
   }
 
   const deletedCoupons = couponsStatusDeleted(uniqueCoupons)
@@ -76,7 +79,7 @@ export const validateCouponsAndGetAvailablePromotions = async (
       msg: 'Deleting coupons only, skipping voucherify call',
     })
 
-    return
+    return { ...defaultResponse, availablePromotions }
   }
 
   const couponsAppliedAndNewLimitedByConfig =
@@ -103,8 +106,11 @@ export const validateCouponsAndGetAvailablePromotions = async (
       (coupon) => !inapplicableCodes.includes(coupon.code)
     )
     if (applicableCodes.length === 0) {
-      cartUpdateActions.setInapplicableCoupons(inapplicableRedeemables)
-      return
+      return {
+        ...defaultResponse,
+        availablePromotions,
+        inapplicableCoupons: inapplicableRedeemables,
+      }
     }
     //We need to do another call to V% if there is any applicable coupon in the cart
     //to get definitions of discounts we should apply on the cart
@@ -167,30 +173,29 @@ export const validateCouponsAndGetAvailablePromotions = async (
 
   const productsToAdd = [] //getProductsToAdd(validatedCoupons, [])
 
-  if (
-    typeof cartUpdateActions.setSessionKey === 'function' &&
-    typeof cartUpdateActions.setTotalDiscountAmount === 'function' &&
-    typeof cartUpdateActions.setApplicableCoupons === 'function' &&
-    typeof cartUpdateActions.setInapplicableCoupons === 'function' &&
-    typeof cartUpdateActions.setProductsToAdd === 'function'
-  ) {
-    cartUpdateActions.setSessionKey(validatedCoupons?.session?.key)
-    cartUpdateActions.setTotalDiscountAmount(
-      calculateTotalDiscountAmount(validatedCoupons)
-    )
-    cartUpdateActions.setApplicableCoupons(
-      setBannerOnValidatedPromotions(
-        filterOutRedeemablesIfCodeIn(
-          getRedeemablesByStatus(validatedCoupons.redeemables, 'APPLICABLE'),
-          codesWithMissingProductsToAdd
-        ),
-        promotions
-      )
-    )
-    cartUpdateActions.setInapplicableCoupons([
-      ...inapplicableRedeemables,
-      ...replaceCodesWithInapplicableCoupons(codesWithMissingProductsToAdd),
-    ])
-    cartUpdateActions.setProductsToAdd(productsToAdd)
+  const applicableCoupons = setBannerOnValidatedPromotions(
+    filterOutRedeemablesIfCodeIn(
+      getRedeemablesByStatus(validatedCoupons.redeemables, 'APPLICABLE'),
+      codesWithMissingProductsToAdd
+    ),
+    promotions
+  )
+  const inapplicableCoupons = [
+    ...inapplicableRedeemables,
+    ...replaceCodesWithInapplicableCoupons(codesWithMissingProductsToAdd),
+  ]
+
+  return {
+    ...defaultResponse,
+    availablePromotions,
+    applicableCoupons,
+    inapplicableCoupons,
+    newSessionKey: validatedCoupons?.session?.key ?? null,
+    totalDiscountAmount: calculateTotalDiscountAmount(validatedCoupons),
+    productsToAdd,
+    allInapplicableCouponsArePromotionTier:
+      applicableCoupons.length || inapplicableCoupons.length
+        ? checkIfAllInapplicableCouponsArePromotionTier(inapplicableCoupons)
+        : undefined,
   }
 }

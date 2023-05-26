@@ -11,7 +11,7 @@ import ApiRequest from './index'
 import { ACCESS_TOKEN } from '../constants/localstorage'
 import { api } from './axios'
 import { getLanguageFromLocalStorage } from '../context/language-provider'
-import { updateCart } from '../voucherify-integration/updateCart'
+import { updateCart } from '../integration/updateCart'
 
 const CartService = () => {
   const mergeCarts = async (targetCartId, sourceCartId) => {
@@ -155,13 +155,15 @@ const CartService = () => {
     }
     const data = {
       itemYrn: product.yrn,
-      price: {
-        priceId: product.price.priceId,
-        effectiveAmount: product.price.effectiveValue,
-        originalAmount: product.price.originalValue,
-        currency: product.price.currency,
-      },
-      quantity: product.quantity,
+      price: product.price?.priceId
+        ? {
+            priceId: product.price?.priceId,
+            effectiveAmount: product.price?.effectiveValue,
+            originalAmount: product.price?.originalValue,
+            currency: product.price?.currency,
+          }
+        : undefined,
+      quantity: product.quantity || 1,
     }
     const params = {
       siteCode: localStorage.getItem('siteCode'),
