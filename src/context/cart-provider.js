@@ -121,6 +121,24 @@ const CartProvider = ({ children }) => {
     await recheckCart()
   }
 
+  const changeCartItemQty = useCallback(
+    async (itemId, quantity) => {
+      const item = cartAccount.items.find((item) => item.id === itemId)
+      if (!item) {
+        throw new Error(`No item with id ${itemId} in cart`)
+      }
+
+      await CartService.updateCartProduct(
+        cartAccount.id,
+        item.id,
+        { quantity },
+        true
+      )
+      await recheckCart()
+    },
+    [cartAccount]
+  )
+
   const incrementCartItemQty = useCallback(
     async (itemId) => {
       const item = cartAccount.items.find((item) => item.id === itemId)
@@ -308,6 +326,7 @@ const CartProvider = ({ children }) => {
     deleteCart,
     clearCart,
     syncCart,
+    changeCartItemQty,
     incrementCartItemQty,
     decrementCartItemQty,
     cartAccount,

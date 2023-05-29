@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import './cart.css'
 import '../index.css'
 import { Link } from 'react-router-dom'
@@ -53,7 +53,7 @@ export const PriceExcludeVAT1 = ({ price, caption }) => {
 }
 
 export const CartMobileItem = ({ cartItem, cart }) => {
-  const { incrementCartItemQty, decrementCartItemQty } = useCart()
+  const { changeCartItemQty } = useCart()
   const discountsDetails = cart?.metadata?.mixins?.discountsDetails || []
 
   const itemId = cartItem.itemYrn?.split?.(';')?.at?.(-1)
@@ -156,8 +156,9 @@ export const CartMobileItem = ({ cartItem, cart }) => {
         <div className="w-[67px]">
           <Quantity
             value={cartItem.quantity}
-            increase={() => incrementCartItemQty(cartItem.id)}
-            decrease={() => decrementCartItemQty(cartItem.id)}
+            changeCartItemQty={(quantity) =>
+              changeCartItemQty(cartItem.id, quantity)
+            }
           />
         </div>
         <div className="!font-bold">
@@ -179,15 +180,17 @@ export const CartMobileItem = ({ cartItem, cart }) => {
 }
 
 const CartProductImageAndQuantity = ({ cartItem }) => {
-  const { incrementCartItemQty, decrementCartItemQty } = useCart()
+  const { changeCartItemQty } = useCart()
   return (
     <div className="cart-product-image-and-quantity">
       <GridLayout className="gap-4">
         <CartProductImage src={cartItem.product.src} />
         <Quantity
+          key={cartItem.id + cartItem.quantity}
           value={cartItem.quantity}
-          increase={() => incrementCartItemQty(cartItem.id)}
-          decrease={() => decrementCartItemQty(cartItem.id)}
+          changeCartItemQty={(quantity) =>
+            changeCartItemQty(cartItem.id, quantity)
+          }
         />
       </GridLayout>
     </div>
@@ -476,18 +479,23 @@ export const CartActionPanel = ({ action }) => {
 }
 const Cart = () => {
   const { cartAccount } = useCart()
+  const [cartItems, setCartItems] = useState(cartAccount.items || [])
+  useEffect(() => {
+    setCartItems(cartAccount.items)
+  }, [cartAccount.items])
 
   return (
     <>
       <LayoutBetween>
         <span className="cart-caption-font">My Cart</span>
         <span className="cart-caption-font">
-          {cartAccount?.items.length || 0} items
+          {cartItems.length || 0} item
+          {cartItems.length !== 1 ? 's' : ''}
         </span>
       </LayoutBetween>
       <CartProductContent>
         <GridLayout className="gap-4">
-          {cartAccount?.items.map((cartItem, idx) => (
+          {cartItems.map((cartItem, idx) => (
             <CartProductWrapper key={cartItem.id + idx} cartItem={cartItem} />
           ))}
         </GridLayout>
