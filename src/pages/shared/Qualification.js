@@ -8,6 +8,7 @@ import { getProduct } from '../../integration/emporix/emporixApi'
 import { asyncMap } from '../../integration/voucherify/voucherifyApi'
 import CartService from '../../services/cart.service'
 import priceService from '../../services/product/price.service'
+import category from '../home/Category'
 
 const getUserId = (user) => {
   return user?.id || 'anonymous'
@@ -157,6 +158,9 @@ export const Qualification = ({
     }
     setIsBeingApplied(false)
   }
+  const categoriesNames = (qualification.categories || [])
+    .map((category) => category.name)
+    .filter((e) => e)
 
   return (
     <Box
@@ -192,7 +196,7 @@ export const Qualification = ({
             </span>
           </Box>
         )}
-        <>
+        <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
           {isAlreadyApplied ? (
             <Box sx={{ display: 'flex', gap: '10px' }}>
               <Button
@@ -338,7 +342,36 @@ export const Qualification = ({
               <Box sx={{ color: 'red' }}>{error}</Box>
             </Box>
           )}
-        </>
+          <Box
+            sx={{
+              display: 'flex',
+              flexDirection: 'row',
+              justifyContent: 'flex-end',
+              gap: '10px',
+            }}
+          >
+            {categoriesNames.map((categoryName) => {
+              return (
+                <Box
+                  sx={{
+                    m: 0,
+                    background: 'rgb(180,97,1)',
+                    color: 'white',
+                    padding: '10px!important',
+                    paddingTop: '5px!important',
+                    paddingBottom: '5px!important',
+                    mt: 1,
+                    mb: '14px',
+                    maxHeight: '36.5px',
+                    borderRadius: '3px',
+                  }}
+                >
+                  {categoryName}
+                </Box>
+              )
+            })}
+          </Box>
+        </Box>
       </Box>
     </Box>
   )
