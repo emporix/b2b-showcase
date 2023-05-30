@@ -48,7 +48,8 @@ export const setBannerOnValidatedPromotions = (
         (promotion) => promotion.id === redeemable.id
       )
       if (appliedPromotion) {
-        redeemable['banner'] = appliedPromotion?.banner
+        redeemable['banner'] =
+          appliedPromotion?.cmsFields?.name || appliedPromotion?.banner
       }
 
       return redeemable
@@ -61,7 +62,7 @@ export const setBannerOnValidatedPromotions = (
 }
 
 export const getPromotions = async (cart, uniqCoupons) => {
-  const promotions = (await getAvailablePromotions(cart)) ?? []
+  const promotions = await getAvailablePromotions(cart)
 
   const availablePromotions = promotions
     .filter((promo) => {
@@ -78,7 +79,7 @@ export const getPromotions = async (cart, uniqCoupons) => {
       return {
         status: 'AVAILABLE',
         value: promo.discount_amount,
-        banner: promo.banner,
+        banner: promo?.cmsFields?.name || promo.banner,
         code: promo.id,
         type: promo.object,
       }

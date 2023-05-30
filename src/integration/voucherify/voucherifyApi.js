@@ -76,7 +76,7 @@ const getPromotionTiersOrVoucher = async (qualification) => {
   return
 }
 
-const getPromotionTiersOrVoucherAddCMSEntryIfPossible = async (
+export const getPromotionTiersOrVoucherAddCMSEntryIfPossible = async (
   qualification
 ) => {
   const result = await getPromotionTiersOrVoucher(qualification)
@@ -99,6 +99,32 @@ const getPromotionTiersOrVoucherAddCMSEntryIfPossible = async (
     }
   }
   return result
+}
+
+export const getAllQualificationsWithItems = async (
+  scenario, // ALL, CUSTOMER_WALLET, AUDIENCE_ONLY, PRODUCTS, PRODUCTS_DISCOUNTS, PROMOTION_STACKS
+  items,
+  customer
+) => {
+  let qualifications = []
+  let cursor
+  let has_more = true
+  do {
+    const qualificationsResult = await getQualificationsWithItems(
+      scenario,
+      items,
+      customer,
+      cursor
+    )
+    if (!qualificationsResult.data?.length) {
+      break
+    }
+    qualifications = [...qualifications, ...qualificationsResult.data]
+    has_more = qualificationsResult.has_more
+    cursor = qualificationsResult.data.at(-1).created_at
+  } while (has_more)
+
+  return qualifications
 }
 
 export const getQualificationsWithItemsExtended = async (
@@ -152,20 +178,12 @@ export const validateStackableVouchers = async (request) => {
 
 export const getAvailablePromotions = async (cart) => {
   const items = mapItemsToVoucherifyOrdersItems(cart.items)
-  const promotions = await getClient().promotions.validate({
-    customer: cart.customer,
-    order: {
-      source_id: cart.id,
-      items,
-      amount: items.reduce((acc, item) => acc + item.amount, 0),
-    },
-  })
-
-  if (promotions.valid) {
-    return promotions.promotions
-  }
-
-  return []
+  return await asyncMap(
+    (
+      await getAllQualificationsWithItems('ALL', items, cart.customer)
+    ).filter((qualification) => qualification?.object === 'promotion_tier'),
+    getPromotionTiersOrVoucherAddCMSEntryIfPossible
+  )
 }
 
 export const releaseValidationSession = async (codes, sessionKey) => {

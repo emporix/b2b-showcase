@@ -126,7 +126,7 @@ const AppliedCouponsComponent = ({ appliedCoupons, user }) => {
               key={appliedCoupon.code}
               appliedCoupon={appliedCoupon}
               user={user}
-            ></AppliedCoupon>
+            />
           ))}
         </Grid>
       </Grid>
