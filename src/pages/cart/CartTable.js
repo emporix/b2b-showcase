@@ -58,8 +58,7 @@ const CartTable = ({ cartList, cart, classname, qualifications = [] }) => {
   }, [open])
 
   const discountsDetails = cart?.metadata?.mixins?.discountsDetails || []
-  const { removeCartItem, incrementCartItemQty, decrementCartItemQty } =
-    useCart()
+  const { removeCartItem, changeCartItemQty } = useCart()
   return (
     <>
       <TableContainer className={classname}>
@@ -148,8 +147,9 @@ const CartTable = ({ cartList, cart, classname, qualifications = [] }) => {
                     <div className="quantity-wrapper">
                       <Quantity
                         value={cartItem.quantity}
-                        increase={() => incrementCartItemQty(cartItem.id)}
-                        decrease={() => decrementCartItemQty(cartItem.id)}
+                        changeCartItemQty={(quantity) =>
+                          changeCartItemQty(cartItem.id, quantity)
+                        }
                       />
                     </div>
                   </TableCell>

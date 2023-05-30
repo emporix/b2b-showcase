@@ -2,6 +2,7 @@ import React, {
   createContext,
   useCallback,
   useContext,
+  useEffect,
   useMemo,
   useState,
 } from 'react'
@@ -238,9 +239,16 @@ const ProductBasicInfo = ({ product }) => {
 }
 
 const PrdouctAddToCart = () => {
+  const { cartAccount } = useCart()
+  const [cartItems, setCartItems] = useState(cartAccount.items || [])
+  useEffect(() => {
+    setCartItems(cartAccount.items)
+  }, [cartAccount.items])
+
   const product = useContext(ProductContext)
+  const { removeCartItem, changeCartItemQty } = useCart()
+
   const { setShowCart } = useContext(LayoutContext)
-  const [quantity, setQuantity] = useState(1)
   const { syncCart, putCartProduct } = useCart()
   const HandleProductAddToCart1 = useCallback((product, action, quantitiy) => {
     let newProduct = { ...product }
@@ -250,34 +258,50 @@ const PrdouctAddToCart = () => {
     action(true)
   }, [])
 
-  const increaseQty = () => {
-    setQuantity((prevState) => prevState + 1)
-  }
-
-  const decreaseQty = () => {
-    if (quantity <= 1) return
-    setQuantity((prevState) => prevState - 1)
-  }
-
   return (
     <div className="product-add-to-cart-wrapper py-12">
-      <div className="quantity">
-        Quantity
-        <Quantity
-          value={quantity}
-          increase={increaseQty}
-          decrease={decreaseQty}
-        />
-      </div>
+      {(cartItems || []).find((item) => product.yrn === item.itemYrn) && (
+        <div className="quantity">
+          Quantity
+          <Quantity
+            key={
+              product.yrn +
+              (cartItems || []).find((item) => product.yrn === item.itemYrn)
+                .quantity
+            }
+            value={
+              (cartItems || []).find((item) => product.yrn === item.itemYrn)
+                .quantity
+            }
+            changeCartItemQty={(quantity) =>
+              changeCartItemQty(
+                (cartItems || []).find((item) => product.yrn === item.itemYrn)
+                  .id,
+                quantity
+              )
+            }
+          />
+        </div>
+      )}
+
       <div className="">
-        <LargePrimaryButton
-          disabled={!product.price}
-          className="product-add-to-cart-btn"
-          onClick={() =>
-            HandleProductAddToCart1(product, setShowCart, quantity)
-          }
-          title="ADD TO CART"
-        />
+        {(cartItems || []).find((item) => product.yrn === item.itemYrn) ? (
+          <LargePrimaryButton
+            className="product-remove-from-cart-btn"
+            onClick={() =>
+              removeCartItem(
+                (cartItems || []).find((item) => product.yrn === item.itemYrn)
+              )
+            }
+            title="REMOVE ITEM FROM CART"
+          />
+        ) : (
+          <LargePrimaryButton
+            className="product-add-to-cart-btn"
+            onClick={() => HandleProductAddToCart1(product, setShowCart, 1)}
+            title="ADD TO CART"
+          />
+        )}
       </div>
     </div>
   )
