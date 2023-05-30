@@ -353,6 +353,7 @@ export const Qualification = ({
             {categoriesNames.map((categoryName) => {
               return (
                 <Box
+                  key={`qualification-${qualification.id}-${categoryName}`}
                   sx={{
                     m: 0,
                     background: 'rgb(180,97,1)',
