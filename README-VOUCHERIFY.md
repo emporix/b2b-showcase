@@ -126,8 +126,6 @@ See `readme-images/Contentful-X.png` for more information.
   - `REACT_APP_VOUCHERIFY_API_URL` - Voucherify API endpoint
   - `REACT_APP_VOUCHERIFY_API_URL` - Voucherify Application ID
   - `REACT_APP_VOUCHERIFY_SECRET_KEY` - Voucherify Secret Key
-  - `REACT_APP_EMPORIX_TENANT` - Emporix tenant name
-  - `REACT_APP_EMPORIX_STOREFRONT_API` - Storefront API Client ID
   - `REACT_APP_EMPORIX_CLIENT_ID` - Emporix API Client ID
   - `REACT_APP_EMPORIX_CLIENT_SECRET` - Emporix API Secret
   - `CONTENTFUL_ACCESS_TOKEN` - Contentful Personal Token
