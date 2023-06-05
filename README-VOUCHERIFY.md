@@ -67,15 +67,7 @@ You must have access to following services:
 - Emporix account
 - Contentful account
 
-### 2.1.1. Migrations
-
-Must .env file be filled out correctly.
-
-- yarn migrate:products - this will migrate products from Emporix to Voucherify, so you will be able to create promotions based on certain products.
-- yarn migrate:all-promotions - this will migrate all campaigns, promotion tiers and standalone vouchers to Contentful, so you will be able to
-change name and add description or terms and conditions to all promotions.
-
-### 2.1.2. How to get API keys
+### 2.1.1. How to get API keys
 
 - Emporix
   - Manage API Keys
@@ -85,7 +77,7 @@ change name and add description or terms and conditions to all promotions.
   - Account Settings -> Tokens -> Generate personal token
   - Go to space -> Settings -> API keys -> Add API key
 
-### 2.1.3. How to configure Contentful service
+### 2.1.2. How to configure Contentful service
 
 Create 3 content models:
 - CAMPAIGN
