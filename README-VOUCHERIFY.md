@@ -121,7 +121,7 @@ See `readme-images/Contentful-X.png` for more information.
 
 ### 2.2.2. Installation process
 
-- Fill out .env and .env.prod file.
+- Fill out .env.prod file.
   - `REACT_APP_VOUCHERIFY_API_URL` - Voucherify API endpoint
   - `REACT_APP_VOUCHERIFY_APP_ID` - Voucherify Application ID
   - `REACT_APP_VOUCHERIFY_SECRET_KEY` - Voucherify Secret Key
@@ -135,7 +135,7 @@ See `readme-images/Contentful-X.png` for more information.
 ### 2.2.3. Commands
 
 - `yarn install` - will install required packages
-- `yarn start` - will start application
+- `yarn start:prod` - will start application
 
 ## 3. How it works
 
