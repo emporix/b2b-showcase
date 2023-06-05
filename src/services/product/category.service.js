@@ -124,7 +124,7 @@ export const getAllCategories = async () => {
     'X-Version': 'v2',
   }
   const { data } = await api.get(categoryApi(), { headers })
-  return data
+  return data.filter(category => category.published)
 }
 
 const getCategoryTree = (categories, layer, parenturl = 'product', lang) => {
