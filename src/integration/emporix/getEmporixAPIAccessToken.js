@@ -3,10 +3,10 @@ let emporixAccessTokenExpiresAt
 
 export const getEmporixAPIAccessToken = async () => {
   if (
-      !isNaN(emporixAccessTokenExpiresAt) &&
-      typeof emporixAccessTokenExpiresAt === 'number' &&
-      new Date().getTime() <= emporixAccessTokenExpiresAt &&
-      emporixAccessToken
+    !isNaN(emporixAccessTokenExpiresAt) &&
+    typeof emporixAccessTokenExpiresAt === 'number' &&
+    new Date().getTime() <= emporixAccessTokenExpiresAt &&
+    emporixAccessToken
   ) {
     return emporixAccessToken
   }
@@ -16,13 +16,16 @@ export const getEmporixAPIAccessToken = async () => {
     grant_type: 'client_credentials',
   }
   try {
-    const responseRaw = await fetch(`https://api.emporix.io/oauth/token`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/x-www-form-urlencoded',
-      },
-      body: new URLSearchParams(formData).toString(),
-    })
+    const responseRaw = await fetch(
+      `${process.env.REACT_APP_API_URL}/oauth/token`,
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+        },
+        body: new URLSearchParams(formData).toString(),
+      }
+    )
     if (responseRaw.status !== 200) {
       throw {
         error: 'Could not get access token',
@@ -32,7 +35,7 @@ export const getEmporixAPIAccessToken = async () => {
     const { expires_in, access_token: newAccessToken } = responseJSON
     emporixAccessToken = newAccessToken
     emporixAccessTokenExpiresAt =
-        new Date().getTime() + (expires_in - 180) * 1000 //180 second error margin
+      new Date().getTime() + (expires_in - 180) * 1000 //180 second error margin
     return newAccessToken
   } catch (e) {
     console.log(e)

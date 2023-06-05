@@ -1,5 +1,6 @@
 const { VoucherifyServerSide } = require('@voucherify/sdk')
 const fetch = require('node-fetch')
+const { TENANT } = require('../src/constants/localstorage')
 require('dotenv').config()
 
 const getEmporixAPIAccessToken = async () => {
@@ -8,13 +9,16 @@ const getEmporixAPIAccessToken = async () => {
     client_secret: process.env.REACT_APP_EMPORIX_CLIENT_SECRET,
     grant_type: 'client_credentials',
   }
-  const responseRaw = await fetch(`https://api.emporix.io/oauth/token`, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/x-www-form-urlencoded',
-    },
-    body: new URLSearchParams(formData).toString(),
-  })
+  const responseRaw = await fetch(
+    `${process.env.REACT_APP_API_URL}/oauth/token`,
+    {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+      },
+      body: new URLSearchParams(formData).toString(),
+    }
+  )
   if (responseRaw.status !== 200) {
     throw {
       error: 'Could not get access token',
@@ -29,7 +33,9 @@ const getEmporixAPIAccessToken = async () => {
 
 const getProducts = async (page, emporixAccessToken) => {
   const resultRaw = await fetch(
-    `https://api.emporix.io/product/piotr/products?pageNumber=${page}`,
+    `${process.env.REACT_APP_API_URL}/product/${localStorage.getItem(
+      TENANT
+    )}/products?pageNumber=${page}`,
     {
       method: 'Get',
       headers: {

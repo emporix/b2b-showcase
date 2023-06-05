@@ -1,17 +1,25 @@
 import { getEmporixAPIAccessToken } from './getEmporixAPIAccessToken'
+import { TENANT } from '../../constants/localstorage'
 
 export const deleteDiscount = async (code) => {
-  await fetch(`https://api.emporix.io/coupon-v2/piotr/coupons/${code}`, {
-    method: 'Delete',
-    headers: {
-      Authorization: `Bearer ${await getEmporixAPIAccessToken()}`,
-    },
-  })
+  await fetch(
+    `${process.env.REACT_APP_API_URL}/coupon-v2/${localStorage.getItem(
+      TENANT
+    )}/coupons/${code}`,
+    {
+      method: 'Delete',
+      headers: {
+        Authorization: `Bearer ${await getEmporixAPIAccessToken()}`,
+      },
+    }
+  )
 }
 
 export const getProduct = async (productId) => {
   const resultRaw = await fetch(
-    `https://api.emporix.io/product/piotr/products/${productId}`,
+    `${process.env.REACT_APP_API_URL}/product/${localStorage.getItem(
+      TENANT
+    )}/products/${productId}`,
     {
       method: 'Get',
       headers: {
@@ -28,7 +36,9 @@ export const getProduct = async (productId) => {
 
 export const removeAllDiscountsFromCart = async (cartId) => {
   const resultRaw = await fetch(
-    `https://api.emporix.io/cart/piotr/carts/${cartId}/discounts`,
+    `${process.env.REACT_APP_API_URL}/cart/${localStorage.getItem(
+      TENANT
+    )}/carts/${cartId}/discounts`,
     {
       method: 'Delete',
       headers: {
@@ -43,7 +53,9 @@ export const removeAllDiscountsFromCart = async (cartId) => {
 
 export const applyCouponOnCart = async (code, cartId) => {
   const resultRaw = await fetch(
-    `https://api.emporix.io/cart/piotr/carts/${cartId}/discounts`,
+    `${process.env.REACT_APP_API_URL}/cart/${localStorage.getItem(
+      TENANT
+    )}/carts/${cartId}/discounts`,
     {
       method: 'Post',
       headers: {
@@ -75,7 +87,9 @@ export const createCoupon = async (emporixCart, applicableCoupons) => {
     return undefined
   }
   const couponRaw = await fetch(
-    `https://api.emporix.io/coupon-v2/piotr/coupons`,
+    `${process.env.REACT_APP_API_URL}/coupon-v2/${localStorage.getItem(
+      TENANT
+    )}/coupons`,
     {
       method: 'Post',
       headers: {
@@ -130,7 +144,9 @@ export const updateCartMetadataMixins = async (
   }
   const emporixAccessToken = await getEmporixAPIAccessToken()
   const cartUpdate = await fetch(
-    `https://api.emporix.io/cart/piotr/carts/${emporixCart.id}`,
+    `${process.env.REACT_APP_API_URL}/cart/${localStorage.getItem(
+      TENANT
+    )}/carts/${emporixCart.id}`,
     {
       method: 'PUT',
       headers: {
@@ -154,7 +170,9 @@ export const updateCartMetadataMixins = async (
 export const getCart = async (cartId) => {
   const emporixAccessToken = await getEmporixAPIAccessToken()
   const cartRaw = await fetch(
-    `https://api.emporix.io/cart/piotr/carts/${cartId}`,
+    `${process.env.REACT_APP_API_URL}/cart/${localStorage.getItem(
+      TENANT
+    )}/carts/${cartId}`,
     {
       method: 'GET',
       headers: {
