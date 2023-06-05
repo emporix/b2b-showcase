@@ -121,14 +121,12 @@ See `readme-images/Contentful-X.png` for more information.
 
 ### 2.2.2. Installation process
 
-- Copy .env.example to .env
-- Fill out .env file.
+- Fill out .env and .env.prod file.
   - `REACT_APP_VOUCHERIFY_API_URL` - Voucherify API endpoint
-  - `REACT_APP_VOUCHERIFY_API_URL` - Voucherify Application ID
+  - `REACT_APP_VOUCHERIFY_APP_ID` - Voucherify Application ID
   - `REACT_APP_VOUCHERIFY_SECRET_KEY` - Voucherify Secret Key
-  - `REACT_APP_EMPORIX_CLIENT_ID` - Emporix API Client ID
-  - `REACT_APP_EMPORIX_CLIENT_SECRET` - Emporix API Secret
-  - `CONTENTFUL_ACCESS_TOKEN` - Contentful Personal Token
+  - `REACT_APP_EMPORIX_CLIENT_ID` - Emporix API Client ID (Server side)
+  - `REACT_APP_EMPORIX_CLIENT_SECRET` - Emporix API Secret (Server side)
   - `REACT_APP_CONTENTFUL_MODE` - DEV / PROD - if `DEV` only unpublished Contentful content will be reachable by store, if `PROD` only published content will be reachable by this showcase.
   - `REACT_APP_CONTENTFUL_PREVIEW_API_ACCESS_TOKEN` - Contentful Content Preview API - access token
   - `REACT_APP_CONTENTFUL_DELIVERY_API_ACCESS_TOKEN` - Contentful Content Delivery API - access token
