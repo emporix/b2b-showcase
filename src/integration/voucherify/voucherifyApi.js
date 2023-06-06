@@ -59,7 +59,7 @@ const getPromotionTiersOrVoucher = async (qualification) => {
       path: `promotions/tiers/${encodeURIComponent(qualification.id)}`,
     })
     if (response.status !== 200) {
-      return
+      return {}
     }
     return { ...(await response.json()), qualification }
   }
@@ -69,11 +69,11 @@ const getPromotionTiersOrVoucher = async (qualification) => {
       path: `vouchers/${encodeURIComponent(qualification.id)}`,
     })
     if (response.status !== 200) {
-      return
+      return {}
     }
     return { ...(await response.json()), qualification }
   }
-  return
+  return {}
 }
 
 export const getPromotionTiersOrVoucherAddCMSEntryIfPossible = async (
