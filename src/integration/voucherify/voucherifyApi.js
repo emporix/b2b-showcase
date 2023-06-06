@@ -154,7 +154,9 @@ export const getQualificationsWithItemsExtended = async (
     qualifications,
     getPromotionTiersOrVoucherAddCMSEntryIfPossible
   )
-  return qualificationsExtended.filter((e) => e)
+  return qualificationsExtended.filter(
+    (promotionOrVoucher) => promotionOrVoucher?.id
+  )
 }
 
 export const voucherifyFetchAPI = async ({ body, method = 'GET', path }) => {
@@ -178,12 +180,14 @@ export const validateStackableVouchers = async (request) => {
 
 export const getAvailablePromotions = async (cart) => {
   const items = mapItemsToVoucherifyOrdersItems(cart.items)
-  return await asyncMap(
-    (
-      await getAllQualificationsWithItems('ALL', items, cart.customer)
-    ).filter((qualification) => qualification?.object === 'promotion_tier'),
-    getPromotionTiersOrVoucherAddCMSEntryIfPossible
-  )
+  return (
+    await asyncMap(
+      (
+        await getAllQualificationsWithItems('ALL', items, cart.customer)
+      ).filter((qualification) => qualification?.object === 'promotion_tier'),
+      getPromotionTiersOrVoucherAddCMSEntryIfPossible
+    )
+  ).filter((promotion_tier) => promotion_tier.id)
 }
 
 export const releaseValidationSession = async (codes, sessionKey) => {
