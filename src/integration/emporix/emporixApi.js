@@ -187,3 +187,24 @@ export const getCart = async (cartId) => {
   }
   return await cartRaw.json()
 }
+
+export const getOrder = async (orderId) => {
+  const emporixAccessToken = await getEmporixAPIAccessToken()
+  const cartRaw = await fetch(
+    `${process.env.REACT_APP_API_URL}/order-v2/${localStorage.getItem(
+      TENANT
+    )}/salesorders/${orderId}`,
+    {
+      method: 'GET',
+      headers: {
+        Authorization: `Bearer ${emporixAccessToken}`,
+      },
+    }
+  )
+  if (cartRaw.status !== 200) {
+    throw {
+      error: `Could not find order with id: ${orderId}`,
+    }
+  }
+  return await cartRaw.json()
+}
