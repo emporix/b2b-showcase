@@ -28,7 +28,7 @@ const getQualificationsWithItems = async (
   const qualificationsResponse = await voucherifyFetchAPI({
     body: {
       scenario, // ALL, CUSTOMER_WALLET, AUDIENCE_ONLY, PRODUCTS, PRODUCTS_DISCOUNTS, PROMOTION_STACKS
-      mode: 'BASIC', // hidden: BASIC, ADVANCED
+      mode: 'ADVANCED', // hidden: BASIC, ADVANCED
       order: {
         items,
         customer,
