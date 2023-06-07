@@ -52,6 +52,14 @@ const Navbar = () => {
   const navigate = useNavigate()
   const { currencyList, activeCurrency, updateCurrency } = useCurrency() //activeCurrency z useCurrency()
   const { cartAccount } = useCart()
+
+  const [updated, setUpdated] = useState(false)
+  useEffect(() => {
+    if (currentSiteObject && activeCurrency?.code && updated === false) {
+      updateCurrency(activeCurrency.code, currentSiteObject)
+      setUpdated(true)
+    }
+  }, [currentSiteObject, activeCurrency])
   const currencyChangeHandler = async (value, site) => {
     updateCurrency(value, site)
   }
