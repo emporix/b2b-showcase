@@ -57,7 +57,7 @@ const CartTable = ({ cartList, cart, classname, qualifications = [] }) => {
     setProductName(newName)
   }, [open])
 
-  const discountsDetails = cart?.metadata?.mixins?.discountsDetails || []
+  const discountsDetails = cart?.mixins?.voucherify?.discountsDetails || []
   const { removeCartItem, changeCartItemQty } = useCart()
   return (
     <>

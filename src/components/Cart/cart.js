@@ -54,7 +54,7 @@ export const PriceExcludeVAT1 = ({ price, caption }) => {
 
 export const CartMobileItem = ({ cartItem, cart }) => {
   const { changeCartItemQty } = useCart()
-  const discountsDetails = cart?.metadata?.mixins?.discountsDetails || []
+  const discountsDetails = cart?.mixins?.voucherify?.discountsDetails || []
 
   const itemId = cartItem.itemYrn?.split?.(';')?.at?.(-1)
   const discountDetails = discountsDetails.find(

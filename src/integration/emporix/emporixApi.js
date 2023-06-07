@@ -121,26 +121,34 @@ export const updateCartMetadataMixins = async (
 ) => {
   const { newSessionKey, applicableCoupons, availablePromotions } =
     validationResult
+  const mixinsSchema = {
+    ...(emporixCart?.metadata?.mixins || {}),
+  }
+  mixinsSchema['voucherify'] =
+    'https://res.cloudinary.com/saas-ag/raw/upload/v1686167929/voucherify/voucherify.json'
+
   const mixins = {
-    ...(emporixCart.metadata?.mixins || {}),
-    sessionKey: newSessionKey || emporixCart.metadata?.mixins?.sessionKey,
-    appliedCoupons: applicableCoupons
-      .filter((coupon) => {
-        if (!deletedCodes) {
-          return true
-        }
-        return !deletedCodes.includes(coupon.id)
-      })
-      .map((coupon) => {
-        return {
-          code: coupon.id,
-          status: 'APPLIED',
-          type: coupon.object,
-          banner: coupon.banner,
-        }
-      }),
-    availablePromotions,
-    discountsDetails,
+    ...(emporixCart?.mixins || {}),
+    voucherify: {
+      sessionKey: newSessionKey || emporixCart.mixins?.voucherify?.sessionKey,
+      appliedCoupons: applicableCoupons
+        .filter((coupon) => {
+          if (!deletedCodes) {
+            return true
+          }
+          return !deletedCodes.includes(coupon.id)
+        })
+        .map((coupon) => {
+          return {
+            code: coupon.id,
+            status: 'APPLIED',
+            type: coupon.object,
+            banner: coupon.banner,
+          }
+        }),
+      availablePromotions,
+      discountsDetails,
+    },
   }
   const emporixAccessToken = await getEmporixAPIAccessToken()
   const cartUpdate = await fetch(
@@ -154,8 +162,9 @@ export const updateCartMetadataMixins = async (
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
+        mixins,
         metadata: {
-          mixins,
+          mixins: mixinsSchema,
         },
       }),
     }

@@ -105,8 +105,8 @@ const CartProvider = ({ children }) => {
   }, [cartAccount.discounts])
 
   const mixins = useMemo(() => {
-    return cartAccount.metadata?.mixins || {}
-  }, [cartAccount.metadata?.mixins])
+    return cartAccount?.mixins || {}
+  }, [cartAccount?.mixins])
 
   useEffect(() => {
     syncCart()
