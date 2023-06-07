@@ -6,6 +6,8 @@ import { mapEmporixUserToVoucherifyCustomer } from '../../integration/voucherify
 import { Box } from '@mui/system'
 import { getQualificationsWithItemsExtended } from '../../integration/voucherify/voucherifyApi'
 import { Qualification } from '../shared/Qualification'
+import { CUSTOMER_ADDITIONAL_METADATA } from '../../constants/localstorage'
+import { getCustomerAdditionalMetadata } from '../../helpers/getCustomerAdditionalMetadata'
 const About = () => {
   const { fields } = useContentful()
   const [introImageUrl, setIntroImageUrl] = useState('')
@@ -30,7 +32,10 @@ const About = () => {
 
   useEffect(() => {
     ;(async () => {
-      const customer = mapEmporixUserToVoucherifyCustomer(user)
+      const customer = mapEmporixUserToVoucherifyCustomer(
+        user,
+        getCustomerAdditionalMetadata()
+      )
       setQualifications(
         await getQualificationsWithItemsExtended('AUDIENCE_ONLY', [], customer)
       )
