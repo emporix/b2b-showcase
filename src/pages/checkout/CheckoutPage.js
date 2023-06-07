@@ -20,10 +20,12 @@ import { useAuth } from '../../context/auth-provider'
 import { mapEmporixUserToVoucherifyCustomer } from '../../integration/voucherify/mappers/mapEmporixUserToVoucherifyCustomer'
 import { Qualification } from '../shared/Qualification'
 import { getCart } from '../../integration/emporix/emporixApi'
-import { mapEmporixItemsToVoucherifyProducts } from '../../integration/buildIntegrationCartFromEmporixCart'
 import { mapItemsToVoucherifyOrdersItems } from '../../integration/voucherify/validateCouponsAndGetAvailablePromotions/mappers/product'
 import { getQualificationsWithItemsExtended } from '../../integration/voucherify/voucherifyApi'
 import { getCustomerAdditionalMetadata } from '../../helpers/getCustomerAdditionalMetadata'
+import { redeemCart } from '../../integration/voucherify/redeemCart'
+import { USER } from '../../constants/localstorage'
+import { mapEmporixItemsToVoucherifyProducts } from '../../integration/voucherify/mappers/mapEmporixItemsToVoucherifyProducts'
 
 const PaymentAction = ({ action, disabled }) => {
   return (
@@ -243,10 +245,15 @@ const CheckoutPage = () => {
       selectedAddress,
       billingAddress,
     ])
-
     setOrder(order)
     setFinal(order.orderId)
-    //tutaj
+    const user = JSON.parse(localStorage.getItem(USER))
+    const customerAdditionalMetadata = getCustomerAdditionalMetadata()
+    await redeemCart({
+      emporixOrderId: order?.orderId,
+      user,
+      customerAdditionalMetadata,
+    })
     syncCart()
   }
 
