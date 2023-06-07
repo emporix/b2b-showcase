@@ -12,6 +12,7 @@ import CartService from 'services/cart.service'
 import { useAuth } from './auth-provider'
 import { useSites } from './sites-provider'
 import { useAppContext } from './app-context'
+import { getCustomerAdditionalMetadata } from '../helpers/getCustomerAdditionalMetadata'
 
 const CartContext = createContext()
 
@@ -197,15 +198,8 @@ const CartProvider = ({ children }) => {
   )
 
   const recheckCart = async () => {
-    let user, customerAdditionalMetadata
-    try {
-      user = JSON.parse(localStorage.getItem(USER))
-      customerAdditionalMetadata = JSON.parse(
-        localStorage.getItem(CUSTOMER_ADDITIONAL_METADATA)
-      )
-    } catch (error) {
-      console.log(error)
-    }
+    let user = JSON.parse(localStorage.getItem(USER))
+    const customerAdditionalMetadata = getCustomerAdditionalMetadata()
     if (!cartAccount?.id) {
       return {
         inapplicableCoupons: [],

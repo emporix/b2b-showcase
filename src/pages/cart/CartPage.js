@@ -24,6 +24,7 @@ import {
 } from '../../integration/voucherify/mappers/bundleQualifications'
 import { getQualificationsPerProducts } from '../../integration/voucherify/mappers/getQualificationsPerProducts'
 import { mapEmporixItemsToVoucherifyProducts } from '../../integration/buildIntegrationCartFromEmporixCart'
+import { getCustomerAdditionalMetadata } from '../../helpers/getCustomerAdditionalMetadata'
 
 const CartPage = () => {
   const minWidth900px = useMediaQuery('(min-width:900px)')
@@ -105,7 +106,10 @@ const CartPage = () => {
         return
       }
       setCartId(cartAccount?.id)
-      const customer = mapEmporixUserToVoucherifyCustomer(user)
+      const customer = mapEmporixUserToVoucherifyCustomer(
+        user,
+        getCustomerAdditionalMetadata()
+      )
       const emporixCart = await getCart(cartAccount.id)
       const items = mapItemsToVoucherifyOrdersItems(
         mapEmporixItemsToVoucherifyProducts(emporixCart?.items || [])

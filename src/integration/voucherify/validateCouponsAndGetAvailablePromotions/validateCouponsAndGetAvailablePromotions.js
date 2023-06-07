@@ -51,11 +51,6 @@ export const validateCouponsAndGetAvailablePromotions = async (cart) => {
     customer,
   } = cart
 
-  console.log(customer)
-  if (customer?.source_id) {
-    getClient().customers.create(customer || {})
-  }
-
   const uniqueCoupons = uniqueCouponsByCodes(couponsFromRequest)
   if (couponsFromRequest.length !== uniqueCoupons.length) {
     console.log({
