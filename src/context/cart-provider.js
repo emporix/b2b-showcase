@@ -1,4 +1,4 @@
-import { USER } from 'constants/localstorage'
+import { CUSTOMER_ADDITIONAL_METADATA, USER } from 'constants/localstorage'
 import React, {
   createContext,
   useContext,
@@ -196,8 +196,16 @@ const CartProvider = ({ children }) => {
     [cartAccount?.id]
   )
 
-  const recheckCart = async (customer) => {
-    const user = JSON.parse(localStorage.getItem(USER))
+  const recheckCart = async () => {
+    let user, customerAdditionalMetadata
+    try {
+      user = JSON.parse(localStorage.getItem(USER))
+      customerAdditionalMetadata = JSON.parse(
+        localStorage.getItem(CUSTOMER_ADDITIONAL_METADATA)
+      )
+    } catch (error) {
+      console.log(error)
+    }
     if (!cartAccount?.id) {
       return {
         inapplicableCoupons: [],
@@ -205,7 +213,8 @@ const CartProvider = ({ children }) => {
     }
     const cartAndInapplicableCoupons = await CartService.recheckCart(
       cartAccount.id,
-      customer || user || {}
+      user || {},
+      customerAdditionalMetadata || {}
     )
     if (cartAndInapplicableCoupons.cart) {
       setCartAccount({

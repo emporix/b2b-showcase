@@ -25,6 +25,7 @@ import {
 } from './mappers/helperFunctions'
 import { replaceCodesWithInapplicableCoupons } from './mappers/replaceCodesWithInapplicableCoupons'
 import {
+  getClient,
   releaseValidationSession,
   validateStackableVouchers,
 } from '../voucherifyApi'
@@ -47,7 +48,14 @@ export const validateCouponsAndGetAvailablePromotions = async (cart) => {
     sessionKey,
     coupons: couponsFromRequest,
     items,
+    customer,
   } = cart
+
+  console.log(customer)
+  if (customer?.source_id) {
+    getClient().customers.create(customer || {})
+  }
+
   const uniqueCoupons = uniqueCouponsByCodes(couponsFromRequest)
   if (couponsFromRequest.length !== uniqueCoupons.length) {
     console.log({

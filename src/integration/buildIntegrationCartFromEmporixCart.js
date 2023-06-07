@@ -42,6 +42,7 @@ export const buildIntegrationCartFromEmporixCart = ({
   codesToRemove,
   newPromotionCodes,
   customer,
+  customerAdditionalMetadata,
 }) => {
   const newPromotionsObjects =
     newPromotionCodes?.map((code) => {
@@ -88,7 +89,10 @@ export const buildIntegrationCartFromEmporixCart = ({
 
   return {
     id: emporixCart.id,
-    customer: mapEmporixUserToVoucherifyCustomer(customer),
+    customer: mapEmporixUserToVoucherifyCustomer(
+      customer,
+      customerAdditionalMetadata
+    ),
     sessionKey: emporixCart.metadata?.mixins?.sessionKey,
     items: mapEmporixItemsToVoucherifyProducts(emporixCart?.items || []),
     coupons,

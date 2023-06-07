@@ -172,9 +172,6 @@ export const voucherifyFetchAPI = async ({ body, method = 'GET', path }) => {
 }
 
 export const validateStackableVouchers = async (request) => {
-  if (request.customer?.source_id) {
-    getClient().customers.create({ ...(request.customer || {}) })
-  }
   return await getClient().validations.validateStackable(request)
 }
 

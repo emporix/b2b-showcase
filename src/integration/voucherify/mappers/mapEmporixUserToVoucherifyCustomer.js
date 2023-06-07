@@ -1,4 +1,7 @@
-export const mapEmporixUserToVoucherifyCustomer = (user) => {
+export const mapEmporixUserToVoucherifyCustomer = (
+  user,
+  customerAdditionalMetadata
+) => {
   if (!(user instanceof Object)) {
     return undefined
   }
@@ -19,6 +22,7 @@ export const mapEmporixUserToVoucherifyCustomer = (user) => {
       preferredCurrency: user.preferredCurrency,
       preferredLanguage: user.preferredLanguage,
       ...(user.metadata || {}),
+      ...(customerAdditionalMetadata || {}),
     },
   }
   return customer.source_id ? customer : undefined
