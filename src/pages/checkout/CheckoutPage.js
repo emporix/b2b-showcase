@@ -243,8 +243,10 @@ const CheckoutPage = () => {
       selectedAddress,
       billingAddress,
     ])
+
     setOrder(order)
     setFinal(order.orderId)
+    //tutaj
     syncCart()
   }
 
