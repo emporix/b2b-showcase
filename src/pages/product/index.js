@@ -21,6 +21,7 @@ import { useCurrency } from 'context/currency-context'
 import { useAuth } from '../../context/auth-provider'
 import { getQualificationsWithItemsExtended } from '../../integration/voucherify/voucherifyApi'
 import { mapEmporixUserToVoucherifyCustomer } from '../../integration/voucherify/mappers/mapEmporixUserToVoucherifyCustomer'
+import { getCustomerAdditionalMetadata } from '../../helpers/getCustomerAdditionalMetadata'
 
 const ProductList = () => {
   return (
@@ -38,7 +39,10 @@ export const ProductDetails = () => {
   useEffect(() => {
     setQualifications([])
     ;(async () => {
-      const customer = mapEmporixUserToVoucherifyCustomer(user)
+      const customer = mapEmporixUserToVoucherifyCustomer(
+        user,
+        getCustomerAdditionalMetadata()
+      )
       setQualifications(
         await getQualificationsWithItemsExtended(
           'PRODUCTS',

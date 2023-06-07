@@ -16,6 +16,7 @@ import EachProductRow from './EachProductRow'
 import { useAuth } from 'context/auth-provider'
 import { mapEmporixUserToVoucherifyCustomer } from '../../integration/voucherify/mappers/mapEmporixUserToVoucherifyCustomer'
 import { getQualificationsWithItemsExtended } from '../../integration/voucherify/voucherifyApi'
+import { getCustomerAdditionalMetadata } from '../../helpers/getCustomerAdditionalMetadata'
 
 const ProductListViewSettingBar = ({
   changeDisplayType,
@@ -120,7 +121,10 @@ const ProductListItems = ({ products, auth, displayType }) => {
     const productsIds = products.map((product) => product.id)
 
     ;(async () => {
-      const customer = mapEmporixUserToVoucherifyCustomer(user)
+      const customer = mapEmporixUserToVoucherifyCustomer(
+        user,
+        getCustomerAdditionalMetadata()
+      )
       const allQualifications = await getQualificationsWithItemsExtended(
         'PRODUCTS',
         productsIds.map((productId) => {
