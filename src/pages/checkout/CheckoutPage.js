@@ -20,10 +20,7 @@ import { useAuth } from '../../context/auth-provider'
 import { mapEmporixUserToVoucherifyCustomer } from '../../integration/voucherify/mappers/mapEmporixUserToVoucherifyCustomer'
 import { Qualification } from '../shared/Qualification'
 import { getCart } from '../../integration/emporix/emporixApi'
-import {
-  buildIntegrationCartFromEmporixCart,
-  mapEmporixItemsToVoucherifyProducts,
-} from '../../integration/buildIntegrationCartFromEmporixCart'
+import { mapEmporixItemsToVoucherifyProducts } from '../../integration/buildIntegrationCartFromEmporixCart'
 import { mapItemsToVoucherifyOrdersItems } from '../../integration/voucherify/validateCouponsAndGetAvailablePromotions/mappers/product'
 import { getQualificationsWithItemsExtended } from '../../integration/voucherify/voucherifyApi'
 

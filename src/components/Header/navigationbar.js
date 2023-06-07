@@ -11,7 +11,11 @@ import { CgNotes } from 'react-icons/cg'
 import { useSelector } from 'react-redux'
 import Badge from '@mui/material/Badge'
 import AccountMenu from './accountmenu'
-import { HiOutlineUserCircle, HiChevronLeft, HiChevronRight } from 'react-icons/hi'
+import {
+  HiOutlineUserCircle,
+  HiChevronLeft,
+  HiChevronRight,
+} from 'react-icons/hi'
 import LayoutContext from '../../pages/context'
 import { LargePrimaryButton } from '../Utilities/button'
 import { pageMenuSelector } from '../../redux/slices/pageReducer'
@@ -29,11 +33,12 @@ import { useQuotes } from 'context/quotes-context'
 import { useContentful } from '../../context/contentful-provider'
 import { useCart } from 'context/cart-provider'
 import { useCurrency } from 'context/currency-context'
+import { CUSTOMER_ADDITIONAL_METADATA } from '../../constants/localstorage'
 
 const Navbar = () => {
   const { userTenant: tenant } = useAuth()
   const { sites, onSiteChange, currentSite, currentSiteObject } = useSites()
-  const { languages, currentLanguage, setLanguage } = useLanguage()
+  const { languages, currentLanguage, setLanguage } = useLanguage() //currentLanguage z useLanguage()
   const { user } = useAuth()
   const { quotesTotal } = useQuotes()
   const [open, setOpen] = useState(false)
@@ -45,12 +50,20 @@ const Navbar = () => {
   const { setShowCart } = useContext(LayoutContext)
   const menuList = useSelector(pageMenuSelector)
   const navigate = useNavigate()
-  const { currencyList, activeCurrency, updateCurrency } = useCurrency()
+  const { currencyList, activeCurrency, updateCurrency } = useCurrency() //activeCurrency z useCurrency()
   const { cartAccount } = useCart()
   const currencyChangeHandler = async (value, site) => {
     updateCurrency(value, site)
   }
 
+  useEffect(() => {
+    if (currentLanguage && activeCurrency?.code) {
+      localStorage.setItem(
+        CUSTOMER_ADDITIONAL_METADATA,
+        JSON.stringify({ currentLanguage, activeCurrency: activeCurrency.code })
+      )
+    }
+  }, [currentLanguage, activeCurrency])
   const ParentBoard = () => {
     return (
       <>
@@ -136,7 +149,8 @@ const Navbar = () => {
         onClick={() => parentMenuClicked(item.title, item.items)}
       >
         {item.title}
-        <HiChevronRight size={20}
+        <HiChevronRight
+          size={20}
           className={item.items.length ? 'h-8 w-8' : 'hidden'}
         />
       </li>
@@ -228,8 +242,12 @@ const Navbar = () => {
       cartAccount.subtotalAggregate &&
       cartAccount.subtotalAggregate.grossValue
     ) {
-      setCartTotalPrice(cartAccount.totalPrice.amount +
-          + cartAccount.totalPrice.amount * cartAccount?.taxAggregate.lines[0].rate / 100)
+      setCartTotalPrice(
+        cartAccount.totalPrice.amount +
+          (+cartAccount.totalPrice.amount *
+            cartAccount?.taxAggregate.lines[0].rate) /
+            100
+      )
     } else {
       setCartTotalPrice(0)
     }
