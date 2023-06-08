@@ -139,10 +139,6 @@ export const Coupon = () => {
   const [keyValue, setKeyValue] = useState(Math.random())
   const { applyDiscount, mixins } = useCart()
   const appliedCoupons = mixins?.voucherify?.appliedCoupons || []
-  const availablePromotions =
-    appliedCoupons.length >= 5
-      ? []
-      : mixins?.voucherify?.availablePromotions || []
   const [isBeingApplied, setIsBeingApplied] = useState(false)
   const { user } = useAuth()
 
