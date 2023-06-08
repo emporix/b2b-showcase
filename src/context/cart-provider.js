@@ -198,7 +198,7 @@ const CartProvider = ({ children }) => {
   )
 
   const recheckCart = async () => {
-    let user = JSON.parse(localStorage.getItem(USER))
+    const user = JSON.parse(localStorage.getItem(USER))
     const customerAdditionalMetadata = getCustomerAdditionalMetadata()
     if (!cartAccount?.id) {
       return {

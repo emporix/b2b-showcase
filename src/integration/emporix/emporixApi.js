@@ -124,8 +124,13 @@ export const updateCartMetadataMixins = async (
   const mixinsSchema = {
     ...(emporixCart?.metadata?.mixins || {}),
   }
-  mixinsSchema['voucherify'] =
+  mixinsSchema.voucherify =
     'https://res.cloudinary.com/saas-ag/raw/upload/v1686167929/voucherify/voucherify.json'
+  //this corrects past misconfiguration
+  mixinsSchema.sessionKey = undefined
+  mixinsSchema.appliedCoupons = undefined
+  mixinsSchema.availablePromotions = undefined
+  mixinsSchema.discountsDetails = undefined
 
   const mixins = {
     ...(emporixCart?.mixins || {}),

@@ -23,8 +23,8 @@ import {
   getOnlyBundleQualifications,
 } from '../../integration/voucherify/mappers/bundleQualifications'
 import { getQualificationsPerProducts } from '../../integration/voucherify/mappers/getQualificationsPerProducts'
-import { mapEmporixItemsToVoucherifyProducts } from '../../integration/buildIntegrationCartFromEmporixCart'
 import { getCustomerAdditionalMetadata } from '../../helpers/getCustomerAdditionalMetadata'
+import { mapEmporixItemsToVoucherifyProducts } from '../../integration/voucherify/mappers/mapEmporixItemsToVoucherifyProducts'
 
 const CartPage = () => {
   const minWidth900px = useMediaQuery('(min-width:900px)')

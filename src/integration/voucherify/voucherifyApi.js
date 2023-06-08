@@ -175,6 +175,14 @@ export const validateStackableVouchers = async (request) => {
   return await getClient().validations.validateStackable(request)
 }
 
+export const redeemStackableVouchers = async (request) => {
+  return await getClient().redemptions.redeemStackable(request)
+}
+
+export const createOrder = async (request) => {
+  return await getClient().orders.create(request)
+}
+
 export const getAvailablePromotions = async (cart) => {
   const items = mapItemsToVoucherifyOrdersItems(cart.items)
   return (

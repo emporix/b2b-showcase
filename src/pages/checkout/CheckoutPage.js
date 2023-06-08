@@ -20,10 +20,11 @@ import { useAuth } from '../../context/auth-provider'
 import { mapEmporixUserToVoucherifyCustomer } from '../../integration/voucherify/mappers/mapEmporixUserToVoucherifyCustomer'
 import { Qualification } from '../shared/Qualification'
 import { getCart } from '../../integration/emporix/emporixApi'
-import { mapEmporixItemsToVoucherifyProducts } from '../../integration/buildIntegrationCartFromEmporixCart'
 import { mapItemsToVoucherifyOrdersItems } from '../../integration/voucherify/validateCouponsAndGetAvailablePromotions/mappers/product'
 import { getQualificationsWithItemsExtended } from '../../integration/voucherify/voucherifyApi'
 import { getCustomerAdditionalMetadata } from '../../helpers/getCustomerAdditionalMetadata'
+import { redeemCart } from '../../integration/voucherify/redeemCart'
+import { mapEmporixItemsToVoucherifyProducts } from '../../integration/voucherify/mappers/mapEmporixItemsToVoucherifyProducts'
 
 const PaymentAction = ({ action, disabled }) => {
   return (
@@ -238,15 +239,6 @@ const CheckoutPage = () => {
   const handleReview = () => {
     setStatus('review_order')
   }
-  const handleViewOrder = async () => {
-    const order = await checkoutService.triggerCheckout(cartAccount.id, [
-      selectedAddress,
-      billingAddress,
-    ])
-    setOrder(order)
-    setFinal(order.orderId)
-    syncCart()
-  }
 
   const { user } = useAuth()
   const [qualifications, setQualifications] = useState([])
@@ -268,6 +260,28 @@ const CheckoutPage = () => {
       )
     })()
   }, [cartAccount, user])
+
+  const handleViewOrder = async () => {
+    const order = await checkoutService.triggerCheckout(cartAccount.id, [
+      selectedAddress,
+      billingAddress,
+    ])
+    setOrder(order)
+    setFinal(order.orderId)
+    try {
+      await redeemCart({
+        emporixCart: cartAccount,
+        emporixOrderId: order?.orderId,
+        customer: mapEmporixUserToVoucherifyCustomer(
+          user,
+          getCustomerAdditionalMetadata()
+        ),
+      })
+    } catch (e) {
+      console.log('could not redeem or create order')
+    }
+    syncCart()
+  }
 
   return (
     <div className="checkout-page-wrapper ">
