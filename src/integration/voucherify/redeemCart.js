@@ -12,7 +12,8 @@ export const redeemCart = async ({ emporixCart, emporixOrderId, customer }) => {
     cart.coupons,
     cart,
     mapItemsToVoucherifyOrdersItems(cart.items || []),
-    emporixOrderId
+    emporixOrderId,
+    'PAID'
   )
   await createOrder(request.order)
   if (cart.coupons?.length) {
