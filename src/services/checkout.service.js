@@ -17,7 +17,6 @@ const CheckoutService = () => {
     const params = {
       siteCode: localStorage.getItem('siteCode'),
     }
-    console.log('siteCode', JSON.stringify(params))
     const payload = {
       cartId: cartId,
       paymentMethods: [
@@ -43,7 +42,6 @@ const CheckoutService = () => {
       'saas-token':
         'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI2NjI2NzMwNiIsImV4cCI6MTY4ODc0MjY2NH0.0Ohpl_waQ7R4IU9nJ5g4_0wggJ2-SyiQvJove3U8fwY',
     }
-    console.log(2, JSON.stringify(headers))
     const { data } = await ApiRequest(
       triggerCheckoutApi(),
       'post',
