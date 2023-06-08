@@ -14,7 +14,7 @@ export const redeemCart = async ({ emporixCart, emporixOrderId, customer }) => {
     mapItemsToVoucherifyOrdersItems(cart.items || []),
     emporixOrderId
   )
-  await createOrder(request)
+  await createOrder(request.order)
   if (cart.coupons?.length) {
     await redeemStackableVouchers(request)
   }
