@@ -26,20 +26,16 @@ export function buildRedeemStackableParamsForVoucherify(coupons, cart, items) {
   }
 }
 
-export const redeemCart = async ({
-  emporixOrderId,
-  customer,
-  customerAdditionalMetadata,
-}) => {
+export const redeemCart = async ({ emporixOrderId, customer }) => {
   if (!emporixOrderId) {
     return
   }
+  console.log('a', JSON.stringify({ customer }))
   const emporixOrder = await getOrder(emporixOrderId)
-  console.log(emporixOrder)
+  console.log('emporixOrder', JSON.stringify(emporixOrder))
   const order = buildIntegrationOrderFromEmporixOrder({
     emporixOrder,
     customer,
-    customerAdditionalMetadata,
   })
   const request = buildRedeemStackableParamsForVoucherify(
     order.coupons,

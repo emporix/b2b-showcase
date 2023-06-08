@@ -240,22 +240,6 @@ const CheckoutPage = () => {
   const handleReview = () => {
     setStatus('review_order')
   }
-  const handleViewOrder = async () => {
-    const order = await checkoutService.triggerCheckout(cartAccount.id, [
-      selectedAddress,
-      billingAddress,
-    ])
-    setOrder(order)
-    setFinal(order.orderId)
-    const user = JSON.parse(localStorage.getItem(USER))
-    const customerAdditionalMetadata = getCustomerAdditionalMetadata()
-    await redeemCart({
-      emporixOrderId: order?.orderId,
-      user,
-      customerAdditionalMetadata,
-    })
-    syncCart()
-  }
 
   const { user } = useAuth()
   const [qualifications, setQualifications] = useState([])
@@ -277,6 +261,23 @@ const CheckoutPage = () => {
       )
     })()
   }, [cartAccount, user])
+
+  const handleViewOrder = async () => {
+    const order = await checkoutService.triggerCheckout(cartAccount.id, [
+      selectedAddress,
+      billingAddress,
+    ])
+    setOrder(order)
+    setFinal(order.orderId)
+    await redeemCart({
+      emporixOrderId: order?.orderId,
+      customer: mapEmporixUserToVoucherifyCustomer(
+        user,
+        getCustomerAdditionalMetadata()
+      ),
+    })
+    syncCart()
+  }
 
   return (
     <div className="checkout-page-wrapper ">
