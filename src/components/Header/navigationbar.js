@@ -63,15 +63,6 @@ const Navbar = () => {
   const currencyChangeHandler = async (value, site) => {
     updateCurrency(value, site)
   }
-
-  useEffect(() => {
-    if (currentLanguage && activeCurrency?.code) {
-      localStorage.setItem(
-        CUSTOMER_ADDITIONAL_METADATA,
-        JSON.stringify({ currentLanguage, activeCurrency: activeCurrency.code })
-      )
-    }
-  }, [currentLanguage, activeCurrency])
   const ParentBoard = () => {
     return (
       <>

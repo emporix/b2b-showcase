@@ -1,7 +1,8 @@
 export function buildValidationsValidateStackableParamsForVoucherify(
   coupons,
   cart,
-  items
+  items,
+  orderId
 ) {
   return {
     // options?: StackableOptions;
@@ -16,7 +17,7 @@ export function buildValidationsValidateStackableParamsForVoucherify(
       ...(cart.sessionKey && { key: cart.sessionKey }),
     },
     order: {
-      source_id: cart.id,
+      source_id: orderId || cart.id,
       customer: cart.customer,
       amount: items.reduce((acc, item) => acc + item.amount, 0),
       discount_amount: 0,

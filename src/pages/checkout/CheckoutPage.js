@@ -24,7 +24,6 @@ import { mapItemsToVoucherifyOrdersItems } from '../../integration/voucherify/va
 import { getQualificationsWithItemsExtended } from '../../integration/voucherify/voucherifyApi'
 import { getCustomerAdditionalMetadata } from '../../helpers/getCustomerAdditionalMetadata'
 import { redeemCart } from '../../integration/voucherify/redeemCart'
-import { USER } from '../../constants/localstorage'
 import { mapEmporixItemsToVoucherifyProducts } from '../../integration/voucherify/mappers/mapEmporixItemsToVoucherifyProducts'
 
 const PaymentAction = ({ action, disabled }) => {
@@ -269,13 +268,18 @@ const CheckoutPage = () => {
     ])
     setOrder(order)
     setFinal(order.orderId)
-    await redeemCart({
-      emporixOrderId: order?.orderId,
-      customer: mapEmporixUserToVoucherifyCustomer(
-        user,
-        getCustomerAdditionalMetadata()
-      ),
-    })
+    try {
+      await redeemCart({
+        emporixCart: cartAccount,
+        emporixOrderId: order?.orderId,
+        customer: mapEmporixUserToVoucherifyCustomer(
+          user,
+          getCustomerAdditionalMetadata()
+        ),
+      })
+    } catch (e) {
+      console.log('could not redeem or create order')
+    }
     syncCart()
   }
 
