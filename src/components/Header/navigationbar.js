@@ -53,13 +53,14 @@ const Navbar = () => {
   const { currencyList, activeCurrency, updateCurrency } = useCurrency() //activeCurrency z useCurrency()
   const { cartAccount } = useCart()
 
-  const [updated, setUpdated] = useState(false)
   useEffect(() => {
-    if (currentSiteObject && activeCurrency?.code && updated === false) {
-      updateCurrency(activeCurrency.code, currentSiteObject)
-      setUpdated(true)
+    if (currentLanguage && activeCurrency?.code) {
+      localStorage.setItem(
+        CUSTOMER_ADDITIONAL_METADATA,
+        JSON.stringify({ currentLanguage, activeCurrency: activeCurrency.code })
+      )
     }
-  }, [currentSiteObject, activeCurrency])
+  }, [currentLanguage, activeCurrency])
   const currencyChangeHandler = async (value, site) => {
     updateCurrency(value, site)
   }
