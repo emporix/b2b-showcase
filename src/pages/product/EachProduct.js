@@ -86,11 +86,11 @@ const EachProduct = ({ item, qualifications }) => {
               flexDirection: 'column',
               background: `white`,
               border: 0,
-              padding: 10,
+              padding: 32,
               whiteSpace: `nowrap`,
             }}
           >
-            <Box
+            {/* <Box
               className="cursor-pointer"
               sx={{
                 mb: -2,
@@ -107,11 +107,24 @@ const EachProduct = ({ item, qualifications }) => {
               }}
             >
               &#10060;
-            </Box>
-            <span style={{ fontSize: 20, fontWeight: 'bold' }}>
+            </Box> */}
+
+            <span
+              className="close-button"
+              onClick={(event) => {
+                event.preventDefault()
+                event.stopPropagation()
+                setOpen(false)
+              }}
+            >
+              {' '}
+              X
+            </span>
+            <span className="text-[20px]/[28px] text-eerieBlack font-semibold">
               Promotion{qualifications.length > 1 ? 's' : ''} related to{' '}
               {item.name}:
             </span>
+
             {qualifications?.map((qualification) => (
               <Qualification
                 key={qualification.id}
@@ -142,7 +155,7 @@ const EachProduct = ({ item, qualifications }) => {
           >
             {isLoggedIn ? (
               <>
-                <div className="text-xs text-gray w-[200px] text-left">
+                <div className="text-[14px]/[20px] font-normal text-eerieBlack w-[200px] text-left">
                   {price !== null ? (
                     <>
                       {isLoggedIn ? 'Your negotiated price' : 'List Price'}
@@ -164,7 +177,7 @@ const EachProduct = ({ item, qualifications }) => {
                         className="w-4 h-4 mt-1"
                       /> */}
                       <div className="text-[22px]/[22px] lg:text-xl leading-[24px] font-bold ml-1">
-                        <div className='flex flex-col'>
+                        <div className="flex flex-col">
                           <CurrencyBeforeValue value={price} />
                           <span className="text-xs font-normal text-manatee">
                             (Excl. VAT)
@@ -196,6 +209,8 @@ const EachProduct = ({ item, qualifications }) => {
         {item.productType === 'PARENT_VARIANT' && (
           <div>
             <LargePrimaryButton
+              className="cta-button"
+              sx={{backgroundColor: '#FAC420 !important'}}
               title={'VIEW VARIANTS'}
               onClick={handleProductDetail}
             />

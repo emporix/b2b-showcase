@@ -50,7 +50,7 @@ const ProductDetailCategoryCaptionBar = ({ category }) => {
     <div className="product-detail-category-caption-bar">
       <Breadcrumbs
         className="lg:block hidden"
-        separator="|"
+        separator=">"
         aria-label="breadcrumb"
       >
         {categoryTree.map((row, index) => {
@@ -81,7 +81,7 @@ const ProductDetailCategoryCaptionBar = ({ category }) => {
       </Breadcrumbs>
       <Breadcrumbs
         className="lg:hidden md:block hidden"
-        separator="|"
+        separator=">"
         aria-label="breadcrumb"
       >
         {categoryTree.map((row, index) => {
@@ -102,7 +102,7 @@ const ProductDetailCategoryCaptionBar = ({ category }) => {
           )
         })}
       </Breadcrumbs>
-      <Breadcrumbs className="md:hidden" separator="|" aria-label="breadcrumb">
+      <Breadcrumbs className="md:hidden" separator=">" aria-label="breadcrumb">
         {categoryTree.map((row, index) => {
           return categoryTree.length - index > 1 &&
             categoryTree.length - index < 4 ? (

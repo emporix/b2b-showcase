@@ -128,7 +128,7 @@ const TopNav = ({ title }) => {
         title === 'home'
           ? 'desktop_only_flex w-full md:h-36 absolute z-10 bg-white'
           : title === ''
-          ? 'nav-background-title desktop_only_flex h-36'
+          ? 'desktop_only_flex h-36'
           : 'desktop_only_flex w-full md:h-60 absolute z-10 bg-white'
       }
     >

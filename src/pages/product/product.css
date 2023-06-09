@@ -103,7 +103,7 @@
   z-index: 30;
 }
 .product-detail-page-wrapper {
-  @apply w-full md:pt-24 pt-32 md:px-24 px-[16.5px] md:pb-24 pb-12 font-inter;
+  @apply w-full md:pt-8 pt-8 md:px-[76px] px-[16.5px] md:pb-24 pb-12 font-inter;
 }
 .product-detail-page-content {
   @apply max-w-screen-xl mx-auto grid grid-cols-1 md:gap-12 gap-6;
