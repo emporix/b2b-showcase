@@ -29,6 +29,7 @@ module.exports = {
         quartz: '#E1E1E6',
         limeGreen: '#219653',
         herringSilver: '#C4C5CC',
+        flamingo: '#EB5757'
       },
     },
   },

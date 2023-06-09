@@ -29,14 +29,15 @@ const EachProduct = ({ item, qualifications }) => {
   const handleProductDetail = useCallback(() => {
     navigate(`/${userTenant}/product/details/${item.id}`)
   }, [userTenant, item.id])
+
   return (
-    <div className="" style={{ cursor: 'pointer' }}>
+    <div className="p-4" style={{ cursor: 'pointer' }}>
       <div onClick={handleProductDetail}>
-        <div className="w-full h-3  justify-between hidden lg:flex">
+        <div className="w-full h-5  justify-between hidden lg:flex">
           {item.productType !== 'PARENT_VARIANT' && (
             <div
               className={
-                'text-brightGreen font-inter font-bold text-xs pt-[6px] float-right lg:float-none'
+                'text-limeGreen font-inter text-[14px]/[20px] font-medium float-right lg:float-none'
               }
             >
               In Stock
@@ -47,21 +48,87 @@ const EachProduct = ({ item, qualifications }) => {
         <div className=" block float-right lg:hidden">
           <div
             className={
-              'text-brightGreen font-inter font-bold text-xs pt-[6px] float-right lg:float-none'
+              'text-limeGreen font-inter text-[14px]/[20px] font-medium float-right lg:float-none'
             }
           >
             {'In Stock'}
           </div>
         </div>
 
+        {qualifications.length ? (
+          <div
+            className="mt-3 mb--4 text-white bg-flamingo text-[12px]/[20px] font-medium w-max rounded px-2 py-0.5"
+            onClick={(event) => {
+              event.preventDefault()
+              event.stopPropagation()
+              setOpen(true)
+            }}
+          >
+            {qualifications.length} PROMOTION
+            {qualifications.length > 1 ? 'S' : ''}
+          </div>
+        ) : undefined}
+        <Modal
+          open={open}
+          aria-labelledby="modal-modal-title"
+          aria-describedby="modal-modal-description"
+        >
+          <div
+            style={{
+              position: 'absolute',
+              top: '50%',
+              left: '50%',
+              transform: 'translate(-50%, -50%)',
+              fontSize: 16,
+              fontWeight: 'bold',
+              gap: 20,
+              display: 'flex',
+              flexDirection: 'column',
+              background: `white`,
+              border: 0,
+              padding: 10,
+              whiteSpace: `nowrap`,
+            }}
+          >
+            <Box
+              className="cursor-pointer"
+              sx={{
+                mb: -2,
+                justifyContent: 'end',
+                width: '100%',
+                justifyItems: 'end',
+                cursor: 'pointer',
+                maxWidth: '40px',
+              }}
+              onClick={(event) => {
+                event.preventDefault()
+                event.stopPropagation()
+                setOpen(false)
+              }}
+            >
+              &#10060;
+            </Box>
+            <span style={{ fontSize: 20, fontWeight: 'bold' }}>
+              Promotion{qualifications.length > 1 ? 's' : ''} related to{' '}
+              {item.name}:
+            </span>
+            {qualifications?.map((qualification) => (
+              <Qualification
+                key={qualification.id}
+                qualification={qualification}
+              />
+            ))}
+          </div>
+        </Modal>
+
         <div className="pt-10 lg:w-[200px] lg:h-[260px] w-[100px] h-[140px] md:w-[150px] md:h-[200px] items-center mx-auto ">
           <img src={trimImage(`${imageSrc}`)} className="mx-auto h-full" />
         </div>
-        <div className="mt-2 lg:mt-11 w-full font-inter">
-          <div className="text-left text-xs leading-xs text-gray">
+        <div className="mt-2 lg:mt-9 w-full font-inter">
+          <div className="text-left text-[14px]/[20px] font-normal leading-xs text-manatee">
             {item.code}
           </div>
-          <div className="mt-2 text-left max-w-[240px] min-h-[60px] lg:h-12 text-sm font-bold">
+          <div className="mt-2 text-left max-w-[240px] min-h-[60px] lg:h-12 text-[16px]/[24px] text-eerieBlack font-medium">
             {item.name}
           </div>
         </div>
@@ -92,17 +159,17 @@ const EachProduct = ({ item, qualifications }) => {
                 <div className="flex">
                   {price !== null ? (
                     <>
-                      <img
+                      {/* <img
                         src="/products/pencil.png"
                         className="w-4 h-4 mt-1"
-                      />
-                      <div className="text-base lg:text-xl leading-[24px] font-bold ml-1">
-                        <>
-                          <CurrencyBeforeValue value={price} />{' '}
-                          <span className="text-xs font-normal text-gray ml-4">
+                      /> */}
+                      <div className="text-[22px]/[22px] lg:text-xl leading-[24px] font-bold ml-1">
+                        <div className='flex flex-col'>
+                          <CurrencyBeforeValue value={price} />
+                          <span className="text-xs font-normal text-manatee">
                             (Excl. VAT)
                           </span>
-                        </>
+                        </div>
                       </div>
                     </>
                   ) : null}
@@ -112,8 +179,8 @@ const EachProduct = ({ item, qualifications }) => {
               <div className="text-base pt-4">
                 {price !== null ? (
                   <>
-                    <CurrencyBeforeValue value={price} />{' '}
-                    <span className="text-xs font-normal text-gray">
+                    <CurrencyBeforeValue value={price} />
+                    <span className="text-xs font-normal text-manatee">
                       (Incl. VAT)
                     </span>
                   </>
@@ -135,63 +202,6 @@ const EachProduct = ({ item, qualifications }) => {
           </div>
         )}
       </div>
-      {qualifications.length ? (
-        <Box
-          sx={{ mb: -2, background: '#9fe7a5', textAlign: 'center' }}
-          onClick={() => setOpen(true)}
-        >
-          Found {qualifications.length} promotion
-          {qualifications.length > 1 ? 's' : ''}
-        </Box>
-      ) : undefined}
-      <Modal
-        open={open}
-        aria-labelledby="modal-modal-title"
-        aria-describedby="modal-modal-description"
-      >
-        <div
-          style={{
-            position: 'absolute',
-            top: '50%',
-            left: '50%',
-            transform: 'translate(-50%, -50%)',
-            fontSize: 16,
-            fontWeight: 'bold',
-            gap: 20,
-            display: 'flex',
-            flexDirection: 'column',
-            background: `white`,
-            border: 0,
-            padding: 10,
-            whiteSpace: `nowrap`,
-          }}
-        >
-          <Box
-            className="cursor-pointer"
-            sx={{
-              mb: -2,
-              justifyContent: 'end',
-              width: '100%',
-              justifyItems: 'end',
-              cursor: 'pointer',
-              maxWidth: '40px',
-            }}
-            onClick={() => setOpen(false)}
-          >
-            &#10060;
-          </Box>
-          <span style={{ fontSize: 20, fontWeight: 'bold' }}>
-            Promotion{qualifications.length > 1 ? 's' : ''} related to{' '}
-            {item.name}:
-          </span>
-          {qualifications?.map((qualification) => (
-            <Qualification
-              key={qualification.id}
-              qualification={qualification}
-            />
-          ))}
-        </div>
-      </Modal>
     </div>
   )
 }
