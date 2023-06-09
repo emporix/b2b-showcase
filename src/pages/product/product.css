@@ -46,11 +46,11 @@
 }
 
 .category_pan_title {
-  width: 90%;
+  /* width: 90%; */
 }
 
 .content {
-  background-color: white;
+  /* background-color: white; */
 }
 
 /* activate toggle */
@@ -59,6 +59,7 @@
   height: 0;
   overflow: hidden;
   transition: height ease 0.2s;
+  margin-left: -9px;
 }
 
 .sidebarFilter {
@@ -300,4 +301,25 @@
 }
 .tab-lg {
   @apply invisible lg:visible;
+}
+.products-filter-name {
+  @apply hidden md:block text-manatee text-sm/[20px];
+}
+.products-filter-value {
+  @apply bg-[white] font-normal text-eerieBlack
+}
+.product-available {
+  @apply text-limeGreen font-inter font-medium text-[14px]/[20px] float-right lg:float-none
+}
+.product-unavailable {
+  @apply text-manatee font-inter font-medium text-[14px]/[20px] float-right lg:float-none
+}
+.category_pan_title {
+  @apply w-[90%] text-eerieBlack text-[16px]/[24px] font-semibold
+}
+.category_pan_field {
+  @apply w-[90%] ml-[3px] text-eerieBlack text-[14px]/[22px] font-normal flex items-center justify-between
+}
+.category_pan_field_title {
+  @apply w-[85%] whitespace-nowrap overflow-hidden text-ellipsis block capitalize
 }

@@ -26,57 +26,15 @@ const ProductListViewSettingBar = ({
   displayType,
 }) => {
   return (
-    <div className="view-setting-wrapper  h-8 mb-12">
+    <div className="view-setting-wrapper h-6">
       <div className="view-setting-bar gap-6">
         <div className="gap-2">
           <ul className="setting gap-6 flex justify-between h-[24px] font-inter text-base font-normal">
-            <li className="view-type">
-              <div className="gap-4 flex">
-                <div className="hidden lg:block">View:</div>
-                <div
-                  className="cursor-pointer"
-                  onClick={() => changeDisplayType(true)}
-                >
-                  <IconContext.Provider
-                    value={{
-                      size: 24,
-                      color: displayType ? 'black' : '#828282',
-                    }}
-                  >
-                    <>
-                      <CgMenuGridR />
-                    </>
-                  </IconContext.Provider>
-                </div>
-                <div
-                  className="cursor-pointer"
-                  onClick={() => changeDisplayType(false)}
-                >
-                  <IconContext.Provider
-                    value={{
-                      size: 24,
-                      color: displayType ? 'black' : '#828282',
-                    }}
-                  >
-                    <>
-                      <BiMenu />
-                    </>
-                  </IconContext.Provider>
-                </div>
-              </div>
-            </li>
-            <li className="product-result-caption hidden lg:block">
-              Products found: {productListCount}
-            </li>
-            <li className="product-result-caption  lg:hidden">
-              {productListCount} Products
-            </li>
-
             <li className="per-page hidden xl:block">
-              <div>
-                Per Page:&nbsp;
+              <div className="products-filter-name">
+                Products Per Page: &nbsp;
                 <select
-                  className="bg-[white] font-bold"
+                  className="products-filter-value"
                   onChange={changePerPageCount}
                 >
                   {productListCountsPerPage.map((cnt) => (
@@ -87,10 +45,16 @@ const ProductListViewSettingBar = ({
                 </select>
               </div>
             </li>
+            {/* <li className="product-result-caption hidden lg:block">
+              Products found: {productListCount}
+            </li> */}
+            {/* <li className="product-result-caption  lg:hidden">
+              {productListCount} Products
+            </li> */}
             <li className="sort-by">
-              <div className="hidden md:block">
-                Sort by:&nbsp;
-                <select className="bg-[white] font-bold">
+              <div className="products-filter-name">
+                Sort:&nbsp;
+                <select className="products-filter-value">
                   <option value="">Price (High to Low)</option>
                   <option value="">Price (Low to High)</option>
                   <option value="">Name (A-Z)</option>
@@ -106,8 +70,43 @@ const ProductListViewSettingBar = ({
                 />
               </div>
             </li>
+            <li className="view-type">
+              <div className="gap-4 flex">
+                <div className="lg:block products-filter-name">View:</div>
+                <div
+                  className="cursor-pointer hover:text-yellow"
+                  onClick={() => changeDisplayType(true)}
+                >
+                  <IconContext.Provider
+                    value={{
+                      size: 20,
+                      color: displayType ? '#FAC420' : 'black',
+                    }}
+                  >
+                    <>
+                      <CgMenuGridR />
+                    </>
+                  </IconContext.Provider>
+                </div>
+                <div
+                  className="cursor-pointer"
+                  onClick={() => changeDisplayType(false)}
+                >
+                  <IconContext.Provider
+                    value={{
+                      size: 20,
+                      color: displayType ? 'black' : '#FAC420',
+                    }}
+                  >
+                    <>
+                      <BiMenu />
+                    </>
+                  </IconContext.Provider>
+                </div>
+              </div>
+            </li>
           </ul>
-          <div className="mt-2 split-line h-0 border-b border-bgWhite border-solid"></div>
+          {/* <div className="mt-2 split-line h-0 border-b border-bgWhite border-solid"></div> */}
         </div>
       </div>
     </div>
@@ -185,7 +184,7 @@ const ProductListItems = ({ products, auth, displayType }) => {
       switch ((i + 1) % 3) {
         case 1:
           subItemArr.push(
-            <div key={i} className="w-1/3 p-6 ">
+            <div key={i} className="w-1/3 mr-2 border border-quartz rounded">
               <EachProduct
                 key={item.id}
                 available={available}
@@ -203,7 +202,7 @@ const ProductListItems = ({ products, auth, displayType }) => {
           subItemArr.push(
             <div
               key={i}
-              className="w-1/3  p-6 border-l border-bgWhite border-solid"
+              className="w-1/3  mx-2 border border-quartz rounded"
             >
               <EachProduct
                 key={item.id}
@@ -222,7 +221,7 @@ const ProductListItems = ({ products, auth, displayType }) => {
           subItemArr.push(
             <div
               key={i}
-              className="w-1/3 p-6 border-l border-bgWhite border-solid"
+              className="w-1/3 pb-4 border ml-2 border-quartz rounded"
             >
               <EachProduct
                 key={item.id}
@@ -239,18 +238,18 @@ const ProductListItems = ({ products, auth, displayType }) => {
           itemArr.push(
             <div
               key={'row' + i.toString()}
-              className="list-row flex lg:my-12 my-6"
+              className="list-row flex lg:my-4 my-4"
             >
               {subItemArr}
             </div>
           )
-          if (i !== products.length - 1)
-            itemArr.push(
-              <div
-                key={i}
-                className="lg:my-12 my-6 split-line h-0 border-b border-bgWhite border-solid"
-              ></div>
-            )
+          // if (i !== products.length - 1)
+          //   itemArr.push(
+          //     <div
+          //       key={i}
+          //       className="lg:my-12 my-6 split-line h-0 border-b border-bgWhite border-solid"
+          //     ></div>
+          //   )
           subItemArr = []
           break
       }
@@ -304,18 +303,18 @@ const ProductListItems = ({ products, auth, displayType }) => {
           ItemArrOnMobile.push(
             <div
               key={'rowMobile' + i.toString()}
-              className="list-row flex lg:my-12 my-6"
+              className="list-row flex lg:my-12 my-4"
             >
               {subItemArr}
             </div>
           )
-          if (i !== products.length - 1)
-            ItemArrOnMobile.push(
-              <div
-                key={i}
-                className="lg:my-12 my-6 split-line h-0 border-b border-bgWhite border-solid"
-              ></div>
-            )
+          // if (i !== products.length - 1)
+          //   ItemArrOnMobile.push(
+          //     <div
+          //       key={i}
+          //       className="lg:my-12 my-6 split-line h-0 border-b border-bgWhite border-solid"
+          //     ></div>
+          //   )
           subItemArr = []
           break
       }
@@ -333,17 +332,21 @@ const ProductListItems = ({ products, auth, displayType }) => {
     products.forEach((item, i) => {
       available = availability['k' + item.id]?.available
       itemArr.push(
-        <div key={i} className="w-full h-[215px] lg:my-12 my-6 items-center">
-          <EachProductRow key={item.id} available={available} item={item} />
+        <div key={i} className="w-full h-[215px] lg:my-12 my-4 items-center">
+          <EachProductRow
+            key={item.id}
+            available={available}
+            item={item}
+          />
         </div>
       )
-      if (i !== products.length - 1)
-        itemArr.push(
-          <div
-            key={'line' + i.toString()}
-            className="lg:my-12 my-6 split-line h-0 border-b border-bgWhite border-solid"
-          ></div>
-        )
+      // if (i !== products.length - 1)
+      //   itemArr.push(
+      //     <div
+      //       key={'line' + i.toString()}
+      //       className="lg:my-12 my-6 split-line h-0 border-b border-bgWhite border-solid"
+      //     ></div>
+      //   )
     })
   }
   return (

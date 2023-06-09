@@ -1,0 +1,10 @@
+/* .main_page-image {
+  background: url('../../assets/mainpage.svg') no-repeat center;
+  height: 36rem;
+} */
+.home_about {
+  background: url('../../assets/mainpage.svg') no-repeat;
+  height: 36rem;
+  background-size: cover;
+  margin-top: 9rem;
+}

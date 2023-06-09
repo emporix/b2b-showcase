@@ -8,6 +8,8 @@ import { getQualificationsWithItemsExtended } from '../../integration/voucherify
 import { Qualification } from '../shared/Qualification'
 import { CUSTOMER_ADDITIONAL_METADATA } from '../../constants/localstorage'
 import { getCustomerAdditionalMetadata } from '../../helpers/getCustomerAdditionalMetadata'
+import './about.css'
+
 const About = () => {
   const { fields } = useContentful()
   const [introImageUrl, setIntroImageUrl] = useState('')
@@ -43,49 +45,43 @@ const About = () => {
   }, [user])
 
   return (
-    <Box
-      style={{ backgroundImage: `url(${landingBg})` }}
-      className="home_about"
-      sx={{ minWidth: '500px' }}
-    >
-      <Box className="px-6 md:pl-16 pt-[48px]" sx={{ m: 3, mt: 20 }}>
-        <div className="text-[40px] md:text-[56px] font-inter font-semibold leading-[48px] md:leading-[64px]">
-          {fields.mainTitle}
-        </div>
-        <div className="text-[20px] leading-[32px] font-inter font-light pt-[27px] md:max-w-[525px]">
-          {fields.companyMission}
-        </div>
+    <>
+      <div
+        // style={{ backgroundImage: `url(${landingBg})` }}
+        className="home_about"
+      >
+        <div className="mx-6 md:ml-16 mt-[48px] md:mt-[114px] w-[492px]">
+          <div className="text-[48px] md:text-[48px] font-inter font-semibold md:leading-[64px] leading-[56px]">
+            {fields.mainTitle}
+          </div>
+          <div className="text-[18px] leading-[30px] font-inter font-normal pt-[24px] md:max-w-[525px]">
+            {fields.companyMission}
+          </div>
 
-        <div
-          className="pt-[78px] desktop_only text-sm"
-          style={{ marginTop: -50 }}
-        >
-          <button className="px-6 py-4 border font-bold">
-            {fields.startShoppingButtonLabel}
-          </button>
+          <div className="pt-[44px] desktop_only text-sm">
+            <button className="px-6 py-4 font-semibold bg-yellow text-eerieBlack rounded">
+              {fields.startShoppingButtonLabel}
+            </button>
+          </div>
         </div>
-        <Box
-          sx={{
-            mt: 3,
-            mb: 3,
-            display: 'flex',
-            flexDirection: 'column',
-            gap: 2,
-          }}
-        >
-          {qualifications.map((qualification) => (
-            <Qualification
-              key={qualification.id}
-              qualification={qualification}
-            />
-          ))}
-        </Box>
+        {/* <div className="mt-[60px] hidden xl:block w-[530px] h-[818px] flex min-w-[50%]">
+        <img alt="intro image" src={introImageUrl} className="mx-auto" />
+      </div>  */}
+      </div>
+      <Box
+        sx={{
+          mt: 3,
+          mb: 3,
+          display: 'flex',
+          flexDirection: 'column',
+          gap: 2,
+        }}
+      >
+        {qualifications.map((qualification) => (
+          <Qualification key={qualification.id} qualification={qualification} />
+        ))}
       </Box>
-      <img
-        src={introImageUrl}
-        className=" mt-[60px] hidden xl:block w-[530px] h-[818px] "
-      />
-    </Box>
+    </>
   )
 }
 
