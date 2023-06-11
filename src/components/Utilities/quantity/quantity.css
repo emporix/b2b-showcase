@@ -2,8 +2,8 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  padding-bottom: 8px !important;
-  border-bottom: 1px solid #d7dade;
+  /* padding-bottom: 8px !important; */
+  /* border-bottom: 1px solid #d7dade; */
   @apply items-center;
 }
 
@@ -25,4 +25,22 @@
 }
 .quantity-input {
   @apply align-middle text-[20px] leading-[24px] !font-normal;
+}
+
+.quantity-input .MuiInput-underline::before {
+  border: none;
+}
+
+.quantity-input .MuiInput-underline::after {
+  border: none;
+}
+
+.quantity-input
+  .MuiTextField-root
+  .MuiInputBase-root:hover:not(.Mui-disabled):before {
+  border-bottom: none !important;
+}
+
+.quantity-input input {
+  text-align: center;
 }

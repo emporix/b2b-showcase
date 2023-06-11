@@ -168,7 +168,7 @@ const ProductSkuAndReview = ({ product }) => {
             />
             ({product.count})
           </div>
-          <div className="lg:ml-4  product-all-reviews">Read All Reviews</div>
+          <div className="lg:ml-4  product-all-reviews">Reviews</div>
         </div>
       </div>
     </div>

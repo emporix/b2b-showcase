@@ -112,7 +112,7 @@
   @apply font-inter font-normal text-[14px] leading-[20px];
 }
 .MuiBreadcrumbs-separator {
-  @apply !mx-4;
+  @apply !mx-2 !font-normal !text-[16px]/[24px]
 }
 .product-content-wrapper {
   @apply lg:flex w-full lg:gap-12 pb-12 gap-6;

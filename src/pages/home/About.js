@@ -88,7 +88,7 @@ const About = () => {
             ))}
           </Box>
         }
-        collapsedSize={600}
+        collapsedSize={550}
         in={showMoreOpen}
       ></Collapse>
       <div className="show-more_container">

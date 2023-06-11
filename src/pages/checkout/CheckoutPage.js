@@ -125,6 +125,7 @@ const AppliedCouponsComponent = ({ appliedCoupons, user }) => {
               key={appliedCoupon.code}
               appliedCoupon={appliedCoupon}
               user={user}
+              className="hello"
             />
           ))}
         </Grid>
@@ -186,13 +187,24 @@ export const Coupon = () => {
             />
           )}
         </div>
-        <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
+        <Box
+          sx={{
+            display: 'flex',
+            justifyContent: 'space-between',
+            flexDirection: 'column',
+          }}
+        >
           <Box sx={{ display: 'flex' }}>
-            <Box>
+            <Box
+              className="w-full border border-gray80 mt-4 rounded text-center cursor-pointer"
+              onClick={() => redeemCode(code, user)}
+            >
               <Button
                 title="Apply Coupon"
                 disabled={isBeingApplied || appliedCoupons.length >= 5}
-                onClick={() => redeemCode(code, user)}
+                className="!text-eerieBlack !text-[14px]/[24px] !font-semibold"
+                style={{ backgroundColor: 'transparent' }}
+                disableRipple
               >
                 {appliedCoupons.length >= 5
                   ? 'You have reached coupon limit'
