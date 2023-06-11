@@ -10,6 +10,7 @@ import CartService from '../../services/cart.service'
 import priceService from '../../services/product/price.service'
 import category from '../home/Category'
 import pencil from '../../assets/pencil.svg'
+import pencilGreen from '../../assets/pencil_green.svg'
 import checkCircle from '../../assets/check_circle.svg'
 
 const getUserId = (user) => {
@@ -170,10 +171,12 @@ export const Qualification = ({
         background,
         p: '10px!important',
         color: isAlreadyApplied ? '#7e7e7e' : '#222',
-        borderRadius: '4px'
+        borderRadius: '4px',
+        display: 'flex',
       }}
     >
-      <Box sx={{ m: 2 }}>
+      <img src={pencilGreen} className="w-8 h-8 mt-6 ml-4 mr-2" alt="pencil" />
+      <Box sx={{ m: 2, flex: '1' }}>
         <Box sx={{ fontWeight: 600, fontSize: '22px', lineHeight: '32px' }}>
           {qualification.object === 'voucher'
             ? `Voucher code: ${qualification.code}`
@@ -187,7 +190,14 @@ export const Qualification = ({
           </span>
         </Box>
         {termsAndConditions && (
-          <Box sx={{ fontWeight: '600', mt: 1, fontSize: '16px', lineHeight: '24px' }}>
+          <Box
+            sx={{
+              fontWeight: '600',
+              mt: 1,
+              fontSize: '16px',
+              lineHeight: '24px',
+            }}
+          >
             Terms & Conditions:
             <br />
             <span
@@ -199,9 +209,22 @@ export const Qualification = ({
             </span>
           </Box>
         )}
-        <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center'}}>
+        <Box
+          sx={{
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+          }}
+        >
           {isAlreadyApplied ? (
-            <Box sx={{ display: 'flex', gap: '10px', justifyContent: 'center', alignItems: 'center' }}>
+            <Box
+              sx={{
+                display: 'flex',
+                gap: '10px',
+                justifyContent: 'center',
+                alignItems: 'center',
+              }}
+            >
               <Button
                 className="cta-button-checked"
                 title="Applied"

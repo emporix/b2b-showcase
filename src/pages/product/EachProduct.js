@@ -88,6 +88,7 @@ const EachProduct = ({ item, qualifications }) => {
               border: 0,
               padding: 32,
               whiteSpace: `nowrap`,
+              borderRadius: '4px'
             }}
           >
             {/* <Box
@@ -209,7 +210,7 @@ const EachProduct = ({ item, qualifications }) => {
         {item.productType === 'PARENT_VARIANT' && (
           <div>
             <LargePrimaryButton
-              className="cta-button"
+              className="cta-button bg-yellow"
               sx={{backgroundColor: '#FAC420 !important'}}
               title={'VIEW VARIANTS'}
               onClick={handleProductDetail}

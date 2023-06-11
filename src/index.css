@@ -79,7 +79,7 @@ code {
 }
 
 .login_container {
-  @apply w-full h-[1024px] bg-[length:100%_100%];
+  @apply w-full;
 }
 
 .page-wrapper {
@@ -93,14 +93,11 @@ code {
 .home_cat_content {
   @apply px-6 py-12 md:pt-16 md:py-24 grid grid-cols-1 md:grid-cols-4 md:gap-12 gap-y-16 md:px-16  max-w-md  md:max-w-[1248px] mx-auto;
 }
-.login_container {
-  @apply w-full h-[1024px] bg-[length:100%_100%] bg-[url('./assets/landing_bg.png')];
-}
 .signup_container {
-  @apply w-full h-[1980px] bg-[length:100%_150%] bg-[url('./assets/landing_bg.png')];
+  @apply w-full h-[1980px];
 }
 .border-grey-bottom {
-  @apply border-b border-lightGray;
+  /* @apply border-b border-lightGray; */
 }
 
 ::-webkit-scrollbar {

@@ -125,7 +125,7 @@ const EachProductRow = ({ item, type, available, rating, productCount }) => {
           ) : (
             <div>
               <LargePrimaryButton
-                className="cta-button"
+                className="cta-button bg-yellow"
                 sx={{ backgroundColor: '#FAC420 !important' }}
                 title={'VIEW VARIANTS'}
                 onClick={handleProductDetail}
