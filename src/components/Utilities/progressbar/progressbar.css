@@ -14,3 +14,6 @@
 .progress-bar {
   @apply bg-tinBlue h-[2px] mt-[-2px];
 }
+.progress-bar_icons {
+  @apply w-[42px] mx-auto mt-2;
+}

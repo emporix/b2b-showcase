@@ -173,3 +173,7 @@ code {
   box-shadow: none !important;
   cursor: pointer;
 }
+
+.Mui-checked span {
+  background: #FAC420 !important;
+}

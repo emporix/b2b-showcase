@@ -30,6 +30,7 @@ module.exports = {
         limeGreen: '#219653',
         herringSilver: '#C4C5CC',
         flamingo: '#EB5757',
+        dodgerBlue: '#2F80ED',
       },
     },
   },

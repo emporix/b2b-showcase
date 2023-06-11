@@ -199,9 +199,9 @@ export const Qualification = ({
             </span>
           </Box>
         )}
-        <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
+        <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center'}}>
           {isAlreadyApplied ? (
-            <Box sx={{ display: 'flex', gap: '10px' }}>
+            <Box sx={{ display: 'flex', gap: '10px', justifyContent: 'center', alignItems: 'center' }}>
               <Button
                 className="cta-button-checked"
                 title="Applied"

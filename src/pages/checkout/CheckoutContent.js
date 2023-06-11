@@ -48,7 +48,7 @@ const ShippingContent = () => {
   } = useUserAddress()
   return (
     <>
-      <GridLayout className="gap-6">
+      <GridLayout className="gap-6 border rounded border-quartz p-6">
         <GridLayout className="gap-4">
           <DesktopMDContainer>
             <LayoutBetween className="items-center">
@@ -93,7 +93,7 @@ const ShippingContent = () => {
           </GridLayout>
         </GridLayout>
       </GridLayout>
-      <GridLayout className="gap-6">
+      <GridLayout className="gap-6  border rounded border-quartz p-6">
         <Heading3>Shipping Method</Heading3>
         <MobileMDContainer>
           <TextRegular3>

@@ -125,7 +125,6 @@ const AppliedCouponsComponent = ({ appliedCoupons, user }) => {
               key={appliedCoupon.code}
               appliedCoupon={appliedCoupon}
               user={user}
-              className="hello"
             />
           ))}
         </Grid>
@@ -313,7 +312,7 @@ const CheckoutPage = () => {
                         <Coupon />
                         <Box sx={{ mt: 1 }}>
                           <LargePrimaryButton
-                            className="md:block hidden"
+                            className="md:block hidden cta-button bg-yellow"
                             title="GO TO PAYMENT"
                             disabled={addresses.length === 0}
                             onClick={handlePayment}
@@ -367,7 +366,7 @@ const CheckoutPage = () => {
               <Box
                 sx={{
                   mt: -1,
-                  p: '20px!important',
+                  pt: '20px!important',
                   gap: '10px!important',
                   display: 'flex',
                   flexDirection: 'column',

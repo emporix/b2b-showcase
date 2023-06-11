@@ -21,7 +21,7 @@ import { Modal } from '@mui/material'
 const CartProductInfo = ({ cart }) => {
   return (
     <div className="cart-product-info-wrapper flex gap-6">
-      <div className="w-[52px]">
+      <div className="">
         <CartProductImage
           className="table-cart-product-image"
           src={cart.product.src}
@@ -61,7 +61,8 @@ const CartTable = ({ cartList, cart, classname, qualifications = [] }) => {
   const { removeCartItem, changeCartItemQty } = useCart()
   return (
     <>
-      <TableContainer className={classname}>
+      <TableContainer className={'border border-quartz !rounded' + classname}>
+        <div className="shopping-cart_table-title">your products</div>
         <Table sx={{ minWidth: 650 }}>
           <TableHead>
             <TableRow className="!py-6">
@@ -125,15 +126,18 @@ const CartTable = ({ cartList, cart, classname, qualifications = [] }) => {
                   <TableCell className="cart-row-item">
                     {currentProductQualifications.length ? (
                       <Box
+                        className="shopping-cart_promotions-label"
                         sx={{
                           mb: -2,
-                          background: '#9fe7a5',
+                          background: '#EB5757',
                           textAlign: 'center',
                           cursor: 'pointer',
+                          borderRadius: '4px',
+                          color: 'white',
                         }}
                         onClick={() => setOpen(itemId)}
                       >
-                        Found {currentProductQualifications.length} promotion
+                        {currentProductQualifications.length} promotion
                         {currentProductQualifications.length > 1 ? 's' : ''}
                       </Box>
                     ) : undefined}
