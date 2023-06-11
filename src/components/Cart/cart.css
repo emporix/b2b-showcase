@@ -65,7 +65,7 @@
   @apply text-[16px] leading-[20px] font-bold float-right;
 }
 .cart-action-panel {
-  @apply p-6 bg-bgWhite;
+  @apply p-6 bg-bgWhite rounded;
 }
 .cart-action-row {
   @apply pb-4 grid grid-cols-1 gap-4 border-bgWhite border-b last:border-b-0;

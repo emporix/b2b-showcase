@@ -287,7 +287,7 @@ const PrdouctAddToCart = () => {
       <div className="">
         {(cartItems || []).find((item) => product.yrn === item.itemYrn) ? (
           <LargePrimaryButton
-            className="product-remove-from-cart-btn"
+            className="product-remove-from-cart-btn cta-button bg-yellow"
             onClick={() =>
               removeCartItem(
                 (cartItems || []).find((item) => product.yrn === item.itemYrn)
@@ -297,7 +297,7 @@ const PrdouctAddToCart = () => {
           />
         ) : (
           <LargePrimaryButton
-            className="product-add-to-cart-btn"
+            className="product-add-to-cart-btn cta-button bg-yellow"
             onClick={() => HandleProductAddToCart1(product, setShowCart, 1)}
             title="ADD TO CART"
           />

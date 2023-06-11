@@ -152,7 +152,7 @@ code {
 
 .cta-button {
   border-radius: 4px !important;
-  color: #1F1F1F !important;
+  color: #1f1f1f !important;
   font-size: 14px !important;
   line-height: 24px !important;
   font-weight: 600 !important;
@@ -160,7 +160,7 @@ code {
 }
 
 .cta-button:hover {
-  /* background-color: #FAC420 !important; */
+  background-color: #FAC420 !important;
 }
 
 .cta-button-checked {
@@ -175,5 +175,17 @@ code {
 }
 
 .Mui-checked span {
-  background: #FAC420 !important;
+  /* background: #fac420 !important; */
+}
+
+/* .checkbox {
+  background: #fac420 !important;
+} */
+
+input[type='checkbox'] {
+  accent-color: #fac420;
+}
+
+.MuiButtonBase-root.MuiRadio-root.MuiRadio-colorDefault.PrivateSwitchBase-root.MuiRadio-root.MuiRadio-colorDefault.Mui-checked.MuiRadio-root.MuiRadio-colorDefault span {
+  background-color: #fac420 !important;
 }

@@ -6,14 +6,14 @@
   @apply w-full p-4 md:flex mb-2 font-inter;
 }
 .payment-method-item-wrapper {
-  @apply lg:w-[492px] w-full p-6 border border-bgWhite bg-white;
+  @apply w-full;
 }
-.payment-method-item-wrapper.active {
+/* .payment-method-item-wrapper.active {
   @apply !border-tinBlue !bg-bgWhite;
 }
 .brand-primaryBlue{
   @apply text-tinBlue;
-}
+} */
 .brand-gray {
   @apply text-bgWhite;
 }

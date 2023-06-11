@@ -30,7 +30,7 @@ export const ProgressBar = ({ children, active, className }) => {
   }
 
   return (
-    <div className="progressbar mb-4">
+    <div className="progressbar mb-12">
       <Container className="progress-container">{children}</Container>
       <ProgressBarContent mobilestyle={mobilestyle} barstyle={barstyle} />
     </div>

@@ -152,7 +152,7 @@ const CartPage = () => {
     <div className="cart-page-wrapper ">
       <div className="cart-page-content">
         <CartActionBar view={true} />
-        <div className="lg:block hidden">
+        <div className="lg:block hidden border rounded border-quartz p-6">
           <CartTable
             cartList={cartAccount.items}
             cart={cartAccount}

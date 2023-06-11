@@ -31,7 +31,7 @@ const PaymentAction = ({ action, disabled }) => {
     <>
       <DesktopMDContainer>
         <LargePrimaryButton
-          className="md:block hidden"
+          className="md:block hidden cta-button bg-yellow"
           title="REVIEW ORDER"
           onClick={action}
         />
@@ -53,14 +53,14 @@ const ReviewOrderAction = ({ action }) => {
     <>
       <DesktopMDContainer>
         <LargePrimaryButton
-          className="md:block hidden"
+          className="md:block hidden cta-button bg-yellow"
           title="CONFIRM AND PAY"
           onClick={action}
         />
       </DesktopMDContainer>
 
       <MobileMDContainer>
-        <LargePrimaryButton title="CONFIRM AND PAY" onClick={action} />
+        <LargePrimaryButton className='cta-button bg-yellow' title="CONFIRM AND PAY" onClick={action} />
       </MobileMDContainer>
     </>
   )
