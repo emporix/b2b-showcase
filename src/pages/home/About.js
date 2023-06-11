@@ -9,11 +9,12 @@ import { Qualification } from '../shared/Qualification'
 import { CUSTOMER_ADDITIONAL_METADATA } from '../../constants/localstorage'
 import { getCustomerAdditionalMetadata } from '../../helpers/getCustomerAdditionalMetadata'
 import './about.css'
+import Collapse from '@mui/material/Collapse'
 
 const About = () => {
   const { fields } = useContentful()
   const [introImageUrl, setIntroImageUrl] = useState('')
-
+  const [showMoreOpen, setShowMoreOpen] = useState(false)
   const { mainImageRight } = fields
 
   useEffect(() => {
@@ -68,19 +69,36 @@ const About = () => {
         <img alt="intro image" src={introImageUrl} className="mx-auto" />
       </div>  */}
       </div>
-      <Box
-        sx={{
-          mt: 3,
-          mb: 3,
-          display: 'flex',
-          flexDirection: 'column',
-          gap: 2,
-        }}
-      >
-        {qualifications.map((qualification) => (
-          <Qualification key={qualification.id} qualification={qualification} />
-        ))}
-      </Box>
+      <Collapse
+        children={
+          <Box
+            sx={{
+              mt: 3,
+              mb: 3,
+              display: 'flex',
+              flexDirection: 'column',
+              gap: 2,
+            }}
+          >
+            {qualifications.map((qualification) => (
+              <Qualification
+                key={qualification.id}
+                qualification={qualification}
+              />
+            ))}
+          </Box>
+        }
+        collapsedSize={600}
+        in={showMoreOpen}
+      ></Collapse>
+      <div className="show-more_container">
+        <div
+          className="show-more_button"
+          onClick={() => setShowMoreOpen(!showMoreOpen)}
+        >
+          Show {showMoreOpen ? 'less' : 'more'}
+        </div>
+      </div>
     </>
   )
 }
