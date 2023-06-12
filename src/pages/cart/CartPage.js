@@ -122,7 +122,7 @@ const CartPage = () => {
       )
       await loadALLQualifications(items, customer, allQualificationsSoFar)
     })()
-  }, [cartAccount?.id, user])
+  }, [cartAccount?.items, user])
 
   useEffect(() => {
     const items = cartAccount?.items || []
@@ -175,6 +175,7 @@ const CartPage = () => {
               display: 'flex',
               flexDirection: 'column',
               p: '10px !important',
+              width: '100%',
               gap: 1,
             }}
           >
@@ -182,8 +183,9 @@ const CartPage = () => {
               <Box
                 className="cta-button "
                 sx={{
-                  m: 2,
-                  p: '20px!important',
+                  m: '0px!important',
+                  pt: '20px!important',
+                  pb: '20px!important',
                   background: '#FAC420',
                   textAlign: 'center',
                   cursor: 'pointer',
@@ -196,12 +198,15 @@ const CartPage = () => {
                 customer
               </Box>
             ) : undefined}
-            {usersSavedQualifications.length ? (
+            {Array.isArray(usersSavedQualifications) &&
+            usersSavedQualifications.length ? (
               <Box
+                className="cta-button "
                 sx={{
-                  m: 2,
-                  p: '20px!important',
-                  background: '#9fe7a5',
+                  m: '0px!important',
+                  pt: '20px!important',
+                  pb: '20px!important',
+                  background: '#FAC420',
                   textAlign: 'center',
                   cursor: 'pointer',
                   textWeight: '800!important',
@@ -212,6 +217,13 @@ const CartPage = () => {
                 {usersSavedQualifications.length > 1 ? 's' : ''} saved
               </Box>
             ) : undefined}
+
+            {customerWalletQualifications.length ||
+            (Array.isArray(usersSavedQualifications) &&
+              usersSavedQualifications.length) ? (
+              <Box sx={{ mb: 1 }} />
+            ) : undefined}
+
             {bundleQualifications.length ? (
               <Box>
                 <Box
@@ -227,7 +239,8 @@ const CartPage = () => {
                 <Box
                   sx={{
                     mt: -1,
-                    p: '20px!important',
+                    pt: '20px!important',
+                    pb: '20px!important',
                     gap: '10px!important',
                     display: 'flex',
                     flexDirection: 'column',

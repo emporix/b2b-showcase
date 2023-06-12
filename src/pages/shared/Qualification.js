@@ -318,7 +318,7 @@ export const Qualification = ({
                             className="w-4 h-4 mr-4"
                             alt="pencil"
                           />
-                          Saved for later
+                          Save for later
                         </>
                       )}
                     </Button>
@@ -409,27 +409,25 @@ export const Qualification = ({
               gap: '10px',
             }}
           >
-            {categoriesNames.map((categoryName) => {
-              return (
-                <Box
-                  key={`qualification-${qualification.id}-${categoryName}`}
-                  sx={{
-                    m: 0,
-                    background: 'rgb(180,97,1)',
-                    color: 'white',
-                    padding: '10px!important',
-                    paddingTop: '5px!important',
-                    paddingBottom: '5px!important',
-                    mt: 1,
-                    mb: '14px',
-                    maxHeight: '36.5px',
-                    borderRadius: '3px',
-                  }}
-                >
-                  {categoryName}
-                </Box>
-              )
-            })}
+            {categoriesNames.map((categoryName) => (
+              <Box
+                key={`qualification-${qualification.id}-${categoryName}`}
+                sx={{
+                  m: 0,
+                  background: 'rgb(180,97,1)',
+                  color: 'white',
+                  padding: '10px!important',
+                  paddingTop: '5px!important',
+                  paddingBottom: '5px!important',
+                  mt: 1,
+                  mb: '14px',
+                  maxHeight: '36.5px',
+                  borderRadius: '3px',
+                }}
+              >
+                {categoryName}
+              </Box>
+            ))}
           </Box>
         </Box>
       </Box>
