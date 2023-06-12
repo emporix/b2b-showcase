@@ -9,7 +9,10 @@ const getDiscounts = (applicableCoupons) => {
   const discounts = []
 
   applicableCoupons.forEach((coupon) => {
-    if (coupon.result.discount.effect === 'APPLY_TO_ORDER') {
+    if (
+      !coupon.result.discount?.effect ||
+      coupon.result.discount.effect === 'APPLY_TO_ORDER'
+    ) {
       discounts.push({
         target: true,
         centAmount:
