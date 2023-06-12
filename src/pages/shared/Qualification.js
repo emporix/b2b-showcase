@@ -192,6 +192,16 @@ export const Qualification = ({
               : description}
           </span>
         </Box>
+        {isLoyalty && (
+          <Box sx={{ fontSize: '14px' }}>
+            {loyaltyBalance ? (
+              <>
+                Loyalty balance: {loyaltyBalance}
+                <br />
+              </>
+            ) : undefined}
+          </Box>
+        )}
         {termsAndConditions && (
           <Box
             sx={{
@@ -210,16 +220,6 @@ export const Qualification = ({
             >
               {termsAndConditions}
             </span>
-          </Box>
-        )}
-        {isLoyalty && (
-          <Box sx={{ fontSize: '14px' }}>
-            {loyaltyBalance ? (
-              <>
-                Loyalty balance: {loyaltyBalance}
-                <br />
-              </>
-            ) : undefined}
           </Box>
         )}
         <Box
