@@ -60,6 +60,9 @@ export const Qualification = ({
   cartId,
   allowVoucherApply,
 }) => {
+  const loyaltyBalance = qualification.loyalty_card?.balance
+  const isLoyalty = qualification.type === 'LOYALTY_CARD'
+
   const { user } = useAuth()
   const [usersSavedQualificationsState, setUsersSavedQualificationsState] =
     useState(getUsersSavedQualifications(user))
@@ -207,6 +210,16 @@ export const Qualification = ({
             >
               {termsAndConditions}
             </span>
+          </Box>
+        )}
+        {isLoyalty && (
+          <Box sx={{ fontSize: '14px' }}>
+            {loyaltyBalance ? (
+              <>
+                Loyalty balance: {loyaltyBalance}
+                <br />
+              </>
+            ) : undefined}
           </Box>
         )}
         <Box
