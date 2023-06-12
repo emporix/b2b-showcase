@@ -14,33 +14,45 @@ const AccountPersonalInfo = () => {
   }
   return (
     <div className="account-personal-info-wrapper">
-      <div className="account-personal-info-caption border-bottom-gray">
+      <div className="account-personal-info-caption">
         <div className="account-personal-info flex">
           <div className="my-auto  flex w-full justify-between items-center">
             <span className="inline-block align-middle account-personal-caption">
               Personal Details
             </span>
-            <span className="inline-block align-middle account-edit-btn">
+            {/* <span className="inline-block align-middle account-edit-btn">
               Edit Profile&nbsp;&nbsp;
               <span className="profile-edit-btn-arrow">&gt;</span>
-            </span>
+            </span> */}
           </div>
         </div>
       </div>
       <div className="account-profile">
         <div className="mx-auto flex flex-col gap-8 items-center">
-          <img className="personal-photo" src="/photo.png" />
+          <div className="flex flex-row flex-1 w-full">
+            <img
+              className="personal-photo"
+              src="/photo.png"
+              alt="profile photography"
+            />
+            <div className="flex flex-col justify-start items-start pl-6">
+              <div className="text-center m-auto text-[20px]/[28px] font-semibold">{user.username}</div>
+              <span className="account-edit-btn cursor-pointer color-dodgerBlue">
+                Edit Profile
+              </span>
+            </div>
+          </div>
           <div className="profile-info flex gap-4">
-            <div className="profile-items gap-2 flex flex-col justify-items-end">
-              <p>Name</p>
+            <div className="profile-items gap-2 flex flex-col justify-items-start">
+              {/* <p>Name</p> */}
               <p>Company</p>
               <p>Phone</p>
               <p>Email</p>
             </div>
             <div className="profile-items-info gap-2 flex flex-col justify-items-start">
-              <p className="font-bold">{user.username}</p>
+              {/* <p className="font-bold">{user.username}</p> */}
               <p>{user.company}</p>
-              <p>{user.contactPhone}</p>
+              <p>{user.contactPhone ? user.contactPhone : '+1 (543) 234-76-43'}</p>
               <p>{user.contactEmail}</p>
             </div>
           </div>
@@ -99,7 +111,7 @@ const PaymentInfoDetails = () => {
 const AccountSummary = () => {
   return (
     <div className="account-summary-wrapper flex flex-col gap-6">
-      <div className="account-summary-caption border-bottom-gray">
+      <div className="account-summary-caption">
         <div className="account-summary-info flex">
           <div className="my-auto  flex w-full justify-between items-center">
             <span className="inline-block align-middle account-summary-title">
