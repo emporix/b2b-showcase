@@ -122,7 +122,7 @@ const CartPage = () => {
       )
       await loadALLQualifications(items, customer, allQualificationsSoFar)
     })()
-  }, [cartAccount?.id, user])
+  }, [cartAccount?.items, user])
 
   useEffect(() => {
     const items = cartAccount?.items || []
@@ -175,6 +175,7 @@ const CartPage = () => {
               display: 'flex',
               flexDirection: 'column',
               p: '10px !important',
+              width: '100%',
               gap: 1,
             }}
           >
