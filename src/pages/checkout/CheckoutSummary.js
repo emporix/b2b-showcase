@@ -19,14 +19,14 @@ const CheckoutSummary = ({ setFinal, order }) => {
     }
   })
   return (
-    <div className="font-inter">
-      <div className="border-b pb-12">
+    <div className="font-inter mb-8">
+      <div className="bordered-container p-6">
         <div className="md:flex justify-between">
           <div className="font-semibold text-[32px]">
             Your Order has been received
           </div>
           <div>
-            <button className="bg-primaryBlue text-[white] px-6 py-0 h-[50px] text-[14px] leading-[14px] md:w-[400px] w-full">
+            <button className="cta-button bg-yellow px-6 py-0 h-[50px] text-[14px] leading-[14px] md:w-[400px] w-full">
               VIEW INVOICE
             </button>
           </div>
@@ -40,8 +40,8 @@ const CheckoutSummary = ({ setFinal, order }) => {
           </span>
         </div>
       </div>
-      <div className="pt-12 grid md:grid-cols-2 grid-cols-1">
-        <div className="md:border-r md:border-b-0 border-b md:pr-20 pb-12">
+      <div className="pt-8 grid md:grid-cols-2 grid-cols-1">
+        <div className="bordered-container p-6">
           <div className="font-semibod text-2xl">Order Status</div>
           <div className="pt-6">
             <span>
@@ -57,7 +57,7 @@ const CheckoutSummary = ({ setFinal, order }) => {
             </div>
           </div>
         </div>
-        <div className="md:pl-12 md:pt-0 pt-12">
+        <div className="bordered-container p-6 ml-8">
           <div className="font-semibod text-2xl">Support</div>
           <div className="pt-6">Primary contacts for any questions</div>
           <div className="pt-6">
@@ -72,14 +72,14 @@ const CheckoutSummary = ({ setFinal, order }) => {
       <div className="pt-12 w-full flex gap-8 checkout-actions">
         <Link to={homeUrl()}>
           <LargePrimaryButton
-            className="md:block hidden"
+            className="md:block hidden cta-button bg-yellow"
             title="BACK TO HOME PAGE"
             onClick={() => setFinal(false)}
           />
         </Link>
         <Link to={myAccountMyOrders()}>
           <LargePrimaryButton
-            className="md:block hidden"
+            className="md:block hidden cta-button bg-yellow"
             title="GO TO ORDERS"
             onClick={() => setFinal(false)}
           />

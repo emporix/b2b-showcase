@@ -77,7 +77,6 @@ const ReplenishmentAddOrders = () => {
 const AccountReplenishmentAddOrders = () => {
   return (
     <AccountLayout page="New Replenishment Orders">
-      {' '}
       <ReplenishmentAddOrders />
     </AccountLayout>
   )

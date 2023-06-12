@@ -36,7 +36,9 @@ const AccountPersonalInfo = () => {
               alt="profile photography"
             />
             <div className="flex flex-col justify-start items-start pl-6">
-              <div className="text-center m-auto text-[20px]/[28px] font-semibold">{user.username}</div>
+              <div className="text-center m-auto text-[20px]/[28px] font-semibold">
+                {user.username}
+              </div>
               <span className="account-edit-btn cursor-pointer color-dodgerBlue">
                 Edit Profile
               </span>
@@ -52,7 +54,9 @@ const AccountPersonalInfo = () => {
             <div className="profile-items-info gap-2 flex flex-col justify-items-start">
               {/* <p className="font-bold">{user.username}</p> */}
               <p>{user.company}</p>
-              <p>{user.contactPhone ? user.contactPhone : '+1 (543) 234-76-43'}</p>
+              <p>
+                {user.contactPhone ? user.contactPhone : '+1 (543) 234-76-43'}
+              </p>
               <p>{user.contactEmail}</p>
             </div>
           </div>
@@ -128,15 +132,14 @@ const AccountSummary = () => {
 
 const PortalCaptionBar = ({ title, action_title }) => {
   return (
-    <div className="portal-caption border-bottom-gray mb-6" key={title}>
+    <div className="portal-caption" key={title}>
       <div className="portal-caption-content flex">
         <div className="my-auto  flex w-full justify-between items-center">
           <span className="inline-block align-middle portal-title">
             {title}
           </span>
-          <span className="inline-block align-middle portal-action-btn">
-            {action_title}&nbsp;&nbsp;
-            <span className="profile-edit-btn-arrow">&gt;</span>
+          <span className="text-[16px]/[24px] text-dodgerBlue font-medium">
+            {action_title}
           </span>
         </div>
       </div>
@@ -158,7 +161,11 @@ const RecentOrders = () => {
 
   return (
     <div className="account-recent-orders-wrapper portal-wrapper">
-      <PortalCaptionBar title="Recent Orders" action_title="View All" />
+      <PortalCaptionBar
+        className="text-[16px]/[24px] text-dodgerBlue font-medium"
+        title="Recent Orders"
+        action_title="View All"
+      />
       <OrderList orders={orders} />
     </div>
   )
@@ -167,8 +174,12 @@ const RecentOrders = () => {
 const RecentSavedCarts = () => {
   const actions = [{ title: 'View' }]
   return (
-    <div className="account-saved-carts-wrapper portal-wrapper">
-      <PortalCaptionBar title="Saved Carts" action_title="View All" />
+    <div className="account-saved-carts-wrapper portal-wrapper border border-quartz rounded mt-8 p-6">
+      <PortalCaptionBar
+        className="text-[16px]/[24px] text-dodgerBlue font-medium"
+        title="Saved Carts"
+        action_title="View All"
+      />
       <SavedCarts actions={actions} />
     </div>
   )
@@ -176,7 +187,7 @@ const RecentSavedCarts = () => {
 
 const AccountPersonalDetailsAndSummary = () => {
   return (
-    <div className="personal-and-summary-content-wrapper border-bottom-gray">
+    <div className="personal-and-summary-content-wrapper">
       <div className="personal-and-summary-content md:flex">
         <AccountPersonalInfo />
         <AccountSummary />
@@ -188,20 +199,15 @@ export const MyAccountContent = () => {
   return (
     <>
       <AccountPersonalDetailsAndSummary />
-      <div className="mt-12">
-        <RecentOrders />
-      </div>
-      <div className="mt-12">
-        <RecentSavedCarts />
-      </div>
+      <RecentOrders />
+      <RecentSavedCarts />
     </>
   )
 }
 const MyAccount = () => {
   return (
     <AccountLayout page="My Account">
-      {' '}
-      <MyAccountContent />{' '}
+      <MyAccountContent />
     </AccountLayout>
   )
 }

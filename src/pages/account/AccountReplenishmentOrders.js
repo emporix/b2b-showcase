@@ -84,7 +84,7 @@ const ReplenishmentOrders = () => {
   return (
     <div>
       <Link to={addReplenishmentOrdersUrl()}>
-        <div className="w-[278px]  h-12 bg-tinBlue text-white  flex items-center my-12 md:mx-0 mx-auto">
+        <div className="cta-button bg-yellow w-[278px] h-12 flex items-center my-12 md:mx-0 mx-auto">
           <span className="text-center  w-full">NEW REPLENISHMENT ORDER</span>
         </div>
       </Link>
