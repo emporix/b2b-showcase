@@ -73,13 +73,13 @@ const About = () => {
         children={
           <Box
             sx={{
-              mt: 3,
               mb: 3,
               display: 'flex',
               flexDirection: 'column',
               gap: 2,
             }}
           >
+            <div className='text-[32px]/[64px] font-semibold w-full text-center'>Promotions</div>
             {qualifications.map((qualification) => (
               <Qualification
                 key={qualification.id}
@@ -90,6 +90,7 @@ const About = () => {
         }
         collapsedSize={550}
         in={showMoreOpen}
+        className="px-20 pt-20"
       ></Collapse>
       <div className="show-more_container">
         <div

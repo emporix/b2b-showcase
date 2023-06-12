@@ -109,7 +109,11 @@ const EachProduct = ({ item, qualifications }) => {
             >
               &#10060;
             </Box> */}
-
+            <div className='flex items-center justify-between'>
+            <span className="text-[20px]/[28px] text-eerieBlack font-semibold">
+              Promotion{qualifications.length > 1 ? 's' : ''} related to{' '}
+              {item.name}:
+            </span>
             <span
               className="close-button"
               onClick={(event) => {
@@ -118,14 +122,9 @@ const EachProduct = ({ item, qualifications }) => {
                 setOpen(false)
               }}
             >
-              {' '}
               X
             </span>
-            <span className="text-[20px]/[28px] text-eerieBlack font-semibold">
-              Promotion{qualifications.length > 1 ? 's' : ''} related to{' '}
-              {item.name}:
-            </span>
-
+            </div>
             {qualifications?.map((qualification) => (
               <Qualification
                 key={qualification.id}

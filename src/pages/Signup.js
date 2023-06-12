@@ -269,7 +269,7 @@ const Signup = (props) => {
   }
 
   return (
-    <GridLayout className="signup_container">
+    <GridLayout className="signup_container bg-aliceBlue">
       <Snackbar
         open={openNotification}
         autoHideDuration={3000}
@@ -280,7 +280,7 @@ const Signup = (props) => {
           {message}
         </Alert>
       </Snackbar>
-      <GridLayout className="md:w-[540px] w-[95%] mx-auto h-[740px] md:pt-[138px] pt-10">
+      <GridLayout className="md:w-[540px] w-[95%] mx-auto h-[740px]">
         <Container className="w-full h-[110px] items-center  text-center text-white font-bold  text-7xl ">
           <Container className="mx-auto">
             <Link to={homeUrl()} className="flex">
@@ -291,12 +291,12 @@ const Signup = (props) => {
             </Link>
           </Container>
         </Container>
-        <GridLayout className="w-full bg-white p-12  shadow-2xl">
+        <GridLayout className="w-full bg-white p-12 rounded">
           <GridLayout className="text-center">
-            <Heading2 className="text-lightBlue">
+            <Heading2 className="text-eerieBlack text-[24px]/[32px] font-semibold">
               Register as a New User
             </Heading2>
-            <Heading4 className="text-darkGray pt-6">
+            <Heading4 className="text-eerieBlack text-[16px]/[24px] font-semibold pt-6">
               Welcome! Please enter your details
             </Heading4>
           </GridLayout>
@@ -399,7 +399,7 @@ const Signup = (props) => {
             />
             <Box className="w-full !pt-12">
               <button
-                className="w-full text-white bg-tinBlue h-12 enabled:hover:bg-darkBlue disabled:bg-gray-400 disabled:lightGray"
+                className="cta-button cursor-pointer bg-yellow w-full h-12 enabled:hover:bg-darkBlue disabled:bg-gray-400 disabled:lightGray"
                 type="submit"
                 disabled={loading || !isAddressValid}
               >
