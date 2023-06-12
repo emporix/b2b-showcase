@@ -1,6 +1,17 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 import { addTenantToUrl } from '../../services/service.config'
+import accountSummary from '../../assets/account-summary.svg'
+import personalDetails from '../../assets/personal-details.svg'
+import companyDetails from '../../assets/company-details.svg'
+import myOrders from '../../assets/my-orders.svg'
+import myQuotes from '../../assets/my-quotes.svg'
+import replenishmentOrders from '../../assets/replenishment-orders.svg'
+import savedCarts from '../../assets/saved-carts.svg'
+import returns from '../../assets/returns.svg'
+import discounts from '../../assets/discounts.svg'
+import locations from '../../assets/locations.svg'
+import payments from '../../assets/payments.svg'
 
 const AccountMenu = ({ page, className }) => {
   const items = [
@@ -31,6 +42,20 @@ const AccountMenu = ({ page, className }) => {
     'locations',
     'payments',
   ]
+  const itemsIcons = {
+    'account-summary': accountSummary,
+    'personal-details': personalDetails,
+    'company-details': companyDetails,
+    'my-orders': myOrders,
+    'my-quotes': myQuotes,
+    'replenishment-orders': replenishmentOrders,
+    'saved-carts': savedCarts,
+    returns: returns,
+    discounts: discounts,
+    locations: locations,
+    payments: payments,
+  }
+
   return (
     <ul className={className}>
       {items.map((value, index) =>
@@ -38,7 +63,15 @@ const AccountMenu = ({ page, className }) => {
           index === 0 ? (
             page === 'Index' ? (
               <Link to={addTenantToUrl(`my-account/${items_link[index]}`)}>
-                <li key={index} className="index-item-active first-item">
+                <li
+                  key={index}
+                  className="index-item-active first-item flex items-center"
+                >
+                  <img
+                    src={itemsIcons[items_link[index]]}
+                    className="mr-4"
+                    alt={items_link[index]}
+                  />
                   {value}
                 </li>
               </Link>
@@ -47,9 +80,16 @@ const AccountMenu = ({ page, className }) => {
                 <li
                   key={index}
                   className={
-                    value === page ? 'item-active first-item' : 'first-item'
+                    value === page
+                      ? 'item-active first-item flex items-center'
+                      : 'first-item flex items-center'
                   }
                 >
+                  <img
+                    src={itemsIcons[items_link[index]]}
+                    className="mr-4"
+                    alt={items_link[index]}
+                  />
                   {value}
                 </li>
               </Link>
@@ -58,8 +98,13 @@ const AccountMenu = ({ page, className }) => {
             <Link to={addTenantToUrl(`my-account/${items_link[index]}`)}>
               <li
                 key={index}
-                className={value === page ? 'item-active item' : 'item'}
+                className={value === page ? 'item-active item flex items-center' : 'item flex items-center'}
               >
+                <img
+                  src={itemsIcons[items_link[index]]}
+                  className="mr-4"
+                  alt={items_link[index]}
+                />
                 {value}
               </li>
             </Link>

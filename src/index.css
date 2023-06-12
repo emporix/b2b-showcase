@@ -87,7 +87,7 @@ code {
 }
 
 .page-content {
-  @apply md:pt-12 pt-12 max-w-screen-xl mx-auto;
+  @apply max-w-screen-xl mx-auto;
 }
 
 .home_cat_content {
@@ -190,4 +190,12 @@ input[type='checkbox'] {
 
 .grey-rounded-container {
   @apply bg-aliceBlue rounded;
+}
+
+.grid-column-title {
+  @apply !text-manatee text-[14px]/[22px] font-normal;
+}
+
+.bordered-container {
+  @apply border rounded border-quartz;
 }
