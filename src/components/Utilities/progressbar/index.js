@@ -1,8 +1,11 @@
 import React, { useState, createContext, useContext } from 'react'
 import { Container } from '../common'
 import shipping from '../../../assets/shipping.svg'
+import shippingGreen from '../../../assets/shipping_green.svg'
 import order from '../../../assets/order.svg'
+import orderGreen from '../../../assets/order_green.svg'
 import payment from '../../../assets/payment.svg'
+import paymentGreen from '../../../assets/payment_green.svg'
 
 import './progressbar.css'
 
@@ -37,17 +40,38 @@ export const ProgressBar = ({ children, active, className }) => {
   )
 }
 
-export const ProgressBarItem = ({ status, title }) => {
-  const icons = {
-    shipping: shipping,
-    payment: payment,
-    'review order': order,
+export const ProgressBarItem = ({ status, title, activeTab }) => {
+  const iconIsGreen = status === activeTab
+  let icons = {}
+  console.log('status === active: ', status === activeTab)
+  if (activeTab === 'shipping') {
+    icons = {
+      shipping: shippingGreen,
+      payment: iconIsGreen ? paymentGreen : payment,
+      'review order': iconIsGreen ? orderGreen : order,
+    }
+  } else if (activeTab === 'payment') {
+    icons = {
+      shipping: shippingGreen,
+      payment: iconIsGreen ? paymentGreen : payment,
+      'review order': iconIsGreen ? orderGreen : order,
+    }
+  } else if (activeTab === 'review_order') {
+    icons = {
+      shipping: shippingGreen,
+      payment: paymentGreen,
+      'review order': orderGreen,
+    }
   }
-  console.log('status: ', status)
 
   return (
     <div className="progress-bar-item w-full">
-      <img src={icons[title.toLowerCase()]} className="progress-bar_icons" alt={title}/>
+      <img
+        src={icons[title.toLowerCase()]}
+        className={`progress-bar_icons`}
+        text
+        alt={title}
+      />
       <span>{title}</span>
       {/* <div className="point"></div> */}
     </div>

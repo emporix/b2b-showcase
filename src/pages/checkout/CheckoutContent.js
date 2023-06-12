@@ -371,9 +371,9 @@ const CheckoutContent = ({ status }) => {
     <div className="checkout-content-wrapper">
       <GridLayout className="gap-8">
         <ProgressBar active={status} className="">
-          <ProgressBarItem status="shipping" title="Shipping" />
-          <ProgressBarItem status="payment" title="Payment" />
-          <ProgressBarItem status="review_order" title="Review Order" />
+          <ProgressBarItem activeTab={status} status="shipping" title="Shipping" />
+          <ProgressBarItem activeTab={status} status="payment" title="Payment" />
+          <ProgressBarItem activeTab={status} status="review_order" title="Review Order" />
         </ProgressBar>
         {status === 'shipping' ? (
           <ShippingContent />
