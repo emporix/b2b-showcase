@@ -31,7 +31,7 @@ const PaymentAction = ({ action, disabled }) => {
     <>
       <DesktopMDContainer>
         <LargePrimaryButton
-          className="md:block hidden"
+          className="md:block hidden cta-button bg-yellow"
           title="REVIEW ORDER"
           onClick={action}
         />
@@ -53,14 +53,14 @@ const ReviewOrderAction = ({ action }) => {
     <>
       <DesktopMDContainer>
         <LargePrimaryButton
-          className="md:block hidden"
+          className="md:block hidden cta-button bg-yellow"
           title="CONFIRM AND PAY"
           onClick={action}
         />
       </DesktopMDContainer>
 
       <MobileMDContainer>
-        <LargePrimaryButton title="CONFIRM AND PAY" onClick={action} />
+        <LargePrimaryButton className='cta-button bg-yellow' title="CONFIRM AND PAY" onClick={action} />
       </MobileMDContainer>
     </>
   )
@@ -186,13 +186,24 @@ export const Coupon = () => {
             />
           )}
         </div>
-        <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
+        <Box
+          sx={{
+            display: 'flex',
+            justifyContent: 'space-between',
+            flexDirection: 'column',
+          }}
+        >
           <Box sx={{ display: 'flex' }}>
-            <Box>
+            <Box
+              className="w-full border border-gray80 mt-4 rounded text-center cursor-pointer"
+              onClick={() => redeemCode(code, user)}
+            >
               <Button
                 title="Apply Coupon"
                 disabled={isBeingApplied || appliedCoupons.length >= 5}
-                onClick={() => redeemCode(code, user)}
+                className="!text-eerieBlack !text-[14px]/[24px] !font-semibold"
+                style={{ backgroundColor: 'transparent' }}
+                disableRipple
               >
                 {appliedCoupons.length >= 5
                   ? 'You have reached coupon limit'
@@ -301,7 +312,7 @@ const CheckoutPage = () => {
                         <Coupon />
                         <Box sx={{ mt: 1 }}>
                           <LargePrimaryButton
-                            className="md:block hidden"
+                            className="md:block hidden cta-button bg-yellow"
                             title="GO TO PAYMENT"
                             disabled={addresses.length === 0}
                             onClick={handlePayment}
@@ -355,7 +366,7 @@ const CheckoutPage = () => {
               <Box
                 sx={{
                   mt: -1,
-                  p: '20px!important',
+                  pt: '20px!important',
                   gap: '10px!important',
                   display: 'flex',
                   flexDirection: 'column',

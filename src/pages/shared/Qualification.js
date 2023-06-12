@@ -9,6 +9,9 @@ import { asyncMap } from '../../integration/voucherify/voucherifyApi'
 import CartService from '../../services/cart.service'
 import priceService from '../../services/product/price.service'
 import category from '../home/Category'
+import pencil from '../../assets/pencil.svg'
+import pencilGreen from '../../assets/pencil_green.svg'
+import checkCircle from '../../assets/check_circle.svg'
 
 const getUserId = (user) => {
   return user?.id || 'anonymous'
@@ -103,14 +106,14 @@ export const Qualification = ({
     qualification.object === 'voucher'
       ? alreadyAppliedCodes.includes(qualification.code)
       : alreadyAppliedCodes.includes(qualification.id)
-  const background = isAlreadyApplied
-    ? qualification.object === 'voucher'
-      ? '#caf8cd'
-      : '#cee8f8'
-    : qualification.object === 'voucher'
-    ? '#9fe7a5'
-    : '#9bcfef'
-
+  // const background = isAlreadyApplied
+  //   ? qualification.object === 'voucher'
+  //     ? '#caf8cd'
+  //     : '#cee8f8'
+  //   : qualification.object === 'voucher'
+  //   ? '#9fe7a5'
+  //   : '#9bcfef'
+  const background = '#F6F7F9'
   const addMissingProducts = async () => {
     if (areProductsBeingAdded || !cartId) {
       return
@@ -168,15 +171,18 @@ export const Qualification = ({
         background,
         p: '10px!important',
         color: isAlreadyApplied ? '#7e7e7e' : '#222',
+        borderRadius: '4px',
+        display: 'flex',
       }}
     >
-      <Box sx={{ m: 2 }}>
-        <Box sx={{ fontWeight: 800 }}>
+      <img src={pencilGreen} className="w-8 h-8 mt-6 ml-4 mr-2" alt="pencil" />
+      <Box sx={{ m: 2, flex: '1' }}>
+        <Box sx={{ fontWeight: 600, fontSize: '22px', lineHeight: '32px' }}>
           {qualification.object === 'voucher'
             ? `Voucher code: ${qualification.code}`
             : name || qualification.banner}
         </Box>
-        <Box sx={{ fontWeight: '500' }}>
+        <Box sx={{ fontWeight: '600', fontSize: '16px', lineHeight: '24px' }}>
           <span style={{ fontWeight: 800 }}>
             {qualification.object === 'voucher'
               ? name || description
@@ -184,7 +190,14 @@ export const Qualification = ({
           </span>
         </Box>
         {termsAndConditions && (
-          <Box sx={{ fontWeight: '500', mt: 1 }}>
+          <Box
+            sx={{
+              fontWeight: '600',
+              mt: 1,
+              fontSize: '16px',
+              lineHeight: '24px',
+            }}
+          >
             Terms & Conditions:
             <br />
             <span
@@ -196,15 +209,30 @@ export const Qualification = ({
             </span>
           </Box>
         )}
-        <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
+        <Box
+          sx={{
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+          }}
+        >
           {isAlreadyApplied ? (
-            <Box sx={{ display: 'flex', gap: '10px' }}>
+            <Box
+              sx={{
+                display: 'flex',
+                gap: '10px',
+                justifyContent: 'center',
+                alignItems: 'center',
+              }}
+            >
               <Button
+                className="cta-button-checked"
                 title="Applied"
                 disabled={true}
                 variant={'contained'}
                 sx={{ mt: 1, mb: '14px', borderRadius: 0 }}
               >
+                <img src={checkCircle} className="w-4 h-4 mr-4" alt="pencil" />
                 Applied
               </Button>
               {addProducts?.length > 0 ? (
@@ -240,6 +268,7 @@ export const Qualification = ({
                 {qualification.object === 'voucher' && !allowVoucherApply ? (
                   <Box>
                     <Button
+                      className="cta-button"
                       title="Save voucher"
                       variant={'contained'}
                       sx={{
@@ -249,14 +278,14 @@ export const Qualification = ({
                         background: !usersSavedQualificationsState
                           .map((qualification) => qualification?.code)
                           .includes(qualification.code)
-                          ? '#1976d2'
-                          : '#19ccd2',
+                          ? '#FAC420'
+                          : '#219653',
                         '&:hover': {
                           background: !usersSavedQualificationsState
                             .map((qualification) => qualification?.code)
                             .includes(qualification.code)
-                            ? '#11589f'
-                            : '#14a3a8',
+                            ? '#FAC420'
+                            : '#219653',
                         },
                       }}
                       onClick={() => {
@@ -273,9 +302,25 @@ export const Qualification = ({
                     >
                       {usersSavedQualificationsState
                         .map((qualification) => qualification?.code)
-                        .includes(qualification.code)
-                        ? 'Saved for later'
-                        : 'Save for later'}
+                        .includes(qualification.code) ? (
+                        <>
+                          <img
+                            src={checkCircle}
+                            className="w-4 h-4 mr-4"
+                            alt="checkCircle"
+                          />
+                          Saved for later
+                        </>
+                      ) : (
+                        <>
+                          <img
+                            src={pencil}
+                            className="w-4 h-4 mr-4"
+                            alt="pencil"
+                          />
+                          Saved for later
+                        </>
+                      )}
                     </Button>
                   </Box>
                 ) : (
@@ -283,12 +328,21 @@ export const Qualification = ({
                     {canApply && (
                       <Box>
                         <Button
+                          className="cta-button"
                           title="Apply Coupon"
                           disabled={
                             isBeingApplied || alreadyAppliedCodes.length >= 5
                           }
                           variant={'contained'}
-                          sx={{ mt: 1, mb: '14px', borderRadius: 0 }}
+                          sx={{
+                            mt: 1,
+                            mb: '14px',
+                            borderRadius: 0,
+                            backgroundColor: '#FAC420',
+                            '&:hover': {
+                              backgroundColor: '#FAC420',
+                            },
+                          }}
                           onClick={() =>
                             alreadyAppliedCodes.length < 5 &&
                             apply(
@@ -299,6 +353,11 @@ export const Qualification = ({
                             )
                           }
                         >
+                          <img
+                            src={pencil}
+                            className="w-4 h-4 mr-4"
+                            alt="pencil"
+                          />
                           {alreadyAppliedCodes.length >= 5
                             ? 'You have reached coupon limit'
                             : 'Apply'}
@@ -325,7 +384,7 @@ export const Qualification = ({
                       borderRadius: 0,
                       background: '#097e12',
                       '&:hover': {
-                        backgroundColor: '#07670f',
+                        backgroundColor: '#FAC420',
                       },
                     }}
                     onClick={() => addMissingProducts()}

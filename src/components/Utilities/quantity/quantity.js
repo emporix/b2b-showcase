@@ -43,7 +43,7 @@ const Quantity = ({ value, increase, decrease, changeCartItemQty }) => {
   }
 
   return (
-    <Box className="quantity-input" sx={{ width: '3rem' }}>
+    <Box className="quantity-input rounded border border-quartz" sx={{ width: '84px' }} >
       {typeof increase !== 'function' && typeof decrease !== 'function' ? (
         <TextField
           variant="standard"

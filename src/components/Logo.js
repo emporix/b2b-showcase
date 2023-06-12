@@ -9,7 +9,7 @@ export const Logo = ({ onMouseOver, size, text }) => {
     const [logoUrl, setLogoUrl] = useState('')
     const { companyLogo } = fields
     const classes = size ? size : "w-[37px]"
-    const typo = text ? text : "px-4 text-white text-[25px]"
+    const typo = text ? text : "px-4 text-eerieBlack text-[25px]"
 
     useEffect(() => {
         ;(async () => {

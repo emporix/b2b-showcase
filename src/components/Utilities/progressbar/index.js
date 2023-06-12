@@ -1,5 +1,8 @@
 import React, { useState, createContext, useContext } from 'react'
 import { Container } from '../common'
+import shipping from '../../../assets/shipping.svg'
+import order from '../../../assets/order.svg'
+import payment from '../../../assets/payment.svg'
 
 import './progressbar.css'
 
@@ -12,6 +15,7 @@ const ProgressBarContent = ({ barstyle, mobilestyle }) => {
     </div>
   )
 }
+
 export const ProgressBar = ({ children, active, className }) => {
   const status = children.map((node) => node.props.status)
   const active_index =
@@ -26,7 +30,7 @@ export const ProgressBar = ({ children, active, className }) => {
   }
 
   return (
-    <div className="progressbar">
+    <div className="progressbar mb-12">
       <Container className="progress-container">{children}</Container>
       <ProgressBarContent mobilestyle={mobilestyle} barstyle={barstyle} />
     </div>
@@ -34,10 +38,18 @@ export const ProgressBar = ({ children, active, className }) => {
 }
 
 export const ProgressBarItem = ({ status, title }) => {
+  const icons = {
+    shipping: shipping,
+    payment: payment,
+    'review order': order,
+  }
+  console.log('status: ', status)
+
   return (
     <div className="progress-bar-item w-full">
+      <img src={icons[title.toLowerCase()]} className="progress-bar_icons" alt={title}/>
       <span>{title}</span>
-      <div className="point"></div>
+      {/* <div className="point"></div> */}
     </div>
   )
 }

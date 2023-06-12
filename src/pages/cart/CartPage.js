@@ -152,7 +152,7 @@ const CartPage = () => {
     <div className="cart-page-wrapper ">
       <div className="cart-page-content">
         <CartActionBar view={true} />
-        <div className="lg:block hidden">
+        <div className="lg:block hidden border rounded border-quartz p-6">
           <CartTable
             cartList={cartAccount.items}
             cart={cartAccount}
@@ -180,10 +180,11 @@ const CartPage = () => {
           >
             {customerWalletQualifications.length ? (
               <Box
+                className="cta-button "
                 sx={{
                   m: 2,
                   p: '20px!important',
-                  background: '#9fe7a5',
+                  background: '#FAC420',
                   textAlign: 'center',
                   cursor: 'pointer',
                   textWeight: '800!important',
@@ -261,7 +262,7 @@ const CartPage = () => {
                 <Box
                   sx={{
                     mt: -1,
-                    p: '20px!important',
+                    pt: '20px!important',
                     gap: '10px!important',
                     display: 'flex',
                     flexDirection: 'column',
