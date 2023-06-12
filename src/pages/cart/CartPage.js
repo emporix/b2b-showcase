@@ -196,7 +196,8 @@ const CartPage = () => {
                 customer
               </Box>
             ) : undefined}
-            {usersSavedQualifications.length ? (
+            {Array.isArray(usersSavedQualifications) &&
+            usersSavedQualifications.length ? (
               <Box
                 sx={{
                   m: 2,

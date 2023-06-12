@@ -318,7 +318,7 @@ export const Qualification = ({
                             className="w-4 h-4 mr-4"
                             alt="pencil"
                           />
-                          Saved for later
+                          Save for later
                         </>
                       )}
                     </Button>
