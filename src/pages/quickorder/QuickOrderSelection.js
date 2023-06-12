@@ -91,7 +91,7 @@ const QuickOrderSelection = () => {
         />
       </div>
       <div className="mobile_only pt-12">
-        <button className="quickorder-add-to-cart-btn">ADD TO CART</button>
+        <button className="quickorder-add-to-cart-btn cta-button bg-yellow">ADD TO CART</button>
       </div>
     </div>
   )

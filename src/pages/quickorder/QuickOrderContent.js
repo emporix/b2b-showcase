@@ -314,6 +314,7 @@ const DesktopContent = () => {
           title={'ADD TO CART'}
           onClick={addProductsToCart}
           disabled={tempProductList.length === 0}
+          className="cta-button bg-yellow"
         />
       </div>
     </div>

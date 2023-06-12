@@ -271,6 +271,7 @@ function PaymentSummary({ variant, price }) {
           <LargePrimaryButton
             title={'Add to cart'}
             onClick={addVariantProductToCart}
+            className="cta-button bg-yellow"
           />
         </Item>
       </CartActionRow>
