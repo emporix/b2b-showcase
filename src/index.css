@@ -72,10 +72,10 @@ code {
   @apply flex-auto lg:w-[calc((100%-24px)*0.23)] w-full;
 }
 .main-content-panel {
-  @apply flex-auto lg:w-[calc((100%-24px)*0.77+24px)] lg:block hidden border-bgWhite lg:border-l;
+  @apply flex-auto lg:w-[calc((100%-24px)*0.77+24px)] lg:block hidden;
 }
 .content-panel {
-  @apply flex-auto lg:w-[calc((100%-24px)*0.77+24px)] w-full border-bgWhite lg:border-l;
+  @apply flex-auto lg:w-[calc((100%-24px)*0.77+24px)] w-full;
 }
 
 .login_container {
@@ -186,4 +186,8 @@ input[type='checkbox'] {
 
 .MuiButtonBase-root.MuiRadio-root.MuiRadio-colorDefault.PrivateSwitchBase-root.MuiRadio-root.MuiRadio-colorDefault.Mui-checked.MuiRadio-root.MuiRadio-colorDefault span {
   background-color: #fac420 !important;
+}
+
+.grey-rounded-container {
+  @apply bg-aliceBlue rounded;
 }

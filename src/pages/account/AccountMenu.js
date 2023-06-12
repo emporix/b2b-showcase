@@ -7,7 +7,7 @@ const AccountMenu = ({ page, className }) => {
     'My Account',
     'Personal Details',
     'Company Details',
-    '',
+    // '',
     'My Orders',
     'My Quotes',
     'Replenishment Orders',
@@ -21,7 +21,7 @@ const AccountMenu = ({ page, className }) => {
     'account-summary',
     'personal-details',
     'company-details',
-    '',
+    // '',
     'my-orders',
     'my-quotes',
     'replenishment-orders',
@@ -37,35 +37,35 @@ const AccountMenu = ({ page, className }) => {
         value !== '' ? (
           index === 0 ? (
             page === 'Index' ? (
-              <li key={index} className="index-item-active first-item">
-                <Link to={addTenantToUrl(`my-account/${items_link[index]}`)}>
+              <Link to={addTenantToUrl(`my-account/${items_link[index]}`)}>
+                <li key={index} className="index-item-active first-item">
                   {value}
-                </Link>
-              </li>
+                </li>
+              </Link>
             ) : (
-              <li
-                key={index}
-                className={
-                  value === page ? 'item-active first-item' : 'first-item'
-                }
-              >
-                <Link to={addTenantToUrl(`my-account/${items_link[index]}`)}>
+              <Link to={addTenantToUrl(`my-account/${items_link[index]}`)}>
+                <li
+                  key={index}
+                  className={
+                    value === page ? 'item-active first-item' : 'first-item'
+                  }
+                >
                   {value}
-                </Link>
-              </li>
+                </li>
+              </Link>
             )
           ) : (
-            <li
-              key={index}
-              className={value === page ? 'item-active item' : 'item'}
-            >
-              <Link to={addTenantToUrl(`my-account/${items_link[index]}`)}>
+            <Link to={addTenantToUrl(`my-account/${items_link[index]}`)}>
+              <li
+                key={index}
+                className={value === page ? 'item-active item' : 'item'}
+              >
                 {value}
-              </Link>
-            </li>
+              </li>
+            </Link>
           )
         ) : (
-          <li key={index} className="item-divide-line" />
+          <li key={index} className="item" />
         )
       )}
     </ul>
