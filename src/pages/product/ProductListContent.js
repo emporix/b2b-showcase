@@ -332,7 +332,7 @@ const ProductListItems = ({ products, auth, displayType }) => {
     products.forEach((item, i) => {
       available = availability['k' + item.id]?.available
       itemArr.push(
-        <div key={i} className="w-full h-[215px] lg:my-12 my-4 items-center">
+        <div key={i} className="w-full my-4 items-center">
           <EachProductRow
             key={item.id}
             available={available}
