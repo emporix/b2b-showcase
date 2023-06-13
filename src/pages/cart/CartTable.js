@@ -219,29 +219,29 @@ const CartTable = ({ cartList, cart, classname, qualifications = [] }) => {
             display: 'flex',
             flexDirection: 'column',
             background: `white`,
-            border: 0,
-            padding: 10,
+            borderRadius: 4,
+            padding: 32,
             whiteSpace: `nowrap`,
           }}
         >
-          <Box
-            className="cursor-pointer"
-            sx={{
-              mb: -2,
-              justifyContent: 'end',
-              width: '100%',
-              justifyItems: 'end',
-              cursor: 'pointer',
-              maxWidth: '40px',
-            }}
-            onClick={() => setOpen(false)}
-          >
-            &#10060;
-          </Box>
+          <div className='flex justify-between items-center'>
           <span style={{ fontSize: 20, fontWeight: 'bold' }}>
             Promotion{currentProductQualifications.length > 1 ? 's' : ''}{' '}
             related to {productName}:
           </span>
+          <Box
+            className="cursor-pointer"
+            sx={{
+              justifyContent: 'end',
+              justifyItems: 'end',
+              cursor: 'pointer',
+              color: '#AAABB2',
+            }}
+            onClick={() => setOpen(false)}
+          >
+            X
+          </Box>
+          </div>
           {currentProductQualifications?.map((qualification) => (
             <Qualification
               key={qualification.id}
