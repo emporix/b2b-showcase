@@ -61,7 +61,7 @@ const CartTable = ({ cartList, cart, classname, qualifications = [] }) => {
   const { removeCartItem, changeCartItemQty } = useCart()
   return (
     <>
-      <TableContainer className={'border border-quartz !rounded' + classname}>
+      <TableContainer className={classname}>
         <div className="shopping-cart_table-title">your products</div>
         <Table sx={{ minWidth: 650 }}>
           <TableHead>
@@ -120,7 +120,7 @@ const CartTable = ({ cartList, cart, classname, qualifications = [] }) => {
                   key={index}
                   sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                 >
-                  <TableCell sx={{ width: '356px' }}>
+                  <TableCell sx={{ width: '356px', border: 'none' }}>
                     <CartProductInfo cart={cartItem} />
                   </TableCell>
                   <TableCell className="cart-row-item">
@@ -147,7 +147,7 @@ const CartTable = ({ cartList, cart, classname, qualifications = [] }) => {
                       price={cartItem.product.price.effectiveAmount}
                     />
                   </TableCell>
-                  <TableCell align="center">
+                  <TableCell align="center" className="cart-row-item">
                     <div className="quantity-wrapper">
                       <Quantity
                         value={cartItem.quantity}
@@ -205,6 +205,7 @@ const CartTable = ({ cartList, cart, classname, qualifications = [] }) => {
         open={!!open}
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
+        disableAutoFocus={true}
       >
         <div
           style={{

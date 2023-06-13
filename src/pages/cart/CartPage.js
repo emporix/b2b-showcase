@@ -148,6 +148,25 @@ const CartPage = () => {
   const [openUsersSavedQualifications, setOpenUsersSavedQualifications] =
     useState(false)
 
+  const CloseButton = () => (
+    <Box
+      className="cursor-pointer"
+      sx={{
+        justifyContent: 'end',
+        // width: '14px',
+        justifyItems: 'end',
+        cursor: 'pointer',
+        color: '#AAABB2',
+      }}
+      onClick={() => {
+        setOpenCustomerWalletQualifications(false)
+        setOpenUsersSavedQualifications(false)
+      }}
+    >
+      X
+    </Box>
+  )
+
   return (
     <div className="cart-page-wrapper ">
       <div className="cart-page-content">
@@ -297,6 +316,7 @@ const CartPage = () => {
               }
               aria-labelledby="modal-modal-title"
               aria-describedby="modal-modal-description"
+              disableAutoFocus={true}
             >
               <div
                 style={{
@@ -310,33 +330,19 @@ const CartPage = () => {
                   display: 'flex',
                   flexDirection: 'column',
                   background: `white`,
-                  border: 0,
-                  padding: 10,
+                  borderRadius: 4,
+                  padding: 32,
                 }}
               >
-                <Box
-                  className="cursor-pointer"
-                  sx={{
-                    mb: -2,
-                    justifyContent: 'end',
-                    width: '100%',
-                    justifyItems: 'end',
-                    cursor: 'pointer',
-                    maxWidth: '40px',
-                  }}
-                  onClick={() => {
-                    setOpenCustomerWalletQualifications(false)
-                    setOpenUsersSavedQualifications(false)
-                  }}
-                >
-                  &#10060;
-                </Box>
                 {openCustomerWalletQualifications ? (
                   <>
-                    <span style={{ fontSize: 20, fontWeight: 'bold' }}>
-                      Available promotion
-                      {customerWalletQualifications.length > 1 ? 's' : ''}:
-                    </span>
+                    <div className="flex justify-between items-center">
+                      <span style={{ fontSize: 20, fontWeight: 'bold' }}>
+                        Available promotion
+                        {customerWalletQualifications.length > 1 ? 's' : ''}:
+                      </span>
+                      <CloseButton />
+                    </div>
                     {customerWalletQualifications?.map((qualification) => (
                       <Qualification
                         key={qualification.id}
@@ -347,10 +353,13 @@ const CartPage = () => {
                   </>
                 ) : (
                   <>
-                    <span style={{ fontSize: 20, fontWeight: 'bold' }}>
-                      Saved voucher
-                      {usersSavedQualifications.length > 1 ? 's' : ''}:
-                    </span>
+                    <div className="flex justify-between items-center">
+                      <span style={{ fontSize: 20, fontWeight: 'bold' }}>
+                        Saved voucher
+                        {usersSavedQualifications.length > 1 ? 's' : ''}:
+                      </span>
+                      <CloseButton />
+                    </div>
                     {usersSavedQualifications?.map((qualification) => (
                       <Qualification
                         key={qualification.id}
