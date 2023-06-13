@@ -61,7 +61,7 @@ const CartTable = ({ cartList, cart, classname, qualifications = [] }) => {
   const { removeCartItem, changeCartItemQty } = useCart()
   return (
     <>
-      <TableContainer className={'border border-quartz !rounded' + classname}>
+      <TableContainer className={classname}>
         <div className="shopping-cart_table-title">your products</div>
         <Table sx={{ minWidth: 650 }}>
           <TableHead>
@@ -120,7 +120,7 @@ const CartTable = ({ cartList, cart, classname, qualifications = [] }) => {
                   key={index}
                   sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                 >
-                  <TableCell sx={{ width: '356px' }}>
+                  <TableCell sx={{ width: '356px', border: 'none' }}>
                     <CartProductInfo cart={cartItem} />
                   </TableCell>
                   <TableCell className="cart-row-item">
@@ -147,7 +147,7 @@ const CartTable = ({ cartList, cart, classname, qualifications = [] }) => {
                       price={cartItem.product.price.effectiveAmount}
                     />
                   </TableCell>
-                  <TableCell align="center">
+                  <TableCell align="center" className="cart-row-item">
                     <div className="quantity-wrapper">
                       <Quantity
                         value={cartItem.quantity}
@@ -205,6 +205,7 @@ const CartTable = ({ cartList, cart, classname, qualifications = [] }) => {
         open={!!open}
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
+        disableAutoFocus={true}
       >
         <div
           style={{
@@ -218,29 +219,29 @@ const CartTable = ({ cartList, cart, classname, qualifications = [] }) => {
             display: 'flex',
             flexDirection: 'column',
             background: `white`,
-            border: 0,
-            padding: 10,
+            borderRadius: 4,
+            padding: 32,
             whiteSpace: `nowrap`,
           }}
         >
-          <Box
-            className="cursor-pointer"
-            sx={{
-              mb: -2,
-              justifyContent: 'end',
-              width: '100%',
-              justifyItems: 'end',
-              cursor: 'pointer',
-              maxWidth: '40px',
-            }}
-            onClick={() => setOpen(false)}
-          >
-            &#10060;
-          </Box>
+          <div className='flex justify-between items-center'>
           <span style={{ fontSize: 20, fontWeight: 'bold' }}>
             Promotion{currentProductQualifications.length > 1 ? 's' : ''}{' '}
             related to {productName}:
           </span>
+          <Box
+            className="cursor-pointer"
+            sx={{
+              justifyContent: 'end',
+              justifyItems: 'end',
+              cursor: 'pointer',
+              color: '#AAABB2',
+            }}
+            onClick={() => setOpen(false)}
+          >
+            X
+          </Box>
+          </div>
           {currentProductQualifications?.map((qualification) => (
             <Qualification
               key={qualification.id}

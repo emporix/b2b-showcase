@@ -99,6 +99,8 @@ const About = () => {
         >
           Show {showMoreOpen ? 'less' : 'more'}
         </div>
+        <div className={`show-more_fade ${showMoreOpen ? 'hidden' : ''}`}>
+        </div>
       </div>
     </>
   )

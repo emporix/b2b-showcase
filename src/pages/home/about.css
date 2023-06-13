@@ -30,10 +30,22 @@
 }
 
 .show-more_container {
+  position: relative;
   width: 100%;
   display: flex;
   align-items: center;
   flex-direction: column;
   border-bottom: 1px solid #cccccc;
   /* margin-bottom: -24px; */
+}
+
+.show-more_fade {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  box-shadow: 0 -300px 200px -200px #fff inset;
+  height: 300px;
+  margin-top: -300px;
 }
