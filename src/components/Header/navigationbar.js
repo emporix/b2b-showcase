@@ -61,6 +61,14 @@ const Navbar = () => {
       )
     }
   }, [currentLanguage, activeCurrency])
+
+  const [updated, setUpdated] = useState(false)
+  useEffect(() => {
+    if (currentSiteObject && activeCurrency?.code && updated === false) {
+      updateCurrency(activeCurrency.code, currentSiteObject)
+      setUpdated(true)
+    }
+  }, [currentSiteObject, activeCurrency])
   const currencyChangeHandler = async (value, site) => {
     updateCurrency(value, site)
   }
@@ -260,8 +268,8 @@ const Navbar = () => {
     <header className="header">
       {/* Dektop language and currency selection */}
       <div className="desktop_only_flex font-inter text-sm text-white">
-        <div className='flex items-center'>
-          <span className='world-icon'></span>
+        <div className="flex items-center">
+          <span className="world-icon"></span>
           {fields.siteLabel}:
           <select
             className="bg-eerieBlack w-38 mr-[22px]"
