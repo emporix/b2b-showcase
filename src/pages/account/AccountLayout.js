@@ -3,13 +3,14 @@ import AccountMenu from './AccountMenu'
 import AccountSubTitle from './AccountSubTitle'
 
 const AccountLayout = ({ children, page, detail }) => {
+
   return (
     <div className="content-wrapper">
       <div
         className={
           page !== 'Index'
-            ? 'account-menu-items-left-panel left-menu-panel'
-            : 'account-menu-items-left-panel main-left-menu-panel'
+            ? 'account-menu-items-left-panel left-menu-panel grey-rounded-container p-3'
+            : 'account-menu-items-left-panel main-left-menu-panel grey-rounded-container p-3'
         }
       >
         <AccountMenu page={page} />

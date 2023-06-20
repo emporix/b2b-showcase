@@ -1,18 +1,19 @@
 import React, { useState } from 'react'
+import logo from '../../assets/local_shipping.svg'
+import electricBolt from '../../assets/electric_bolt.svg'
+import star from '../../assets/stars.svg'
+import verifiedUser from '../../assets/verified_user.svg'
 
 const EachService = (props) => {
   return (
-    <div className="text-white text-left md:text-center md:items-center">
+    <div className="text-eerieBlack text-center md:text-center md:items-center h-[158px] w-[276px] md">
       <div className="w-full">
-        <img
-          src={props.src}
-          className="w-12 h-12 md:w-16 md:h-16 md:mx-auto"
-        ></img>{' '}
+        <img src={props.src} className="h-10 md:mx-auto"></img>
       </div>
-      <div className="font-semibold text-[18px] md:text-[20px] leading-[24px] pt-6">
+      <div className="md:text-[20px] leading-[24px] pt-7 text-[18px]/[30px] font-semibold">
         {props.title}
       </div>
-      <div className="font-inter font-normal text-[14px] leading-[24px] md:text-[16px] pt-2 md:pt-4 text-left">
+      <div className="text-[16px]/[24px] font-inter font-normal pt-2 md:pt-4 text-center text-manatee">
         {props.content}
       </div>
     </div>
@@ -20,24 +21,24 @@ const EachService = (props) => {
 }
 const Service = () => {
   return (
-    <div className="home_service">
+    <div className="home_service h-[366px]">
       <EachService
-        src="/free-shipping.png"
+        src={logo}
         title="Free Shipping"
         content="Free delivery on qualifying orders of &#163;50+"
       />
       <EachService
-        src="/Delivery.png"
+        src={electricBolt}
         title="Fast Delivery"
         content="Magna massa acet turca tratto at fames."
       />
       <EachService
-        src="/gift.png"
+        src={star}
         title="Loyalty Reward"
         content="Tellus ornare at consequat ipsum, non labortis."
       />
       <EachService
-        src="/warranty.png"
+        src={verifiedUser}
         title="Extend Warranty"
         content="Extend your warranty on selected items."
       />

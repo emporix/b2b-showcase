@@ -77,7 +77,7 @@ const Login = () => {
   }
 
   return (
-    <GridLayout className="login_container">
+    <GridLayout className="login_container bg-aliceBlue">
       <Snackbar
         open={openNotification}
         autoHideDuration={3000}
@@ -88,64 +88,64 @@ const Login = () => {
           {message}
         </Alert>
       </Snackbar>
-      <GridLayout className="md:w-[540px] w-[95%] mx-auto h-[740px] md:pt-[138px] pt-10">
-        <Container className="w-full h-[110px] items-center  text-center text-white font-bold  text-7xl ">
+      <GridLayout className="md:w-[540px] w-[95%] mx-auto h-[740px]">
+        <Container className="w-full items-center text-center text-eerieBlack font-bold text-7xl ">
           <Container className="mx-auto">
             <Link to={homeUrl} className="flex">
               <Logo
                 size={'w-[78px] h-[86px] mr-5'}
-                text={'px-4 flex text-white text-[48px]'}
+                text={'px-4 flex text-eerieBlack text-[48px]'}
               />
             </Link>
           </Container>
         </Container>
-        <GridLayout className="w-full bg-white p-12  shadow-2xl">
+        <GridLayout className="w-full bg-white p-12 rounded">
           <GridLayout className="text-center">
-            <Heading2 className="text-lightBlue">
+            <Heading2 className="text-eerieBlack text-[24px]/[32px] font-semibold capitalize">
               Log in to your account
             </Heading2>
-            <Heading4 className="text-darkGray pt-6">
+            <Heading4 className="text-manatee text-[16px]/[24px] font-normal pt-3">
               Welcome back! Please enter your details
             </Heading4>
           </GridLayout>
           <form onSubmit={handleLogin} className="display: block m-0">
-            <Box className="!pt-12 text-black text-base">
-              <label className="pb-2">E-mail address</label>
+            <Box className="!pt-8 text-black text-base">
+              <label className="pb-2 text-[14px]/[22px]">E-mail</label>
               <br />
               <input
-                placeholder="Placeholder"
+                placeholder="example@gmail.com"
                 onChange={onChangeUserEmail}
                 value={userEmail}
                 type="email"
                 required
-                className="border w-full px-3 py-2"
+                className="border rounded border-gray80 w-full px-3 py-2 mt-2"
               />
               {emailMessage && <h6 style={{ color: 'red' }}>{emailMessage}</h6>}
             </Box>
             <Box className="!pt-6 w-full text-black text-base">
-              <label className="pb-2">Password</label>
+              <label className="pb-2 text-[14px]/[22px]">Password</label>
               <br />
               <input
-                placeholder="Placeholder"
+                placeholder="your password"
                 onChange={onChangePassword}
                 value={password}
                 type="password"
                 required
-                className="border w-full px-3 py-2"
+                className="border rounded border-gray80 w-full px-3 py-2 mt-2"
               />
             </Box>
             <LayoutBetween className="pt-6 text-black text-base">
-              <div className="flex">
-                <input type="checkbox" />
-                <label className="pl-2">Remember me</label>
+              <div className="flex items-center">
+                <input type="checkbox" className='w-[18px] h-[18px]' />
+                <label className="pl-2 text-[14px]/[22px]">Remember me</label>
               </div>
-              <a className="underline text-tinBlue font-semibold">
+              <a className="text-[16px]/[24px] text-dodgerBlue cursor-pointer">
                 Forgot Password
               </a>
             </LayoutBetween>
-            <Box className="w-full !pt-12">
+            <Box className="w-full !pt-8">
               <button
-                className="w-full text-white bg-tinBlue h-12 hover:bg-lightBlue"
+                className="w-full cta-button bg-yellow h-12"
                 type="submit"
               >
                 {loading ? <CircularProgress color="secondary" /> : 'LOG IN'}
@@ -153,13 +153,13 @@ const Login = () => {
             </Box>
           </form>
 
-          <GridLayout className="pt-12 w-full  items-center text-center text-base">
+          <GridLayout className="pt-6 w-full  items-center text-center text-base">
             <Box className="mx-auto">
-              <span className="font-medium text-darkGray">
+              <span className="text-[146x]/[24px] text-eerieBlack">
                 Don't have an account?
               </span>
               <Link to={signupUrl()}>
-                <span className="pl-2 font-semibold text-primaryBlue underline hover:cursor-pointer hover:text-brightGreen">
+                <span className="pl-2 font-semibold hover:cursor-pointer text-[146x]/[24px] font-medium text-dodgerBlue hover:text-yellow">
                   Sign Up
                 </span>
               </Link>

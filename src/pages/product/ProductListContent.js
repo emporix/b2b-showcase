@@ -1,15 +1,22 @@
 import { CgMenuGridR } from 'react-icons/cg'
 import { BiMenu } from 'react-icons/bi'
-import React, { useMemo, useState } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 import { useSelector } from 'react-redux'
 import { IconContext } from 'react-icons'
-import { HiOutlineArrowLeft, HiOutlineArrowRight, HiChevronDown } from 'react-icons/hi'
+import {
+  HiOutlineArrowLeft,
+  HiOutlineArrowRight,
+  HiChevronDown,
+} from 'react-icons/hi'
 import { LoadingCircleProgress1 } from '../../components/Utilities/progress'
 import { availabilityDataSelector } from '../../redux/slices/availabilityReducer'
 import { useProductList } from 'context/product-list-context'
 import EachProduct from './EachProduct'
 import EachProductRow from './EachProductRow'
 import { useAuth } from 'context/auth-provider'
+import { mapEmporixUserToVoucherifyCustomer } from '../../integration/voucherify/mappers/mapEmporixUserToVoucherifyCustomer'
+import { getQualificationsWithItemsExtended } from '../../integration/voucherify/voucherifyApi'
+import { getCustomerAdditionalMetadata } from '../../helpers/getCustomerAdditionalMetadata'
 
 const ProductListViewSettingBar = ({
   changeDisplayType,
@@ -19,21 +26,61 @@ const ProductListViewSettingBar = ({
   displayType,
 }) => {
   return (
-    <div className="view-setting-wrapper  h-8 mb-12">
+    <div className="view-setting-wrapper h-6">
       <div className="view-setting-bar gap-6">
         <div className="gap-2">
           <ul className="setting gap-6 flex justify-between h-[24px] font-inter text-base font-normal">
+            <li className="per-page hidden xl:block">
+              <div className="products-filter-name">
+                Products Per Page: &nbsp;
+                <select
+                  className="products-filter-value"
+                  onChange={changePerPageCount}
+                >
+                  {productListCountsPerPage.map((cnt) => (
+                    <option key={cnt} value={cnt}>
+                      {cnt}
+                    </option>
+                  ))}
+                </select>
+              </div>
+            </li>
+            {/* <li className="product-result-caption hidden lg:block">
+              Products found: {productListCount}
+            </li> */}
+            {/* <li className="product-result-caption  lg:hidden">
+              {productListCount} Products
+            </li> */}
+            <li className="sort-by">
+              <div className="products-filter-name">
+                Sort:&nbsp;
+                <select className="products-filter-value">
+                  <option value="">Price (High to Low)</option>
+                  <option value="">Price (Low to High)</option>
+                  <option value="">Name (A-Z)</option>
+                  <option value="">Name (Z-A)</option>
+                </select>
+              </div>
+              <div className="md:hidden  flex">
+                <div className="font-bold">Sort:</div>
+                <HiChevronDown
+                  size={20}
+                  className="ml-1 mt-0 h-6 w-6 font-normal"
+                  aria-hidden="true"
+                />
+              </div>
+            </li>
             <li className="view-type">
               <div className="gap-4 flex">
-                <div className="hidden lg:block">View:</div>
+                <div className="lg:block products-filter-name">View:</div>
                 <div
-                  className="cursor-pointer"
+                  className="cursor-pointer hover:text-yellow"
                   onClick={() => changeDisplayType(true)}
                 >
                   <IconContext.Provider
                     value={{
-                      size: 24,
-                      color: displayType ? 'black' : '#828282',
+                      size: 20,
+                      color: displayType ? '#FAC420' : 'black',
                     }}
                   >
                     <>
@@ -47,8 +94,8 @@ const ProductListViewSettingBar = ({
                 >
                   <IconContext.Provider
                     value={{
-                      size: 24,
-                      color: displayType ? 'black' : '#828282',
+                      size: 20,
+                      color: displayType ? 'black' : '#FAC420',
                     }}
                   >
                     <>
@@ -58,49 +105,8 @@ const ProductListViewSettingBar = ({
                 </div>
               </div>
             </li>
-            <li className="product-result-caption hidden lg:block">
-              Products found: {productListCount}
-            </li>
-            <li className="product-result-caption  lg:hidden">
-              {productListCount} Products
-            </li>
-
-            <li className="per-page hidden xl:block">
-              <div>
-                Per Page:&nbsp;
-                <select
-                  className="bg-[white] font-bold"
-                  onChange={changePerPageCount}
-                >
-                  {productListCountsPerPage.map((cnt) => (
-                    <option key={cnt} value={cnt}>
-                      {cnt}
-                    </option>
-                  ))}
-                </select>
-              </div>
-            </li>
-            <li className="sort-by">
-              <div className="hidden md:block">
-                Sort by:&nbsp;
-                <select className="bg-[white] font-bold">
-                  <option value="">Price (High to Low)</option>
-                  <option value="">Price (Low to High)</option>
-                  <option value="">Name (A-Z)</option>
-                  <option value="">Name (Z-A)</option>
-                </select>
-              </div>
-              <div className="md:hidden  flex">
-                <div className="font-bold">Sort:</div>
-                  <HiChevronDown
-                  size={20}
-                  className="ml-1 mt-0 h-6 w-6 font-normal"
-                  aria-hidden="true"
-                />
-              </div>
-            </li>
           </ul>
-          <div className="mt-2 split-line h-0 border-b border-bgWhite border-solid"></div>
+          {/* <div className="mt-2 split-line h-0 border-b border-bgWhite border-solid"></div> */}
         </div>
       </div>
     </div>
@@ -108,6 +114,64 @@ const ProductListViewSettingBar = ({
 }
 
 const ProductListItems = ({ products, auth, displayType }) => {
+  const { user } = useAuth()
+  const [qualifications, setQualifications] = useState([])
+  useEffect(() => {
+    const productsIds = products.map((product) => product.id)
+
+    ;(async () => {
+      const customer = mapEmporixUserToVoucherifyCustomer(
+        user,
+        getCustomerAdditionalMetadata()
+      )
+      const allQualifications = await getQualificationsWithItemsExtended(
+        'PRODUCTS',
+        productsIds.map((productId) => {
+          return {
+            quantity: 1,
+            product_id: productId,
+          }
+        }),
+        customer
+      )
+      let allQualificationsPerProducts = productsIds.map((productId) => {
+        return {
+          id: productId,
+          qualifications: [],
+        }
+      })
+      allQualifications.forEach((qualificationExtended) => {
+        const applicable_to =
+          qualificationExtended.qualification?.applicable_to?.data || []
+        const sourceIds =
+          applicable_to
+            .map((applicableTo) => applicableTo.source_id)
+            .filter((e) => e) || []
+        sourceIds.forEach((sourceId) => {
+          if (
+            allQualificationsPerProducts.find(
+              (allQualificationsPerProduct) =>
+                allQualificationsPerProduct.id === sourceId
+            )
+          ) {
+            allQualificationsPerProducts = allQualificationsPerProducts.map(
+              (allQualificationsPerProducts) => {
+                if (allQualificationsPerProducts.id === sourceId) {
+                  allQualificationsPerProducts.qualifications = [
+                    ...allQualificationsPerProducts.qualifications,
+                    qualificationExtended,
+                  ]
+                }
+                return allQualificationsPerProducts
+              }
+            )
+          }
+        })
+      })
+      setQualifications(allQualificationsPerProducts)
+    })()
+  }, [])
+
   const availability = useSelector(availabilityDataSelector)
   let itemArr = []
   let subItemArr = []
@@ -120,13 +184,16 @@ const ProductListItems = ({ products, auth, displayType }) => {
       switch ((i + 1) % 3) {
         case 1:
           subItemArr.push(
-            <div key={i} className="w-1/3 p-6 ">
+            <div key={i} className="w-1/3 mr-2 border border-quartz rounded">
               <EachProduct
                 key={item.id}
                 available={available}
-                rating={4}
-                productCount={8}
                 item={item}
+                qualifications={
+                  qualifications.find(
+                    (qualificationWithId) => qualificationWithId?.id === item.id
+                  )?.qualifications || []
+                }
               />
             </div>
           )
@@ -135,14 +202,17 @@ const ProductListItems = ({ products, auth, displayType }) => {
           subItemArr.push(
             <div
               key={i}
-              className="w-1/3  p-6 border-l border-bgWhite border-solid"
+              className="w-1/3  mx-2 border border-quartz rounded"
             >
               <EachProduct
                 key={item.id}
                 available={available}
-                rating={4}
-                productCount={8}
                 item={item}
+                qualifications={
+                  qualifications.find(
+                    (qualificationWithId) => qualificationWithId?.id === item.id
+                  )?.qualifications || []
+                }
               />
             </div>
           )
@@ -151,32 +221,35 @@ const ProductListItems = ({ products, auth, displayType }) => {
           subItemArr.push(
             <div
               key={i}
-              className="w-1/3 p-6 border-l border-bgWhite border-solid"
+              className="w-1/3 pb-4 border ml-2 border-quartz rounded"
             >
               <EachProduct
                 key={item.id}
                 available={available}
-                rating={4}
-                productCount={8}
                 item={item}
+                qualifications={
+                  qualifications.find(
+                    (qualificationWithId) => qualificationWithId?.id === item.id
+                  )?.qualifications || []
+                }
               />
             </div>
           )
           itemArr.push(
             <div
               key={'row' + i.toString()}
-              className="list-row flex lg:my-12 my-6"
+              className="list-row flex lg:my-4 my-4"
             >
               {subItemArr}
             </div>
           )
-          if (i !== products.length - 1)
-            itemArr.push(
-              <div
-                key={i}
-                className="lg:my-12 my-6 split-line h-0 border-b border-bgWhite border-solid"
-              ></div>
-            )
+          // if (i !== products.length - 1)
+          //   itemArr.push(
+          //     <div
+          //       key={i}
+          //       className="lg:my-12 my-6 split-line h-0 border-b border-bgWhite border-solid"
+          //     ></div>
+          //   )
           subItemArr = []
           break
       }
@@ -199,9 +272,12 @@ const ProductListItems = ({ products, auth, displayType }) => {
               <EachProduct
                 key={item.id}
                 available={available}
-                rating={4}
-                productCount={8}
                 item={item}
+                qualifications={
+                  qualifications.find(
+                    (qualificationWithId) => qualificationWithId?.id === item.id
+                  )?.qualifications || []
+                }
               />
             </div>
           )
@@ -215,27 +291,30 @@ const ProductListItems = ({ products, auth, displayType }) => {
               <EachProduct
                 key={item.id}
                 available={available}
-                rating={4}
-                productCount={8}
                 item={item}
+                qualifications={
+                  qualifications.find(
+                    (qualificationWithId) => qualificationWithId?.id === item.id
+                  )?.qualifications || []
+                }
               />
             </div>
           )
           ItemArrOnMobile.push(
             <div
               key={'rowMobile' + i.toString()}
-              className="list-row flex lg:my-12 my-6"
+              className="list-row flex lg:my-12 my-4"
             >
               {subItemArr}
             </div>
           )
-          if (i !== products.length - 1)
-            ItemArrOnMobile.push(
-              <div
-                key={i}
-                className="lg:my-12 my-6 split-line h-0 border-b border-bgWhite border-solid"
-              ></div>
-            )
+          // if (i !== products.length - 1)
+          //   ItemArrOnMobile.push(
+          //     <div
+          //       key={i}
+          //       className="lg:my-12 my-6 split-line h-0 border-b border-bgWhite border-solid"
+          //     ></div>
+          //   )
           subItemArr = []
           break
       }
@@ -253,23 +332,21 @@ const ProductListItems = ({ products, auth, displayType }) => {
     products.forEach((item, i) => {
       available = availability['k' + item.id]?.available
       itemArr.push(
-        <div key={i} className="w-full h-[215px] lg:my-12 my-6 items-center">
+        <div key={i} className="w-full my-4 items-center">
           <EachProductRow
             key={item.id}
             available={available}
-            rating={4}
-            productCount={8}
             item={item}
           />
         </div>
       )
-      if (i !== products.length - 1)
-        itemArr.push(
-          <div
-            key={'line' + i.toString()}
-            className="lg:my-12 my-6 split-line h-0 border-b border-bgWhite border-solid"
-          ></div>
-        )
+      // if (i !== products.length - 1)
+      //   itemArr.push(
+      //     <div
+      //       key={'line' + i.toString()}
+      //       className="lg:my-12 my-6 split-line h-0 border-b border-bgWhite border-solid"
+      //     ></div>
+      //   )
     })
   }
   return (
@@ -286,11 +363,13 @@ const ProductListPagination = ({
   productListCount,
   pageNumber,
 }) => {
-  let totalPage = Math.round(productListCount / countPerPage)
+  let totalPage = Math.ceil(productListCount / countPerPage)
   let previousPageitems = []
   let next_page_items = []
 
-  if (totalPage < pageNumber) pageNumber = 1
+  if (totalPage < pageNumber) {
+    pageNumber = 1
+  }
 
   for (let i = pageNumber - 1; i > 1 && i > pageNumber - 3; i--)
     previousPageitems.unshift(
@@ -354,7 +433,6 @@ const ProductListPagination = ({
           <li
             className="cursor-pointer"
             onClick={() => {
-              console.log('click')
               if (pageNumber < totalPage) {
                 changePageNumber(pageNumber + 1)
               }
@@ -390,6 +468,7 @@ const ProductListContent = () => {
     productListCountsPerPage,
     productsPerPage,
     setProductsPerPage,
+    total,
   } = useProductList()
 
   const productsWithoutVariants = useMemo(() => {
@@ -424,14 +503,14 @@ const ProductListContent = () => {
             products={productsWithoutVariants}
             auth={!!user}
             displayType={displayType}
-            productListCount={productsWithoutVariants.length}
+            productListCount={total}
             pageNumber={pageNumber}
             countPerPage={productsPerPage}
           />
           <ProductListPagination
             changePageNumber={changePageNumber}
             countPerPage={productsPerPage}
-            productListCount={productsWithoutVariants.length}
+            productListCount={total}
             pageNumber={pageNumber}
           />
         </>

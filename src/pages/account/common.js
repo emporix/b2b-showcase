@@ -208,25 +208,25 @@ export const SavedCarts = ({ actions }) => {
             <TableRow>
               <TableCell
                 align="left"
-                className="font-inter !font-bold text-base"
+                className="grid-column-title"
               >
                 Date
               </TableCell>
               <TableCell
                 align="left"
-                className="font-inter !font-bold text-base"
+                className="grid-column-title"
               >
                 Name
               </TableCell>
               <TableCell
                 align="left"
-                className="font-inter !font-bold text-base"
+                className="grid-column-title"
               >
                 Items
               </TableCell>
               <TableCell
                 align="left"
-                className="font-inter !font-bold text-base"
+                className="grid-column-title"
               >
                 Total
               </TableCell>

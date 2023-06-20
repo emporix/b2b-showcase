@@ -6,7 +6,7 @@
   font-size: 16px;
   border: none;
   outline: none;
-  color: white;
+  /* color: white; */
   /* padding: 7px 48px 0 0; */
   background-color: inherit;
   font: inherit;
@@ -15,14 +15,15 @@
 
 .header-mega_dropdown-content {
   /* display: none; */
-  margin-top: 67px;
-  height: 360px;
+  margin-top: 66px;
+  height: 580px;
   position: absolute;
   background-color: #f9f9f9;
   width: 100%;
   left: 0;
   box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
   z-index: 10;
+  border-top: 1px solid #C4C5CC ;
 }
 
 /* .dropdown:hover  .dropdown-content {
@@ -87,6 +88,7 @@ input[type='search'] {
   color: inherit;
   border: 1px solid transparent;
   border-radius: inherit;
+  text-indent: 20px;
 }
 
 input[type='search']::placeholder {
@@ -100,8 +102,8 @@ button[type='submit']:hover {
 
 button[type='submit']:focus,
 input[type='search']:focus {
-  box-shadow: 0 0 3px 0 white;
-  border-color: white;
+  /* box-shadow: 0 0 3px 0 white; */
+  /* border-color: white; */
   outline: none;
 }
 
@@ -111,15 +113,16 @@ form.nosubmit {
 }
 
 input.nosubmit {
-  border: 1px solid white;
-  border-radius: 20px;
+  /* @apply border-1 rounded */
+  /* border: 1px solid white; */
+  /* border-radius: 20px; */
 
   height: 40px;
   padding: 9px 4px 9px 40px;
   /* background: transparent url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' stroke='white' class='bi bi-search' viewBox='0 0 16 16'%3E%3Cpath d='M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z'%3E%3C/path%3E%3C/svg%3E") no-repeat 20px center; */
-  background: transparent url('../../assets/search.png') no-repeat 20px center;
+  background: #87abbf url('../../assets/search.svg') no-repeat 20px center;
 
-  background-color: #87abbf;
+  /* background-color: #87abbf; */
 }
 
 .nav-background-title {
@@ -145,7 +148,7 @@ input.nosubmit {
 }
 
 .mega_menu_dropbtn {
-  @apply dropbtn flex pt-2 pr-2 md:pr-8 xl:pr-12 hover:text-emporixGold;
+  @apply dropbtn flex pt-2 pr-2 md:pr-8 xl:pr-12 hover:text-manatee text-eerieBlack;
 }
 
 .mega_content_bg {
@@ -153,9 +156,28 @@ input.nosubmit {
 }
 
 .mega_content_category_li {
-  @apply pb-6 hover:text-emporixGold;
+  @apply pb-6 hover:text-manatee;
 }
 
 .mega_content_sub_cat_li {
-  @apply pb-4 hover:text-emporixGold;
+  @apply pb-4 hover:text-manatee text-[16px]/[24px];
+}
+
+input.nosubmit {
+  @apply rounded border-s placeholder-manatee text-eerieBlack w-80 border-manatee;
+}
+
+input::-webkit-search-cancel-button {
+  @apply !bg-eerieBlack;
+}
+
+.world-icon {
+  display: inline-block;
+  width: 1rem;
+  height: 1rem;
+  background: transparent url('../../assets/world.svg') no-repeat center;
+  color: white;
+  margin-right: 10px;
+  position: relative;
+  bottom: 0;
 }

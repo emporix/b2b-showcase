@@ -1,6 +1,6 @@
 import { Grid } from '@mui/material'
 import React, { useCallback, useEffect, useState } from 'react'
-import { HiChevronDown } from "react-icons/hi";
+import { HiChevronDown } from 'react-icons/hi'
 
 import {
   GridLayout,
@@ -85,7 +85,7 @@ const VariantSummary = ({ variant, setQuantity, quantity, price }) => {
             value={quantity}
             increase={() => setQuantity(quantity + 1)}
             decrease={() => setQuantity(quantity - 1)}
-          ></Quantity>
+          />
         </Item>
       </Grid>
       <Grid item xs={2}>
@@ -271,6 +271,7 @@ function PaymentSummary({ variant, price }) {
           <LargePrimaryButton
             title={'Add to cart'}
             onClick={addVariantProductToCart}
+            className="cta-button bg-yellow"
           />
         </Item>
       </CartActionRow>
@@ -373,8 +374,8 @@ export const VariantAccordion = ({ variant }) => {
     >
       <Grid item xs={1}>
         <HiChevronDown
-            size={20}
-          className={ expanded && 'rotated' }
+          size={20}
+          className={expanded && 'rotated'}
           onClick={() => toggleExpand()}
         />
       </Grid>

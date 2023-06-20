@@ -12,16 +12,26 @@ import CheckoutContent from './CheckoutContent'
 import CheckoutSummary from './CheckoutSummary'
 import { useUserAddress } from './AddressProvider'
 import { useCart } from 'context/cart-provider'
-import { Button, Chip, Dialog, Grid } from '@mui/material'
+import { Button, Chip, Grid } from '@mui/material'
 import { TextInput } from '../../components/Utilities/input'
-import CartService from '../../services/cart.service'
+import { Box } from '@mui/system'
+import { CircularProgress } from '@material-ui/core'
+import { useAuth } from '../../context/auth-provider'
+import { mapEmporixUserToVoucherifyCustomer } from '../../integration/voucherify/mappers/mapEmporixUserToVoucherifyCustomer'
+import { Qualification } from '../shared/Qualification'
+import { getCart } from '../../integration/emporix/emporixApi'
+import { mapItemsToVoucherifyOrdersItems } from '../../integration/voucherify/validateCouponsAndGetAvailablePromotions/mappers/product'
+import { getQualificationsWithItemsExtended } from '../../integration/voucherify/voucherifyApi'
+import { getCustomerAdditionalMetadata } from '../../helpers/getCustomerAdditionalMetadata'
+import { redeemCart } from '../../integration/voucherify/redeemCart'
+import { mapEmporixItemsToVoucherifyProducts } from '../../integration/voucherify/mappers/mapEmporixItemsToVoucherifyProducts'
 
 const PaymentAction = ({ action, disabled }) => {
   return (
     <>
       <DesktopMDContainer>
         <LargePrimaryButton
-          className="md:block hidden"
+          className="md:block hidden cta-button bg-yellow"
           title="REVIEW ORDER"
           onClick={action}
         />
@@ -43,237 +53,173 @@ const ReviewOrderAction = ({ action }) => {
     <>
       <DesktopMDContainer>
         <LargePrimaryButton
-          className="md:block hidden"
+          className="md:block hidden cta-button bg-yellow"
           title="CONFIRM AND PAY"
           onClick={action}
         />
       </DesktopMDContainer>
 
       <MobileMDContainer>
-        <LargePrimaryButton title="CONFIRM AND PAY" onClick={action} />
+        <LargePrimaryButton className='cta-button bg-yellow' title="CONFIRM AND PAY" onClick={action} />
       </MobileMDContainer>
     </>
   )
 }
 
-const AppliedCoupon = ({ discount }) => {
+const AppliedCoupon = ({ appliedCoupon, user }) => {
   const { removeDiscount } = useCart()
 
   const deleteDiscountFromCart = useCallback(() => {
-    removeDiscount(discount.id)
-  }, [discount])
+    removeDiscount(appliedCoupon.code, user)
+  }, [appliedCoupon])
 
   return (
     <Chip
-      label={discount.code}
+      sx={{ mb: 1, mr: 1 }}
+      label={appliedCoupon?.banner || appliedCoupon.code}
       variant="outlined"
       onDelete={deleteDiscountFromCart}
     />
   )
 }
 
-const Coupon = () => {
-  const [code, setCode] = useState('')
-  const [rewardPoints, setRewardPoints] = useState(0)
-  const [redeemOptions, setRedeemOptions] = useState([])
-  const { applyDiscount, discounts } = useCart()
-  const [showDialog, setShowDialog] = useState(false)
-  const [showInfo, setShowInfo] = useState(false)
-  const [selectedOption, setSelectedOption] = useState(null)
-  const [couponsLimitPerCart, setCouponsLimitPerCart] = useState(5);
-
-
-  const redeemCode = useCallback(async () => {
-    try {
-      await applyDiscount(code)
-    } catch (e) {
-      console.error(e)
-    } finally {
-      setCode(() => '')
+const AppliedCouponsComponent = ({ appliedCoupons, user }) => {
+  const counter = (appliedCoupons ?? []).reduce(
+    (accumulator, appliedCoupon) => {
+      switch (appliedCoupon.type) {
+        case 'promotion_tier':
+          accumulator.promotion_tier = accumulator.promotion_tier + 1
+          break
+        case 'voucher':
+          accumulator.voucher = accumulator.voucher + 1
+          break
+        default:
+          break
+      }
+      return accumulator
+    },
+    {
+      promotion_tier: 0,
+      voucher: 0,
     }
+  )
+
+  if (appliedCoupons?.length) {
+    return (
+      <Grid item xs={12} sx={{}}>
+        <Grid item xs={12} sx={{ mb: 2 }}>
+          <span className="font-bold ">
+            Applied{' '}
+            {counter.voucher && counter.promotion_tier
+              ? `voucher${counter.voucher > 1 ? 's' : ''} and promotion${
+                  counter.promotion_tier > 1 ? 's' : ''
+                }`
+              : counter.voucher
+              ? `voucher${counter.voucher > 1 ? 's' : ''}`
+              : `promotion${counter.promotion_tier > 1 ? 's' : ''}`}
+          </span>
+        </Grid>
+        <Grid item xs={12}>
+          {appliedCoupons.map((appliedCoupon) => (
+            <AppliedCoupon
+              key={appliedCoupon.code}
+              appliedCoupon={appliedCoupon}
+              user={user}
+            />
+          ))}
+        </Grid>
+      </Grid>
+    )
+  }
+}
+
+export const Coupon = () => {
+  const [code, setCode] = useState('')
+  const [error, setError] = useState('')
+  const [keyValue, setKeyValue] = useState(Math.random())
+  const { applyDiscount, mixins } = useCart()
+  const appliedCoupons = mixins?.voucherify?.appliedCoupons || []
+  const [isBeingApplied, setIsBeingApplied] = useState(false)
+  const { user } = useAuth()
+
+  useEffect(() => {
+    setError('')
   }, [code])
 
-  const redeemPointsForCoupon = async () => {
+  const redeemCode = async (code, user) => {
+    if (!code || isBeingApplied) {
+      return
+    }
+    setIsBeingApplied(true)
     try {
-      const newCode = await CartService.getCouponForPointsForLoggedUser(
-        selectedOption.id
-      )
-      try {
-        await applyDiscount(newCode.code)
-        setShowInfo(true)
-      } catch (e) {
-        console.error(e)
-        setShowDialog(false)
-      } finally {
-        setCode(() => '')
+      const result = await applyDiscount(code, user)
+      if (result.inapplicableCoupons?.length) {
+        const { inapplicableCoupons } = result
+        const error = inapplicableCoupons
+          .map?.(
+            (inapplicableCoupon) => inapplicableCoupon?.result?.error?.details
+          )
+          .filter((e) => e)
+          .join(', ')
+        setError(error)
+      } else {
+        setKeyValue(Math.random())
+        setCode('')
       }
     } catch (e) {
       console.error(e)
-      setShowDialog(false)
-      console.log("couldn't redeem points for coupon")
     }
-  }
-
-  const Card = (props) => {
-    return (
-      <div
-        className={`${
-          selectedOption && props.id === selectedOption.id
-            ? 'border-blue-500'
-            : 'border-lightGray'
-        }  border-[1px]  p-2 flex flex-col w-48 cursor-pointer`}
-        onClick={() => setSelectedOption(() => props)}
-      >
-        <div className="font-bold">{props.name}</div>
-        <div className="text-md text-xs pt-2 pb-2">{props.description}</div>
-        <div className="text-md text-sm mt-auto">
-          <span className="font-bold">COST: </span>
-          <span className="text-tinBlue">{props.points}</span>
-        </div>
-        <div className="mt-1 flex self-end">
-          <div className="text-[#5F8FAA] text-xs font-bold">
-            {props.coupon.discountType}
-          </div>
-        </div>
-      </div>
-    )
-  }
-
-  const openDialogAndFetchRedeemOptions = async () => {
-    setShowInfo(false)
-    setShowDialog(true)
-    const options = await CartService.getRedeemOptionsForLoggedUser()
-    setRedeemOptions(options)
-  }
-
-  useEffect(() => {
-    ;(async () => {
-      const points = await CartService.getRewardPointsForLoggedUser()
-      setRewardPoints(points)
-    })()
-  }, [redeemOptions, discounts])
-
-  const displayNewCouponAmount = (coupon) => {
-    const display =
-      coupon.discountType === 'ABSOLUTE'
-        ? `${coupon.discountAbsolute.amount} ${coupon.discountAbsolute.currency}`
-        : `${coupon.discountPercentage} %`
-
-    return <span>{display}</span>
+    setIsBeingApplied(false)
   }
 
   return (
-    <Grid container spacing={2} sx={{ marginBottom: '1rem' }}>
-      <Grid item xs={12} className={couponsLimitPerCart === discounts?.length && 'hidden'}>
-        <TextInput
-          label="Coupon"
-          value={code}
-          placeholder="Put coupon code here"
-          action={setCode}
-        />
-        <div className="flex justify-between">
-          <Button title="Apply Coupon" onClick={redeemCode}>
-            Apply
-          </Button>
-          {rewardPoints > 0 && (
-            <button
-              className="font-bold cursor-pointer"
-              onClick={openDialogAndFetchRedeemOptions}
-            >
-              Get coupons for points: {JSON.stringify(rewardPoints)}
-            </button>
+    <Grid container spacing={2} sx={{ mb: 0 }}>
+      <Grid item xs={12}>
+        <div key={keyValue}>
+          {appliedCoupons.length < 5 && (
+            <TextInput
+              label=""
+              value={code}
+              placeholder="Put voucher code here"
+              action={setCode}
+              disabled={isBeingApplied || appliedCoupons.length >= 5}
+            />
           )}
         </div>
-      </Grid>
-      {discounts && (
-        <Grid item xs={12}>
-          {discounts.map((discount) => (
-            <AppliedCoupon
-              key={discount.code}
-              discount={discount}
-            ></AppliedCoupon>
-          ))}
-        </Grid>
-      )}
-      <Dialog
-        maxWidth={'md'}
-        open={showDialog}
-        onClose={() => {
-          setShowDialog(false)
-          setSelectedOption(null)
-        }}
-      >
-        <div className="p-6 flex">
-          <div
-            className={
-              'account-page-content content-panel flex flex-col min-w-[600px] min-h-[400px]'
-            }
-          >
-            {showInfo ? (
-              <div className="self-center m-auto font-bold flex flex-col">
-                <div className="text-center mb-8">
-                  You’ve earned {displayNewCouponAmount(selectedOption.coupon)}{' '}
-                  discount
-                </div>
-                <div className="flex w-1/2 m-auto gap-4">
-                  <button
-                    className="action-discard-button"
-                    onClick={() => {
-                      setShowDialog(false)
-                    }}
-                  >
-                   OK
-                  </button>
-                </div>
-              </div>
-            ) : (
-              <>
-                <div className="font-inter font-bold text-2xl text-tinBlue pb-4 mb-6">
-                  Redeem Points
-                </div>
-
-                <div className="pb-4">
-                  <div className="font-inter font-bold text-xl text-tinBlue mb-2">
-                    Available Coupons:
-                  </div>
-                </div>
-                <div className="flex flex-wrap gap-2">
-                  {redeemOptions.length &&
-                    redeemOptions.map((card) => <Card key={card.id} {...card} />)}
-                </div>
-                <div className="mt-6">
-                  <div className="font-inter font-bold text-xl text-tinBlue">
-                    Points:
-                  </div>
-                </div>
-                <div className="mt-2 mb-4 p-1 flex">
-                  <div className="border-[1px] border-lightGray p-2">
-                    {JSON.stringify(rewardPoints)}
-                  </div>
-                </div>
-                <div className="flex w-3/4 m-auto gap-4">
-                  <button
-                    className="action-discard-button"
-                    onClick={() => {
-                      setShowDialog(false)
-                      setSelectedOption(null)
-                    }}
-                  >
-                    CANCEL
-                  </button>
-                  <button
-                    className={`ml-2 cart-go-checkout-btn ${!selectedOption && 'bg-bgWhite'}`}
-                    onClick={redeemPointsForCoupon}
-                    disabled={!selectedOption}
-                  >
-                    REDEEM SELECTED
-                  </button>
-                </div>
-              </>
+        <Box
+          sx={{
+            display: 'flex',
+            justifyContent: 'space-between',
+            flexDirection: 'column',
+          }}
+        >
+          <Box sx={{ display: 'flex' }}>
+            <Box
+              className="w-full border border-gray80 mt-4 rounded text-center cursor-pointer"
+              onClick={() => redeemCode(code, user)}
+            >
+              <Button
+                title="Apply Coupon"
+                disabled={isBeingApplied || appliedCoupons.length >= 5}
+                className="!text-eerieBlack !text-[14px]/[24px] !font-semibold"
+                style={{ backgroundColor: 'transparent' }}
+                disableRipple
+              >
+                {appliedCoupons.length >= 5
+                  ? 'You have reached coupon limit'
+                  : 'Apply'}
+              </Button>
+            </Box>
+            {isBeingApplied && (
+              <Box sx={{ mb: -'7px', mt: '9px' }}>
+                <CircularProgress size={18} />
+              </Box>
             )}
-          </div>
-        </div>
-      </Dialog>
+          </Box>
+          <span style={{ color: 'red' }}>{error}</span>
+        </Box>
+      </Grid>
+      <AppliedCouponsComponent appliedCoupons={appliedCoupons} user={user} />
     </Grid>
   )
 }
@@ -302,6 +248,28 @@ const CheckoutPage = () => {
   const handleReview = () => {
     setStatus('review_order')
   }
+
+  const { user } = useAuth()
+  const [qualifications, setQualifications] = useState([])
+  useEffect(() => {
+    ;(async () => {
+      if (!cartAccount?.id) {
+        return
+      }
+      const customer = mapEmporixUserToVoucherifyCustomer(
+        user,
+        getCustomerAdditionalMetadata()
+      )
+      const emporixCart = await getCart(cartAccount.id)
+      const items = mapItemsToVoucherifyOrdersItems(
+        mapEmporixItemsToVoucherifyProducts(emporixCart?.items || [])
+      )
+      setQualifications(
+        await getQualificationsWithItemsExtended('ALL', items, customer)
+      )
+    })()
+  }, [cartAccount, user])
+
   const handleViewOrder = async () => {
     const order = await checkoutService.triggerCheckout(cartAccount.id, [
       selectedAddress,
@@ -309,8 +277,21 @@ const CheckoutPage = () => {
     ])
     setOrder(order)
     setFinal(order.orderId)
+    try {
+      await redeemCart({
+        emporixCart: cartAccount,
+        emporixOrderId: order?.orderId,
+        customer: mapEmporixUserToVoucherifyCustomer(
+          user,
+          getCustomerAdditionalMetadata()
+        ),
+      })
+    } catch (e) {
+      console.log('could not redeem or create order')
+    }
     syncCart()
   }
+
   return (
     <div className="checkout-page-wrapper ">
       <div className="checkout-page-content">
@@ -324,16 +305,19 @@ const CheckoutPage = () => {
                     subtotalWithoutVat={subtotalWithoutVat}
                     action={false}
                   />
+
                   {status === 'shipping' ? (
                     <>
                       <DesktopMDContainer>
                         <Coupon />
-                        <LargePrimaryButton
-                          className="md:block hidden"
-                          title="GO TO PAYMENT"
-                          disabled={addresses.length === 0}
-                          onClick={handlePayment}
-                        />
+                        <Box sx={{ mt: 1 }}>
+                          <LargePrimaryButton
+                            className="md:block hidden cta-button bg-yellow"
+                            title="GO TO PAYMENT"
+                            disabled={addresses.length === 0}
+                            onClick={handlePayment}
+                          />
+                        </Box>
                       </DesktopMDContainer>
 
                       <MobileMDContainer>
@@ -347,13 +331,10 @@ const CheckoutPage = () => {
                     ''
                   )}
                   {status === 'payment' ? (
-                    <>
-                      <Coupon />
-                      <PaymentAction
-                        action={handleReview}
-                        disabled={addresses.length === 0}
-                      />
-                    </>
+                    <PaymentAction
+                      action={handleReview}
+                      disabled={addresses.length === 0}
+                    />
                   ) : (
                     ''
                   )}
@@ -369,6 +350,39 @@ const CheckoutPage = () => {
             <CheckoutSummary setFinal={setFinal} order={order} />
           )}
         </div>
+        <Box sx={{ mt: -2, display: 'flex', flexDirection: 'column', gap: 1 }}>
+          {qualifications.length ? (
+            <Box>
+              <Box
+                sx={{
+                  fontWeight: 'bold',
+                  fontSize: '20px',
+                  width: '100%',
+                  textAlign: 'left',
+                }}
+              >
+                Available promotions:
+              </Box>
+              <Box
+                sx={{
+                  mt: -1,
+                  pt: '20px!important',
+                  gap: '10px!important',
+                  display: 'flex',
+                  flexDirection: 'column',
+                }}
+              >
+                {qualifications?.map((qualification) => (
+                  <Qualification
+                    key={qualification.id}
+                    qualification={qualification}
+                    allowVoucherApply={true}
+                  />
+                ))}
+              </Box>
+            </Box>
+          ) : undefined}
+        </Box>
       </div>
     </div>
   )

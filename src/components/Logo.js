@@ -2,6 +2,7 @@ import {useContentful} from "../context/contentful-provider";
 import React, {useEffect, useState} from "react";
 import {Link} from "react-router-dom";
 import {homeUrl} from "../services/service.config";
+import newLogo from '../assets/new_logo.svg'
 
 export const Logo = ({ onMouseOver, size, text }) => {
     const { fields } = useContentful()
@@ -9,7 +10,7 @@ export const Logo = ({ onMouseOver, size, text }) => {
     const [logoUrl, setLogoUrl] = useState('')
     const { companyLogo } = fields
     const classes = size ? size : "w-[37px]"
-    const typo = text ? text : "px-4 text-white text-[25px]"
+    const typo = text ? text : "px-4 text-eerieBlack text-[25px]"
 
     useEffect(() => {
         ;(async () => {
@@ -26,12 +27,13 @@ export const Logo = ({ onMouseOver, size, text }) => {
 
     return (
         <Link to={homeUrl()} className="flex" onMouseOver={onMouseOver}>
-            <div className={classes}>
+            {/* <div className={classes}>
                 <img src={logoUrl} alt={'Logo'} className={classes} />
             </div>
             <div className={`font-medium items-center ${typo}`}>
                 <span>{fields.companyNameLabel}</span>
-            </div>
+            </div> */}
+                <img src={newLogo} alt={'Logo'} className="w-[203px] h-[84px] mt-[-20px]"/>
         </Link>
     )
 }

@@ -3,21 +3,21 @@
 @tailwind utilities;
 
 li.item {
-  @apply w-full mt-6 h-[26px] font-inter text-base font-medium;
+  @apply w-full h-[44px] p-3 font-inter text-base font-medium text-eerieBlack;
 }
 
 li.first-item {
-  @apply w-full h-[26px] font-inter text-base font-medium;
+  @apply w-full h-[44px] p-3 font-inter text-base font-medium text-eerieBlack;
 }
 
 li.item-divide-line {
   @apply h-0 border-b border-lightGray mt-6 border-solid;
 }
 li.item-active {
-  @apply font-bold text-lightBlue;
+  @apply h-[44px] p-3 rounded bg-yellow text-[16px]/[24px] font-normal;
 }
 li.index-item-active {
-  @apply lg:font-bold lg:text-lightBlue;
+  @apply h-[44px] p-3 rounded bg-yellow text-[16px]/[24px] font-normal;
 }
 .border-bottom-gray {
   @apply border-lightGray border-b border-solid;
@@ -74,13 +74,13 @@ li.index-item-active {
   @apply sm:flex justify-start gap-8 sm:flex-row-reverse;
 }
 .personal-and-summary-content-wrapper {
-  @apply pb-12;
+  @apply pb-8;
 }
 .account-personal-info-wrapper {
-  @apply md:w-[50%] w-full pr-6  border-lightGray md:border-r md:border-solid pb-12 md:pb-0 md:border-b-0 border-b;
+  @apply md:w-[50%] w-full p-6 border rounded border-quartz;
 }
 .account-summary-wrapper {
-  @apply md:w-[50%] w-full pl-0 md:pl-6 md:mt-0 mt-12;
+  @apply md:w-[50%] ml-4 p-6 border rounded border-quartz;
 }
 .account-personal-info,
 .account-summary-info {
@@ -107,7 +107,7 @@ li.index-item-active {
   @apply text-darkGray text-base font-normal font-inter;
 }
 .profile-items > p {
-  @apply text-right;
+  /* @apply text-right; */
 }
 .profile-items-info {
   @apply font-inter text-[black] font-normal text-base;
@@ -126,7 +126,7 @@ li.index-item-active {
   @apply w-[50%];
 }
 .oustanding {
-  @apply pr-[50px] border-lightGray border-r border-solid;
+  @apply pr-[50px];
 }
 .refunds {
   @apply pl-[50px];
@@ -152,14 +152,14 @@ li.index-item-active {
   @apply text-[24px] leading-[40px] font-bold font-inter text-tinBlue;
 }
 .portal-caption {
-  @apply pb-[18px];
+  /* @apply pb-[18px]; */
 }
 .portal-action-btn {
   @apply font-inter font-semibold text-[14px] leading-[18px] text-primaryBlue;
 }
 
 .portal-caption-content {
-  @apply h-10;
+  @apply h-10 mb-7;
 }
 .SavedCarts-Mobile-Header {
   @apply py-[5px] mb-[10px] font-inter font-bold;
@@ -210,4 +210,7 @@ li.index-item-active {
 }
 .switch-item:has(.Mui-checked) {
   @apply !bg-gray !border-lightBlue;
+}
+.account-recent-orders-wrapper{
+  @apply p-6 border rounded border-quartz;
 }

@@ -6,11 +6,14 @@
   @apply h-[33px] text-center w-full text-[16px] leading-[22px];
 }
 .point {
-  @apply h-[6px] w-[6px] rounded-[6px] bg-tinBlue mx-auto mt-[5px];
+  @apply h-[6px] w-[6px] rounded-[6px] bg-limeGreen mx-auto mt-[5px];
 }
 .main-bar {
   @apply bg-bgWhite h-[2px] mt-[-4px];
 }
 .progress-bar {
-  @apply bg-tinBlue h-[2px] mt-[-2px];
+  @apply bg-limeGreen h-[2px] mt-[-2px];
+}
+.progress-bar_icons {
+  @apply w-[42px] mx-auto mt-2;
 }

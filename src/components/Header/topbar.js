@@ -61,9 +61,9 @@ const MegaNav = ({ showMegaMenuContent, setShowMegaMenuContent }) => {
           onClick={() => setShowMegaMenuContent(false)}
         >
           <div className="row w-full h-full flex">
-            <div className="h-full w-[24%] mega_content_bg">
-              <div className="pl-[72px] pt-[72px] overflow-y-auto max-h-full">
-                <ul className=" text-white text-base font-bold">
+            <div className="h-full w-[24%] text-[16px]/[24px] text-eerieBlack">
+              <div className="pl-[76px] pt-[48px] overflow-y-auto max-h-full">
+                <ul className="text-base font-bold">
                   {subMenuItems.map((item, index) => (
                     <Link replace key={index} to={addTenantToUrl(item.url)}>
                       <li
@@ -84,7 +84,7 @@ const MegaNav = ({ showMegaMenuContent, setShowMegaMenuContent }) => {
               </div>
             </div>
             <div
-              className="h-full w-[76%] grid grid-cols-4 overflow-y-auto gap-4 pl-[72px] pt-[72px] max-h-full"
+              className="h-full w-[76%] grid grid-cols-4 overflow-y-auto gap-4 pl-[24px] pt-[48px] max-h-full"
               onMouseOver={() => setShowMegaMenuRightContent(true)}
             >
               {showMegaMenuRightContent
@@ -126,13 +126,13 @@ const TopNav = ({ title }) => {
     <div
       className={
         title === 'home'
-          ? 'desktop_only_flex w-full md:h-36 absolute z-10'
+          ? 'desktop_only_flex w-full md:h-36 absolute z-10 bg-white'
           : title === ''
-          ? 'nav-background-title desktop_only_flex h-36'
-          : 'desktop_only_flex w-full md:h-60 absolute z-10 nav-background-title'
+          ? 'desktop_only_flex h-36'
+          : 'desktop_only_flex w-full md:h-60 absolute z-10 bg-white'
       }
     >
-      <div className="px-10 pt-[76px] w-full  flex xl:px-24  h-36">
+      <div className="px-10 pt-[76px] w-full  flex xl:px-24  h-36 border border-herringSilver">
         <div
           className="menu-wrapper flex w-full"
           onMouseLeave={() => {
@@ -157,7 +157,7 @@ const TopNav = ({ title }) => {
         </div>
       </div>
       {nav_title_condition && (
-        <div className=" md:absolute mt-[176px] ml-24 text-white font-inter font-bold text-[32px]">
+        <div className="md:absolute top-44 left-24 text-eerieBlack font-inter font-semibold text-[24px]/[32px]">
           {title}
         </div>
       )}
