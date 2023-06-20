@@ -61,6 +61,7 @@ const QuickOrderSelection = () => {
           onChange={handleFileChange}
         />
         <LargePrimaryButton
+          className="cta-button bg-yellow"
           title="UPLOAD FILE"
           onClick={() => {
             fileInput.current.click()
@@ -72,7 +73,7 @@ const QuickOrderSelection = () => {
       </div>
       <div className="pt-6">
         <textarea
-          className="w-full h-[126px] p-4 border-black border"
+          className="w-full h-[126px] p-4 border-quartz border rounded"
           placeholder="Text Area"
           value={productCodes}
           onChange={(e) => {
@@ -85,13 +86,16 @@ const QuickOrderSelection = () => {
       </div>
       <div className="pt-6">
         <LargePrimaryButton
+          className="cta-button bg-yellow"
           title="ADD TO LIST"
           disabled={!isValid}
           onClick={handleAddBatch}
         />
       </div>
       <div className="mobile_only pt-12">
-        <button className="quickorder-add-to-cart-btn">ADD TO CART</button>
+        <button className="quickorder-add-to-cart-btn cta-button bg-yellow">
+          ADD TO CART
+        </button>
       </div>
     </div>
   )

@@ -138,7 +138,6 @@ const getCategoryTree = (categories, layer, parenturl = 'product', lang) => {
 
     let title = category.name
     if (lang && category.localizedName['it']) {
-      console.log('lang', lang)
       title = category.localizedName[lang]
     }
 

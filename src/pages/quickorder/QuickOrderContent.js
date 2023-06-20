@@ -177,7 +177,7 @@ const DesktopContent = () => {
     setShowCart(true)
   }
   return (
-    <div className="desktop_only">
+    <div className="desktop_only border border-quartz rounded p-6">
       <Snackbar
         open={openNotification}
         autoHideDuration={3000}
@@ -188,7 +188,7 @@ const DesktopContent = () => {
           {message}
         </Alert>
       </Snackbar>
-      <div className="float-right underline text-base font-medium text-lightBlue">
+      <div className="float-right text-[16px]/[24px] font-medium text-dodgerBlue">
         <span className="pr-8 cursor-pointer" onClick={clearProductList}>
           Clear List
         </span>
@@ -201,31 +201,31 @@ const DesktopContent = () => {
               <TableRow className="!py-2">
                 <TableCell
                   align="left"
-                  className="font-inter !font-bold text-[14px]"
+                  className="font-inter !font-normal text-[14px]/[22px] !text-manatee"
                 >
                   Code
                 </TableCell>
                 <TableCell
                   align="left"
-                  className="font-inter !font-bold text-[14px]"
+                  className="font-inter !font-normal text-[14px]/[22px] !text-manatee"
                 >
                   Item
                 </TableCell>
                 <TableCell
                   align="left"
-                  className="font-inter !font-bold text-[14px]"
+                  className="font-inter !font-normal text-[14px]/[22px] !text-manatee"
                 >
                   Quantity
                 </TableCell>
                 <TableCell
                   align="left"
-                  className="font-inter !font-bold text-[14px]"
+                  className="font-inter !font-normal text-[14px]/[22px] !text-manatee"
                 >
                   Unit Price
                 </TableCell>
                 <TableCell
                   align="left"
-                  className="font-inter !font-bold text-[14px]"
+                  className="font-inter !font-normal text-[14px]/[22px] !text-manatee"
                 >
                   Total
                 </TableCell>
@@ -305,7 +305,7 @@ const DesktopContent = () => {
           <MediumPrimaryButton
             title={'Add'}
             onClick={handleAddItem}
-            className="w-auto"
+            className="w-auto cta-button bg-yellow"
           />
         </div>
       </div>
@@ -314,6 +314,7 @@ const DesktopContent = () => {
           title={'ADD TO CART'}
           onClick={addProductsToCart}
           disabled={tempProductList.length === 0}
+          className="cta-button bg-yellow"
         />
       </div>
     </div>

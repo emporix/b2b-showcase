@@ -46,11 +46,11 @@
 }
 
 .category_pan_title {
-  width: 90%;
+  /* width: 90%; */
 }
 
 .content {
-  background-color: white;
+  /* background-color: white; */
 }
 
 /* activate toggle */
@@ -59,6 +59,7 @@
   height: 0;
   overflow: hidden;
   transition: height ease 0.2s;
+  margin-left: -9px;
 }
 
 .sidebarFilter {
@@ -102,7 +103,7 @@
   z-index: 30;
 }
 .product-detail-page-wrapper {
-  @apply w-full md:pt-24 pt-32 md:px-24 px-[16.5px] md:pb-24 pb-12 font-inter;
+  @apply w-full md:pt-8 pt-8 md:px-[76px] px-[16.5px] md:pb-24 pb-12 font-inter;
 }
 .product-detail-page-content {
   @apply max-w-screen-xl mx-auto grid grid-cols-1 md:gap-12 gap-6;
@@ -111,7 +112,7 @@
   @apply font-inter font-normal text-[14px] leading-[20px];
 }
 .MuiBreadcrumbs-separator {
-  @apply !mx-4;
+  @apply !mx-2 !font-normal !text-[16px]/[24px]
 }
 .product-content-wrapper {
   @apply lg:flex w-full lg:gap-12 pb-12 gap-6;
@@ -300,4 +301,25 @@
 }
 .tab-lg {
   @apply invisible lg:visible;
+}
+.products-filter-name {
+  @apply hidden md:block text-manatee text-sm/[20px];
+}
+.products-filter-value {
+  @apply bg-[white] font-normal text-eerieBlack
+}
+.product-available {
+  @apply text-limeGreen font-inter font-medium text-[14px]/[20px] float-right lg:float-none
+}
+.product-unavailable {
+  @apply text-manatee font-inter font-medium text-[14px]/[20px] float-right lg:float-none
+}
+.category_pan_title {
+  @apply w-[90%] text-eerieBlack text-[16px]/[24px] font-semibold
+}
+.category_pan_field {
+  @apply w-[90%] ml-[3px] text-eerieBlack text-[14px]/[22px] font-normal flex items-center justify-between
+}
+.category_pan_field_title {
+  @apply w-[85%] whitespace-nowrap overflow-hidden text-ellipsis block capitalize
 }

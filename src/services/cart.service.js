@@ -6,13 +6,12 @@ import {
   getCartAccountApi,
   getCartById,
   getCartMergeUrl,
-  getRedeemOptions,
-  getRewardPoints, redeemCouponForPoints,
 } from './service.config'
 import ApiRequest from './index'
 import { ACCESS_TOKEN } from '../constants/localstorage'
 import { api } from './axios'
 import { getLanguageFromLocalStorage } from '../context/language-provider'
+import { updateCart } from '../integration/updateCart'
 
 const CartService = () => {
   const mergeCarts = async (targetCartId, sourceCartId) => {
@@ -55,54 +54,39 @@ const CartService = () => {
     return cart
   }
 
-  const getRewardPointsForLoggedUser = async () => {
-    const { data } = await api.get(getRewardPoints())
-    return data
+  const recheckCart = async (
+    cartAccountId,
+    customer,
+    customerAdditionalMetadata = {}
+  ) => {
+    return await updateCart({
+      emporixCartId: cartAccountId,
+      customer,
+      customerAdditionalMetadata,
+    })
   }
 
-  const getRedeemOptionsForLoggedUser = async () => {
-    const { data } = await api.get(getRedeemOptions())
-    return data
-  }
-  const getCouponForPointsForLoggedUser = async (optionId) => {
-    const payload = { id: optionId }
-    const params = {
-      siteCode: localStorage.getItem('siteCode'),
-    }
-    const { data } = await api.post(redeemCouponForPoints(), payload, { params })
-    console.log('returned coupon code: ', data)
-    return data
+  const applyPromotionTier = async (cartAccountId, code, customer) => {
+    return await updateCart({
+      emporixCartId: cartAccountId,
+      newPromotionCodes: [code],
+      customer,
+    })
   }
 
-  const applyDiscount = async (cartAccountId, code) => {
-    const accessToken = localStorage.getItem(ACCESS_TOKEN)
-    const headers = {
-      'X-Version': 'v2',
-      Authorization: `Bearer ${accessToken}`,
-      'Accept-Language': getLanguageFromLocalStorage(),
-    }
-
-    const res = await ApiRequest(
-      `${cartProductsApi()}/${cartAccountId}/discounts`,
-      'post',
-      { code: code },
-      headers
-    )
-    return res.data
+  const applyDiscount = async (cartAccountId, code, customer) => {
+    return await updateCart({
+      emporixCartId: cartAccountId,
+      newCodes: [code],
+      customer,
+    })
   }
-  const removeDiscount = async (cartAccountId, discountId) => {
-    const accessToken = localStorage.getItem(ACCESS_TOKEN)
-    const headers = {
-      'X-Version': 'v2',
-      Authorization: `Bearer ${accessToken}`,
-      'Accept-Language': getLanguageFromLocalStorage(),
-    }
-
-    const res = await api.delete(
-      `${cartProductsApi()}/${cartAccountId}/discounts/${discountId}`,
-      { headers }
-    )
-    return res.data
+  const removeDiscount = async (cartAccountId, code, customer) => {
+    return await updateCart({
+      emporixCartId: cartAccountId,
+      codesToRemove: [code],
+      customer,
+    })
   }
 
   const changeCurrency = async (newCurrency, cartAccountId) => {
@@ -176,13 +160,15 @@ const CartService = () => {
     }
     const data = {
       itemYrn: product.yrn,
-      price: {
-        priceId: product.price.priceId,
-        effectiveAmount: product.price.effectiveValue,
-        originalAmount: product.price.originalValue,
-        currency: product.price.currency,
-      },
-      quantity: product.quantity,
+      price: product.price?.priceId
+        ? {
+            priceId: product.price?.priceId,
+            effectiveAmount: product.price?.effectiveValue,
+            originalAmount: product.price?.originalValue,
+            currency: product.price?.currency,
+          }
+        : undefined,
+      quantity: product.quantity || 1,
     }
     const params = {
       siteCode: localStorage.getItem('siteCode'),
@@ -212,7 +198,9 @@ const CartService = () => {
   return {
     getCart,
     changeCurrency,
+    recheckCart,
     applyDiscount,
+    applyPromotionTier,
     getUserCart,
     getAnnonymousCart,
     mergeCarts,
@@ -222,9 +210,6 @@ const CartService = () => {
     removeCart,
     addMultipleProductsToCart,
     updateCartProduct,
-    getRewardPointsForLoggedUser,
-    getRedeemOptionsForLoggedUser,
-    getCouponForPointsForLoggedUser,
   }
 }
 export default CartService()

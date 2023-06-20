@@ -48,7 +48,7 @@ const ShippingContent = () => {
   } = useUserAddress()
   return (
     <>
-      <GridLayout className="gap-6">
+      <GridLayout className="gap-10 border rounded border-quartz p-6">
         <GridLayout className="gap-4">
           <DesktopMDContainer>
             <LayoutBetween className="items-center">
@@ -93,7 +93,7 @@ const ShippingContent = () => {
           </GridLayout>
         </GridLayout>
       </GridLayout>
-      <GridLayout className="gap-6">
+      <GridLayout className="gap-6  border rounded border-quartz p-6">
         <Heading3>Shipping Method</Heading3>
         <MobileMDContainer>
           <TextRegular3>
@@ -147,7 +147,7 @@ const PaymentContent = () => {
       <GridLayout className="payment-method-wrapper gap-6">
         <TextBold1>Payment Methods</TextBold1>
         <RadioGroup active="radio1">
-          <GridLayout className="gap-4">
+          <GridLayout className="gap-4 border border-quartz rounded p-6">
             <PaymentInvoiceItem radioKey="radio1" />
             <PaymentMethodItem radioKey="radio2" title="Trevipay" />
             <PaymentMethodItem
@@ -245,27 +245,27 @@ const ReviewOrderContent = () => {
   return (
     <>
       <DesktopLGContainer>
-        <LayoutBetween className="billing-information pb-12 border-grey-bottom">
-          <Container className="gap-12">
+        <LayoutBetween className="billing-information">
+          <Container className="gap-8">
             <div className="property-wrapper">
               <TextBold3>Billing Information</TextBold3>
             </div>
             <Address data={billingAddress} />
           </Container>
           <TextBold4>
-            <Underline>Edit</Underline>
+            <Underline className='edit-button'>Edit</Underline>
           </TextBold4>
         </LayoutBetween>
       </DesktopLGContainer>
 
       <MobileLGContainer>
-        <GridLayout className="billing-information gap-6 pb-12 border-grey-bottom">
-          <LayoutBetween className="gap-12">
+        <GridLayout className="billing-information gap-6">
+          <LayoutBetween className="gap-8">
             <div className="property-wrapper">
               <TextBold3>Billing Information</TextBold3>
             </div>
             <TextBold4>
-              <Underline>Edit</Underline>
+              <Underline className='edit-button'>Edit</Underline>
             </TextBold4>
           </LayoutBetween>
           <Address data={billingAddress} />
@@ -273,13 +273,13 @@ const ReviewOrderContent = () => {
       </MobileLGContainer>
 
       <MobileLGContainer>
-        <GridLayout className="gap-6 pb-12 border-grey-bottom">
-          <LayoutBetween className="gap-12">
+        <GridLayout className="billing-information gap-6 ">
+          <LayoutBetween className="gap-8">
             <div className="property-wrapper">
               <TextBold3>Shipping Information</TextBold3>
             </div>
             <TextBold4>
-              <Underline>Edit</Underline>
+              <Underline className='edit-button'>Edit</Underline>
             </TextBold4>
           </LayoutBetween>
           <ShipmentContent />
@@ -287,22 +287,22 @@ const ReviewOrderContent = () => {
       </MobileLGContainer>
 
       <DesktopLGContainer>
-        <LayoutBetween className="pb-12 border-grey-bottom">
-          <Container className="gap-12">
+        <LayoutBetween className="billing-information">
+          <Container className="gap-8">
             <div className="property-wrapper">
               <TextBold3>Shipping Information</TextBold3>
             </div>
             <ShipmentContent />
           </Container>
           <TextBold4>
-            <Underline>Edit</Underline>
+            <Underline className='edit-button'>Edit</Underline>
           </TextBold4>
         </LayoutBetween>
       </DesktopLGContainer>
 
       <DesktopLGContainer>
-        <LayoutBetween className=" pb-12 border-grey-bottom">
-          <Container className="gap-12">
+        <LayoutBetween className="billing-information">
+          <Container className="gap-8">
             <div className="property-wrapper">
               <TextBold3>Payment Method</TextBold3>
             </div>
@@ -312,19 +312,19 @@ const ReviewOrderContent = () => {
             </GridLayout>
           </Container>
           <TextBold4>
-            <Underline>Edit</Underline>
+            <Underline className='edit-button'>Edit</Underline>
           </TextBold4>
         </LayoutBetween>
       </DesktopLGContainer>
 
       <MobileLGContainer>
-        <GridLayout className="gap-2 pb-12 border-grey-bottom">
-          <LayoutBetween className="gap-12">
+        <GridLayout className="billing-information gap-2">
+          <LayoutBetween className="gap-8">
             <div className="property-wrapper">
               <TextBold3>Payment Method</TextBold3>
             </div>
             <TextBold4>
-              <Underline>Edit</Underline>
+              <Underline className='edit-button'>Edit</Underline>
             </TextBold4>
           </LayoutBetween>
 
@@ -336,27 +336,27 @@ const ReviewOrderContent = () => {
       </MobileLGContainer>
 
       <DesktopLGContainer>
-        <LayoutBetween className=" pb-12 border-grey-bottom">
-          <Container className="gap-12">
+        <LayoutBetween className="billing-information">
+          <Container className="gap-8">
             <div className="property-wrapper">
               <TextBold3>Your Products</TextBold3>
             </div>
             <ProductContent />
           </Container>
           <TextBold4>
-            <Underline>Edit</Underline>
+            <Underline className='edit-button'>Edit</Underline>
           </TextBold4>
         </LayoutBetween>
       </DesktopLGContainer>
 
       <MobileLGContainer>
-        <GridLayout className="gap-6 pb-12 border-grey-bottom">
-          <LayoutBetween className="gap-12">
+        <GridLayout className="billing-information gap-6">
+          <LayoutBetween className="gap-8">
             <div className="property-wrapper">
               <TextBold3>Your Products</TextBold3>
             </div>
             <TextBold4>
-              <Underline>Edit</Underline>
+              <Underline className='edit-button'>Edit</Underline>
             </TextBold4>
           </LayoutBetween>
           <ProductContent />
@@ -369,11 +369,11 @@ const ReviewOrderContent = () => {
 const CheckoutContent = ({ status }) => {
   return (
     <div className="checkout-content-wrapper">
-      <GridLayout className="gap-12">
+      <GridLayout className="gap-8">
         <ProgressBar active={status} className="">
-          <ProgressBarItem status="shipping" title="Shipping" />
-          <ProgressBarItem status="payment" title="Payment" />
-          <ProgressBarItem status="review_order" title="Review Order" />
+          <ProgressBarItem activeTab={status} status="shipping" title="Shipping" />
+          <ProgressBarItem activeTab={status} status="payment" title="Payment" />
+          <ProgressBarItem activeTab={status} status="review_order" title="Review Order" />
         </ProgressBar>
         {status === 'shipping' ? (
           <ShippingContent />

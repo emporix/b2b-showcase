@@ -39,12 +39,23 @@ const EachProductRow = ({ item, type, available, rating, productCount }) => {
     if (price) {
       return <CurrencyBeforeValue value={price} />
     } else {
-      return <span className="text-xs text-primaryBlue font-bold">No Price</span>
+      return (
+        <span className="text-xs text-primaryBlue font-bold">No Price</span>
+      )
     }
   }
   return (
-    <div className="flex h-full font-inter ">
-      <div className="flex w-[15%]">
+    <div className="flex h-full font-inter rounded border border-quartz p-4">
+      <div className="flex w-[15%] flex-col mr-4">
+        <div
+          className={
+            available
+              ? 'text-brightGreen font-inter font-bold text-xs float-right mb-14'
+              : 'text-primaryBlue font-inter font-bold text-xs float-right mb-14'
+          }
+        >
+          {available ? 'In Stock' : 'Out Of Stock'}
+        </div>
         <img src={trimImage(`${imageSrc}`, 200, 150)} className="self-center" />
       </div>
       <div className="flex-auto w-[55%]">
@@ -60,7 +71,7 @@ const EachProductRow = ({ item, type, available, rating, productCount }) => {
           <span>${trimmedDescription}</span>
         </div>
       </div>
-      <div className="flex-auto w-[30%]">
+      <div className="flex flex-col justify-between flex-auto w-[30%]">
         <div className={'w-full flex justify-between h-[56px] pt-2'}>
           {item.productType !== 'PARENT_VARIANT' && (
             <>
@@ -83,46 +94,34 @@ const EachProductRow = ({ item, type, available, rating, productCount }) => {
             </>
           )}
         </div>
-
-        <div
-          className={
-            available
-              ? 'text-brightGreen font-inter font-bold text-xs mt-[90px] float-right'
-              : 'text-primaryBlue font-inter font-bold text-xs mt-[90px] float-right'
-          }
-        >
-          {available ? 'In Stock' : 'Out Of Stock'}
-        </div>
-        <div className="mt-6 lg:flex w-full float-right">
+        <div className="mt-6 flex w-full flex-col items-end">
           {item.productType !== 'PARENT_VARIANT' ? (
             <>
-              <div>
-                <Quantity
-                  value={quantity}
-                  increase={() => {
-                    setQuantity((prev) => {
-                      return prev + 1
-                    })
-                  }}
-                  decrease={() => {
-                    setQuantity((prev) => {
-                      return prev - 1 > 1 ? prev - 1 : 1
-                    })
-                  }}
-                />
-              </div>
-              <div className="ml-6 h-10 w-40 bg-tinBlue text-white flex items-center">
-                <div
-                  className="mx-auto flex cursor-pointer"
-                  onClick={handleAddToCart}
-                >
-                  <span className="px-4">ADD TO CART</span>
-                </div>
+              <Quantity
+                value={quantity}
+                increase={() => {
+                  setQuantity((prev) => {
+                    return prev + 1
+                  })
+                }}
+                decrease={() => {
+                  setQuantity((prev) => {
+                    return prev - 1 > 1 ? prev - 1 : 1
+                  })
+                }}
+              />
+              <div
+                className="ml-6 mt-4 h-10 w-40 cursor-pointer cta-button bg-yellow flex items-center justify-center"
+                onClick={handleAddToCart}
+              >
+                <span className="px-4">ADD TO CART</span>
               </div>
             </>
           ) : (
             <div>
               <LargePrimaryButton
+                className="cta-button bg-yellow"
+                sx={{ backgroundColor: '#FAC420 !important' }}
                 title={'VIEW VARIANTS'}
                 onClick={handleProductDetail}
               />

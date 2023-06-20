@@ -19,8 +19,7 @@ const ProductContent = () => {
   const { products } = useCart()
   return (
     <GridLayout className="gap-6">
-      <GridLayout className="gap-6 border-grey-bottom pb-6">
-        <Heading4>Shipment</Heading4>
+      <GridLayout className="gap-6 ">
         {products.map((product) => (
           <Container key={product.sku} className="gap-6 w-full">
             <img src={product.src} className={'checkout-product-image'} />

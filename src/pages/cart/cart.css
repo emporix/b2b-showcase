@@ -2,16 +2,16 @@
   @apply w-full md:pt-60 pt-24 md:px-24 px-[16.5px] md:pb-24 pb-12 font-inter;
 }
 .cart-page-content {
-  @apply max-w-screen-xl mx-auto grid grid-cols-1 md:gap-12 gap-6 md:pt-24 pt-6;
+  @apply mx-auto grid grid-cols-1 md:gap-8 gap-8;
 }
 .cart-action-content {
-  @apply gap-6 text-[14px] leading-[18px] font-semibold text-darkGray;
+  @apply gap-6 text-[14px] leading-[18px] font-semibold text-dodgerBlue;
 }
 .cart-head-item {
   @apply font-inter !font-bold !text-[14px] !leading-[20px];
 }
 .cart-row-item {
-  @apply !font-bold !py-6;
+  @apply !font-bold !py-6 !border-none;
 }
 
 .quantity-wrapper {
@@ -43,3 +43,36 @@
   align-items: center;
   user-select: none;
 }
+
+.cart-page-content .MuiTableCell-head {
+  border-bottom: none;
+  color: #8e9099;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 22px;
+}
+
+.shopping-cart_table-title {
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 24px;
+  padding: 16px 0 16px 16px;
+  text-transform: capitalize;
+}
+
+.shopping-cart_promotions-label {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: row;
+  align-items: flex-start;
+  padding: 2px 8px;
+  font-weight: 500 !important;
+  font-size: 12px;
+  line-height: 20px;
+  text-transform: uppercase;
+  width: auto;
+  height: 20px;
+}
+
+
