@@ -55,4 +55,4 @@ jobs:
           tags: |
             ${{ env.DOCKER_REGISTRY_HOST }}/${{ env.DOCKER_REGISTRY_REPO }}:latest
           push: true
-        # if: ${{ github.ref == 'refs/heads/main' }}
+         if: ${{ github.ref == 'refs/heads/dev' }}
