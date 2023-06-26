@@ -1,0 +1,13 @@
+{
+  "projects": {},
+  "targets": {
+    "b2b-showcase": {
+      "hosting": {
+        "$DEPLOYMENT_NAME": [
+          "$SITE"
+        ]
+      }
+    }
+  },
+  "etags": {}
+}
