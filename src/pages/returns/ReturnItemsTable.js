@@ -14,11 +14,11 @@ import {
 
 const CartProductInfo = ({ cart }) => {
   return (
-    <div className="cart-product-info-wrapper flex gap-6">
+    <div className="cart-product-info-wrapper flex gap-12">
       <div className="w-[52px]">
         <CartProductImage
           className="table-cart-product-image"
-          src={cart.product.src}
+          src={cart?.product?.images[0]?.url}
         />
       </div>
       <div>

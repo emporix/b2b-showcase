@@ -15,13 +15,14 @@ import { useCart } from 'context/cart-provider'
 import { Button, Chip, Dialog, Grid } from '@mui/material'
 import { TextInput } from '../../components/Utilities/input'
 import CartService from '../../services/cart.service'
+import { usePayment } from './PaymentProvider'
 
 const PaymentAction = ({ action, disabled }) => {
   return (
     <>
       <DesktopMDContainer>
         <LargePrimaryButton
-          className="md:block hidden"
+          className="md:block hidden cta-button bg-yellow"
           title="REVIEW ORDER"
           onClick={action}
         />
@@ -43,14 +44,14 @@ const ReviewOrderAction = ({ action }) => {
     <>
       <DesktopMDContainer>
         <LargePrimaryButton
-          className="md:block hidden"
+          className="md:block hidden cta-button bg-yellow"
           title="CONFIRM AND PAY"
           onClick={action}
         />
       </DesktopMDContainer>
 
       <MobileMDContainer>
-        <LargePrimaryButton title="CONFIRM AND PAY" onClick={action} />
+        <LargePrimaryButton className='cta-button bg-yellow' title="CONFIRM AND PAY" onClick={action} />
       </MobileMDContainer>
     </>
   )
@@ -191,6 +192,7 @@ const Coupon = () => {
             <AppliedCoupon
               key={discount.code}
               discount={discount}
+              className="hello"
             ></AppliedCoupon>
           ))}
         </Grid>
@@ -283,7 +285,8 @@ const CheckoutPage = () => {
   const [final, setFinal] = useState(false)
   const [order, setOrder] = useState(null)
   const { selectedAddress, billingAddress, addresses } = useUserAddress()
-  const { cartAccount, syncCart } = useCart()
+  const { cartAccount, syncCart, shippingMethod } = useCart()
+  const { getPaymentMethods } = usePayment()
 
   const subtotalWithoutVat = useMemo(() => {
     let subTotal =
@@ -303,10 +306,17 @@ const CheckoutPage = () => {
     setStatus('review_order')
   }
   const handleViewOrder = async () => {
+    const shipping = {
+      zoneId: shippingMethod.zoneId,
+      methodId: shippingMethod.id,
+      methodName: shippingMethod.name,
+      shippingTaxCode: shippingMethod.shippingTaxCode,
+      amount: shippingMethod.fee
+    }
     const order = await checkoutService.triggerCheckout(cartAccount.id, [
       selectedAddress,
       billingAddress,
-    ])
+    ], shipping, getPaymentMethods() )
     setOrder(order)
     setFinal(order.orderId)
     syncCart()
@@ -317,7 +327,7 @@ const CheckoutPage = () => {
         <div className="gap-12 lg:flex grid grid-cols-1">
           {final === false ? (
             <>
-              <CheckoutContent status={status} />
+              <CheckoutContent status={status} cart={cartAccount} />
               <div className="checkout-action-panel-wrapper">
                 <GridLayout className="gap-6">
                   <CartActionPanel
@@ -329,9 +339,9 @@ const CheckoutPage = () => {
                       <DesktopMDContainer>
                         <Coupon />
                         <LargePrimaryButton
-                          className="md:block hidden"
+                          className="md:block hidden cta-button bg-yellow"
                           title="GO TO PAYMENT"
-                          disabled={addresses.length === 0}
+                          disabled={addresses.length === 0 || shippingMethod == null}
                           onClick={handlePayment}
                         />
                       </DesktopMDContainer>

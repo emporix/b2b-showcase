@@ -99,9 +99,9 @@ export const login = async (username, password, userTenant) => {
     userTenant: userTenant,
     username: responseData.firstName + ' ' + responseData.lastName,
   }
-  const { data: anonymousCart } = await CartService.getAnnonymousCart()
+  const anonCart = await CartService.getAnnonymousCart()
   // save anonymous cart to merge
-  localStorage.setItem('anonymousCart', JSON.stringify(anonymousCart))
+  localStorage.setItem('anonymousCart', JSON.stringify(anonCart))
   localStorage.setItem('user', JSON.stringify(userdata))
   return responseData
 }

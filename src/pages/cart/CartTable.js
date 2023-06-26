@@ -18,7 +18,7 @@ import { useCart } from 'context/cart-provider'
 const CartProductInfo = ({ cart }) => {
   return (
     <div className="cart-product-info-wrapper flex gap-6">
-      <div className="w-[52px]">
+      <div className="">
         <CartProductImage
           className="table-cart-product-image"
           src={cart.product.src}
@@ -36,6 +36,7 @@ const CartTable = ({ cartList, classname }) => {
     useCart()
   return (
     <TableContainer className={classname}>
+    <div className="shopping-cart_table-title">your products</div>
       <Table sx={{ minWidth: 650 }}>
         <TableHead>
           <TableRow className="!py-6">

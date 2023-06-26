@@ -8,7 +8,7 @@ import { useEffect } from 'react'
 const AddButton = () => {
   return (
     <Link to={addLocationUrl()}>
-      <div className="w-full md:w-60 h-10 bg-tinBlue text-white  flex items-center mt-6 md:mt-12">
+      <div className="cta-button bg-yellow w-full md:w-60 h-10 flex items-center mt-6 md:mt-12">
         <span className="text-center  w-full">ADD NEW LOCATION </span>
       </div>
     </Link>

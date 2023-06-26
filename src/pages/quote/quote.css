@@ -2,3 +2,14 @@
     display: flex;
     justify-content: end;
 }
+
+.address-wrapper{
+    height: 250px;
+}
+.billing-details-wrapper {
+    align-content: start
+}
+
+.address-details-wrapper {
+    align-content: start
+}

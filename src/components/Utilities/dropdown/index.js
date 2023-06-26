@@ -3,13 +3,22 @@ import { GridLayout } from '../common'
 import { TextRegular1 } from '../typography'
 import './dropdown.css'
 
-const Dropdown = ({ options, placeholder, onChange, defaultValue }) => {
+const Dropdown = ({
+  options,
+  placeholder,
+  onChange,
+  defaultValue,
+  style,
+  className,
+}) => {
   return (
     <Select
       options={options}
       searchable={true}
       values={defaultValue ? [defaultValue] : []}
       onChange={onChange}
+      style={style}
+      className={className}
       placeholder={placeholder !== undefined ? placeholder : 'Please select'}
       dropdownHandleRenderer={({ state }) => (
         <>

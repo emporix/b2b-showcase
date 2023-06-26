@@ -16,6 +16,8 @@
 2. Application is built to `./build`
 3. Upload `./build` to hosting
 
+## New design developed by GridDynamics
+
 # Emporix internal deployments
 
 * Manual deployments to **PROD** available on GH actions page in repostiory  

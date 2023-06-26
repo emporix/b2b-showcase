@@ -3,7 +3,7 @@ import { ACCESS_TOKEN, SAAS_TOKEN, USER } from 'constants/localstorage'
 import { triggerCheckoutApi } from 'services/service.config'
 
 const CheckoutService = () => {
-  const triggerCheckout = async (cartId, addresses) => {
+  const triggerCheckout = async (cartId, addresses, shipping, paymentMethods) => {
     const accessToken = localStorage.getItem(ACCESS_TOKEN)
     const saasToken = localStorage.getItem(SAAS_TOKEN)
     const user = JSON.parse(localStorage.getItem(USER))
@@ -19,17 +19,10 @@ const CheckoutService = () => {
     }
     const payload = {
       cartId: cartId,
-      paymentMethods: [
-        {
-          provider: 'stripe',
-          customAttributes: {
-            paymentType: 'paymentByInvoice',
-          },
-          method: 'invoice',
-        },
-      ],
+      paymentMethods : paymentMethods,
       currency: 'EUR',
       addresses: addresses,
+      shipping: shipping,
       customer: {
         ...user,
         email: user.contactEmail,

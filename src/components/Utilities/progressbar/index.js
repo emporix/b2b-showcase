@@ -1,5 +1,12 @@
 import React, { useState, createContext, useContext } from 'react'
 import { Container } from '../common'
+import shipping from '../../../assets/shipping.svg'
+import order from '../../../assets/order.svg'
+import payment from '../../../assets/payment.svg'
+import shippingGreen from '../../../assets/shipping_green.svg'
+import orderGreen from '../../../assets/order_green.svg'
+import paymentGreen from '../../../assets/payment_green.svg'
+
 
 import './progressbar.css'
 
@@ -26,18 +33,45 @@ export const ProgressBar = ({ children, active, className }) => {
   }
 
   return (
-    <div className="progressbar">
+    <div className="progressbar mb-12">
       <Container className="progress-container">{children}</Container>
       <ProgressBarContent mobilestyle={mobilestyle} barstyle={barstyle} />
     </div>
   )
 }
 
-export const ProgressBarItem = ({ status, title }) => {
+export const ProgressBarItem = ({ status, title, activeTab }) => {
+  const iconIsGreen = status === activeTab
+  let icons = {}
+  console.log('status === active: ', status === activeTab)
+  if (activeTab === 'shipping') {
+    icons = {
+      shipping: shippingGreen,
+      payment: iconIsGreen ? paymentGreen : payment,
+      'review order': iconIsGreen ? orderGreen : order,
+    }
+  } else if (activeTab === 'payment') {
+    icons = {
+      shipping: shippingGreen,
+      payment: iconIsGreen ? paymentGreen : payment,
+      'review order': iconIsGreen ? orderGreen : order,
+    }
+  } else if (activeTab === 'review_order') {
+    icons = {
+      shipping: shippingGreen,
+      payment: paymentGreen,
+      'review order': orderGreen,
+    }
+  }
   return (
     <div className="progress-bar-item w-full">
+      <img
+        src={icons[title.toLowerCase()]}
+        className={`progress-bar_icons`}
+        text
+        alt={title}
+      />
       <span>{title}</span>
-      <div className="point"></div>
     </div>
   )
 }
