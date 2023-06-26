@@ -1,7 +1,7 @@
 {
   "hosting": [
     {
-      "target": "$DEPLOYMENT_NAME",
+      "target": "@DEPLOYMENT_NAME",
       "public": "build",
       "ignore": [
         "firebase.json",
