@@ -131,6 +131,15 @@ const CartService = () => {
     return res
   }
 
+  const deleteAllProductsFromCart = async (cartAccountId) => {
+    const headers = {
+      'X-Version': 'v2',
+    }
+    const url = `${cartRemoveApi()}/${cartAccountId}/items`
+    const res = await api.delete(url, { headers })
+    return res
+  }
+
   const addMultipleProductsToCart = async (cartAccountId, products) => {
     const url = `${cartProductsApi()}/${cartAccountId}/itemsBatch`
     const headers = {
@@ -220,6 +229,7 @@ const CartService = () => {
     removeProductFromCart,
     removeDiscount,
     removeCart,
+    deleteAllProductsFromCart,
     addMultipleProductsToCart,
     updateCartProduct,
     getRewardPointsForLoggedUser,

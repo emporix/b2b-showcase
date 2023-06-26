@@ -11,7 +11,6 @@ const UserAddressProvider = ({ children }) => {
   const syncAddresses = async () => {
     try {
       const addresses = await fetchAddresses()
-      console.log('addresses', addresses)
       setAddresses(addresses)
     } catch (error) {
       console.error(error)
@@ -22,7 +21,9 @@ const UserAddressProvider = ({ children }) => {
     syncAddresses()
   }, [])
   return (
-    <UserAddressContext.Provider value={{ addresses, setAddresses }}>
+    <UserAddressContext.Provider
+      value={{ addresses, setAddresses, syncAddresses }}
+    >
       {children}
     </UserAddressContext.Provider>
   )

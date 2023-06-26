@@ -79,7 +79,7 @@ export const OrderList = (props) => {
     [returns]
   )
   return (
-    <div className="md:mt-[60px]">
+    <div>
       {showAlreadySubmittedError && (
         <ReturnInfoStatus status="INTERNAL_ALREADY_SUBMITTED" />
       )}
@@ -89,25 +89,25 @@ export const OrderList = (props) => {
             <TableRow className="!py-6">
               <TableCell
                 align="left"
-                className="font-inter !font-bold text-base"
+                className="grid-column-title"
               >
                 Order Number
               </TableCell>
               <TableCell
                 align="left"
-                className="font-inter !font-bold text-base"
+                className="grid-column-title"
               >
                 Status
               </TableCell>
               <TableCell
                 align="left"
-                className="font-inter !font-bold text-base"
+                className="grid-column-title"
               >
                 Total
               </TableCell>
               <TableCell
                 align="left"
-                className="font-inter !font-bold text-base"
+                className="grid-column-title"
               >
                 Created
               </TableCell>

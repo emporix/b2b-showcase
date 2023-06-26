@@ -19,6 +19,7 @@ export const anonymousTokenApi = () =>
   `${API_URL}/customerlogin/auth/anonymous/login`
 export const brandApi = () => `${API_URL}/brand/brands`
 export const ordersApi = () => `${API_URL}/order-v2/${getTenant()}/orders`
+export const subscriptionsApi = () => `${API_URL}/order-v2/${getTenant()}/subscriptions`
 export const resourceReferenceApi = () =>
   `${API_URL}/category/${getTenant()}/assignments/references`
 export const parentCategoriesApi = () =>
@@ -45,6 +46,10 @@ export const triggerCheckoutApi = () =>
   `${API_URL}/checkout/${getTenant()}/checkouts/order`
 export const countriesApi = () =>
   `${API_URL}/country/${getTenant()}/countries`
+export const shippingApi = () =>
+  `${API_URL}/shipping/${getTenant()}`
+export const customerManagementApi = () =>
+  `${API_URL}/customer-management/${getTenant()}`
 // URLS
 export const addLocationUrl = () => `/${getTenant()}/my-account/locations/add`
 export const myAccountLocationUrl = () => `/${getTenant()}/my-account/locations`
@@ -59,6 +64,9 @@ export const editReplenishmentOrdersUrl = () =>
   `/${getTenant()}/my-account/replenishment-orders/edit`
 export const myAccountQuotes = () => `/${getTenant()}/my-account/my-quotes`
 export const myAccountMyOrders = () => `/${getTenant()}/my-account/my-orders`
+export const myAccountMySubscriptions = () => `/${getTenant()}/my-account/my-subscriptions`
+export const myAccountMySubscriptionsView = () => `/${getTenant()}/my-account/my-subscriptions/view/`
+export const myAccountMySubscriptionsManage = () => `/${getTenant()}/my-account/my-subscriptions/`
 export const myAccountMyOrdersViewUrl = () =>
   `/${getTenant()}/my-account/my-orders/view/`
 export const myAccountMyOrdersInvoiceUrl = () =>
@@ -67,6 +75,7 @@ export const myAccountMyOrdersInvoiceUrl = () =>
   `/${getTenant()}/create-return/`
 export const checkoutUrl = () => `/${getTenant()}/checkout`
 export const quoteUrl = () => `/${getTenant()}/quote`
+export const quoteIdUrl = (id) => `/${getTenant()}/my-account/my-quotes/${id}`
 export const cartUrl = () => `/${getTenant()}/cart`
 export const loginUrl = () => `/${getTenant()}/login`
 export const homeUrl = () => `/${getTenant()}`
@@ -76,3 +85,5 @@ export const addTenantToUrl = (url) => `/${getTenant()}/${url}`
 
 export const fetchReturnsUrl = () => `/return/${getTenant()}/returns`
 export const fetchSingleReturnUrl = (id) => `/return/${getTenant()}/returns/${id}`
+
+export const fetchPaymentGatewayModes = () => `/payment-gateway/${getTenant()}/paymentmodes/frontend`

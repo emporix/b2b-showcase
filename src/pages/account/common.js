@@ -98,15 +98,52 @@ export const OrangeStatus = ({ status }) => {
   )
 }
 
+export const RedStatus = ({ status }) => {
+  return (
+    <div
+      style={{
+        width: `108px`,
+        height: `36px`,
+        fontSize: '10px',
+        backgroundColor: 'rgba(243, 3, 3, 0.2)',
+        color: '#F30303',
+        padding: '8px 16px',
+        fontWeight: 'bold',
+        borderRadius: '24px',
+        display: 'flex',
+        alignItems: 'center',
+      }}
+    >
+      <div
+        style={{
+          width: '8px',
+          height: '8px',
+          marginRight: '8px',
+          backgroundColor: '#FFA800',
+          borderRadius: '50px',
+        }}
+      ></div>
+      {status}
+    </div>
+  )
+}
+
 export const renderStatus = (status) => {
   switch (status) {
+    case 'Expired':
+    case 'Cancelled': {
+      return <RedStatus status={status} />
+    }
+    case 'Inactive':
     case 'CREATED': {
       return <GrayStatus status={status} />
     }
+    case 'Paused':
     case 'DECLINED':
     case 'CANCELED': {
       return <OrangeStatus status={status} />
     }
+    case 'Active':
     case 'CONFIRMED': {
       return <GreenStatus status={status} />
     }
@@ -208,25 +245,25 @@ export const SavedCarts = ({ actions }) => {
             <TableRow>
               <TableCell
                 align="left"
-                className="font-inter !font-bold text-base"
+                className="grid-column-title"
               >
                 Date
               </TableCell>
               <TableCell
                 align="left"
-                className="font-inter !font-bold text-base"
+                className="grid-column-title"
               >
                 Name
               </TableCell>
               <TableCell
                 align="left"
-                className="font-inter !font-bold text-base"
+                className="grid-column-title"
               >
                 Items
               </TableCell>
               <TableCell
                 align="left"
-                className="font-inter !font-bold text-base"
+                className="grid-column-title"
               >
                 Total
               </TableCell>

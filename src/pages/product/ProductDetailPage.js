@@ -53,7 +53,7 @@ const ProductDetailCategoryCaptionBar = ({ category }) => {
     <div className="product-detail-category-caption-bar">
       <Breadcrumbs
         className="lg:block hidden"
-        separator="|"
+        separator=">"
         aria-label="breadcrumb"
       >
         {categoryTree.map((row, index) => {
@@ -84,7 +84,7 @@ const ProductDetailCategoryCaptionBar = ({ category }) => {
       </Breadcrumbs>
       <Breadcrumbs
         className="lg:hidden md:block hidden"
-        separator="|"
+        separator=">"
         aria-label="breadcrumb"
       >
         {categoryTree.map((row, index) => {
@@ -105,7 +105,7 @@ const ProductDetailCategoryCaptionBar = ({ category }) => {
           )
         })}
       </Breadcrumbs>
-      <Breadcrumbs className="md:hidden" separator="|" aria-label="breadcrumb">
+      <Breadcrumbs className="md:hidden" separator=">" aria-label="breadcrumb">
         {categoryTree.map((row, index) => {
           return categoryTree.length - index > 1 &&
             categoryTree.length - index < 4 ? (
@@ -171,7 +171,7 @@ const ProductSkuAndReview = ({ product }) => {
             />
             ({product.count})
           </div>
-          <div className="lg:ml-4  product-all-reviews">Read All Reviews</div>
+          <div className="lg:ml-4  product-all-reviews">Reviews</div>
         </div>
       </div>
     </div>
@@ -276,7 +276,7 @@ const PrdouctAddToCart = () => {
       <div className="">
         <LargePrimaryButton
           disabled={!product.price}
-          className="product-add-to-cart-btn"
+          className="product-add-to-cart-btn cta-button bg-yellow"
           onClick={() =>
             HandleProductAddToCart1(product, setShowCart, quantity)
           }

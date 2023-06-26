@@ -10,6 +10,7 @@ import {
 import Quantity from 'components/Utilities/quantity/quantity'
 import { cartUrl, checkoutUrl, quoteUrl } from 'services/service.config'
 import { useCart } from 'context/cart-provider'
+import { border } from '@mui/system'
 
 const CartProductContent = ({ children }) => {
   return <div className="cart-product-content">{children}</div>
@@ -19,10 +20,13 @@ export const CartProductCaption = () => {
 }
 export const CartProductImage = ({ src, className }) => {
   return (
-    <img
-      src={src}
-      className={'cart-product-image ' + (className ? className : '')}
-    />
+    <div className="border border-quartz rounded p-4 w-[84px] h-[84px]">
+      <img
+        src={src}
+        className={'cart-product-image ' + (className ? className : '')}
+        alt="product from cart"
+      />
+    </div>
   )
 }
 export const PriceExcludeVAT = ({ price, caption }) => {
@@ -170,7 +174,7 @@ const CartProductImageAndQuantity = ({ cartItem }) => {
   const { incrementCartItemQty, decrementCartItemQty } = useCart()
   return (
     <div className="cart-product-image-and-quantity">
-      <GridLayout className="gap-4">
+      <GridLayout className="gap-11">
         <CartProductImage src={cartItem.product.src} />
         <Quantity
           value={cartItem.quantity}
@@ -318,11 +322,11 @@ export const CartVat = ({ value, taxPercentage, currency }) => {
     </>
   )
 }
-export const CartShipingCost = () => {
+export const CartShipingCost = ({shippingCost, currency}) => {
   return (
     <>
       <span>Shipping Costs</span>
-      <span>Free</span>
+      <CurrencyBeforeValue value={shippingCost} currency={currency} />
     </>
   )
 }
@@ -341,26 +345,37 @@ export const CartTotalPrice = ({ totalValue, currency }) => {
 const CartRequestQuote = () => {
   return (
     <Link to={quoteUrl()} className="w-full">
-      <button className="cart-request-quote-btn">REQUEST QUOTE</button>
+      <button className="cart-request-quote-btn py-[12px] px-[14px] bg-transparent rounded text-eerieBlack border border-gray80">
+        REQUEST QUOTE
+      </button>
     </Link>
   )
 }
 const CartGoCheckout = () => {
   return (
     <Link to={checkoutUrl()} className="w-full">
-      <button className="cart-go-checkout-btn">GO TO CHECKOUT</button>
+      <button className="cart-go-checkout-btn py-[12px] px-[14px] bg-yellow rounded text-eerieBlack">
+        GO TO CHECKOUT
+      </button>
     </Link>
   )
 }
 const CartGoCart = () => {
   return (
     <Link to={cartUrl()} className="w-full">
-      <button className="cart-go-cart-btn">GO TO CART</button>
+      <button className="cart-go-cart-btn py-[12px] px-[14px] bg-transparent rounded text-eerieBlack border border-gray80">
+        GO TO CART
+      </button>
     </Link>
   )
 }
+
+export const getShippingCost = (shippingMethod) => {
+  return shippingMethod != null ? shippingMethod?.fee : 0
+}
+
 export const CartActionPanel = ({ action }) => {
-  const { cartAccount } = useCart()
+  const { cartAccount, shippingMethod } = useCart()
   return (
     <div className="cart-action-panel">
       <GridLayout className="gap-4">
@@ -418,7 +433,7 @@ export const CartActionPanel = ({ action }) => {
 
         <CartActionRow>
           <LayoutBetween>
-            <CartShipingCost />
+            <CartShipingCost currency={cartAccount.currency} shippingCost={getShippingCost(shippingMethod)}/>
           </LayoutBetween>
         </CartActionRow>
 
@@ -429,7 +444,8 @@ export const CartActionPanel = ({ action }) => {
                 <CartTotalPrice
                   totalValue={
                     cartAccount.totalPrice.amount +
-                      + cartAccount.totalPrice.amount * cartAccount?.taxAggregate.lines[0].rate / 100
+                      + cartAccount.totalPrice.amount * cartAccount?.taxAggregate.lines[0].rate / 100 
+                      + getShippingCost(shippingMethod)
                   }
                   currency={cartAccount.currency}
                 />
@@ -439,11 +455,11 @@ export const CartActionPanel = ({ action }) => {
         </CartActionRow>
 
         {action === undefined || action === true ? (
-          <CartActionRow>
-            <CartRequestQuote />
-            <CartGoCart />
-            <CartGoCheckout />
-          </CartActionRow>
+            <>
+                <CartGoCheckout />
+                <CartGoCart />
+                <CartRequestQuote />
+            </>
         ) : (
           <></>
         )}
@@ -453,7 +469,6 @@ export const CartActionPanel = ({ action }) => {
 }
 const Cart = () => {
   const { cartAccount } = useCart()
-
   return (
     <>
       <LayoutBetween>

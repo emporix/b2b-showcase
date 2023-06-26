@@ -82,8 +82,9 @@ const getCartList = async (items) => {
 
 const CartProvider = ({ children }) => {
   const { context } = useAppContext()
-  const { userTenant, sessionId } = useAuth()
+  const { userTenant, sessionId, user } = useAuth()
   const [cartAccount, setCartAccount] = useState(DEFAULT_CART)
+  const [shippingMethod, setShippingMethod] = useState(null)
   const { currentSite } = useSites()
   const products = useMemo(() => {
     return cartAccount.items.map((cart) => {
@@ -106,7 +107,7 @@ const CartProvider = ({ children }) => {
 
   useEffect(() => {
     syncCart()
-  }, [userTenant, currentSite, sessionId])
+  }, [user, userTenant, currentSite, sessionId])
 
   const removeCartItem = async (item) => {
     await CartService.removeProductFromCart(cartAccount.id, item.id)
@@ -200,7 +201,7 @@ const CartProvider = ({ children }) => {
       })
       if (matchCart.length === 0) {
         await CartService.addProductToCart(cartAccount.id, product)
-        syncCart()
+        await syncCart()
       }
     },
     [cartAccount.id, cartAccount]
@@ -208,8 +209,8 @@ const CartProvider = ({ children }) => {
 
   const deleteCart = async (cartAccountId, cartItemId) => {
     await CartService.removeCart(cartAccountId, cartItemId)
-    removeCartItem(cartItemId)
-    syncCart()
+    await removeCartItem(cartItemId)
+    await syncCart()
   }
 
   const syncCart = useCallback(async () => {
@@ -239,6 +240,8 @@ const CartProvider = ({ children }) => {
     cartAccount,
     products,
     discounts,
+    shippingMethod,
+    setShippingMethod
   }
   return <CartContext.Provider value={value}>{children}</CartContext.Provider>
 }

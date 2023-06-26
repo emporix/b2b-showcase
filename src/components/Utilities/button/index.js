@@ -19,9 +19,15 @@ export const LargePrimaryButton = ({
   )
 }
 
-export const MediumPrimaryButton = ({ title, onClick, className }) => {
+export const MediumPrimaryButton = ({
+  title,
+  onClick,
+  className,
+  disabled,
+}) => {
   return (
     <button
+      disabled={disabled}
       className={'medium-primary-btn ' + (className ? className : '')}
       onClick={onClick}
     >
