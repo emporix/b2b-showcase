@@ -43,7 +43,9 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "build:prod": "env-cmd -f .env.prod react-scripts build"
+    "build:prod": "env-cmd -f .env.prod react-scripts build",
+    "docker:build": "docker build -t storefront",
+    "docker:run": "docker run -p 3000:3000 -d storefront"
   },
   "eslintConfig": {
     "extends": [
