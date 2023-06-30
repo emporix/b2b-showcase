@@ -1,7 +1,7 @@
 {
   "projects": {},
   "targets": {
-    "b2b-showcase": {
+    "@PROJECT": {
       "hosting": {
         "@DEPLOYMENT_NAME": [
           "@SITE"
