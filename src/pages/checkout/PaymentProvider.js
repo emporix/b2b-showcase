@@ -5,6 +5,7 @@ export const usePayment = () => useContext(PaymentContext)
 
 export const PaymentProvider = ({ children }) => {
   const [payment, setPayment] = useState(null)
+  const [deferredPayment, setDeferredPayment] = useState(false)
 
   const getPaymentMethods = () => {
     if(payment) {
@@ -28,7 +29,9 @@ export const PaymentProvider = ({ children }) => {
       value={{
         payment,
         setPayment,
-        getPaymentMethods
+        getPaymentMethods,
+        deferredPayment,
+        setDeferredPayment
       }}
     >
       {children}

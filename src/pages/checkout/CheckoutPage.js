@@ -16,6 +16,12 @@ import { Button, Chip, Dialog, Grid } from '@mui/material'
 import { TextInput } from '../../components/Utilities/input'
 import CartService from '../../services/cart.service'
 import { usePayment } from './PaymentProvider'
+import PaymentSpreedly from 'components/Checkout/PaymentSpreedly'
+import { RadioGroup } from 'components/Utilities/radio'
+import FilledButton from 'components/Utilities/FilledButton'
+import { api } from 'services/axios'
+import { authorizePayment } from 'services/service.config'
+import { ACCESS_TOKEN } from 'constants/localstorage'
 
 const PaymentAction = ({ action, disabled }) => {
   return (
@@ -284,9 +290,10 @@ const CheckoutPage = () => {
   const [status, setStatus] = useState('shipping')
   const [final, setFinal] = useState(false)
   const [order, setOrder] = useState(null)
+  const [paymentProps, setPaymentProps] = useState(null) 
   const { selectedAddress, billingAddress, addresses } = useUserAddress()
-  const { cartAccount, syncCart, shippingMethod } = useCart()
-  const { getPaymentMethods } = usePayment()
+  const { cartAccount, syncCart, shippingMethod, cart } = useCart()
+  const { getPaymentMethods, payment, deferredPayment, setDeferredPayment } = usePayment()
 
   const subtotalWithoutVat = useMemo(() => {
     let subTotal =
@@ -319,7 +326,37 @@ const CheckoutPage = () => {
     ], shipping, getPaymentMethods() )
     setOrder(order)
     setFinal(order.orderId)
+    setPaymentProps({
+      customerId : cartAccount.customerId, 
+      grossValue : cartAccount.subtotalAggregate.grossValue, 
+      currency: cartAccount.subtotalAggregate.currency,
+      orderId: order.orderId,
+      deferred: true
+    })
     syncCart()
+  }
+  const executePayment = async () => {
+    const accessToken = localStorage.getItem(ACCESS_TOKEN)
+    const headers = {
+      Authorization: `Bearer ${accessToken}`
+    }
+    const body = {
+      order : {
+        id : order.orderId
+      },
+      paymentModeId: payment.customAttributes.modeId,
+      creditCardToken: payment.customAttributes.token,
+      browserInfo: payment.customAttributes.browserInfo 
+    }
+    const res = await api.post(`${authorizePayment()}`, body, { headers })
+    window.console.log("AUTH Response", res)
+    order.paymentDetails = {
+      externalPaymentHttpMethod: res.data.externalPaymentHttpMethod,
+      authorizationToken: res.data.authorizationToken,
+      externalPaymentRedirectURL: res.data.externalPaymentRedirectURL
+
+    }
+    setDeferredPayment(false)   
   }
   return (
     <div className="checkout-page-wrapper ">
@@ -376,7 +413,24 @@ const CheckoutPage = () => {
               </div>
             </>
           ) : (
-            <CheckoutSummary setFinal={setFinal} order={order} />
+            deferredPayment ? 
+              (
+                <div className='deferredPaymentBox'> 
+                  <RadioGroup active="radio1">
+                    <GridLayout className="gap-4 border border-quartz rounded p-12 col-12">
+                      <PaymentSpreedly  props={paymentProps} />
+                    </GridLayout>
+                  </RadioGroup>
+                  {!payment.requiresInitialization && (<FilledButton
+                    onClick={executePayment}
+                    className="mt-4 w-auto bg-yellow text-eerieBlack"
+                  >
+                    PAY
+                  </FilledButton>)}
+                </div>
+              ) : (
+                <CheckoutSummary setFinal={setFinal} order={order} />
+              )
           )}
         </div>
       </div>

@@ -166,7 +166,7 @@ const PaymentContent = ({cart}) => {
         <TextBold1>Payment Methods</TextBold1>
         <RadioGroup active="radio1">
           <GridLayout className="gap-4 border border-quartz rounded p-6">
-            <PaymentSpreedly  cart={cart} />
+            <PaymentSpreedly props={{customerId : cart.customerId, grossValue : cart.subtotalAggregate.grossValue, currency: cart.subtotalAggregate.currency}} />
           </GridLayout>
         </RadioGroup>
       </GridLayout>
@@ -321,7 +321,7 @@ const ReviewOrderContent = (cart) => {
               <TextBold3>Payment Method</TextBold3>
             </div>
             <GridLayout>
-              <TextBold3>{payment.displayName}</TextBold3>
+              <TextBold3>{payment && payment.displayName}</TextBold3>
             </GridLayout>
           </Container>
           <TextBold4>

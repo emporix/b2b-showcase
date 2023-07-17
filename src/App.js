@@ -45,6 +45,7 @@ import AddressEdit from 'pages/account/addresses/AddressEdit'
 import AccountMySubscriptions from 'pages/account/AccountMySubscriptions'
 import SubscriptionDetails from 'pages/account/SubscriptionDetails'
 import PaymentCallback from 'pages/checkout/PaymentCallback'
+import SaferpayPaymentCallback from 'pages/checkout/SaferpayPaymentCallback'
 
 function App() {
   const dispatch = useDispatch()
@@ -85,6 +86,7 @@ function App() {
           />
           <Route path="checkout" exact element={<Checkout />} />
           <Route path="payment-callback" exact element={<PaymentCallback />} />
+          <Route path="saferpay-callback" exact element={<SaferpayPaymentCallback />} />
           <Route path="quote" exact element={<QuoteCart />} />
           <Route
             path="my-account"
