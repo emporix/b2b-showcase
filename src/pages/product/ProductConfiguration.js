@@ -4,8 +4,8 @@ import { VariantAccordion, VariantHeader } from './VariantAccordion'
 import { useSites } from '../../context/sites-provider'
 import { useLanguage } from '../../context/language-provider'
 import { useCurrency } from 'context/currency-context'
-import classNames from 'classnames'
 import { Button } from '@mui/material'
+import { getLanguageFromLocalStorage } from 'context/language-provider'
 
 export const ProductConfiguration = ({ product }) => {
   const { getVariantChildren } = useProducts()
@@ -13,9 +13,9 @@ export const ProductConfiguration = ({ product }) => {
   const [variants, setVariants] = useState([])
   const [availableVariants, setAvailableVariants] = useState([])
   const [configuredVariant, setConfiguredVariant] = useState(null)
-  
+
   const [renderKey, setRenderKey] = useState([])
-  
+
   const [selectedValues, setSelectedValues] = useState(null)
 
   const { currentLanguage } = useLanguage()
@@ -37,12 +37,22 @@ export const ProductConfiguration = ({ product }) => {
   }, [product, currentSite, activeCurrency, currentLanguage])
 
   const findAttributeName = (key) => {
-    return product.template.attributes.filter(attr => attr.key === key).map(attr => attr.name['en'])
+
+    return product.template.attributes.filter(attr => attr.key === key).map(attr => {
+        if(attr.name) {
+            if(attr.name[getLanguageFromLocalStorage()]) {
+                return attr.name[getLanguageFromLocalStorage()]
+            }
+            if(attr.name['en']) {
+                return attr.name['en']
+            }
+        }
+    })
   }
 
   const activateAttributeValue = (attribute, value) => {
     selectedValues[attribute] = selectedValues[attribute] === value ? null : value
-    
+
     const validVariants = variants.filter(variant => isVariantValid(variant))
     setAvailableVariants(validVariants)
     if(isVariantFullyConfigured()) {
@@ -113,7 +123,7 @@ export const ProductConfiguration = ({ product }) => {
           configuredVariant && <VariantAccordion variant={configuredVariant} expandedByDefault={true}></VariantAccordion>
         }
       </div>
-      
+
     </>
   )
 }
