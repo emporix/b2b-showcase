@@ -33,6 +33,7 @@ import { useCart } from 'context/cart-provider'
 import { useAuth } from 'context/auth-provider'
 import { formatPrice } from 'helpers/price'
 import { Qualification } from '../shared/Qualification'
+import { ProductConfiguration } from './ProductConfiguration'
 
 const ProductContext = createContext()
 
@@ -675,7 +676,7 @@ const ProductDetailPage = ({ product, brand, labels, qualifications }) => {
           ))}
         </Box>
         {product.productType === 'PARENT_VARIANT' && (
-          <ProductVariants product={product} />
+          product?.mixins?.b2bShowcase?.productConfiguration ? <ProductConfiguration product={product} /> : <ProductVariants product={product} />
         )}
         <ProductDetailInfo product={product} />
         <ProductMatchItems />

@@ -346,8 +346,8 @@ export const VariantHeader = () => (
   </Grid>
 )
 
-export const VariantAccordion = ({ variant }) => {
-  const [expanded, setExpanded] = useState(false)
+export const VariantAccordion = ({ variant, expandedByDefault }) => {
+  const [expanded, setExpanded] = useState(expandedByDefault ? true : false)
   const [quantity, setQuantity] = useState(1)
   const [price, setPrice] = useState(null)
   const { activeCurrency } = useCurrency()
