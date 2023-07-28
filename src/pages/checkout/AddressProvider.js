@@ -76,7 +76,7 @@ export const AddressProvider = ({ children }) => {
           .filter(
             (feeEl) => feeEl.minOrderValue.amount <= cart.totalPrice.amount
           )
-          .sort((a, b) => a.cost.amount - b.cost.amount)[0].cost.amount,
+          .sort((a, b) => a.cost.amount - b.cost.amount)[0]?.cost?.amount,
       }))
       .sort((a, b) => a.fee - b.fee)
     setShippingMethods(filteredMethods)

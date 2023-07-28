@@ -6,7 +6,7 @@ import { TextBold2, TextRegular2 } from '../Utilities/typography'
 import { usePayment } from 'pages/checkout/PaymentProvider'
 
 
-const PaymentSpreedlyCashOnDeliveryItem = ({ radioKey, cart, paymentMode }) => {
+const PaymentSpreedlyCashOnDeliveryItem = ({ radioKey, props, paymentMode }) => {
   const { radioActive, setRadioActive } = useContext(RadioContext)
 
   const { setPayment, payment } = usePayment()
@@ -20,7 +20,7 @@ const PaymentSpreedlyCashOnDeliveryItem = ({ radioKey, cart, paymentMode }) => {
             displayName: 'Cash on delivery',    
             customAttributes : {
               modeId : paymentMode.id,
-              customer : cart.customerId
+              customer : props.customerId
             }  
       })
     }

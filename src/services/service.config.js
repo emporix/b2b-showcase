@@ -87,3 +87,5 @@ export const fetchReturnsUrl = () => `/return/${getTenant()}/returns`
 export const fetchSingleReturnUrl = (id) => `/return/${getTenant()}/returns/${id}`
 
 export const fetchPaymentGatewayModes = () => `/payment-gateway/${getTenant()}/paymentmodes/frontend`
+export const authorizePayment = () => `/payment-gateway/${getTenant()}/payment/frontend/authorize`
+export const initializePayment = () => `/payment-gateway/${getTenant()}/payment/frontend/initialize`

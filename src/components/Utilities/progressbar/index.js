@@ -43,7 +43,6 @@ export const ProgressBar = ({ children, active, className }) => {
 export const ProgressBarItem = ({ status, title, activeTab }) => {
   const iconIsGreen = status === activeTab
   let icons = {}
-  console.log('status === active: ', status === activeTab)
   if (activeTab === 'shipping') {
     icons = {
       shipping: shippingGreen,

@@ -4,13 +4,18 @@ import { RadioContext } from '../Utilities/radio'
 import { Container, GridLayout } from '../Utilities/common'
 import { TextBold2 } from '../Utilities/typography'
 import { usePayment } from 'pages/checkout/PaymentProvider'
+import FilledButton from 'components/Utilities/FilledButton'
+import { initializePayment } from 'services/service.config'
+import { ACCESS_TOKEN } from 'constants/localstorage'
+import { api } from 'services/axios'
 
 
-const PaymentSpreedlyCreditCardItem = ({ radioKey, props, paymentMode }) => {
+const PaymentSpreedlySaferpayItem = ({ radioKey, props, paymentMode }) => {
   const { radioActive } = useContext(RadioContext)
   
   const { setPayment, payment } = usePayment()
-  
+  const [saferpayCardDetailsProvided, setSaferpayCardDetailsProvided] = useState(false)
+  const [spreedlyToken, setSpreedlyToken ] = useState(null)
 
   useEffect(() => {
     if(radioActive === radioKey) {
@@ -25,19 +30,14 @@ const PaymentSpreedlyCreditCardItem = ({ radioKey, props, paymentMode }) => {
 
       window['SpreedlyExpress'].onPaymentMethod(function(token, paymentMethod) {
         window.console.log("Listener", token)
-        let browserInfo = paymentMode.scaProviderToken ? window['Spreedly'].ThreeDS.serialize('4') : null
-    
+        setSaferpayCardDetailsProvided(true)
+        setSpreedlyToken(token)
+
         const currentPayment =  {
           provider: 'payment-gateway',
           method: 'card',    
-          displayName: 'Credit cart'  
-        }
-        currentPayment.paymentMode = paymentMode
-        currentPayment.customAttributes = {
-          token : token,
-          modeId : paymentMode.id,
-          customer : props.customerId,
-          browserInfo : browserInfo,
+          displayName: 'Saferpay',
+          requiresInitialization : true  
         }
         setPayment(currentPayment)
         window['SpreedlyExpress'].unload()
@@ -47,6 +47,23 @@ const PaymentSpreedlyCreditCardItem = ({ radioKey, props, paymentMode }) => {
 
   const openModal = (e) => {
     window['SpreedlyExpress'].openView()
+  }
+
+  const executePayment = async () => {
+    const accessToken = localStorage.getItem(ACCESS_TOKEN)
+    const headers = {
+      Authorization: `Bearer ${accessToken}`
+    }
+    const body = {
+      order : {
+        id : props.orderId
+      },
+      paymentModeId: paymentMode.id,
+      creditCardToken: spreedlyToken
+    }
+    const res = await api.post(`${initializePayment()}`, body, { headers })
+    window.location.replace(res.data.externalPaymentRedirectURL)
+    window.console.log("SAFERPAY init", res)
   }
 
   return (
@@ -60,13 +77,21 @@ const PaymentSpreedlyCreditCardItem = ({ radioKey, props, paymentMode }) => {
         <Container className="gap-4 items-center">
           <RadioItem radioKey={radioKey} />
           <div className="brand-blue">
-            <TextBold2>{paymentMode.scaProviderToken ? (<>Credit cart (3D Secure)</>) : (<>Credit cart</>)}</TextBold2>
+            <TextBold2>Saferpay SIX</TextBold2>
           </div>
         </Container>
         <GridLayout className="gap-[2px]">
           {radioActive === radioKey ? (
             <>
-              <button className='large-primary-btn' onClick={openModal}>Enter Payment Info</button>
+              {!saferpayCardDetailsProvided && <button className='large-primary-btn' onClick={openModal}>Enter Payment Info</button>}
+              {saferpayCardDetailsProvided && (
+                <FilledButton
+                    onClick={executePayment}
+                    className="mt-4 w-auto bg-yellow text-eerieBlack"
+                  >
+                    PAY via Saferpay
+                </FilledButton>)
+              }
             </>
           ) : (<></>)}
         </GridLayout>
@@ -74,4 +99,4 @@ const PaymentSpreedlyCreditCardItem = ({ radioKey, props, paymentMode }) => {
     </div>
   )
 }
-export default PaymentSpreedlyCreditCardItem
+export default PaymentSpreedlySaferpayItem
