@@ -6,11 +6,11 @@ import verifiedUser from '../../assets/verified_user.svg'
 
 const EachService = (props) => {
   return (
-    <div className="text-eerieBlack text-center md:text-center md:items-center h-[158px] w-[276px] md">
+    <div className="text-white text-center md:text-center md:items-center h-[158px] w-[276px] md">
       <div className="w-full">
         <img src={props.src} className="h-10 md:mx-auto"></img>
       </div>
-      <div className="md:text-[20px] leading-[24px] pt-7 text-[18px]/[30px] font-semibold">
+      <div className="text-primary md:text-[20px] leading-[24px] pt-7 text-[18px]/[30px] font-semibold">
         {props.title}
       </div>
       <div className="font-inter font-normal text-[14px] leading-[24px] md:text-[16px] pt-2 md:pt-4 text-left">
@@ -21,7 +21,7 @@ const EachService = (props) => {
 }
 const Service = () => {
   return (
-    <div className="home_service h-[366px]">
+    <div className="home_service h-[366px] bg-black text -white">
       <EachService
         src={logo}
         title="Free Shipping"
