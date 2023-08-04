@@ -246,7 +246,7 @@ const Navbar = () => {
           <span className='world-icon'></span>
           {fields.siteLabel}:
           <select
-            className="bg-eerieBlack w-38 mr-[22px]"
+            className="bg-primary w-38 mr-[22px]"
             onChange={handleSiteChange}
             value={currentSite}
           >
@@ -265,7 +265,7 @@ const Navbar = () => {
         <div>
           {fields.languageLabel}:
           <select
-            className="bg-eerieBlack"
+            className="bg-primary"
             onChange={(event) => setLanguage(event.target.value)}
             value={currentLanguage}
           >
@@ -288,7 +288,7 @@ const Navbar = () => {
             onChange={(e) =>
               currencyChangeHandler(e.target.value, currentSiteObject)
             }
-            className="bg-eerieBlack"
+            className="bg-primary"
           >
             {currencyList.map((currency) => {
               return (
