@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom'
 import { loginUrl } from 'services/service.config'
 import { AddressProvider } from './AddressProvider'
 import { useAuth } from 'context/auth-provider'
+import { PaymentProvider } from './PaymentProvider'
 
 const Checkout = () => {
   const title = `Checkout`
@@ -20,7 +21,9 @@ const Checkout = () => {
   return (
     <Layout title={title}>
       <AddressProvider>
-        <CheckoutPage />
+        <PaymentProvider>
+          <CheckoutPage />
+        </PaymentProvider>  
       </AddressProvider>
     </Layout>
   )

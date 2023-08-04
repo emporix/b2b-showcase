@@ -5,7 +5,7 @@ import { Container } from '../Utilities/common'
 import { TextBold2 } from '../Utilities/typography'
 import './checkout.css'
 
-const PaymentMethodItem = ({ radioKey, title }) => {
+const PaymentMethodItem = ({ radioKey, title, onChange }) => {
   const { radioActive, setRadioActive } = useContext(RadioContext)
   return (
     <div
@@ -15,7 +15,7 @@ const PaymentMethodItem = ({ radioKey, title }) => {
       }
     >
       <Container className="gap-4 items-center">
-        <RadioItem radioKey={radioKey} />
+        <RadioItem radioKey={radioKey} onChange={onChange} />
         <div className="brand-blue">
           <TextBold2>{title}</TextBold2>
         </div>

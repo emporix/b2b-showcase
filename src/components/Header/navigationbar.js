@@ -242,10 +242,11 @@ const Navbar = () => {
     <header className="header">
       {/* Dektop language and currency selection */}
       <div className="desktop_only_flex font-inter text-sm text-white">
-        <div>
+        <div className='flex items-center'>
+          <span className='world-icon'></span>
           {fields.siteLabel}:
           <select
-            className="bg-darkBlue w-38 mr-[22px]"
+            className="bg-eerieBlack w-38 mr-[22px]"
             onChange={handleSiteChange}
             value={currentSite}
           >
@@ -264,7 +265,7 @@ const Navbar = () => {
         <div>
           {fields.languageLabel}:
           <select
-            className="bg-darkBlue"
+            className="bg-eerieBlack"
             onChange={(event) => setLanguage(event.target.value)}
             value={currentLanguage}
           >
@@ -286,7 +287,7 @@ const Navbar = () => {
             onChange={(e) =>
               currencyChangeHandler(e.target.value, currentSiteObject)
             }
-            className="bg-darkBlue"
+            className="bg-eerieBlack"
           >
             {currencyList.map((currency) => {
               return (

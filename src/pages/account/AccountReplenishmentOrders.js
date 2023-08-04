@@ -17,25 +17,25 @@ const repleishmentOrdersList = [
   {
     order_number: '#CMD-2022-0119-001',
     po: '199616',
-    start_on: '2022-0119-001',
+    start_on: '2023-01-19',
     frequency: 'Weekly',
-    next_order_date: '19 Jan. 2022',
+    next_order_date: '02 June 2023',
     total: '2,569.25',
   },
   {
     order_number: '#CMD-2022-0119-002',
     po: '199616',
-    start_on: '2022-0119-001',
+    start_on: '2023-01-19',
     frequency: 'Weekly',
-    next_order_date: '19 Jan. 2022',
+    next_order_date: '09 June 2023',
     total: '2,569.25',
   },
   {
     order_number: '#CMD-2022-0119-003',
     po: '199616',
-    start_on: '2022-0119-001',
+    start_on: '2023-01-19',
     frequency: 'Weekly',
-    next_order_date: '19 Jan. 2022',
+    next_order_date: '16 June 2023',
     total: '2,569.25',
   },
 ]
@@ -84,7 +84,7 @@ const ReplenishmentOrders = () => {
   return (
     <div>
       <Link to={addReplenishmentOrdersUrl()}>
-        <div className="w-[278px]  h-12 bg-tinBlue text-white  flex items-center my-12 md:mx-0 mx-auto">
+      <div className="cta-button bg-yellow w-[278px] h-12 flex items-center my-12 md:mx-0 mx-auto">
           <span className="text-center  w-full">NEW REPLENISHMENT ORDER</span>
         </div>
       </Link>

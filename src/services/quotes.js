@@ -1,8 +1,11 @@
 import { api } from './axios'
 
-export const createQuoteCall = async (tenant, cartId) => {
+export const createQuoteCall = async (tenant, cartId, shipping, shippingAddressId, billingAddressId) => {
   const { data } = await api.post(`quote/${tenant}/quotes`, {
     cartId,
+    shipping,
+    shippingAddressId: shippingAddressId,
+    billingAddressId: billingAddressId
   })
   return data
 }

@@ -129,14 +129,15 @@ export const getAllCategories = async () => {
 
 const getCategoryTree = (categories, layer, parenturl = 'product', lang) => {
   return categories.map((category) => {
-    const categoryKey = category.name.toLowerCase().replaceAll(' ', '_')
+    const categoryName = category.name || category.localizedName[lang]
+    const categoryKey = categoryName.toLowerCase().replaceAll(' ', '_')
     const url = `${parenturl}/${categoryKey}`
     const items =
       category.subcategories !== undefined
         ? getCategoryTree(category.subcategories, layer + 1, url, lang)
         : []
 
-    let title = category.name
+    let title = categoryName
     if (lang && category.localizedName['it']) {
       console.log('lang', lang)
       title = category.localizedName[lang]

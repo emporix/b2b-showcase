@@ -3,8 +3,8 @@ import Layout from '../Layout'
 import { TextRegular5 } from '../../components/Utilities/typography'
 const Content = () => {
   return (
-    <div className="quickorder-page-wrapper">
-      <TextRegular5 className="pt-4">
+    <div className="quickorder-page-wrapper !ml-[96px]">
+      <TextRegular5 className="pt-20 !text-[16px]/[24px]">
         We pride ourselves on being a company that focuses on helping businesses
         achieve their goals and increase their profits. We've been in the
         industry for over 12 years now and have an extensive experience in
@@ -14,7 +14,7 @@ const Content = () => {
         important when it comes to running a successful business.
       </TextRegular5>
       <br></br>
-      <TextRegular5>
+      <TextRegular5 className="!text-[16px]/[24px]">
         Our mission is to always provide high-quality services to our clients,
         by closely working with them to understand their needs and always being
         ready to tailor their experience whenever that may be needed. Our

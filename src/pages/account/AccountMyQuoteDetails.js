@@ -243,7 +243,7 @@ const AccountMyOrdersDetails = () => {
   return (
     <div className="flex">
       <div className="w-[320px] mr-2">
-        <AccountMenu />
+        <AccountMenu page='All Quotes' />
       </div>
       <div className="grow">
         <div className="text-[#214559] text-2xl font-bold mb-8">My quotes</div>
@@ -441,12 +441,13 @@ const AccountMyOrdersDetails = () => {
               <FilledButton
                 onClick={handleAcceptQuote}
                 disabled={quote.status.value !== 'OPEN'}
+                className="mt-4 w-auto bg-yellow text-eerieBlack"
               >
                 ACCEPT QUOTE
               </FilledButton>
               <FilledButton
                 onClick={handleInitDeclineQuote}
-                className="mt-4"
+                className="mt-4 w-auto bg-yellow text-eerieBlack"
                 disabled={quote.status.value !== 'OPEN'}
               >
                 DECLINE QUOTE

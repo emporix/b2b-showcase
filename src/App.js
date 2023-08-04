@@ -40,6 +40,12 @@ import AccountReturnDetails from './pages/account/AccountReturnDetails'
 import ReturnsProvider from 'context/returns-provider'
 import UserAddressProvider from 'context/user-addresss-context'
 import MyDiscounts from 'pages/account/MyDiscounts'
+import Addresses from 'pages/account/addresses/Addresses'
+import AddressEdit from 'pages/account/addresses/AddressEdit'
+import AccountMySubscriptions from 'pages/account/AccountMySubscriptions'
+import SubscriptionDetails from 'pages/account/SubscriptionDetails'
+import PaymentCallback from 'pages/checkout/PaymentCallback'
+import SaferpayPaymentCallback from 'pages/checkout/SaferpayPaymentCallback'
 
 function App() {
   const dispatch = useDispatch()
@@ -79,6 +85,8 @@ function App() {
             element={<CreateReturn />}
           />
           <Route path="checkout" exact element={<Checkout />} />
+          <Route path="payment-callback" exact element={<PaymentCallback />} />
+          <Route path="saferpay-callback" exact element={<SaferpayPaymentCallback />} />
           <Route path="quote" exact element={<QuoteCart />} />
           <Route
             path="my-account"
@@ -96,8 +104,12 @@ function App() {
               path="personal-details"
               element={<AccountPersonalDetails />}
             />
+            <Route path="addresses" element={<Addresses />} />
+            <Route path="addresses/:addressId" element={<AddressEdit />} />
+            <Route path="addresses/new" element={<AddressEdit />} />
             <Route path="company-details" element={<AccountCompanyDetails />} />
             <Route path="my-orders" exact element={<AccountMyOrders />} />
+            <Route path="my-subscriptions" exact element={<AccountMySubscriptions />} />
             <Route path="my-quotes" exact element={<AccountMyQuotes />} />
             <Route path="discounts" exact element={<MyDiscounts />} />
 
@@ -138,6 +150,11 @@ function App() {
             />
             <Route path="saved-carts" element={<AccountSavedCarts />} />
             <Route path="locations" exact element={<AccountLocations />} />
+            <Route
+              path="my-subscriptions/:action/:orderId/:productId"
+              exact
+              element={<SubscriptionDetails />}
+            />
             <Route
               path="locations/add"
               exact

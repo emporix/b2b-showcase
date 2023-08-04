@@ -2,7 +2,7 @@ import { GridLayout, Center } from '../components/Utilities/common'
 import { Heading4, Heading5 } from '../components/Utilities/typography'
 import { TextInput } from '../components/Utilities/input'
 import { LargePrimaryButton } from '../components/Utilities/button'
-import { useCallback, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { CLIENT_ID, TENANT } from 'constants/localstorage'
 const DEVPORTAL_URL = process.env.REACT_APP_DEVPORTAL_URL
 const InvalidTenant = () => {
@@ -10,10 +10,23 @@ const InvalidTenant = () => {
   const [clientId, setClientID] = useState('')
 
   const saveTenantAndClientID = useCallback(() => {
+    localStorage.clear()
     localStorage.setItem(CLIENT_ID, clientId)
     localStorage.setItem(TENANT, tenant)
     window.location.replace(`/${tenant}`)
   }, [clientId, tenant])
+
+  useEffect(() => {
+    const urlParams = new URLSearchParams(window.location.search)
+    const tenantParam = urlParams.get("tenant")
+    const clientIdParam = urlParams.get("clientId")
+    if(tenantParam && clientIdParam) {
+      localStorage.clear()
+      localStorage.setItem(CLIENT_ID, clientIdParam)
+      localStorage.setItem(TENANT, tenantParam)
+      window.location.replace(`/${tenantParam}`)
+    }
+  }, [])
 
   return (
     <GridLayout className="invalid-tenant-page bg-gray">

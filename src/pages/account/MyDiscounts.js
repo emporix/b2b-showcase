@@ -36,9 +36,9 @@ const MyDiscounts = () => {
   }, [])
 
   return (
-    <div className="content-wrapper">
-      <div className={'account-menu-items-left-panel left-menu-panel'}>
-        <AccountMenu page={'page'} />
+    <div className="flex">
+      <div className="account-menu-items-left-panel left-menu-panel grey-rounded-container p-3">
+        <AccountMenu page={'My Discounts'} />
       </div>
       <div
         className={'account-page-content content-panel md:pl-6 flex flex-col'}
