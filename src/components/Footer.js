@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { AiOutlineInstagram } from 'react-icons/ai'
+import {AiOutlineFacebook, AiOutlineInstagram, AiOutlineYoutube} from 'react-icons/ai'
 
 const Mobile_footer = () => {
   return (
@@ -28,49 +28,65 @@ const Mobile_footer = () => {
 
 const Dektop_footer = () => {
   return (
+      <div>
     <div className="desktop_only_flex  md:pt-24 max-w-screen-xl mx-auto ">
       <div className="mx-auto">
         <ul className="font-inter text-base text-manatee">
-          <li className="text-eerieBlack font-bold ">About Us</li>
-          <li className=" font-light pt-4">Who we are</li>
-          <li className=" font-light pt-4">Quality in the details</li>
-          <li className=" font-light pt-4">Customer Reviews</li>
+          <li className="text-primary font-bold ">Alle Weine</li>
+          <li className=" font-light pt-4">Rot Wein</li>
+          <li className=" font-light pt-4">Rose Wein</li>
+          <li className=" font-light pt-4">Weiss Wein</li>
         </ul>
       </div>
       <div className="mx-auto">
         <ul className="font-inter text-base text-manatee">
-          <li className="text-eerieBlack font-bold ">Support</li>
-          <li className=" font-light pt-4">Delivery</li>
-          <li className=" font-light pt-4">Returns</li>
-          <li className=" font-light pt-4">F.A.Q.</li>
-          <li className=" font-light pt-4">Customer Support</li>
+          <li className="text-primary font-bold ">Marken</li>
+          <li className=" font-light pt-4">Tutorial</li>
+          <li className=" font-light pt-4">Resources</li>
+          <li className=" font-light pt-4">Guides</li>
+          <li className=" font-light pt-4">Examples</li>
+          <li className=" font-light pt-4">Docs</li>
         </ul>
       </div>
       <div className="mx-auto">
         <ul className="font-inter text-base text-manatee">
-          <li className="text-eerieBlack font-bold ">My Account</li>
-          <li className=" font-light pt-4">Sign In</li>
-          <li className=" font-light pt-4">Register</li>
-          <li className=" font-light pt-4">Quick Order</li>
-          <li className=" font-light pt-4">My orders</li>
+          <li className="text-primary font-bold ">Über Uns</li>
+          <li className=" font-light pt-4">Stories</li>
+          <li className=" font-light pt-4">Community</li>
+          <li className=" font-light pt-4">Blog</li>
+          <li className=" font-light pt-4">Careers</li>
+          <li className=" font-light pt-4">Brand Assets</li>
         </ul>
       </div>
       <div className="mx-auto">
         <ul className="font-inter text-base text-manatee">
-          <li className="text-eerieBlack font-bold ">Contact</li>
-          <li className=" font-light pt-4">Call Us: +44123645678</li>
+          <li className="text-primary font-bold ">Kontakt</li>
+          <li className="text-lightGray mt-5">Willy-Brand-Allee 2 <br/> 81829 München</li>
+          <li className=" font-light pt-4">Phone: <span className="text-primary">089 588084870</span></li>
+          <li className=" font-light pt-4">Email: <span className="text-primary">info@neteleven.de</span></li>
+            <img src="/img/n11logo.png" className="mt-5"></img>
         </ul>
-        {/* <div className="pt-6  text-manatee flex">
-          <div>
-            <img src="/facebook.png" />
-          </div>
-
-          <div className="pl-6 mt-[-2px]">
-            <AiOutlineInstagram size={30} />
-          </div>
-        </div> */}
       </div>
     </div>
+    <div className="pt-6 bg-primary text-manatee flex items-center justify-between">
+        <div >
+          <p className="text-bgWhite font-bold">
+            Copyright @ 2023. Alle Rechte vorbehalten.
+          </p>
+        </div>
+      <div className="flex pl-6 mt-[-2px] text-bgWhite">
+        <div className="pl-6 mt-[-2px] text-bgWhite">
+            <AiOutlineInstagram size={30} />
+        </div>
+        <div className="pl-6 mt-[-2px] text-bgWhite">
+            <AiOutlineFacebook size={30} />
+        </div>
+        <div className="pl-6 mt-[-2px] text-bgWhite">
+            <AiOutlineYoutube size={30} />
+        </div>
+      </div>
+    </div>
+  </div>
   )
 }
 

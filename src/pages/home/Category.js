@@ -20,12 +20,9 @@ const EachCategory = (props) => {
 
 const Category = () => {
   return (
-    <div className="home_category">
+    <div className="home_category mt-10">
       <div className="desktop_only font-inter font-bold text-2xl text-center">
-        Explore our products
-      </div>
-      <div className="desktop_only md:pt-4 font-inter text-[18px]/[30px] font-normal text-center">
-        Browse our catalogue and find the right product for you
+          Kategorien
       </div>
       <div className="home_cat_content">
         <Link to={addTenantToUrl(`product/domestic_appliances`)}>

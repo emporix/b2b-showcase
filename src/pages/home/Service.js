@@ -24,23 +24,23 @@ const Service = () => {
     <div className="home_service h-[366px] bg-black text -white">
       <EachService
         src={logo}
-        title="Free Shipping"
-        content="Free delivery on qualifying orders of &#163;50+"
+        title="Kostenlose Lieferung"
+        content="Kostenlose Lieferung ab einem Bestellwert von 50 €"
       />
       <EachService
         src={electricBolt}
-        title="Fast Delivery"
-        content="Magna massa acet turca tratto at fames."
+        title="Schnelle Lieferung"
+        content="Expresslieferung für schnellen Weingenuss."
       />
       <EachService
         src={star}
-        title="Loyalty Reward"
-        content="Tellus ornare at consequat ipsum, non labortis."
+        title="Treueprämie"
+        content="Sammeln und sparen mit unserem Treueprogramm."
       />
       <EachService
         src={verifiedUser}
-        title="Extend Warranty"
-        content="Extend your warranty on selected items."
+        title="Garantie verlängern"
+        content="Sichern Sie Ihren Kauf mit erweiterter Garantie."
       />
     </div>
   )
