@@ -90,7 +90,8 @@ code {
 }
 
 .home_cat_content {
-  @apply px-6 py-12 md:pt-16 md:py-24 grid grid-cols-1 md:grid-cols-4 md:gap-12 gap-y-16 md:px-16  max-w-md  md:max-w-[1248px] mx-auto;
+  @apply px-6 py-12 md:pt-16 md:py-24 grid grid-cols-1 md:grid-cols-2 md:gap-12 gap-y-16 md:px-16  max-w-md  md:max-w-[1248px] mx-auto;
+  place-items: center;
 }
 
 .signup_container {
@@ -140,7 +141,7 @@ code {
 .close-button {
   height: 20px;
   color: #8e9099;
-  rotate: 45;
+  rotate: 45deg;
   text-align: right;
   width: 100%;
   cursor: pointer;
@@ -190,3 +191,12 @@ input[type='checkbox'] {
 .bordered-container {
   @apply border rounded border-quartz;
 }
+
+.filter-white {
+  filter: brightness(0) saturate(100%) invert(100%) sepia(100%) saturate(0%) hue-rotate(288deg) brightness(102%) contrast(102%);
+}
+
+.home_category_shadow{
+  box-shadow: 0 0 8px rgba(0, 0, 0, 0.2);
+}
+

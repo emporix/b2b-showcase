@@ -5,10 +5,10 @@ import { addTenantToUrl } from '../../services/service.config'
 const EachCategory = (props) => {
   return (
     <div>
-      <div className="before:bg-yellow before:w-[12px] before:h-[312px] before:absolute before:rounded-l-[4px]">
-        <img src={props.src} alt="" className="w-[276px] h-[312px] object-cover rounded-l-[4px]"/>
-      </div>
-      <div className="pt-6 font-inter font-semibold text-[20px] leading-[32px]">
+        <div>
+            <img src={props.src} alt="" className="relative w-[312px] h-[312px] object-cover home_category_shadow" />
+        </div>
+        <div className="pt-6 font-inter font-semibold text-[20px] leading-[32px]">
         {props.title}
       </div>
       <div className="pt-[8px] font-normal text-base">
@@ -27,29 +27,15 @@ const Category = () => {
       <div className="home_cat_content">
         <Link to={addTenantToUrl(`product/domestic_appliances`)}>
           <EachCategory
-            src="/category/seating.png"
-            title="Seating"
+            src="/category/red-wine-category-image.png"
+            title="Rotwein"
             content="Tellus ornare at consequat ipsum,non lobortis"
           />
         </Link>
         <Link to={addTenantToUrl(`product/domestic_appliances`)}>
           <EachCategory
-            src="/category/desk.png"
-            title="Desk and Workspaces"
-            content="Tellus ornare at consequat ipsum,non lobortis"
-          />
-        </Link>
-        <Link to={addTenantToUrl(`product/entertainment_&_hobby`)}>
-          <EachCategory
-            src="/category/storage.png"
-            title="Storage"
-            content="Tellus ornare at consequat ipsum,non lobortis"
-          />
-        </Link>
-        <Link to={addTenantToUrl(`product/toys`)}>
-          <EachCategory
-            src="/category/printer.png"
-            title="Printers, Ink and Toner"
+            src="/category/white-wine-category-image.png"
+            title="Weißwein"
             content="Tellus ornare at consequat ipsum,non lobortis"
           />
         </Link>
