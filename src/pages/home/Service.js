@@ -8,7 +8,7 @@ const EachService = (props) => {
   return (
     <div className="text-white text-center md:text-center md:items-center h-[158px] w-[276px] md">
       <div className="w-full">
-        <img src={props.src} className="h-10 md:mx-auto"></img>
+        <img src={props.src} className="h-10 md:mx-auto filter-white"></img>
       </div>
       <div className="text-primary md:text-[20px] leading-[24px] pt-7 text-[18px]/[30px] font-semibold">
         {props.title}
