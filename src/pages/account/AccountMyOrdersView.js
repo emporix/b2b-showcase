@@ -32,8 +32,10 @@ const MyOrdersView = () => {
 }
 
 const AccountMyOrdersView = () => {
+  const { orderId } = useParams()
+
   return (
-    <AccountLayout page="View" detail="#CMD-2022-0119-001">
+    <AccountLayout page="View" detail={orderId}>
       <BackButton link={myAccountMyOrders()} title={'Back to orders list'} />
       <MyOrdersView />
     </AccountLayout>

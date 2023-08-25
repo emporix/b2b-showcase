@@ -2,6 +2,7 @@ import React, { createContext, useContext, useEffect, useState, useCallback } fr
 import { USER } from '../../constants/localstorage'
 import { useCart } from 'context/cart-provider'
 import { getShippingMethods } from 'services/shipping.service'
+import { getActualDeliveryWindows } from 'services/shipping.service'
 
 
 const AddressContext = createContext({})
@@ -10,10 +11,13 @@ export const useUserAddress = () => useContext(AddressContext)
 export const AddressProvider = ({ children }) => {
   const [addresses, setAddresses] = useState([])
   const [selectedAddress, setSelectedAddressState] = useState(null)
+  const [selectedDeliveryWindow, setSelectedDeliveryWindow] = useState(null)
+  const [selectedDeliveryMethod, setSelectedDeliveryMethod] = useState(null)
   const [defaultAddress, setDefaultAddress] = useState(null)
   const [billingAddress, setBillingAddressState] = useState(null)
   const [locations, setLocations] = useState([])
   const [shippingMethods, setShippingMethods] = useState([])
+  const [deliveryWindows, setDeliveryWindows] = useState([])
   const { cartAccount } = useCart()
 
   const setSelectedAddress = (address) => {
@@ -26,8 +30,11 @@ export const AddressProvider = ({ children }) => {
 
   useEffect(() => {
     setBillingAddress(selectedAddress)
-    fetchShippingMethods(cartAccount,selectedAddress )
-  }, [selectedAddress])
+    fetchShippingMethods(cartAccount, selectedAddress)
+    if(selectedAddress) {
+      fetchDeliveryWindows(selectedAddress.zipCode, selectedAddress.country)
+    }
+  }, [selectedAddress, cartAccount.siteCode])
 
   useEffect(() => {
     const user = localStorage.getItem(USER)
@@ -53,10 +60,13 @@ export const AddressProvider = ({ children }) => {
         value: defaultAddress.id,
       })
       setBillingAddress(defaultAddress)
+      fetchShippingMethods(cartAccount, defaultAddress)
+      fetchDeliveryWindows(defaultAddress.zipCode, defaultAddress.country)
     }
     setLocations(locations)
-    fetchShippingMethods(cartAccount,defaultAddress )
   }, [])
+
+  
 
   const fetchShippingMethods = useCallback(async (cart, address) => {
     const methods = await getShippingMethods(cart.siteCode)
@@ -79,7 +89,13 @@ export const AddressProvider = ({ children }) => {
           .sort((a, b) => a.cost.amount - b.cost.amount)[0]?.cost?.amount,
       }))
       .sort((a, b) => a.fee - b.fee)
+    window.console.log("SHIPPING METHODS", methods, filteredMethods, cart)  
     setShippingMethods(filteredMethods)
+  }, [])
+
+  const fetchDeliveryWindows = useCallback(async (zipCode, country) => {
+    const deliveryWindows = await getActualDeliveryWindows(zipCode, country)
+    setDeliveryWindows(deliveryWindows.data)
   }, [])
 
   return (
@@ -93,7 +109,13 @@ export const AddressProvider = ({ children }) => {
         defaultAddress,
         locations,
         shippingMethods,
-        setShippingMethods
+        setShippingMethods,
+        deliveryWindows,
+        setDeliveryWindows,
+        selectedDeliveryWindow,
+        setSelectedDeliveryWindow,
+        selectedDeliveryMethod,
+        setSelectedDeliveryMethod,
       }}
     >
       {children}

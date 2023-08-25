@@ -80,7 +80,7 @@ export const login = async (username, password, userTenant) => {
     let customerAccesstoken = data.accessToken
 
     const { data: me } = await axios.get(
-      API_URL + `/customer/${userTenant}/me?expand=addresses`,
+      API_URL + `/customer/${userTenant}/me?expand=addresses,mixin:*`,
       {
         headers: {
           'Content-Type': 'application/json',

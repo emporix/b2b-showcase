@@ -218,6 +218,18 @@ const CartService = () => {
     await api.put(url, body, { headers, params })
   }
 
+  const updateDeliveryWindow = async (
+    cartAccountId,
+    body,
+    partial = true
+  ) => {
+    const url = `${cartApi()}/${cartAccountId}`
+    const headers = {}
+    const params = { partial }
+
+    await api.put(url, body, { headers, params })
+  }
+
   return {
     getCart,
     changeCurrency,
@@ -235,6 +247,7 @@ const CartService = () => {
     getRewardPointsForLoggedUser,
     getRedeemOptionsForLoggedUser,
     getCouponForPointsForLoggedUser,
+    updateDeliveryWindow,
   }
 }
 export default CartService()

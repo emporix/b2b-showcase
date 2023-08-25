@@ -186,6 +186,19 @@ const CartProductImageAndQuantity = ({ cartItem }) => {
   )
 }
 
+export const CartProductImageAndReadOnlyQuantity = ({ cartItem }) => {
+  return (
+    <div className="cart-product-image-and-quantity">
+      <GridLayout className="gap-11">
+        <CartProductImage src={cartItem.product.src} />
+        <div className='cart-product-sku-wrapper'>
+          Quantity: {cartItem.quantity}
+        </div>
+      </GridLayout>
+    </div>
+  )
+}
+
 export const CartProductBasicInfo = ({ cart }) => {
   return (
     <div className="cart-product-basic-info">
@@ -226,7 +239,7 @@ const CartProductPriceExcludeVat = ({ price, currency }) => {
     </div>
   )
 }
-const CartProductInfo = ({ cartItem }) => {
+export const CartProductInfo = ({ cartItem }) => {
   return (
     <div className="cart-product-info">
       <GridLayout className="gap-[22px]">

@@ -30,6 +30,7 @@ const About = () => {
       className="home_about"
     >
     <div className="mx-6 md:ml-16 mt-[48px] md:mt-[114px] w-[492px]">
+          <DemoBanner />
           <div className="text-[48px] md:text-[48px] font-inter font-semibold md:leading-[64px] leading-[56px]">
             {fields.mainTitle}
           </div>

@@ -25,7 +25,7 @@ const DemoBanner = () => {
   }
   // return null
   return (
-    <img src={url} className="w-full mt-[-20px] md:mt-[-210px] mb-[30px]" />
+    <img src={url} className="w-full mt-[-20px] mb-[30px]" />
   )
 }
 

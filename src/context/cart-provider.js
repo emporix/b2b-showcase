@@ -207,6 +207,15 @@ const CartProvider = ({ children }) => {
     [cartAccount.id, cartAccount]
   )
 
+  const updateDeliveryWindow = useCallback(
+    async(deliveryWindow) => {
+      if (cartAccount.id) {
+        await CartService.updateDeliveryWindow(cartAccount.id, deliveryWindow)
+        await syncCart()
+      }
+    }, [cartAccount?.id]
+  )
+
   const deleteCart = async (cartAccountId, cartItemId) => {
     await CartService.removeCart(cartAccountId, cartItemId)
     await removeCartItem(cartItemId)
@@ -241,7 +250,8 @@ const CartProvider = ({ children }) => {
     products,
     discounts,
     shippingMethod,
-    setShippingMethod
+    setShippingMethod,
+    updateDeliveryWindow
   }
   return <CartContext.Provider value={value}>{children}</CartContext.Provider>
 }

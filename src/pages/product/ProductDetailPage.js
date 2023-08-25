@@ -36,6 +36,7 @@ import { useLanguage } from 'context/language-provider'
 import productService from '../../services/product/product.service'
 import priceService from '../../services/product/price.service'
 import { useNavigate } from 'react-router-dom'
+import { ProductConfiguration } from './ProductConfiguration'
 
 const ProductContext = createContext()
 
@@ -695,7 +696,7 @@ const ProductDetailPage = ({ product, brand, labels }) => {
         <ProductDetailCategoryCaptionBar category={product.category} />
         <ProductContent product={product} brand={brand} labels={labels} />
         {product.productType === 'PARENT_VARIANT' && (
-          <ProductVariants product={product} />
+           product?.mixins?.b2bShowcase?.productConfiguration === false ? <ProductVariants product={product} /> : <ProductConfiguration product={product} />
         )}
         <ProductDetailInfo product={product} />
         <ProductMatchItems productInput={product} />
