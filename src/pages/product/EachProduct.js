@@ -130,7 +130,7 @@ const EachProduct = ({ item, available, rating, productCount }) => {
       {item.productType === 'PARENT_VARIANT' && (
         <div>
           <LargePrimaryButton
-            className="cta-button bg-yellow"
+            className="cta-button bg-darkBlue"
             sx={{backgroundColor: '#FAC420 !important'}}
             title={'VIEW VARIANTS'}
             onClick={handleProductDetail}

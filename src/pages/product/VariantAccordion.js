@@ -269,7 +269,7 @@ function PaymentSummary({ variant, price }) {
       <CartActionRow>
         <Item>
           <LargePrimaryButton
-            className="bg-yellow rounded text-eerieBlack"
+            className="bg-darkBlue rounded text-lightBlue"
             title={'Add to cart'}
             onClick={addVariantProductToCart}
           />

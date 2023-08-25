@@ -145,7 +145,7 @@ const Login = () => {
             </LayoutBetween>
             <Box className="w-full !pt-8">
               <button
-                className="w-full cta-button bg-yellow h-12"
+                className="w-full cta-button bg-darkBlue h-12"
                 type="submit"
               >
                 {loading ? <CircularProgress color="secondary" /> : 'LOG IN'}

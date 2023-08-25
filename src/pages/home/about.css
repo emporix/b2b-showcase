@@ -3,8 +3,9 @@
   height: 36rem;
 } */
 .home_about {
-    background: url('../../assets/mainpage.png') no-repeat;
+    background: url('../../assets/pfizerBanner.jpeg') no-repeat;
     height: 36rem;
     background-size: cover;
     margin-top: 9rem;
+    border-bottom: 35px solid #f49c34;
   }

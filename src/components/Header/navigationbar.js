@@ -241,12 +241,12 @@ const Navbar = () => {
   return (
     <header className="header">
       {/* Dektop language and currency selection */}
-      <div className="desktop_only_flex font-inter text-sm text-white">
+      <div className="desktop_only_flex font-inter text-sm text-darkBlue">
         <div className='flex items-center'>
-          <span className='world-icon'></span>
+          <span className='world-icon text-darkBlue'></span>
           {fields.siteLabel}:
           <select
-            className="bg-eerieBlack w-38 mr-[22px]"
+            className="bg-lightBlue w-38 mr-[22px] text-darkBlue"
             onChange={handleSiteChange}
             value={currentSite}
           >
@@ -265,7 +265,7 @@ const Navbar = () => {
         <div>
           {fields.languageLabel}:
           <select
-            className="bg-eerieBlack"
+            className="bg-lightBlue text-darkBlue"
             onChange={(event) => setLanguage(event.target.value)}
             value={currentLanguage}
           >
@@ -287,7 +287,7 @@ const Navbar = () => {
             onChange={(e) =>
               currencyChangeHandler(e.target.value, currentSiteObject)
             }
-            className="bg-eerieBlack"
+            className="bg-lightBlue text-darkBlue"
           >
             {currencyList.map((currency) => {
               return (
@@ -301,7 +301,7 @@ const Navbar = () => {
       </div>
 
       {/* Dektop navigation selection */}
-      <div className="desktop_only_flex font-inter font-normal text-sm text-white">
+      <div className="desktop_only_flex font-inter font-normal text-sm text-darkBlue">
         {!user ? (
           <ul className="flex">
             <li className="px-4 flex">
@@ -361,7 +361,7 @@ const Navbar = () => {
                 <AiOutlineShoppingCart size={20} />
               )}
 
-              <div className="pl-[17.5px] text-white flex">
+              <div className="pl-[17.5px] text-darkBlue flex">
                 <CurrencyBeforeValue
                   currency={cartCurrency}
                   value={cartTotalPrice}
@@ -377,14 +377,14 @@ const Navbar = () => {
       </div>
 
       {/* mobile menu selection */}
-      <div className="mobile_only_flex pl-[30.25px]  text-white cursor-pointer">
+      <div className="mobile_only_flex pl-[30.25px]  text-darkBlue cursor-pointer">
         {!open ? <AiOutlineMenu size={27.5} onClick={handleNavOpen} /> : null}
         {/* absolut mobile navigation */}
         <div
           className={
             !open
               ? 'hidden'
-              : ' text-black absolute top-0 left-0 w-full  h-screen bg-white px-6 py-12  text-center font-medium overflow-y-auto'
+              : ' text-black absolute top-0 left-0 w-full  h-screen bg-lightBlue px-6 py-12  text-center font-medium overflow-y-auto'
           }
         >
           <div className="h-10 justify-between flex">
@@ -405,7 +405,7 @@ const Navbar = () => {
         </div>
       </div>
 
-      <div className="mobile_only_flex text-white">
+      <div className="mobile_only_flex text-darkBlue">
         <Link to={homeUrl()} className="flex">
           <img src="/atom.png"></img>
           <p className="font-medium text-xl px-3 pt-1">
@@ -414,7 +414,7 @@ const Navbar = () => {
         </Link>
       </div>
 
-      <div className="mobile_only text-white pr-[30px]">
+      <div className="mobile_only text-darkBlue pr-[30px]">
         <AiOutlineSearch size={20} />
       </div>
     </header>

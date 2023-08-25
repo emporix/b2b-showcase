@@ -29,7 +29,7 @@ const About = () => {
       // style={{ backgroundImage: `url(${landingBg})` }}
       className="home_about"
     >
-    <div className="mx-6 md:ml-16 mt-[48px] md:mt-[114px] w-[492px]">
+    <div className="mx-6 mt-[48px] md:mt-[114px] w-[792px] ml-[30vw]">
           <DemoBanner />
           <div className="text-[48px] md:text-[48px] font-inter font-semibold md:leading-[64px] leading-[56px]">
             {fields.mainTitle}
@@ -38,7 +38,7 @@ const About = () => {
             {fields.companyMission}
           </div>
           <div className="pt-[44px] desktop_only text-sm">
-              <button className="px-6 py-4 font-semibold bg-yellow text-eerieBlack rounded">
+              <button className="px-6 py-4 font-semibold bg-darkBlue text-eerieBlack text-lightBlue rounded" style={{border: '1px solid #ffffff'}}>
                 {fields.startShoppingButtonLabel}
               </button>
           </div>

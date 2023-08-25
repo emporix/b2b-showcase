@@ -305,7 +305,7 @@ const DesktopContent = () => {
           <MediumPrimaryButton
             title={'Add'}
             onClick={handleAddItem}
-            className="w-auto cta-button bg-yellow"
+            className="w-auto cta-button bg-darkBlue"
           />
         </div>
       </div>

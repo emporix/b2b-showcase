@@ -83,7 +83,7 @@ export const ProductConfiguration = ({ product }) => {
   }
 
   const getClassnames = (attribute, value) => {
-    return selectedValues && selectedValues[attribute] === value ? 'rgb(250, 196, 32)' : 'rgb(255, 255, 255)'
+    return selectedValues && selectedValues[attribute] === value ? '#011F60' : 'rgb(255, 255, 255)'
   }
 
   return (
@@ -108,7 +108,8 @@ export const ProductConfiguration = ({ product }) => {
                         margin: '5px',
                         'background-color': getClassnames(key, attributeValue.key),
                         '&:hover': {
-                          backgroundColor: 'rgb(250, 196, 32)',
+                          backgroundColor: '#011F60',
+                          color: '#E5F4FA'
                         },
                       }}
                     >{attributeValue.key}</Button>

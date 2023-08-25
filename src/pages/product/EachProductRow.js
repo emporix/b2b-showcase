@@ -110,7 +110,7 @@ const EachProductRow = ({ item, type, available, rating, productCount }) => {
                 }}
               />
               <div
-                className="ml-6 mt-4 h-10 w-40 cursor-pointer cta-button bg-yellow flex items-center justify-center"
+                className="ml-6 mt-4 h-10 w-40 cursor-pointer cta-button bg-darkBlue flex items-center justify-center"
                 onClick={handleAddToCart}
               >
                 <span className="px-4">ADD TO CART</span>
@@ -121,7 +121,7 @@ const EachProductRow = ({ item, type, available, rating, productCount }) => {
               <LargePrimaryButton
                 title={'VIEW VARIANTS'}
                 onClick={handleProductDetail}
-                className="cta-button bg-yellow"
+                className="cta-button bg-darkBlue"
                 sx={{ backgroundColor: '#FAC420 !important' }}
               />
             </div>

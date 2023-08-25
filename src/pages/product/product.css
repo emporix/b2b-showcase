@@ -332,11 +332,13 @@
 .product-configuration-attribute-value {
   margin: 5px;
   padding: 5px;
-  border: 1px solid black;
+  border: 1px solid darkblue;
+  color: darkblue;
 }
 
 .product-configuration-attribute-value-active {
-  background-color: rgb(250, 196, 32);
+  background-color: darkblue;
+  color: lightblue;
 }
 
 .product-configuration-attribute-value-inactive {

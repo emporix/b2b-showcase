@@ -249,7 +249,7 @@ const QuotePage = () => {
 
             <div className="quote-cart-buttons">
               <LargePrimaryButton
-                className="w-auto bg-yellow rounded text-eerieBlack"
+                className="w-auto bg-darkBlue rounded text-lightBlue"
                 disabled={selectedShippingId === null}
                 title="REQUEST QUOTE"
                 onClick={() => createQuote()}

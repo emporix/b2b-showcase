@@ -3,6 +3,7 @@
 @tailwind utilities;
 
 body {
+  /* background-color: #E5F4FA; */
   margin: 0;
   min-width: 375px;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
@@ -18,7 +19,9 @@ code {
 }
 
 .header {
-  @apply w-full h-20  md:h-14 z-20 fixed  bg-eerieBlack sm:px-5 md:px-7 lg:px-24 flex justify-between items-center;
+  @apply w-full h-20  md:h-14 z-20 fixed sm:px-5 md:px-7 lg:px-24 flex justify-between items-center;
+  background-color: #E5F4FA;
+  color: #011F60 !important;
 }
 .home_category {
   @apply w-full h-[1752px] md:h-[682px]  text-eerieBlack;
@@ -45,7 +48,7 @@ code {
 }
 
 .home_service {
-  @apply bg-white w-full h-[470px] md:h-[304px] -mt-[1px] md:mt-[-28px] grid grid-cols-2 md:grid-cols-4 px-6 py-[104px] md:px-[100px] xl:px-[204px]  gap-y-12 md:gap-[52px];
+  @apply bg-lightBlue w-full h-[470px] md:h-[304px] -mt-[1px] md:mt-[-28px] grid grid-cols-2 md:grid-cols-4 px-6 py-[104px] md:px-[100px] xl:px-[204px]  gap-y-12 md:gap-[52px];
 }
 
 .home_product {
@@ -132,7 +135,7 @@ code {
 
 .subscribe {
   background: linear-gradient(rgba(0, 0, 0, 0.36), rgba(0, 0, 0, 0.36)),
-    url('/src/assets/pc_image.png') no-repeat;
+    url('/src/assets/pfizerSecondBanner.png') no-repeat;
   height: 392px;
   background-size: cover;
 }
@@ -150,21 +153,27 @@ code {
 .cta-button {
   cursor: pointer;
   border-radius: 4px !important;
-  color: #1f1f1f !important;
+  color: lightblue !important;
+  background-color: darkblue !important;
   font-size: 14px !important;
   line-height: 24px !important;
   font-weight: 600 !important;
   box-shadow: none !important;
 }
 
+.cta-button:disabled {
+  background-color: lightblue;
+  color: darkblue
+}
+
 .cta-button:hover {
-  background-color: #FAC420 !important;
+  background-color: #011F60 !important;
 }
 
 .cta-button-checked {
   border-radius: 4px !important;
   background-color: #219653 !important;
-  color: white !important;
+  color: #E5F4FA !important;
   font-size: 14px !important;
   line-height: 24px !important;
   font-weight: 600 !important;
@@ -173,11 +182,11 @@ code {
 }
 
 input[type='checkbox'] {
-  accent-color: #fac420;
+  accent-color: darkBlue;
 }
 
 .MuiButtonBase-root.MuiRadio-root.MuiRadio-colorDefault.PrivateSwitchBase-root.MuiRadio-root.MuiRadio-colorDefault.Mui-checked.MuiRadio-root.MuiRadio-colorDefault span {
-  background-color: #fac420 !important;
+  background-color: darkBlue !important;
 }
 
 .grey-rounded-container {

@@ -399,7 +399,7 @@ const Signup = (props) => {
             />
             <Box className="w-full !pt-12">
               <button
-                className="cta-button cursor-pointer bg-yellow w-full h-12 enabled:hover:bg-darkBlue disabled:bg-gray-400 disabled:lightGray"
+                className="cta-button cursor-pointer bg-darkBlue w-full h-12 enabled:hover:bg-darkBlue disabled:bg-gray-400 disabled:lightGray"
                 type="submit"
                 disabled={loading || !isAddressValid}
               >

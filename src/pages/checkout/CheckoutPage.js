@@ -28,7 +28,7 @@ const PaymentAction = ({ action, disabled }) => {
     <>
       <DesktopMDContainer>
         <LargePrimaryButton
-          className="md:block hidden cta-button bg-yellow"
+          className="md:block hidden cta-button bg-darkBlue"
           title="REVIEW ORDER"
           onClick={action}
         />
@@ -50,14 +50,14 @@ const ReviewOrderAction = ({ action }) => {
     <>
       <DesktopMDContainer>
         <LargePrimaryButton
-          className="md:block hidden cta-button bg-yellow"
+          className="md:block hidden cta-button bg-darkBlue"
           title="CONFIRM AND PAY"
           onClick={action}
         />
       </DesktopMDContainer>
 
       <MobileMDContainer>
-        <LargePrimaryButton className='cta-button bg-yellow' title="CONFIRM AND PAY" onClick={action} />
+        <LargePrimaryButton className='cta-button bg-darkBlue' title="CONFIRM AND PAY" onClick={action} />
       </MobileMDContainer>
     </>
   )
@@ -376,7 +376,7 @@ const CheckoutPage = () => {
                       <DesktopMDContainer>
                         <Coupon />
                         <LargePrimaryButton
-                          className="md:block hidden cta-button bg-yellow"
+                          className="md:block hidden cta-button bg-darkBlue"
                           title="GO TO PAYMENT"
                           disabled={addresses.length === 0 || shippingMethod == null}
                           onClick={handlePayment}
@@ -423,7 +423,7 @@ const CheckoutPage = () => {
                   </RadioGroup>
                   {!payment.requiresInitialization && (<FilledButton
                     onClick={executePayment}
-                    className="mt-4 w-auto bg-yellow text-eerieBlack"
+                    className="mt-4 w-auto bg-darkBlue text-eerieBlack"
                   >
                     PAY
                   </FilledButton>)}

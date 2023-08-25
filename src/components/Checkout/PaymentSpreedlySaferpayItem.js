@@ -87,7 +87,7 @@ const PaymentSpreedlySaferpayItem = ({ radioKey, props, paymentMode }) => {
               {saferpayCardDetailsProvided && (
                 <FilledButton
                     onClick={executePayment}
-                    className="mt-4 w-auto bg-yellow text-eerieBlack"
+                    className="mt-4 w-auto bg-darkBlue text-eerieBlack"
                   >
                     PAY via Saferpay
                 </FilledButton>)

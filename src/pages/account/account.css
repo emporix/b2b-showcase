@@ -14,10 +14,10 @@ li.item-divide-line {
   @apply h-0 border-b border-lightGray mt-6 border-solid;
 }
 li.item-active {
-  @apply h-[44px] p-3 rounded bg-yellow text-[16px]/[24px] font-normal;
+  @apply h-[44px] p-3 rounded bg-darkBlue text-[16px]/[24px] font-normal text-lightBlue;
 }
 li.index-item-active {
-  @apply lg:font-bold lg:text-lightBlue;
+  @apply lg:font-bold lg:text-lightBlue text-lightBlue;
 }
 .border-bottom-gray {
   @apply border-lightGray border-b border-solid;

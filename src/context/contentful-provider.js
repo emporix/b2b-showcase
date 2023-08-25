@@ -12,7 +12,7 @@ export const ContentfulProvider = ({ children }) => {
   const { currentLanguage } = useLanguage()
   useEffect(() => {
     ;(async () => {
-      const { fields } = await getEntry('3u4iua1uGUweEsBHLJaU6I')
+      const { fields } = await getEntry('8OpahJ7qnuJm8WGHwA9VT')
       setFields(fields)
     })()
   }, [currentLanguage])
