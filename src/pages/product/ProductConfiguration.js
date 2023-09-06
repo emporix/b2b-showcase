@@ -91,14 +91,14 @@ export const ProductConfiguration = ({ product }) => {
       <p className='information-caption'>Product configuration</p>
       <div key={renderKey}>
         {
-            Object.entries(product.variantAttributes).map(([key, value]) => 
+            product.template.attributes.filter(attr => attr.metadata.variantAttribute === true).map((attribute) => 
               <>
               <div className='product-configuration-attribute'>
-                  <div><b>{findAttributeName(key)}</b></div>
-                  {value.map(attributeValue => 
+                  <div><b>{findAttributeName(attribute.key)}</b></div>
+                  {attribute.values.map(attributeValue => 
                     <Button 
-                      disabled={isDisabled(key, attributeValue.key)}
-                      onClick={() => {activateAttributeValue(key, attributeValue.key)}}
+                      disabled={isDisabled(attribute.key, attributeValue.key)}
+                      onClick={() => {activateAttributeValue(attribute.key, attributeValue.key)}}
                       sx={{
                         mt: 1,
                         mb: '14px',
@@ -106,7 +106,7 @@ export const ProductConfiguration = ({ product }) => {
                         border: '1px solid black',
                         padding: '5px',
                         margin: '5px',
-                        'background-color': getClassnames(key, attributeValue.key),
+                        'background-color': getClassnames(attribute.key, attributeValue.key),
                         '&:hover': {
                           backgroundColor: 'rgb(250, 196, 32)',
                         },

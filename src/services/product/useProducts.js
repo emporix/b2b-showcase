@@ -24,7 +24,7 @@ export const useProducts = () => {
     const { data } = await api.get(`/product/${getTenant()}/products/`, {
       params: {
         pageNumber: 1,
-        pageSize: 200,
+        pageSize: 2000,
         q: `parentVariantId:${parentId}`,
       },
     })

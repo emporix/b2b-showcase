@@ -441,7 +441,7 @@ const ProductDetailsTabContent = ({ product }) => {
   return (
     <div className="product-details-tab-content-wrapper">
       <div className="grid grid-cols-1 gap-12">
-        {Object.keys(product.mixins).map((key) => {
+        {Object.keys(product.mixins ? product.mixins : []).map((key) => {
           return (
             <ProductInfoPortal
               key={key}
