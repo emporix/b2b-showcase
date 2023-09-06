@@ -3,8 +3,7 @@
   height: 36rem;
 } */
 .home_about {
-    background: url('../../assets/Home_banner_drei.png') no-repeat;
-    height: 36rem;
+    background: url('../../assets/drei_homepage_full_banner.png') no-repeat;
     background-size: cover;
     margin-top: 9rem;
   }
