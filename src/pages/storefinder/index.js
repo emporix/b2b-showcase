@@ -1,11 +1,12 @@
 import Layout from '../Layout'
+import StoreFinderTable from './storefinder-table'
 
 
 const StoreFinder = () => {
 
   return (
     <Layout title="Storefinder">
-      Storefinder
+      <StoreFinderTable></StoreFinderTable>
     </Layout>
   )
 }
