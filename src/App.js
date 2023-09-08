@@ -53,6 +53,7 @@ import ApprovalOrderCreated from 'pages/approval/ApprovalOrderCreated'
 import AccountManageUsers from 'pages/account/AccountManageUsers'
 import ResetPassword from 'pages/ResetPassword'
 import Auth0Callback from 'pages/Auth0Callback'
+import StoreFinder from 'pages/storefinder'
 
 function App() {
   const dispatch = useDispatch()
@@ -200,6 +201,7 @@ function App() {
           </Route>
           <Route path="quick_order" element={<QuickOrder />} />
           <Route path="aboutus" element={<AboutUs />} />
+          <Route path="storefinder" element={<StoreFinder />} />
           <Route path="*" element={<NoPage />} />
         </Route>
         <Route path="*" element={<InvalidTenant />} />
