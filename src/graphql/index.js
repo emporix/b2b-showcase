@@ -5,4 +5,4 @@ const config = {
   customerCookie: process.env.REACT_APP_CUSTOMER_COOKIE_NAME || ''
 }
 
-export default config
+export default config;
