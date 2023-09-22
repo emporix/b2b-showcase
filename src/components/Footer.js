@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React from 'react'
 import {AiOutlineFacebook, AiOutlineInstagram, AiOutlineYoutube} from 'react-icons/ai'
 
 const Mobile_footer = () => {
@@ -14,12 +14,14 @@ const Mobile_footer = () => {
         Call Us: +44123645678
       </div>
       <div className="mobile_only_flex pt-6 pl-6  text-white">
-        <div>
-          <img src="/facebook.png" />
-        </div>
-
-        <div className="pl-6 mt-[-2px]">
+        <div className="pl-6 mt-[-2px] text-bgWhite">
           <AiOutlineInstagram size={30} />
+        </div>
+        <div className="pl-6 mt-[-2px] text-bgWhite">
+          <AiOutlineFacebook size={30} />
+        </div>
+        <div className="pl-6 mt-[-2px] text-bgWhite">
+          <AiOutlineYoutube size={30} />
         </div>
       </div>
     </>
@@ -64,11 +66,11 @@ const Dektop_footer = () => {
           <li className="text-lightGray mt-5">Willy-Brand-Allee 2 <br/> 81829 München</li>
           <li className=" font-light pt-4">Phone: <span className="text-primary">089 588084870</span></li>
           <li className=" font-light pt-4">Email: <span className="text-primary">info@neteleven.de</span></li>
-            <img src="/img/n11logo.png" className="mt-5"></img>
+            <img src="/img/n11logo.png" className="mt-5 w-36"></img>
         </ul>
       </div>
     </div>
-    <div className="pt-6 bg-primary text-manatee flex items-center justify-between">
+    <div className="pt-6 mt-6 bg-primary text-manatee flex items-center justify-between">
         <div >
           <p className="text-bgWhite font-bold">
             Copyright @ 2023. Alle Rechte vorbehalten.
