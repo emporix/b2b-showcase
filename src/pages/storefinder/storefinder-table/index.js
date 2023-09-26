@@ -8,7 +8,7 @@ const StoreFinderTable = () => {
 		"email": "glaesersar@mediamarkt.de",
 		"latitude": 48.1362738,
 		"longitude": 11.6139143,
-		"city": "München"
+		"city": "München",
 	},
 	{
 		"id": "0101003497",
@@ -72,7 +72,7 @@ const StoreFinderTable = () => {
 		"email": "info@kuechenheld.de",
 		"latitude": 48.1551229,
 		"longitude": 11.5792881,
-		"city": "München"
+
 	},
 	{
 		"id": "0101002026",
@@ -80,7 +80,13 @@ const StoreFinderTable = () => {
 		"email": "info@devin.de",
 		"latitude": 48.1887196,
 		"longitude": 11.5864016,
-		"city": "München"
+		"city":"München",
+		"websiten":"test",
+		"phoneNumber":12345,
+		"zipCode":123,
+		"street":"Main Street",
+		"houseNumber":null,
+
 	},]
 
 	const filteredKeys= Object.keys(dummyData[0]).filter(key=>key !== "latitude" && key !== "longitude" && key !== "id")
@@ -102,10 +108,23 @@ const StoreFinderTable = () => {
 								<strong>{ store.name }</strong>
 							</div>
 							<div className='storefinderTable__table__item__key'>
-								<a href={'mailto:' + store.email }>{ store.email }</a>
+								<a href={'mailto:' + store.email } style={{color:'blue'}}>{ store.email }</a>
+							</div>
+
+							<div className='storefinderTable__table__item__key'>
+								{store.street? store.street+" "+ (store.houseNumber? store.houseNumber:"") : "" }
 							</div>
 							<div className='storefinderTable__table__item__key'>
-								{ store.city }
+								{store.zipCode? store.zipCode+" "+ (store.city? store.city:"") : store.city }
+							</div>
+
+							<div className='storefinderTable__table__item__key'>
+								{store.phoneNumber}
+							</div>
+							<div className='storefinderTable__table__item__key'>
+								<a href={store.website} style={{color:'blue'}}>
+									{store.websiten}
+								</a>
 							</div>
 						</div>)
 					}})
