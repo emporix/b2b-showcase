@@ -1,8 +1,11 @@
 import Layout from '../Layout'
 import StoreFinderTable from './storefinder-table'
+import { getDealers } from 'services/dealers.service'
 
 
 const StoreFinder = () => {
+    const data = getDealers();
+    console.log(data, [], false)
 
     const dummyData={
         "data": {
