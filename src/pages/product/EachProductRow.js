@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo, useState } from 'react'
+import React, {useCallback, useMemo, useState} from 'react'
 import ReactStars from 'react-stars'
 import Quantity from '../../components/Utilities/quantity/quantity'
 import { maxProductDescriptionLength } from '../../constants/page'
@@ -24,19 +24,19 @@ const EachProductRow = ({ item, type, available, rating, productCount }) => {
       : desc
   }, [item.description])
 
-  const { isLoggedIn, userTenant } = useAuth()
-  const [quantity, setQuantity] = useState(1)
-  const navigate = useNavigate()
-  const handleProductDetail = useCallback(() => {
-    navigate(`/${userTenant}/product/details/${item.id}`)
-  }, [userTenant, item.id])
-  const price = useMemo(() => {
-    return formatPrice(item, isLoggedIn)
-  }, [item.price, isLoggedIn])
+    const {isLoggedIn, userTenant} = useAuth()
+    const [quantity, setQuantity] = useState(1)
+    const navigate = useNavigate()
+    const handleProductDetail = useCallback(() => {
+        navigate(`/${userTenant}/product/details/${item.id}`)
+    }, [userTenant, item.id])
+    const price = useMemo(() => {
+        return formatPrice(item, isLoggedIn)
+    }, [item.price, isLoggedIn])
 
-  const handleAddToCart = useCallback(() => {
-    putCartProduct({ ...item, quantity })
-  }, [item, quantity])
+    const handleAddToCart = useCallback(() => {
+        putCartProduct({...item, quantity})
+    }, [item, quantity])
 
   const renderPrice = (price) => {
     if (price) {
@@ -90,11 +90,11 @@ const EachProductRow = ({ item, type, available, rating, productCount }) => {
                   <span className="text-[12px] font-normal text-gray">
                     {isLoggedIn ? 'Excl. VAT' : 'Incl. VAT'}
                   </span>
+                                </div>
+                            </div>
+                        </>
+                    )}
                 </div>
-              </div>
-            </>
-          )}
-        </div>
 
         <div className="mt-6 flex w-full flex-col items-end">
           {item.productType !== 'PARENT_VARIANT' ? (

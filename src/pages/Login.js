@@ -1,15 +1,11 @@
-import React, { useState } from 'react'
-import { Navigate, Link, useNavigate } from 'react-router-dom'
-import { login } from '../services/user/auth.service'
+import React, {useState} from 'react'
+import {Link, Navigate, useNavigate} from 'react-router-dom'
+import {login} from '../services/user/auth.service'
 import Snackbar from '@mui/material/Snackbar'
 import MuiAlert from '@mui/material/Alert'
 import CircularProgress from '@mui/material/CircularProgress'
-import {
-  LayoutBetween,
-  GridLayout,
-  Container,
-} from '../components/Utilities/common'
-import { Heading2, Heading4 } from '../components/Utilities/typography'
+import {Container, GridLayout, LayoutBetween,} from '../components/Utilities/common'
+import {Heading2, Heading4} from '../components/Utilities/typography'
 import Box from '@mui/material/Box'
 import { homeUrl, signupUrl } from '../services/service.config'
 import { useAuth } from 'context/auth-provider'
@@ -22,64 +18,64 @@ const AUTH0_DOMAIN = process.env.REACT_APP_AUTH0_DOMAIN
 const AUTH0_CLIENT_ID = process.env.REACT_APP_AUTH0_CLIENT_ID
 
 const Login = () => {
-  const { syncAuth } = useAuth()
-  const [loading, setLoading] = useState(false)
-  const [userEmail, setUserEmail] = useState('')
-  const [openNotification, setOpenNotification] = useState(false)
-  const [password, setPassword] = useState('')
-  const [emailMessage, setEmailMessage] = useState('')
-  const { isLoggedIn } = useAuth()
-  const [message, setMessage] = useState()
-  const navigate = useNavigate()
+    const {syncAuth} = useAuth()
+    const [loading, setLoading] = useState(false)
+    const [userEmail, setUserEmail] = useState('')
+    const [openNotification, setOpenNotification] = useState(false)
+    const [password, setPassword] = useState('')
+    const [emailMessage, setEmailMessage] = useState('')
+    const {isLoggedIn} = useAuth()
+    const [message, setMessage] = useState()
+    const navigate = useNavigate()
 
-  function isValidEmail(email) {
-    return /\S+@\S+\.\S+/.test(email)
-  }
-
-  const handleClose = (event, reason) => {
-    if (reason === 'clickaway') {
-      return
+    function isValidEmail(email) {
+        return /\S+@\S+\.\S+/.test(email)
     }
-    setOpenNotification(false)
-  }
-  const Alert = React.forwardRef(function Alert(props, ref) {
-    return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />
-  })
-  const onChangeUserEmail = (e) => {
-    if (!isValidEmail(e.target.value)) {
-      setEmailMessage('Email is invalid')
-    } else {
-      setEmailMessage(null)
-    }
-    setUserEmail(e.target.value)
-  }
-  const onChangePassword = (e) => {
-    const password = e.target.value
-    setPassword(password)
-  }
-  const userTenant = localStorage.getItem(TENANT)
 
-  const handleLogin = async (e) => {
-    e.preventDefault()
-    try {
-      if (userEmail && password) {
-        setLoading(true)
-        const user = await login(userEmail, password, userTenant)
-        syncAuth(user)
-        navigate(`/${userTenant}`)
-        setOpenNotification(true)
-      }
-    } catch (e) {
-      console.error(e)
-      setOpenNotification(true)
-    } finally {
-      setLoading(false)
+    const handleClose = (event, reason) => {
+        if (reason === 'clickaway') {
+            return
+        }
+        setOpenNotification(false)
     }
-  }
+    const Alert = React.forwardRef(function Alert(props, ref) {
+        return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />
+    })
+    const onChangeUserEmail = (e) => {
+        if (!isValidEmail(e.target.value)) {
+            setEmailMessage('Email is invalid')
+        } else {
+            setEmailMessage(null)
+        }
+        setUserEmail(e.target.value)
+    }
+    const onChangePassword = (e) => {
+        const password = e.target.value
+        setPassword(password)
+    }
+    const userTenant = localStorage.getItem(TENANT)
 
-  if (isLoggedIn) {
-    return <Navigate to={homeUrl()} />
-  }
+    const handleLogin = async (e) => {
+        e.preventDefault()
+        try {
+            if (userEmail && password) {
+                setLoading(true)
+                const user = await login(userEmail, password, userTenant)
+                syncAuth(user)
+                navigate(`/${userTenant}`)
+                setOpenNotification(true)
+            }
+        } catch (e) {
+            console.error(e)
+            setOpenNotification(true)
+        } finally {
+            setLoading(false)
+        }
+    }
+
+    if (isLoggedIn) {
+        return <Navigate to={homeUrl()}/>
+    }
 
   return (
     <GridLayout className="login_container bg-aliceBlue">
@@ -181,16 +177,17 @@ const Login = () => {
             <span className="text-[146x]/[24px] text-eerieBlack">
                 Don't have an account?
               </span>
-              <Link to={signupUrl()}>
-              <span className="pl-2 font-semibold hover:cursor-pointer text-[146x]/[24px] font-medium text-dodgerBlue hover:text-yellow">
+                            <Link to={signupUrl()}>
+              <span
+                  className="pl-2 font-semibold hover:cursor-pointer text-[146x]/[24px] font-medium text-dodgerBlue hover:text-highlight">
                   Sign Up
                 </span>
-              </Link>
-            </Box>
-          </GridLayout>
+                            </Link>
+                        </Box>
+                    </GridLayout>
+                </GridLayout>
+            </GridLayout>
         </GridLayout>
-      </GridLayout>
-    </GridLayout>
-  )
+    )
 }
 export default Login

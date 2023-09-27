@@ -1,74 +1,70 @@
 import CartActionBar from '../cart/CartActionBar'
 import CartTable from '../cart/CartTable'
 import CartMobileContent from '../cart/CartMobileContent'
-import React, { useState, useEffect, useCallback, useContext } from 'react'
-import { createQuoteCall } from '../../services/quotes'
-import { TENANT } from '../../constants/localstorage'
-import { LargePrimaryButton } from '../../components/Utilities/button'
+import React, {useCallback, useEffect, useState} from 'react'
+import {createQuoteCall} from '../../services/quotes'
+import {TENANT} from '../../constants/localstorage'
+import {LargePrimaryButton} from '../../components/Utilities/button'
 import './quote.css'
 import QuoteSummary from './QuoteSummary'
-import { useCart } from 'context/cart-provider'
-import { DropdownWithLabel } from '../../components/Utilities/dropdown'
+import {useCart} from 'context/cart-provider'
+import {DropdownWithLabel} from '../../components/Utilities/dropdown'
 import ShippingMethod from 'components/Checkout/shiping_method'
-import {
-  CurrencyBeforeValue,
-  GridLayout,
-} from '../../components/Utilities/common'
-import { Heading3, TextBold1 } from '../../components/Utilities/typography'
+import {CurrencyBeforeValue, GridLayout,} from '../../components/Utilities/common'
+import {Heading3, TextBold1} from '../../components/Utilities/typography'
 import Checkbox from 'components/Utilities/checkbox'
-import { RadioGroup } from 'components/Utilities/radio'
+import {RadioGroup} from 'components/Utilities/radio'
 import Address from 'pages/checkout/Address'
-import { getShippingMethods } from 'services/shipping.service'
-import { getCompanyAddresses } from 'services/legal-entities.service'
-import { useNavigate } from 'react-router-dom'
-import { quoteIdUrl } from 'services/service.config'
+import {getShippingMethods} from 'services/shipping.service'
+import {getCompanyAddresses} from 'services/legal-entities.service'
+import {useNavigate} from 'react-router-dom'
 import cartService from 'services/cart.service'
 import { calculateTax } from 'services/product/tax.service'
 
 const QuotePage = () => {
-  const [quoteId, setQuoteId] = useState()
-  const { cartAccount, syncCart } = useCart()
-  const [shippingMethods, setShippingMethods] = useState([])
-  const [addresses, setAddresses] = useState([])
-  const [selectedShippingAddress, setSelectedShippingAddress] = useState(null)
-  const [selectedBillingAddress, setSelectedBillingAddress] = useState(null)
-  const [selectedShippingId, setSelectedShippingId] = useState(null)
-  const [locations, setLocations] = useState([])
-  const [cartValue, setCartValue] = useState(null)
-  const [isDifferentBilling, setIsDifferentBilling] = useState(false)
-  const navigate = useNavigate()
+    const [quoteId, setQuoteId] = useState()
+    const {cartAccount, syncCart} = useCart()
+    const [shippingMethods, setShippingMethods] = useState([])
+    const [addresses, setAddresses] = useState([])
+    const [selectedShippingAddress, setSelectedShippingAddress] = useState(null)
+    const [selectedBillingAddress, setSelectedBillingAddress] = useState(null)
+    const [selectedShippingId, setSelectedShippingId] = useState(null)
+    const [locations, setLocations] = useState([])
+    const [cartValue, setCartValue] = useState(null)
+    const [isDifferentBilling, setIsDifferentBilling] = useState(false)
+    const navigate = useNavigate()
 
-  const createQuote = async () => {
-    const tenant = localStorage.getItem(TENANT)
-    const selectedShippingMethod = shippingMethods.filter(
-      (method) => method.id === selectedShippingId
-    )[0]
-    const shipping = {
-      value: selectedShippingMethod.fees[0].cost.amount,
-      methodId: selectedShippingId,
-      zoneId: selectedShippingMethod.zoneId,
-      shippingTaxCode: selectedShippingMethod.shippingTaxCode,
+    const createQuote = async () => {
+        const tenant = localStorage.getItem(TENANT)
+        const selectedShippingMethod = shippingMethods.filter(
+            (method) => method.id === selectedShippingId
+        )[0]
+        const shipping = {
+            value: selectedShippingMethod.fees[0].cost.amount,
+            methodId: selectedShippingId,
+            zoneId: selectedShippingMethod.zoneId,
+            shippingTaxCode: selectedShippingMethod.shippingTaxCode,
+        }
+        const data = await createQuoteCall(
+            tenant,
+            cartAccount.id,
+            shipping,
+            selectedShippingAddress.id,
+            selectedBillingAddress.id
+        )
+        setQuoteId(data.id)
+        await cartService.deleteAllProductsFromCart(cartAccount.id)
+        syncCart()
     }
-    const data = await createQuoteCall(
-      tenant,
-      cartAccount.id,
-      shipping,
-      selectedShippingAddress.id,
-      selectedBillingAddress.id
-    )
-    setQuoteId(data.id)
-    await cartService.deleteAllProductsFromCart(cartAccount.id)
-    syncCart()
-  }
 
-  useEffect(() => {
-    fetchShippingMethods(cartAccount, selectedShippingAddress)
-    fetchCompanyAddresses(cartAccount.company)
-  }, [selectedShippingAddress, cartValue])
+    useEffect(() => {
+        fetchShippingMethods(cartAccount, selectedShippingAddress)
+        fetchCompanyAddresses(cartAccount.company)
+    }, [selectedShippingAddress, cartValue])
 
-  useEffect(() => {
-    setCartValue(cartAccount?.totalPrice?.amount)
-  }, [cartAccount])
+    useEffect(() => {
+        setCartValue(cartAccount?.totalPrice?.amount)
+    }, [cartAccount])
 
   const fetchShippingMethods = useCallback(async (cart, address) => {
     const methods = await getShippingMethods(cart.siteCode)
@@ -101,25 +97,25 @@ const QuotePage = () => {
     setShippingMethods(filteredMethods)
   }, [])
 
-  const fetchCompanyAddresses = useCallback(async (company) => {
-    const addresses = await getCompanyAddresses(company)
-    setAddresses(addresses)
-    const locations = addresses.map((address) => {
-      return {
-        label: [
-          address.contactDetails.addressLine1,
-          address.contactDetails.addressLine2,
-          address.contactDetails.city,
-          address.contactDetails.postcode,
-        ].join(' '),
-        value: address.id,
-      }
-    })
-    setLocations(locations)
-  }, [])
-  const onShippingChange = (value) => {
-    setSelectedShippingId(value)
-  }
+    const fetchCompanyAddresses = useCallback(async (company) => {
+        const addresses = await getCompanyAddresses(company)
+        setAddresses(addresses)
+        const locations = addresses.map((address) => {
+            return {
+                label: [
+                    address.contactDetails.addressLine1,
+                    address.contactDetails.addressLine2,
+                    address.contactDetails.city,
+                    address.contactDetails.postcode,
+                ].join(' '),
+                value: address.id,
+            }
+        })
+        setLocations(locations)
+    }, [])
+    const onShippingChange = (value) => {
+        setSelectedShippingId(value)
+    }
 
   return (
     <div className="cart-page-wrapper">
@@ -252,20 +248,20 @@ const QuotePage = () => {
             />
             <CartActionBar className="lg:hidden" />
 
-            <div className="quote-cart-buttons">
-              <LargePrimaryButton
-                className="w-auto bg-yellow rounded text-eerieBlack"
-                disabled={selectedShippingId === null}
-                title="REQUEST QUOTE"
-                onClick={() => createQuote()}
-              />
+                        <div className="quote-cart-buttons">
+                            <LargePrimaryButton
+                                className="w-auto bg-primary rounded text-eerieBlack"
+                                disabled={selectedShippingId === null}
+                                title="REQUEST QUOTE"
+                                onClick={() => createQuote()}
+                            />
+                        </div>
+                    </>
+                ) : (
+                    <QuoteSummary quoteId={quoteId}/>
+                )}
             </div>
-          </>
-        ) : (
-          <QuoteSummary quoteId={quoteId} />
-        )}
-      </div>
-    </div>
-  )
+        </div>
+    )
 }
 export default QuotePage

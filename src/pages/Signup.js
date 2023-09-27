@@ -4,8 +4,8 @@ import { login, register, refreshCustomerData} from '../services/user/auth.servi
 import Snackbar from '@mui/material/Snackbar'
 import MuiAlert from '@mui/material/Alert'
 import PhoneField from '../components/Utilities/phoneinput/PhoneField'
-import { GridLayout, Container } from '../components/Utilities/common'
-import { Heading2, Heading4 } from '../components/Utilities/typography'
+import {Container, GridLayout} from '../components/Utilities/common'
+import {Heading2, Heading4} from '../components/Utilities/typography'
 import Box from '@mui/material/Box'
 import { TENANT } from '../constants/localstorage'
 import { homeUrl } from '../services/service.config'
@@ -15,133 +15,133 @@ import { createAddress } from 'services/user/adresses'
 import { LargePrimaryButton } from 'components/Utilities/button'
 import { useCurrency } from 'context/currency-context'
 
-const Input = ({ label, value, action, className, placeholder }) => {
-  return (
-    <div className={`!pt-2 w-full text-black text-base ${className}`}>
-      <label className="pb-2">{label}</label>
-      <br />
-      <input
-        placeholder={placeholder}
-        onChange={(e) => action(e.target.value)}
-        value={value}
-        type="text"
-        className="border w-full px-3 py-2"
-      />
-    </div>
-  )
+const Input = ({label, value, action, className, placeholder}) => {
+    return (
+        <div className={`!pt-2 w-full text-black text-base ${className}`}>
+            <label className="pb-2">{label}</label>
+            <br/>
+            <input
+                placeholder={placeholder}
+                onChange={(e) => action(e.target.value)}
+                value={value}
+                type="text"
+                className="border w-full px-3 py-2"
+            />
+        </div>
+    )
 }
 
-const AddressForm = ({ form, handleUpdate }) => {
-  return (
-    <div className="grid grid-cols-4 gap-x-4">
-      <Input
-        label="Contact name"
-        className="col-span-4"
-        placeholder="Contact name"
-        value={form.contactName}
-        action={(val) =>
-          handleUpdate({
-            ...form,
-            contactName: val,
-          })
-        }
-      />
-      <Input
-        label="Street"
-        className="col-span-2"
-        placeholder="Street"
-        value={form.street}
-        action={(val) =>
-          handleUpdate({
-            ...form,
-            street: val,
-          })
-        }
-      />
-      <Input
-        label="St. Number"
-        placeholder="Sreet Number"
-        className="col-span-1"
-        value={form.streetNumber}
-        action={(val) =>
-          handleUpdate({
-            ...form,
-            streetNumber: val,
-          })
-        }
-      />
-      <Input
-        label="St. Appendix"
-        className="col-span-1"
-        value={form.streetAppendix}
-        action={(val) =>
-          handleUpdate({
-            ...form,
-            streetAppendix: val,
-          })
-        }
-      />
-      <Input
-        label="Zip Code"
-        placeholder="Zip Code"
-        className="col-span-2"
-        value={form.zipCode}
-        action={(val) =>
-          handleUpdate({
-            ...form,
-            zipCode: val,
-          })
-        }
-      />
-      <Input
-        label="City"
-        placeholder="City"
-        className="col-span-2"
-        value={form.city}
-        action={(val) =>
-          handleUpdate({
-            ...form,
-            city: val,
-          })
-        }
-      />
-      <Input
-        label="State"
-        placeholder="State"
-        className="col-span-3"
-        value={form.state}
-        action={(val) =>
-          handleUpdate({
-            ...form,
-            state: val,
-          })
-        }
-      />
-      <Input
-        label="Country"
-        placeholder="Country"
-        className="col-span-1"
-        value={form.country}
-        action={(val) =>
-          handleUpdate({
-            ...form,
-            country: val,
-          })
-        }
-      />
-    </div>
-  )
+const AddressForm = ({form, handleUpdate}) => {
+    return (
+        <div className="grid grid-cols-4 gap-x-4">
+            <Input
+                label="Contact name"
+                className="col-span-4"
+                placeholder="Contact name"
+                value={form.contactName}
+                action={(val) =>
+                    handleUpdate({
+                        ...form,
+                        contactName: val,
+                    })
+                }
+            />
+            <Input
+                label="Street"
+                className="col-span-2"
+                placeholder="Street"
+                value={form.street}
+                action={(val) =>
+                    handleUpdate({
+                        ...form,
+                        street: val,
+                    })
+                }
+            />
+            <Input
+                label="St. Number"
+                placeholder="Sreet Number"
+                className="col-span-1"
+                value={form.streetNumber}
+                action={(val) =>
+                    handleUpdate({
+                        ...form,
+                        streetNumber: val,
+                    })
+                }
+            />
+            <Input
+                label="St. Appendix"
+                className="col-span-1"
+                value={form.streetAppendix}
+                action={(val) =>
+                    handleUpdate({
+                        ...form,
+                        streetAppendix: val,
+                    })
+                }
+            />
+            <Input
+                label="Zip Code"
+                placeholder="Zip Code"
+                className="col-span-2"
+                value={form.zipCode}
+                action={(val) =>
+                    handleUpdate({
+                        ...form,
+                        zipCode: val,
+                    })
+                }
+            />
+            <Input
+                label="City"
+                placeholder="City"
+                className="col-span-2"
+                value={form.city}
+                action={(val) =>
+                    handleUpdate({
+                        ...form,
+                        city: val,
+                    })
+                }
+            />
+            <Input
+                label="State"
+                placeholder="State"
+                className="col-span-3"
+                value={form.state}
+                action={(val) =>
+                    handleUpdate({
+                        ...form,
+                        state: val,
+                    })
+                }
+            />
+            <Input
+                label="Country"
+                placeholder="Country"
+                className="col-span-1"
+                value={form.country}
+                action={(val) =>
+                    handleUpdate({
+                        ...form,
+                        country: val,
+                    })
+                }
+            />
+        </div>
+    )
 }
 
 const addressValid = (address) => {
-  return (
-    address.contactName.length > 0 &&
-    address.street.length > 0 &&
-    address.streetNumber.length > 0 &&
-    address.zipCode.length > 0 &&
-    address.city.length > 0 &&
-    address.country.length > 0
-  )
+    return (
+        address.contactName.length > 0 &&
+        address.street.length > 0 &&
+        address.streetNumber.length > 0 &&
+        address.zipCode.length > 0 &&
+        address.city.length > 0 &&
+        address.country.length > 0
+    )
 }
 
 const addressEmptyValid = (address) => {
@@ -197,11 +197,11 @@ const Signup = (props) => {
   })
   const { activeCurrency } = useCurrency()
 
-  const isAddressValid = useMemo(() => {
-    return addressValid(shippingAddress) && addressValid(billingAddress)
-  }, [shippingAddress, billingAddress])
+    const isAddressValid = useMemo(() => {
+        return addressValid(shippingAddress) && addressValid(billingAddress)
+    }, [shippingAddress, billingAddress])
 
-  const { syncAuth } = useAuth()
+    const {syncAuth} = useAuth()
 
   function isValidEmail(email) {
     return /\S+@\S+\.\S+/.test(email)
@@ -213,11 +213,11 @@ const Signup = (props) => {
       return
     }
 
-    setOpenNotification(false)
-  }
-  const Alert = React.forwardRef(function Alert(props, ref) {
-    return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />
-  })
+        setOpenNotification(false)
+    }
+    const Alert = React.forwardRef(function Alert(props, ref) {
+        return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />
+    })
 
   const tenant = localStorage.getItem(TENANT)
   const onChangeUserEmail = (e) => {

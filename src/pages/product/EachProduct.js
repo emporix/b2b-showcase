@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useMemo } from 'react'
+import React, {useCallback, useMemo} from 'react'
 import ReactStars from 'react-stars'
 import { useNavigate } from 'react-router-dom'
 import { TENANT } from '../../constants/localstorage'
@@ -19,46 +19,46 @@ const EachProduct = ({ item, available, rating, productCount }) => {
     return item.media[0] === undefined ? '' : item.media[0]['url']
   }, [item])
 
-  const price = useMemo(() => {
-    return formatPrice(item, isLoggedIn)
-  }, [item.price, isLoggedIn])
+    const price = useMemo(() => {
+        return formatPrice(item, isLoggedIn)
+    }, [item.price, isLoggedIn])
 
-  const navigate = useNavigate()
-  const handleProductDetail = useCallback(() => {
-    navigate(`/${userTenant}/product/details/${item.id}`)
-  }, [userTenant, item.id])
-  return (
-    <div className="p-4" onClick={handleProductDetail}>
-      <div className="w-full h-5  justify-between hidden lg:flex">
-        {item.productType !== 'PARENT_VARIANT' && (
-          <div
-            className={
-              'text-limeGreen font-inter text-[14px]/[20px] font-medium float-right lg:float-none'
-            }
-          >
-            {available ? 'In Stock' : 'Out Of Stock'}
-          </div>
-        )}
-        <div className="flex h-5 float-right lg:float-none">
-          <ReactStars size={16} value={rating} color2={'#FBB13C'} />(
-          {productCount})
-        </div>
-      </div>
+    const navigate = useNavigate()
+    const handleProductDetail = useCallback(() => {
+        navigate(`/${userTenant}/product/details/${item.id}`)
+    }, [userTenant, item.id])
+    return (
+        <div className="p-4" onClick={handleProductDetail}>
+            <div className="w-full h-5  justify-between hidden lg:flex">
+                {item.productType !== 'PARENT_VARIANT' && (
+                    <div
+                        className={
+                            'text-limeGreen font-inter text-[14px]/[20px] font-medium float-right lg:float-none'
+                        }
+                    >
+                        {available ? 'In Stock' : 'Out Of Stock'}
+                    </div>
+                )}
+                <div className="flex h-5 float-right lg:float-none">
+                    <ReactStars size={16} value={rating} color2={'#FBB13C'}/>(
+                    {productCount})
+                </div>
+            </div>
 
-      <div className=" block float-right lg:hidden">
-        <div className=" flex h-5  float-right">
-          <ReactStars size={16} value={rating} color2={'#FBB13C'} />(
-          {productCount})
-        </div>
-        <br />
-        <div
-          className={
-            'text-limeGreen font-inter text-[14px]/[20px] font-medium float-right lg:float-none'
-          }
-        >
-          {available ? 'In Stock' : 'Out Of Stock'}
-        </div>
-      </div>
+            <div className=" block float-right lg:hidden">
+                <div className=" flex h-5  float-right">
+                    <ReactStars size={16} value={rating} color2={'#FBB13C'}/>(
+                    {productCount})
+                </div>
+                <br/>
+                <div
+                    className={
+                        'text-limeGreen font-inter text-[14px]/[20px] font-medium float-right lg:float-none'
+                    }
+                >
+                    {available ? 'In Stock' : 'Out Of Stock'}
+                </div>
+            </div>
 
       <div className="pt-10 lg:w-[200px] lg:h-[260px] w-[100px] h-[140px] md:w-[150px] md:h-[200px] items-center mx-auto ">
         <img src={trimImage(`${imageSrc}`)} className="mx-auto h-full" />
@@ -93,54 +93,54 @@ const EachProduct = ({ item, available, rating, productCount }) => {
                   <span className="text-xs text-primaryBlue font-bold">
                     No Price
                   </span>
-                )}
-              </div>
-              <div className="flex">
-                {price !== null ? (
-                  <>
-                    {/* <img src="/products/pencil.png" className="w-4 h-4 mt-1" /> */}
-                    <div className="text-[22px]/[22px] lg:text-xl leading-[24px] font-bold ml-1">
-                        <div className='flex flex-col'>
-                          <CurrencyBeforeValue value={price} />
-                          <span className="text-xs font-normal text-manatee">
+                                )}
+                            </div>
+                            <div className="flex">
+                                {price !== null ? (
+                                    <>
+                                        {/* <img src="/products/pencil.png" className="w-4 h-4 mt-1" /> */}
+                                        <div className="text-[22px]/[22px] lg:text-xl leading-[24px] font-bold ml-1">
+                                            <div className='flex flex-col'>
+                                                <CurrencyBeforeValue value={price}/>
+                                                <span className="text-xs font-normal text-manatee">
                             (Excl. VAT)
                           </span>
-                      </div>
-                    </div>
-                  </>
-                ) : null}
-              </div>
-            </>
-          ) : (
-            <div className="text-base pt-4">
-              {price !== null ? (
-                <>
-                  <CurrencyBeforeValue value={price} />
-                    <span className="text-xs font-normal text-manatee">
+                                            </div>
+                                        </div>
+                                    </>
+                                ) : null}
+                            </div>
+                        </>
+                    ) : (
+                        <div className="text-base pt-4">
+                            {price !== null ? (
+                                <>
+                                    <CurrencyBeforeValue value={price}/>
+                                    <span className="text-xs font-normal text-manatee">
                     (Incl. VAT)
                   </span>
-                </>
-              ) : (
-                <span className="text-xs  text-primaryBlue font-bold">
+                                </>
+                            ) : (
+                                <span className="text-xs  text-primaryBlue font-bold">
                   No Price
                 </span>
-              )}
-            </div>
-          )}
+                            )}
+                        </div>
+                    )}
+                </div>
+            )}
+            {item.productType === 'PARENT_VARIANT' && (
+                <div>
+                    <LargePrimaryButton
+                        className="cta-button bg-primary"
+                        sx={{backgroundColor: '#FAC420 !important'}}
+                        title={'VIEW VARIANTS'}
+                        onClick={handleProductDetail}
+                    />
+                </div>
+            )}
         </div>
-      )}
-      {item.productType === 'PARENT_VARIANT' && (
-        <div>
-          <LargePrimaryButton
-            className="cta-button bg-yellow"
-            sx={{backgroundColor: '#FAC420 !important'}}
-            title={'VIEW VARIANTS'}
-            onClick={handleProductDetail}
-          />
-        </div>
-      )}
-    </div>
-  )
+    )
 }
 
 export default EachProduct
