@@ -2,7 +2,7 @@ import {useContentful} from "../context/contentful-provider";
 import React, {useEffect, useState} from "react";
 import {Link} from "react-router-dom";
 import {homeUrl} from "../services/service.config";
-import newLogo from '../assets/new_logo.svg'
+import newLogo from '../assets/walbusch_logo.png'
 
 export const Logo = ({ onMouseOver, size, text }) => {
     const { fields } = useContentful()
