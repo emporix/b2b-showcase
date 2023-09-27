@@ -164,8 +164,8 @@ const ApprovalNeededAction = ({ approvers }) => {
   )
 }
 
-const AppliedCoupon = ({ discount }) => {
-  const { removeDiscount } = useCart()
+const AppliedCoupon = ({discount}) => {
+    const {removeDiscount} = useCart()
 
     const deleteDiscountFromCart = useCallback(() => {
         removeDiscount(discount.id)

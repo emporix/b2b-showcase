@@ -321,10 +321,9 @@ export const CartSubTotalIncludeVat = ({grossValue, currency}) => {
     )
 }
 
-export const CartVat = ({ value, taxPercentage, currency, taxValue }) => {
-  const effectiveTaxValue = taxValue ? taxValue : (value * (taxPercentage / 100)).toFixed(2)
-  return (
-    <>
+export const CartVat = ({value, taxPercentage, currency}) => {
+    return (
+        <>
       <span>
         VAT {taxPercentage}% of{' '}
           <CurrencyBeforeValue value={value} currency={currency}/>
