@@ -244,7 +244,7 @@ const Navbar = () => {
       <div className="desktop_only_flex font-inter text-sm text-white">
         <div className='flex items-center'>
           <span className='world-icon'></span>
-          {fields.siteLabel}:
+          Site:
           <select
             className="bg-eerieBlack w-38 mr-[22px]"
             onChange={handleSiteChange}
