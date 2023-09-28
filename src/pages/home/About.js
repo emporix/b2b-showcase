@@ -4,6 +4,7 @@ import DemoBanner from './DemoBanner'
 import landingBg from '../../assets/landing_bg.png'
 import './about.css'
 import { Box } from '@mui/material'
+import { useSites } from '../../context/sites-provider';
 
 const About = () => {
   const { fields } = useContentful()
@@ -24,10 +25,28 @@ const About = () => {
     })()
   }, [mainImageRight])
 
+  const { currentSite } = useSites();
+
+  // Function to determine the correct class
+  const determineClass = () => {
+      switch(currentSite) {
+          case "main":
+          case "walbusch-at":
+          case "walbusch-ch":
+              return 'home_about';
+          case "lashoe":
+              return 'home_about_lashoe';
+          case "Mey-Edlich":
+              return 'home_about_mey-edlich';
+          default:
+              return 'home_about';  // default class
+      }
+  };
+
   return (
     <div
       // style={{ backgroundImage: `url(${landingBg})` }}
-      className="home_about"
+      className={determineClass()}
     >
     <div className="mx-6 md:ml-16 mt-[48px] md:mt-[114px] w-[492px]">
           <DemoBanner />
