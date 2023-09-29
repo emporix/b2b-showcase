@@ -338,16 +338,16 @@ export const VariantHeader = () => (
     </Grid>
 )
 
-export const VariantAccordion = ({variant}) => {
-    const [expanded, setExpanded] = useState(false)
-    const [quantity, setQuantity] = useState(1)
-    const [price, setPrice] = useState(null)
-    const {activeCurrency} = useCurrency()
-    const toggleExpand = useCallback(() => {
-        setExpanded(!expanded)
-    }, [expanded])
-    const {currentSite} = useSites()
-    const {matchPriceForProductAndQuantity} = usePrices()
+export const VariantAccordion = ({ variant, expandedByDefault }) => {
+  const [expanded, setExpanded] = useState(expandedByDefault ? true : false)
+  const [quantity, setQuantity] = useState(1)
+  const [price, setPrice] = useState(null)
+  const { activeCurrency } = useCurrency()
+  const toggleExpand = useCallback(() => {
+    setExpanded(!expanded)
+  }, [expanded])
+  const { currentSite } = useSites()
+  const { matchPriceForProductAndQuantity } = usePrices()
 
     useEffect(() => {
         ;(async () => {

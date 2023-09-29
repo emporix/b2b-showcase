@@ -18,6 +18,9 @@ import {
 } from '../../services/service.config'
 import { useReturns } from 'context/returns-provider'
 import ReturnInfoStatus from './ReturnInfoStatus'
+import axios from 'axios'
+import { ACCESS_TOKEN } from 'constants/localstorage'
+import './OrderList.css'
 
 const OrderListMobile = ({ orders }) => {
   return (
@@ -62,6 +65,29 @@ export const OrderList = (props) => {
   const navigate = useNavigate()
 
   const [showAlreadySubmittedError, setError] = useState(false)
+
+  const downloadInvoice = (order) => {
+    const invoiceUrl = order?.mixins?.invoice?.invoiceDocument.replace("mediaObject", "customerMediaObject")
+    const token = localStorage.getItem(ACCESS_TOKEN)
+    axios({
+      url: invoiceUrl,
+      headers: {
+        Authorization: 'Bearer ' + token 
+      },
+      method: 'GET',
+      responseType: 'blob', 
+  }).then((response) => {
+      const href = URL.createObjectURL(response.data);
+      const link = document.createElement('a');
+      link.href = href;
+      link.setAttribute('download', 'invoice_'+order.id+'.pdf'); 
+      document.body.appendChild(link);
+      link.click();
+
+      document.body.removeChild(link);
+      URL.revokeObjectURL(href);
+  });
+}
 
   const handleCreateReturn = useCallback(
     (id) => {
@@ -146,13 +172,6 @@ export const OrderList = (props) => {
                         View
                       </Link>
                     </div>
-                    {invoiceAvailable && (
-                      <div className="font-inter font-semibold text-[14px] underline ml-6">
-                        <Link to={`${myAccountMyOrdersInvoiceUrl()}${row.id}`}>
-                          Invoice
-                        </Link>
-                      </div>
-                    )}
                     <div className="font-inter font-semibold text-[14px] underline ml-6">
                       <span
                         onClick={() => handleCreateReturn(row.id)}
@@ -161,6 +180,11 @@ export const OrderList = (props) => {
                         Return
                       </span>
                     </div>
+                    {invoiceAvailable && (
+                      <div className="font-inter font-semibold text-[14px] underline ml-6">
+                        {row?.mixins?.invoice?.invoiceDocument && <a onClick={() => downloadInvoice(row)} className='download-invoice-link'>Download invoice</a> }
+                      </div>
+                    )}
                   </div>
                 </TableCell>
               </TableRow>

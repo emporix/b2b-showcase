@@ -16,6 +16,7 @@ import {
   ProgressBarItem,
 } from '../../components/Utilities/progressbar'
 import ShippingMethod from '../../components/Checkout/shiping_method'
+import DeliveryWindow from '../../components/Checkout/DeliveryWindow'
 import PaymentMethodItem from '../../components/Checkout/PaymentMethodItem'
 import PaymentInvoiceItem from '../../components/Checkout/PaymentInvoiceItem'
 import {
@@ -39,6 +40,7 @@ import ProductContent from './ProductsContent'
 import { useCart } from 'context/cart-provider'
 import { usePayment } from './PaymentProvider'
 import PaymentSpreedly from 'components/Checkout/PaymentSpreedly'
+import { CartProductImageAndReadOnlyQuantity, CartProductInfo, } from 'components/Cart/cart'
 
 
 const ShippingContent = () => {
@@ -50,19 +52,18 @@ const ShippingContent = () => {
     selectedAddress,
     setSelectedAddress,
     defaultAddress,
-    shippingMethods
+    shippingMethods,
+    setSelectedDeliveryMethod,
   } = useUserAddress()
 
+ 
   const onShippingChange = (value) => {
     const selectedShippingMethod = shippingMethods.filter(
       (method) => method.id === value
     )[0]
     setShippingMethod(selectedShippingMethod)
+    setSelectedDeliveryMethod(selectedShippingMethod)
   }
-
-  useEffect(() => {
-    setShippingMethod(null)
-  }, [])
 
   return (
     <>
@@ -111,33 +112,36 @@ const ShippingContent = () => {
           </GridLayout>
         </GridLayout>
       </GridLayout>
-      <GridLayout className="gap-6">
-        <Heading3>Shipping Method</Heading3>
-        <MobileMDContainer>
-          <TextRegular3>
-            <Underline>Ship to multiple addresses</Underline>
-          </TextRegular3>
-        </MobileMDContainer>
-        <RadioGroup>
-        {shippingMethods.map((method) => {
-          return (
-            <ShippingMethod
-              key={method.id}
-              radioKey={method.id}
-              shippingmode={method.id}
-              date="Monday, June 6 - Tuesday June 7"
-              price={
-                method.fee === 0 ? (
-                  'Free'
-                ) : (
-                  <CurrencyBeforeValue value={method.fee} />
-                )
-              }
-              onClick={onShippingChange}
-            />
-          )
-        })}
-      </RadioGroup>
+
+      <GridLayout className="gap-10 border rounded border-quartz p-6">
+        <GridLayout className="gap-6">
+          <Heading3>Shipping Method</Heading3>
+          <MobileMDContainer>
+            <TextRegular3>
+              <Underline>Ship to multiple addresses</Underline>
+            </TextRegular3>
+          </MobileMDContainer>
+          <RadioGroup>
+          {shippingMethods.map((method) => {
+            return (
+              <ShippingMethod
+                key={method.id}
+                radioKey={method.id}
+                shippingmode={method.id}
+                date="Monday, June 6 - Tuesday June 7"
+                price={
+                  method.fee === 0 ? (
+                    'Free'
+                  ) : (
+                    <CurrencyBeforeValue value={method.fee} />
+                  )
+                }
+                onClick={onShippingChange}
+              />
+            )
+          })}
+        </RadioGroup>
+        </GridLayout>  
       </GridLayout>
     </>
   )
@@ -213,22 +217,21 @@ const ShipmentAddressContent = () => {
       <div className="mb-3">
         <Heading4>Shipment</Heading4>
       </div>
-      <TextBold3>{products?.length} items</TextBold3>
-      <TextRegular1>Name Lastname</TextRegular1>
-
       <Address data={selectedAddress} />
     </GridLayout>
   )
 }
 const ShipmentDeliveryContent = () => {
+  const { selectedDeliveryWindow, selectedDeliveryMethod } = useUserAddress()
+
   return (
     <GridLayout className="gap-6 !h-18">
       <div>
         <div className="mb-6">
-          <TextBold3>Estimated Delivery: 06.11.2022</TextBold3>
+          <TextBold3>Estimated Delivery:</TextBold3> {selectedDeliveryWindow && (<TextRegular>{selectedDeliveryWindow.deliveryDayLabel} {selectedDeliveryWindow.deliveryTimeLabel}</TextRegular>)}
         </div>
 
-        <TextRegular>Delivery Method: Priority</TextRegular>
+        <TextBold3>Delivery Method:</TextBold3> {selectedDeliveryMethod && (<TextRegular>{selectedDeliveryMethod.id}</TextRegular>)}
       </div>
     </GridLayout>
   )
@@ -255,7 +258,8 @@ const ShipmentContent = () => {
 const ReviewOrderContent = (cart) => {
   const { billingAddress } = useUserAddress()
   const { payment } = usePayment()
-  
+  const { cartAccount } = useCart()
+
   return (
     <>
       <DesktopLGContainer>
@@ -266,9 +270,6 @@ const ReviewOrderContent = (cart) => {
             </div>
             <Address data={billingAddress} />
           </Container>
-          <TextBold4>
-          <Underline className='edit-button'>Edit</Underline>
-          </TextBold4>
         </LayoutBetween>
       </DesktopLGContainer>
 
@@ -278,9 +279,6 @@ const ReviewOrderContent = (cart) => {
             <div className="property-wrapper">
               <TextBold3>Billing Information</TextBold3>
             </div>
-            <TextBold4>
-              <Underline className='edit-button'>Edit</Underline>
-            </TextBold4>
           </LayoutBetween>
           <Address data={billingAddress} />
         </GridLayout>
@@ -292,9 +290,6 @@ const ReviewOrderContent = (cart) => {
             <div className="property-wrapper">
               <TextBold3>Shipping Information</TextBold3>
             </div>
-            <TextBold4>
-              <Underline className='edit-button'>Edit</Underline>
-            </TextBold4>
           </LayoutBetween>
           <ShipmentContent />
         </GridLayout>
@@ -308,9 +303,6 @@ const ReviewOrderContent = (cart) => {
             </div>
             <ShipmentContent />
           </Container>
-          <TextBold4>
-            <Underline className='edit-button'>Edit</Underline>
-          </TextBold4>
         </LayoutBetween>
       </DesktopLGContainer>
 
@@ -324,9 +316,6 @@ const ReviewOrderContent = (cart) => {
               <TextBold3>{payment && payment.displayName}</TextBold3>
             </GridLayout>
           </Container>
-          <TextBold4>
-            <Underline>Edit</Underline>
-          </TextBold4>
         </LayoutBetween>
       </DesktopLGContainer>
 
@@ -336,9 +325,6 @@ const ReviewOrderContent = (cart) => {
             <div className="property-wrapper">
               <TextBold3>Payment Method</TextBold3>
             </div>
-            <TextBold4>
-              <Underline className='edit-button'>Edit</Underline>
-            </TextBold4>
           </LayoutBetween>
 
           <GridLayout>
@@ -354,11 +340,17 @@ const ReviewOrderContent = (cart) => {
             <div className="property-wrapper">
               <TextBold3>Your Products</TextBold3>
             </div>
-            <ProductContent />
+            <GridLayout className="gap-4">
+              {cartAccount?.items.map((cartItem, idx) => (
+                <>
+                  <div className="cart-product-item p-2">
+                    <CartProductImageAndReadOnlyQuantity cartItem={cartItem} />
+                    <CartProductInfo key={cartItem.id + idx} cartItem={cartItem} />
+                  </div>
+                </> 
+              ))}
+            </GridLayout>
           </Container>
-          <TextBold4>
-            <Underline className='edit-button'>Edit</Underline>
-          </TextBold4>
         </LayoutBetween>
       </DesktopLGContainer>
 
@@ -368,11 +360,17 @@ const ReviewOrderContent = (cart) => {
             <div className="property-wrapper">
               <TextBold3>Your Products</TextBold3>
             </div>
-            <TextBold4>
-              <Underline className='edit-button'>Edit</Underline>
-            </TextBold4>
           </LayoutBetween>
-          <ProductContent />
+            <GridLayout className="gap-4">
+              {cartAccount?.items.map((cartItem, idx) => (
+                <>
+                  <div className="cart-product-item p-2">
+                    <CartProductImageAndReadOnlyQuantity cartItem={cartItem} />
+                    <CartProductInfo key={cartItem.id + idx} cartItem={cartItem} />
+                  </div>
+                </> 
+              ))}
+            </GridLayout>  
         </GridLayout>
       </MobileLGContainer>
     </>

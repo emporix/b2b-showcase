@@ -14,6 +14,7 @@ import { useSites } from 'context/sites-provider'
 import { fetchSite } from 'services/sites'
 import PaymentSpreedlyDeferredItem from './PaymentSpreedlyDeferredItem'
 import PaymentSpreedlySaferpayItem from './PaymentSpreedlySaferpayItem'
+import PaymentUnzerItem from './PaymentUnzerItem'
 
 
 const PaymentSpreedly = ({props}) => {
@@ -64,6 +65,8 @@ const PaymentSpreedly = ({props}) => {
           (<PaymentSpreedlyPaypalItem radioKey="paypal" props={props} paymentMode={getPaymentMode('paypal')} />)}
         {isModeEnabled('saferpay') && props.deferred &&
           (<PaymentSpreedlySaferpayItem radioKey="saferpay" props={props} paymentMode={getPaymentMode('saferpay')} />)}
+        {isModeEnabled('unzer') && props.deferred &&
+          (<PaymentUnzerItem radioKey="unzer" props={props} paymentMode={getPaymentMode('unzer')} />)}
           
         {paymentModes && paymentModes.length > 0 && (
           <PaymentSpreedlyDeferredItem radioKey="deferred" props={props} />

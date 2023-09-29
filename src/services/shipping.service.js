@@ -25,3 +25,21 @@ export const getShippingMethods = async (site) => {
     ),
   ]
 }
+
+export const getActualDeliveryWindows = async (postalCode, country) => {
+  const accessToken = localStorage.getItem(ACCESS_TOKEN)
+  const headers = {
+    Authorization: `Bearer ${accessToken}`,
+    'Content-Type': 'application/json',
+  }
+  const params = {
+    windowsLimit: 15
+  }
+  const res = await api.post(`${shippingApi()}/findSite`,
+  {
+    'postalCode': postalCode,
+    'country': country
+  },
+  { headers, params })
+  return res;
+}

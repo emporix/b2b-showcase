@@ -181,16 +181,29 @@ const CartProductImageAndQuantity = ({cartItem}) => {
     )
 }
 
-export const CartProductBasicInfo = ({cart}) => {
-    return (
-        <div className="cart-product-basic-info">
-            <GridLayout className="gap-2">
-                <div className="cart-product-name">{cart.product.name}</div>
-                <div className="cart-product-sku-wrapper">
-                    SKU:&nbsp;
-                    <span className="cart-product-sku">{cart.product.code}</span>
-                </div>
-                <div className="cart-product-stock-wrapper">
+export const CartProductImageAndReadOnlyQuantity = ({ cartItem }) => {
+  return (
+    <div className="cart-product-image-and-quantity">
+      <GridLayout className="gap-11">
+        <CartProductImage src={cartItem.product.src} />
+        <div className='cart-product-sku-wrapper'>
+          Quantity: {cartItem.quantity}
+        </div>
+      </GridLayout>
+    </div>
+  )
+}
+
+export const CartProductBasicInfo = ({ cart }) => {
+  return (
+    <div className="cart-product-basic-info">
+      <GridLayout className="gap-2">
+        <div className="cart-product-name">{cart.product.name}</div>
+        <div className="cart-product-sku-wrapper">
+          SKU:&nbsp;
+          <span className="cart-product-sku">{cart.product.code}</span>
+        </div>
+        <div className="cart-product-stock-wrapper">
           <span
               className={
                   'cart-product-stock ' +
@@ -221,20 +234,20 @@ const CartProductPriceExcludeVat = ({price, currency}) => {
         </div>
     )
 }
-const CartProductInfo = ({cartItem}) => {
-    return (
-        <div className="cart-product-info">
-            <GridLayout className="gap-[22px]">
-                <CartProductBasicInfo cart={cartItem}/>
-                {cartItem.price.currency && cartItem.itemTaxInfo && (
-                    <CartProductPriceExcludeVat
-                        price={cartItem.itemTaxInfo[0].netValue}
-                        currency={cartItem.price.currency}
-                    />
-                )}
-            </GridLayout>
-        </div>
-    )
+export const CartProductInfo = ({ cartItem }) => {
+  return (
+    <div className="cart-product-info">
+      <GridLayout className="gap-[22px]">
+        <CartProductBasicInfo cart={cartItem} />
+        {cartItem.price.currency && cartItem.itemTaxInfo && (
+          <CartProductPriceExcludeVat
+            price={cartItem.itemTaxInfo[0].netValue}
+            currency={cartItem.price.currency}
+          />
+        )}
+      </GridLayout>
+    </div>
+  )
 }
 const CartProductItem = ({cartItem, onMouseEnter, onMouseLeave}) => {
     return (
