@@ -434,7 +434,7 @@ export const CartActionPanel = ({action}) => {
                         {cartAccount?.subtotalAggregate &&
                             cartAccount?.subtotalAggregate.grossValue && (
                                 <CartSubTotalIncludeVat
-                                    grossValue={cartAccount.totalPrice.amount}
+                                    grossValue={cartAccount.subtotalAggregate.grossValue}
                                     currency={cartAccount.currency}
                                 />
                             )}
@@ -454,8 +454,7 @@ export const CartActionPanel = ({action}) => {
                             {cartAccount.totalPrice && cartAccount.totalPrice.amount && (
                                 <CartTotalPrice
                                     totalValue={
-                                        cartAccount.totalPrice.amount +
-                                         + getShippingCost(shippingMethod)
+                                        cartAccount.totalPrice.amount 
                                     }
                                     currency={cartAccount.currency}
                                 />
