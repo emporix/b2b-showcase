@@ -256,8 +256,8 @@ const Coupon = () => {
 
     useEffect(() => {
         ;(async () => {
-            const points = await CartService.getRewardPointsForLoggedUser()
-            setRewardPoints(points)
+            //const points = await CartService.getRewardPointsForLoggedUser()
+            //setRewardPoints(points ?? 0)
         })()
     }, [redeemOptions, discounts])
 
