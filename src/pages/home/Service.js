@@ -6,11 +6,11 @@ import verifiedUser from '../../assets/verified_user.svg'
 
 const EachService = (props) => {
   return (
-    <div className="text-eerieBlack text-center md:text-center md:items-center h-[158px] w-[276px] md">
+    <div className="text-white text-center md:text-center md:items-center h-[158px] w-[276px] md">
       <div className="w-full">
-        <img src={props.src} className="h-10 md:mx-auto"></img>
+        <img src={props.src} className="h-10 md:mx-auto filter-white"></img>
       </div>
-      <div className="md:text-[20px] leading-[24px] pt-7 text-[18px]/[30px] font-semibold">
+      <div className="text-primary md:text-[20px] leading-[24px] pt-7 text-[18px]/[30px] font-semibold">
         {props.title}
       </div>
       <div className="font-inter font-normal text-[14px] leading-[24px] md:text-[16px] pt-2 md:pt-4 text-left">
@@ -21,26 +21,26 @@ const EachService = (props) => {
 }
 const Service = () => {
   return (
-    <div className="home_service h-[366px]">
+    <div className="home_service h-[366px] bg-black text -white">
       <EachService
         src={logo}
-        title="Free Shipping"
-        content="Free delivery on qualifying orders of &#163;50+"
+        title="Kostenlose Lieferung"
+        content="Kostenlose Lieferung ab einem Bestellwert von 50 €"
       />
       <EachService
         src={electricBolt}
-        title="Fast Delivery"
-        content="Magna massa acet turca tratto at fames."
+        title="Schnelle Lieferung"
+        content="Expresslieferung für schnellen Weingenuss."
       />
       <EachService
         src={star}
-        title="Loyalty Reward"
-        content="Tellus ornare at consequat ipsum, non labortis."
+        title="Treueprämie"
+        content="Sammeln und sparen mit unserem Treueprogramm."
       />
       <EachService
         src={verifiedUser}
-        title="Extend Warranty"
-        content="Extend your warranty on selected items."
+        title="Garantie verlängern"
+        content="Sichern Sie Ihren Kauf mit erweiterter Garantie."
       />
     </div>
   )

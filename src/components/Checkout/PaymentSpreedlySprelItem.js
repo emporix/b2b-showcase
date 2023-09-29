@@ -7,7 +7,7 @@ import { usePayment } from 'pages/checkout/PaymentProvider'
 import axios from 'axios'
 
 
-const PaymentSpreedlySprelItem = ({ radioKey, cart, paymentMode }) => {
+const PaymentSpreedlySprelItem = ({ radioKey, props, paymentMode }) => {
   const { radioActive } = useContext(RadioContext)
   
   const { setPayment, payment } = usePayment()
@@ -19,7 +19,6 @@ const PaymentSpreedlySprelItem = ({ radioKey, cart, paymentMode }) => {
   }, [radioActive])
 
   const generateToken = () => {
-    window.console.log("MODE", paymentMode)
     var formData = new FormData();
     formData.append("redirect_url", window.location.href)
     formData.append("environment_key", paymentMode.environmentKey)
@@ -50,7 +49,7 @@ const PaymentSpreedlySprelItem = ({ radioKey, cart, paymentMode }) => {
       customAttributes:  {
         token : token,
         modeId : paymentMode.id,
-        customer : cart.customerId
+        customer : props.customerId
       }
     })
   }

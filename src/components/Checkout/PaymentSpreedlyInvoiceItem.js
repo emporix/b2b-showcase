@@ -7,7 +7,7 @@ import { Dropdown1 } from 'components/Utilities/dropdown'
 import { usePayment } from 'pages/checkout/PaymentProvider'
 
 
-const PaymentSpreedlyInvoiceItem = ({ radioKey, cart, paymentMode }) => {
+const PaymentSpreedlyInvoiceItem = ({ radioKey, props, paymentMode }) => {
   const { radioActive, setRadioActive } = useContext(RadioContext)
   
   const { setPayment, payment } = usePayment()
@@ -21,7 +21,7 @@ const PaymentSpreedlyInvoiceItem = ({ radioKey, cart, paymentMode }) => {
             displayName: 'Invoice',   
             customAttributes : {
               modeId : paymentMode.id,
-              customer : cart.customerId
+              customer : props.customerId
             }  
       })
     }

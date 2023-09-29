@@ -42,3 +42,18 @@
 .edit-button {
   color: dodgerBlue;
 }
+
+.hidden {
+  display: none;
+}
+
+.fitToModal {
+  width: 80vw;
+  height: 303px;
+}
+
+.deferredPaymentBox {
+  width: 50vw;
+  margin: auto;
+  position: relative;
+}

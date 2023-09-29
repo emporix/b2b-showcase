@@ -324,3 +324,24 @@
 .category_pan_field_title {
   @apply w-[85%] whitespace-nowrap overflow-hidden text-ellipsis block capitalize
 }
+
+.product-configuration-attribute {
+  margin-bottom: 10px;
+}
+
+.product-configuration-attribute-value {
+  margin: 5px;
+  padding: 5px;
+  border: 1px solid black;
+}
+
+.product-configuration-attribute-value-active {
+  background-color: rgb(250, 196, 32);
+}
+
+.product-configuration-attribute-value-inactive {
+  background-color: white;
+  color: grey;
+  border: 1px solid grey;
+  cursor: no-drop;
+}

@@ -1,0 +1,48 @@
+.storefinderTable {
+    margin-top: 16rem;
+}
+
+.storefinderTable__table {
+    margin: 0 10rem;
+}
+
+.storefinderTable__table__items {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.storefinderTable__table__item {
+    width: 25%;
+    flex-shrink: 0;
+    margin: 1rem 0;
+}
+
+@media screen and (max-width:1400px) {
+    .storefinderTable__table {
+        margin: 0 4rem;
+    }
+
+    .storefinderTable__table__item {
+        width: 33%;
+    }
+}
+
+@media screen and (max-width:1024px) {
+    .storefinderTable__table {
+        margin: 0 2rem;
+    }
+
+    .storefinderTable__table__item {
+        width: 50%;
+    }
+}
+
+@media screen and (max-width:740px) {
+    .storefinderTable__table {
+        margin: 0 1rem;
+    }
+
+    .storefinderTable__table__item {
+        width: 100%;
+    }
+}

@@ -4,47 +4,46 @@ import { RadioContext } from '../Utilities/radio'
 import { Container, GridLayout } from '../Utilities/common'
 import { TextBold2 } from '../Utilities/typography'
 import { usePayment } from 'pages/checkout/PaymentProvider'
-import { fetchPaymentGatewayModes } from 'services/service.config'
-import { ACCESS_TOKEN } from 'constants/localstorage'
-import { api } from 'services/axios'
 
 
-const PaymentSpreedlyCreditCardItem = ({ radioKey, cart, paymentMode }) => {
+const PaymentSpreedlyCreditCardItem = ({ radioKey, props, paymentMode }) => {
   const { radioActive } = useContext(RadioContext)
   
   const { setPayment, payment } = usePayment()
   
 
   useEffect(() => {
-    window['SpreedlyExpress'].init(paymentMode.environmentKey, {
-      "amount": cart.subtotalAggregate.grossValue + ' ' + cart.subtotalAggregate.currency,
-      "company_name": "PowerZone",
-      "sidebar_bottom_description": "Total Price",
-    }, {
-      "customerId": cart.customerId
-    });
-  }, [cart])
-
-  useEffect(() => {
     if(radioActive === radioKey) {
-      setPayment({
-            provider: 'payment-gateway',
-            method: 'card',    
-            displayName: 'Credit cart'  
-      })
+
+      window['SpreedlyExpress'].init(paymentMode.environmentKey, {
+        "amount": props.grossValue + ' ' + props.currency,
+        "company_name": "PowerZone",
+        "sidebar_bottom_description": "Total Price",
+      }, {
+        "customerId": props.customerId
+      });
+
+      window['SpreedlyExpress'].onPaymentMethod(function(token, paymentMethod) {
+        window.console.log("Listener", token)
+        let browserInfo = paymentMode.scaProviderToken ? window['Spreedly'].ThreeDS.serialize('4') : null
+    
+        const currentPayment =  {
+          provider: 'payment-gateway',
+          method: 'card',    
+          displayName: 'Credit cart'  
+        }
+        currentPayment.paymentMode = paymentMode
+        currentPayment.customAttributes = {
+          token : token,
+          modeId : paymentMode.id,
+          customer : props.customerId,
+          browserInfo : browserInfo,
+        }
+        setPayment(currentPayment)
+        window['SpreedlyExpress'].unload()
+      });
     }
   }, [radioActive])
-
-  window['SpreedlyExpress'].onPaymentMethod(function(token, paymentMethod) {
-    const currentPayment = payment
-    currentPayment.customAttributes = {
-      token : token,
-      modeId : paymentMode.id,
-      customer : cart.customerId
-    }
-    setPayment(currentPayment)
-    window['SpreedlyExpress'].unload()
-  });
 
   const openModal = (e) => {
     window['SpreedlyExpress'].openView()
@@ -61,7 +60,7 @@ const PaymentSpreedlyCreditCardItem = ({ radioKey, cart, paymentMode }) => {
         <Container className="gap-4 items-center">
           <RadioItem radioKey={radioKey} />
           <div className="brand-blue">
-            <TextBold2>Credit cart</TextBold2>
+            <TextBold2>{paymentMode.scaProviderToken ? (<>Credit cart (3D Secure)</>) : (<>Credit cart</>)}</TextBold2>
           </div>
         </Container>
         <GridLayout className="gap-[2px]">

@@ -1,8 +1,10 @@
 import getSymbolFromCurrency from 'currency-symbol-map'
 import React, { createContext, useContext, useEffect, useState } from 'react'
 import currencyService from 'services/currency.service'
+import cartService from 'services/cart.service'
 import { useAppContext } from './app-context'
 import { useSites } from './sites-provider'
+import { useCart } from './cart-provider'
 
 const CurrencyContext = createContext({})
 
@@ -11,6 +13,7 @@ export const useCurrency = () => useContext(CurrencyContext)
 const CurrencyProvider = ({ children }) => {
   const { updateContext, context } = useAppContext()
   const { currentSite } = useSites()
+  const { cartAccount } = useCart()
   const [currencyList, setCurrencyList] = useState([
     {
       code: 'EUR',
@@ -45,6 +48,7 @@ const CurrencyProvider = ({ children }) => {
   }
 
   const updateCurrency = async (value, site) => {
+    cartService.changeCurrency(value, cartAccount.id)
     setActiveCurrency({
       code: value,
       symbol: getSymbolFromCurrency(value),

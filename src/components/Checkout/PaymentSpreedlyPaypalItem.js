@@ -7,7 +7,7 @@ import { usePayment } from 'pages/checkout/PaymentProvider'
 import axios from 'axios'
 
 
-const PaymentSpreedlyPaypalItem = ({ radioKey, cart, paymentMode }) => {
+const PaymentSpreedlyPaypalItem = ({ radioKey, props, paymentMode }) => {
   const { radioActive } = useContext(RadioContext)
   
   const { setPayment, payment } = usePayment()
@@ -51,7 +51,7 @@ const PaymentSpreedlyPaypalItem = ({ radioKey, cart, paymentMode }) => {
       customAttributes:  {
         token : token,
         modeId : paymentMode.id,
-        customer : cart.customerId
+        customer : props.customerId
       }
     })
   }
