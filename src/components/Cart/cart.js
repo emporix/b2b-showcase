@@ -323,7 +323,7 @@ export const CartVat = ({value, taxPercentage, currency}) => {
       </span>
             <span>
         <CurrencyBeforeValue
-            value={Math.trunc(value * (taxPercentage / 100) * 100) / 100}
+            value={value}
             currency={currency}
         />
       </span>
@@ -424,7 +424,7 @@ export const CartActionPanel = ({action}) => {
                             cartAccount?.taxAggregate &&
                             cartAccount?.taxAggregate.lines.length > 0 && (
                                 <CartVat
-                                    value={cartAccount.totalPrice.amount}
+                                    value={cartAccount.subtotalAggregate.taxValue}
                                     taxPercentage={cartAccount?.taxAggregate.lines[0].rate}
                                     currency={cartAccount?.currency}
                                 />
@@ -434,7 +434,7 @@ export const CartActionPanel = ({action}) => {
                         {cartAccount?.subtotalAggregate &&
                             cartAccount?.subtotalAggregate.grossValue && (
                                 <CartSubTotalIncludeVat
-                                    grossValue={cartAccount.totalPrice.amount + cartAccount.totalPrice.amount * cartAccount?.taxAggregate.lines[0].rate / 100}
+                                    grossValue={cartAccount.totalPrice.amount}
                                     currency={cartAccount.currency}
                                 />
                             )}
@@ -455,8 +455,7 @@ export const CartActionPanel = ({action}) => {
                                 <CartTotalPrice
                                     totalValue={
                                         cartAccount.totalPrice.amount +
-                                        +cartAccount.totalPrice.amount * cartAccount?.taxAggregate.lines[0].rate / 100
-                                        + getShippingCost(shippingMethod)
+                                         + getShippingCost(shippingMethod)
                                     }
                                     currency={cartAccount.currency}
                                 />
