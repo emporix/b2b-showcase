@@ -303,8 +303,8 @@ export const CartSubTotalExcludeVat = ({value, currency}) => {
             <span className="font-semibold">Subtotal without VAT</span>
             <span className="font-semibold">
         <CurrencyBeforeValue
-            value={Math.trunc(value * 100) / 100}
-            currency={currency}
+          value={value}
+          currency={currency}
         />
       </span>
         </>
@@ -443,19 +443,24 @@ export const CartActionPanel = ({ action, showShipping }) => {
                     </CartActionRow>
                 )}
 
+        {cartAccount &&
+          cartAccount?.taxAggregate &&
+          cartAccount?.taxAggregate.lines.length > 0 && (
+          cartAccount?.taxAggregate.lines.map((taxItem) => {
+            return (
+              <CartActionRow>
+                <LayoutBetween>
+                  <CartVat
+                    taxAggregate={taxItem}
+                    currency={cartAccount?.currency}
+                  />
+                </LayoutBetween>
+              </CartActionRow>
+            )
+          })
+        )}
+        
         <CartActionRow>
-          <LayoutBetween>
-            {cartAccount &&
-              cartAccount?.taxAggregate &&
-              cartAccount?.taxAggregate.lines.length > 0 && (
-                <CartVat
-                  value={cartAccount?.subtotalAggregate?.netValue}
-                  taxPercentage={cartAccount?.taxAggregate.lines[0].rate}
-                  currency={cartAccount?.currency}
-                  taxValue={cartAccount?.subtotalAggregate?.taxValue}
-                />
-              )}
-          </LayoutBetween>
           <LayoutBetween>
             {cartAccount?.subtotalAggregate &&
               cartAccount?.subtotalAggregate.grossValue && (
