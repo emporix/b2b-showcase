@@ -248,6 +248,12 @@ const ProductBundleInfo = ({product}) => {
 
   const { getLocalizedValue } = useLanguage()
   const [bundledProducts, setBundledProducts] = useState([])
+  const navigate = useNavigate()
+  const { isLoggedIn, userTenant } = useAuth()
+
+  const handleProductDetail = (id) => {
+    navigate(`/${userTenant}/product/details/${id}`)
+  }
 
   useEffect(() => {
     ; (async () => {
@@ -279,13 +285,13 @@ const ProductBundleInfo = ({product}) => {
         <Table>
           <TableHead>
             <TableRow>
-              <TableCell>Required or optional</TableCell>
-              <TableCell>Image</TableCell>
-              <TableCell>Code</TableCell>
-              <TableCell>Product Name</TableCell>
-              <TableCell>Quantity In Bundle</TableCell>
-              <TableCell>Price item</TableCell>
-              <TableCell>Price total</TableCell>
+              <TableCell style={{fontWeight: 'bold'}}>Required or optional</TableCell>
+              <TableCell style={{fontWeight: 'bold'}}>Image</TableCell>
+              <TableCell style={{fontWeight: 'bold'}}>Code</TableCell>
+              <TableCell style={{fontWeight: 'bold'}}>Product Name</TableCell>
+              <TableCell style={{fontWeight: 'bold'}}>Quantity In Bundle</TableCell>
+              <TableCell style={{fontWeight: 'bold'}}>Price item</TableCell>
+              <TableCell style={{fontWeight: 'bold'}}>Price total</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -303,8 +309,8 @@ const ProductBundleInfo = ({product}) => {
                     />
                   )}
                 </TableCell>
-                <TableCell>{bundledProduct.product.code}</TableCell>
-                <TableCell>{getLocalizedValue(bundledProduct.product.name)}</TableCell>
+                <TableCell style={{color: isBundledProductMandatory(bundledProduct.product.id) ? 'rgb(3 128 243 / 50%)' : 'rgb(3 128 243)', cursor: 'pointer'}} onClick={e => handleProductDetail(bundledProduct.product.id)}>{bundledProduct.product.code}</TableCell>
+                <TableCell style={{color: isBundledProductMandatory(bundledProduct.product.id) ? 'rgb(3 128 243 / 50%)' : 'rgb(3 128 243)', cursor: 'pointer'}} onClick={e => handleProductDetail(bundledProduct.product.id)}>{getLocalizedValue(bundledProduct.product.name)}</TableCell>
                 <TableCell>
                     <TextField
                       disabled={isBundledProductMandatory(bundledProduct.product.id)}
@@ -319,8 +325,8 @@ const ProductBundleInfo = ({product}) => {
                       defaultValue={bundledProduct.amount}
                     />
                 </TableCell>
-                <TableCell><CurrencyBeforeValue value={bundledProduct.price.effectiveValue} currency={bundledProduct.price.currency} /></TableCell>
-                <TableCell><CurrencyBeforeValue value={bundledProduct.price.effectiveValue * bundledProduct.amount} currency={bundledProduct.price.currency} /></TableCell>
+                <TableCell style={{color: isBundledProductMandatory(bundledProduct.product.id) ? 'grey' : 'black'}}><CurrencyBeforeValue value={bundledProduct.price.effectiveValue} currency={bundledProduct.price.currency} /></TableCell>
+                <TableCell style={{color: isBundledProductMandatory(bundledProduct.product.id) ? 'grey' : 'black'}}><CurrencyBeforeValue value={bundledProduct.price.effectiveValue * bundledProduct.amount} currency={bundledProduct.price.currency} /></TableCell>
               </TableRow>
             ))}
           </TableBody>
