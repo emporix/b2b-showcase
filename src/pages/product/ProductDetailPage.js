@@ -37,7 +37,7 @@ import productService from '../../services/product/product.service'
 import priceService from '../../services/product/price.service'
 import { useNavigate } from 'react-router-dom'
 import { ProductConfiguration } from './ProductConfiguration'
-import { Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material'
+import { Checkbox, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TextField } from '@mui/material'
 
 const ProductContext = createContext()
 
@@ -267,6 +267,11 @@ const ProductBundleInfo = ({product}) => {
     })()
   }, [product])
 
+  const isBundledProductMandatory = (id) => {
+    const r = product?.mixins?.bundlesAttributes?.bundledProducts.filter(p => p.id === id).map(p => p.mandatory)
+    return r && r.length > 0 && r[0] === true
+  }
+
   return (
     <>
       <div className="product-match-caption w-full" style={{paddingBottom: 0}}>Bundled products</div>
@@ -274,6 +279,7 @@ const ProductBundleInfo = ({product}) => {
         <Table>
           <TableHead>
             <TableRow>
+              <TableCell>Required or optional</TableCell>
               <TableCell>Image</TableCell>
               <TableCell>Code</TableCell>
               <TableCell>Product Name</TableCell>
@@ -288,6 +294,7 @@ const ProductBundleInfo = ({product}) => {
                 key={bundledProduct.product.code}
                 sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
               >
+                <TableCell><Checkbox  defaultChecked={true} value={true} disabled={isBundledProductMandatory(bundledProduct.product.id)} /> {isBundledProductMandatory(bundledProduct.product.id)}</TableCell>
                 <TableCell component="th" scope="row">
                   {bundledProduct.product.media && bundledProduct.product.media.length > 0 && (
                     <img
@@ -298,7 +305,20 @@ const ProductBundleInfo = ({product}) => {
                 </TableCell>
                 <TableCell>{bundledProduct.product.code}</TableCell>
                 <TableCell>{getLocalizedValue(bundledProduct.product.name)}</TableCell>
-                <TableCell>{bundledProduct.amount}</TableCell>
+                <TableCell>
+                    <TextField
+                      disabled={isBundledProductMandatory(bundledProduct.product.id)}
+                      id="bundleAmount-number"
+                      type="number"
+                      size="small"
+                      InputProps={{ inputProps: { min: 0, max: 10 } }}
+                      InputLabelProps={{
+                        shrink: true,
+                      }}
+                      
+                      defaultValue={bundledProduct.amount}
+                    />
+                </TableCell>
                 <TableCell><CurrencyBeforeValue value={bundledProduct.price.effectiveValue} currency={bundledProduct.price.currency} /></TableCell>
                 <TableCell><CurrencyBeforeValue value={bundledProduct.price.effectiveValue * bundledProduct.amount} currency={bundledProduct.price.currency} /></TableCell>
               </TableRow>
