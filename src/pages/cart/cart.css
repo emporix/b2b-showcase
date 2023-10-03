@@ -63,7 +63,6 @@
 .shopping-cart_promotions-label {
   display: flex;
   justify-content: center;
-  align-items: center;
   flex-direction: row;
   align-items: flex-start;
   padding: 2px 8px;

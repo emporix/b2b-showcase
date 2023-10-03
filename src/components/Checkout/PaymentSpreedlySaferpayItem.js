@@ -29,7 +29,6 @@ const PaymentSpreedlySaferpayItem = ({ radioKey, props, paymentMode }) => {
       });
 
       window['SpreedlyExpress'].onPaymentMethod(function(token, paymentMethod) {
-        window.console.log("Listener", token)
         setSaferpayCardDetailsProvided(true)
         setSpreedlyToken(token)
 
@@ -63,7 +62,6 @@ const PaymentSpreedlySaferpayItem = ({ radioKey, props, paymentMode }) => {
     }
     const res = await api.post(`${initializePayment()}`, body, { headers })
     window.location.replace(res.data.externalPaymentRedirectURL)
-    window.console.log("SAFERPAY init", res)
   }
 
   return (

@@ -37,6 +37,7 @@ import productService from '../../services/product/product.service'
 import priceService from '../../services/product/price.service'
 import { useNavigate } from 'react-router-dom'
 import { ProductConfiguration } from './ProductConfiguration'
+import { Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material'
 
 const ProductContext = createContext()
 
@@ -179,7 +180,8 @@ const ProductSkuAndReview = ({ product }) => {
   )
 }
 const ProductTitle = ({ name }) => {
-  return <div className="mt-6 product-title">{name}</div>
+  const { getLocalizedValue } = useLanguage()
+  return <div className="mt-6 product-title">{getLocalizedValue(name)}</div>
 }
 const ProductPriceAndAmount = ({ price, productCount, estimatedDelivery }) => {
   const { isLoggedIn } = useAuth()
@@ -239,6 +241,72 @@ const ProductBasicInfo = ({ product }) => {
         />
       )}
     </div>
+  )
+}
+
+const ProductBundleInfo = ({product}) => {
+
+  const { getLocalizedValue } = useLanguage()
+  const [bundledProducts, setBundledProducts] = useState([])
+
+  useEffect(() => {
+    ; (async () => {
+      const bundledProductsIds = product.bundledProducts.map(i => i.productId)
+      const products = await productService.getProductsWithIds(bundledProductsIds)
+      const prices = await priceService.getPriceWithProductIds(bundledProductsIds)
+      const res = products.map(p => {
+        const price = prices.filter(i => i.itemId.id === p.id)[0]
+        const amount = product.bundledProducts.filter(prod => prod.productId === p.id)[0]
+        return {
+          product : p,
+          price: price,
+          amount : amount.amount
+        }
+      })
+      setBundledProducts(res)
+    })()
+  }, [product])
+
+  return (
+    <>
+      <div className="product-match-caption w-full" style={{paddingBottom: 0}}>Bundled products</div>
+      <TableContainer component={Paper}>
+        <Table>
+          <TableHead>
+            <TableRow>
+              <TableCell>Image</TableCell>
+              <TableCell>Code</TableCell>
+              <TableCell>Product Name</TableCell>
+              <TableCell>Quantity In Bundle</TableCell>
+              <TableCell>Price item</TableCell>
+              <TableCell>Price total</TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {bundledProducts && bundledProducts.map((bundledProduct) => (
+              <TableRow
+                key={bundledProduct.product.code}
+                sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+              >
+                <TableCell component="th" scope="row">
+                  {bundledProduct.product.media && bundledProduct.product.media.length > 0 && (
+                    <img
+                      src={bundledProduct.product.media[0].url}
+                      className="w-fit h-8"
+                    />
+                  )}
+                </TableCell>
+                <TableCell>{bundledProduct.product.code}</TableCell>
+                <TableCell>{getLocalizedValue(bundledProduct.product.name)}</TableCell>
+                <TableCell>{bundledProduct.amount}</TableCell>
+                <TableCell><CurrencyBeforeValue value={bundledProduct.price.effectiveValue} currency={bundledProduct.price.currency} /></TableCell>
+                <TableCell><CurrencyBeforeValue value={bundledProduct.price.effectiveValue * bundledProduct.amount} currency={bundledProduct.price.currency} /></TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </TableContainer>
+    </>
   )
 }
 
@@ -427,10 +495,10 @@ const ProductDetailsTabContent = ({ product }) => {
   }
   const getAttributes = (items) => {
     let res = []
-    Object.keys(items).map((key) => {
+    Object.keys(items).forEach((key) => {
       let value = items[key]
       let caption = getFeatureName(key)
-      if (typeof value !== 'object') value = value
+      if (typeof value !== 'object') value = items[key]
       else if ('value' in value && 'uom' in value)
         value = value['value'] + ' ' + value['uom']
       else value = ''
@@ -441,7 +509,7 @@ const ProductDetailsTabContent = ({ product }) => {
   return (
     <div className="product-details-tab-content-wrapper">
       <div className="grid grid-cols-1 gap-12">
-        {Object.keys(product.mixins).map((key) => {
+        {Object.keys(product.mixins ? product.mixins : []).map((key) => {
           return (
             <ProductInfoPortal
               key={key}
@@ -532,6 +600,7 @@ const ProductInfoPortal = ({ caption, items }) => {
 }
 
 const ProductDetailInfo = ({ product }) => {
+  const { getLocalizedValue } = useLanguage()
   return (
     <div className="product-detail-page-info-wrapper lg:py-12 pb-12">
       <div className="product-detail-content">
@@ -544,7 +613,7 @@ const ProductDetailInfo = ({ product }) => {
               <ProductDetailsTabContent product={product} />
             </AccordionItem>
             <AccordionItem index={1} title="Additional Information">
-              {product.description}
+              {getLocalizedValue(product.description)}
             </AccordionItem>
             <AccordionItem index={2} title="Reviews">
               Reviews
@@ -612,7 +681,6 @@ const products = [
 
 const getRelatedProducts = async (language, product) => {
   let productIds = []
-  console.log(product)
   const relatedItems = product.relatedItems
   if (!relatedItems) return null
 
@@ -697,6 +765,9 @@ const ProductDetailPage = ({ product, brand, labels }) => {
         <ProductContent product={product} brand={brand} labels={labels} />
         {product.productType === 'PARENT_VARIANT' && (
            product?.mixins?.b2bShowcase?.productConfiguration === false ? <ProductVariants product={product} /> : <ProductConfiguration product={product} />
+        )}
+        {product.productType === 'BUNDLE' && (
+          <ProductBundleInfo product={product} />
         )}
         <ProductDetailInfo product={product} />
         <ProductMatchItems productInput={product} />

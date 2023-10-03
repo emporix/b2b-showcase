@@ -3,7 +3,9 @@ import { Heading4, Heading5 } from '../components/Utilities/typography'
 import { TextInput } from '../components/Utilities/input'
 import { LargePrimaryButton } from '../components/Utilities/button'
 import { useCallback, useEffect, useState } from 'react'
-import { CLIENT_ID, TENANT } from 'constants/localstorage'
+import { CLIENT_ID, TENANT, PROCUREMENT_SYSTEM_URL, CUSTOMER_TOKEN, CUSTOMER_TOKEN_EXPIRES_IN, EXTERNAL_CUSTOMER_TOKEN, EXTERNAL_TOKEN_EXPIRIES_IN, EXTERNAL_SAAS_TOKEN } from 'constants/localstorage'
+import { loginBasedOnCustomerToken } from 'services/user/auth.service'
+import AccessToken from 'services/user/accessToken'
 const DEVPORTAL_URL = process.env.REACT_APP_DEVPORTAL_URL
 const InvalidTenant = () => {
   const [tenant, setTenant] = useState('')
@@ -16,6 +18,12 @@ const InvalidTenant = () => {
     window.location.replace(`/${tenant}`)
   }, [clientId, tenant])
 
+  const insertLocalStorageValue = (key, value) => {
+    if(value) {
+      localStorage.setItem(key, value)
+    }
+  }
+
   useEffect(() => {
     const urlParams = new URLSearchParams(window.location.search)
     const tenantParam = urlParams.get("tenant")
@@ -24,6 +32,10 @@ const InvalidTenant = () => {
       localStorage.clear()
       localStorage.setItem(CLIENT_ID, clientIdParam)
       localStorage.setItem(TENANT, tenantParam)
+      insertLocalStorageValue(EXTERNAL_CUSTOMER_TOKEN, urlParams.get('customerToken'))
+      insertLocalStorageValue(EXTERNAL_TOKEN_EXPIRIES_IN, urlParams.get('customerTokenExpiresIn'))
+      insertLocalStorageValue(EXTERNAL_SAAS_TOKEN, urlParams.get('saasToken'))
+      insertLocalStorageValue(PROCUREMENT_SYSTEM_URL, urlParams.get('procurementSystemUrl'))
       window.location.replace(`/${tenantParam}`)
     }
   }, [])

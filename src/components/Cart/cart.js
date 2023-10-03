@@ -11,6 +11,8 @@ import Quantity from 'components/Utilities/quantity/quantity'
 import { cartUrl, checkoutUrl, quoteUrl } from 'services/service.config'
 import { useCart } from 'context/cart-provider'
 import { border } from '@mui/system'
+import { PROCUREMENT_SYSTEM_URL } from 'constants/localstorage'
+import { useLanguage } from 'context/language-provider'
 
 const CartProductContent = ({ children }) => {
   return <div className="cart-product-content">{children}</div>
@@ -57,6 +59,7 @@ export const PriceExcludeVAT1 = ({ price, caption }) => {
 
 export const CartMobileItem = ({ cartItem }) => {
   const { incrementCartItemQty, decrementCartItemQty } = useCart()
+  const { getLocalizedValue } = useLanguage()
 
   return (
     <GridLayout className="gap-4">
@@ -70,7 +73,7 @@ export const CartMobileItem = ({ cartItem }) => {
         <div className="flex-auto gap-4">
           <LayoutBetween>
             <GridLayout className="gap-[10px]">
-              <div className="cart-product-name">{cartItem.product.name}</div>
+              <div className="cart-product-name">{getLocalizedValue(cartItem.product.name)}</div>
               <div className="cart-product-sku-wrapper">
                 SKU:&nbsp;
                 <span className="cart-product-sku">
@@ -200,10 +203,11 @@ export const CartProductImageAndReadOnlyQuantity = ({ cartItem }) => {
 }
 
 export const CartProductBasicInfo = ({ cart }) => {
+  const { getLocalizedValue } = useLanguage()
   return (
     <div className="cart-product-basic-info">
       <GridLayout className="gap-2">
-        <div className="cart-product-name">{cart.product.name}</div>
+        <div className="cart-product-name">{getLocalizedValue(cart.product.name)}</div>
         <div className="cart-product-sku-wrapper">
           SKU:&nbsp;
           <span className="cart-product-sku">{cart.product.code}</span>
@@ -382,6 +386,15 @@ const CartGoCart = () => {
     </Link>
   )
 }
+const CartGoProcurementSystem = () => {
+  return (
+    <Link to={localStorage.getItem(PROCUREMENT_SYSTEM_URL)} className="w-full">
+      <button className="cart-go-checkout-btn py-[12px] px-[14px] bg-yellow rounded text-eerieBlack">
+        TRANSFER TO PROCUREMENT SYSTEM
+      </button>
+    </Link>
+  )
+}
 
 export const getShippingCost = (shippingMethod) => {
   return shippingMethod != null ? shippingMethod?.fee : 0
@@ -467,11 +480,20 @@ export const CartActionPanel = ({ action }) => {
           </div>
         </CartActionRow>
 
-        {action === undefined || action === true ? (
+        {(action === undefined || action === true) && !localStorage.getItem(PROCUREMENT_SYSTEM_URL) ? (
+            
             <>
                 <CartGoCheckout />
                 <CartGoCart />
                 <CartRequestQuote />
+            </>
+        ) : (
+          <></>
+        )}
+        {(action === undefined || action === true) && localStorage.getItem(PROCUREMENT_SYSTEM_URL) ? (
+            
+            <>
+                <CartGoProcurementSystem/>
             </>
         ) : (
           <></>

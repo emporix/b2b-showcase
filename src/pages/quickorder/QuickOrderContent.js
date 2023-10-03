@@ -33,6 +33,7 @@ import {
   MediumPrimaryButton,
 } from 'components/Utilities/button'
 import { useCart } from 'context/cart-provider'
+import { useLanguage } from 'context/language-provider'
 
 const CartItem = ({
   item,
@@ -44,6 +45,8 @@ const CartItem = ({
   activeFocusCode,
   removeHandler,
 }) => {
+  const { getLocalizedValue } = useLanguage()
+
   return (
     <TableRow
       sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
@@ -62,7 +65,7 @@ const CartItem = ({
         )}
       </TableCell>
       <TableCell align="left" className="!py-6 !font-bold w-[250px]">
-        {item.name}
+        {getLocalizedValue(item.name)}
       </TableCell>
       <TableCell align="left" className="!py-6">
         <TextInputOnly
@@ -79,18 +82,18 @@ const CartItem = ({
         />
       </TableCell>
       <TableCell align="left" className="!py-6">
-        {item.price.totalValue ? (
-          <CurrencyBeforeValue value={item.price.totalValue} />
-        ) : null}
+        {item?.price?.totalValue ? (
+          <CurrencyBeforeValue value={item?.price?.totalValue} />
+        ) : (<div>Missing price</div>)}
       </TableCell>
       <TableCell align="left" className="!py-6">
-        {item.price.totalValue ? (
+        {item?.price?.totalValue ? (
           <CurrencyBeforeValue
             value={
               Math.trunc(item.price.totalValue * item.quantity * 100) / 100
             }
           />
-        ) : null}
+        ) : (<div>Missing price</div>)}
       </TableCell>
       <TableCell
         align="left"
@@ -107,6 +110,7 @@ const Alert = React.forwardRef(function Alert(props, ref) {
 })
 
 const DesktopContent = () => {
+  const { getLocalizedValue } = useLanguage()
   const {
     fetchProductsByCode,
     productsSuggestions,
@@ -121,7 +125,7 @@ const DesktopContent = () => {
     return productsSuggestions.map((item) => {
       return {
         id: item.code,
-        label: item.name,
+        label: getLocalizedValue(item.name),
       }
     })
   }, [productsSuggestions])

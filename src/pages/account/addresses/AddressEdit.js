@@ -35,15 +35,6 @@ const AddressesEdit = () => {
     return sites.map((site) => ({ label: site.code, value: site.code }))
   }, [sites])
 
-  // const selectedCountry = useState()
-
-  // useEffect(() => {
-  //   ;(async () => {
-  //     const c = await fetchCountries()
-  //     console.log(c)
-  //   })()
-  // }, [])
-
   useEffect(() => {
     if (address) {
       setFormData(address)
@@ -206,7 +197,6 @@ const AddressesEdit = () => {
                   value: formData.country,
                 }}
                 onChange={(e) => {
-                  console.log(e)
                   setFormData((prev) => {
                     return { ...prev, country: e[0].value }
                   })

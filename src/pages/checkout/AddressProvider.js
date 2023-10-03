@@ -89,7 +89,6 @@ export const AddressProvider = ({ children }) => {
           .sort((a, b) => a.cost.amount - b.cost.amount)[0]?.cost?.amount,
       }))
       .sort((a, b) => a.fee - b.fee)
-    window.console.log("SHIPPING METHODS", methods, filteredMethods, cart)  
     setShippingMethods(filteredMethods)
   }, [])
 

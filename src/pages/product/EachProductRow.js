@@ -9,16 +9,19 @@ import { useCart } from 'context/cart-provider'
 import { formatPrice } from 'helpers/price'
 import { LargePrimaryButton } from 'components/Utilities/button'
 import { useNavigate } from 'react-router-dom'
+import { useLanguage } from 'context/language-provider'
 
 const EachProductRow = ({ item, type, available, rating, productCount }) => {
+  const { getLocalizedValue } = useLanguage()
   const imageSrc = useMemo(() => {
     return item.media[0] === undefined ? '' : item.media[0]['url']
   }, [item])
   const { putCartProduct } = useCart()
   const trimmedDescription = useMemo(() => {
-    return item.description.length > maxProductDescriptionLength
-      ? `${item.description.substr(0, maxProductDescriptionLength)} ...`
-      : item.description
+    const desc = getLocalizedValue(item.description)
+    return desc.length > maxProductDescriptionLength
+      ? `${desc.substr(0, maxProductDescriptionLength)} ...`
+      : desc
   }, [item.description])
 
   const { isLoggedIn, userTenant } = useAuth()
@@ -59,7 +62,7 @@ const EachProductRow = ({ item, type, available, rating, productCount }) => {
       <div className="flex-auto w-[55%]">
         <div className="text-xs font-bold text-gray">{item.code}</div>
         <div className="text-2xl mt-4 font-semibold text-black h-16">
-          {item.name}
+          {getLocalizedValue(item.name)}
         </div>
         <div className="text-sm mt-4  text-black flex">
           <ReactStars size={16} value={rating} color2={'#FBB13C'} />(

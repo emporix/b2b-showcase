@@ -21,6 +21,7 @@ import { useSites } from '../../context/sites-provider'
 import { useCart } from 'context/cart-provider'
 import { useCurrency } from 'context/currency-context'
 import { useAuth } from 'context/auth-provider'
+import { useLanguage } from 'context/language-provider';
 
 function VariantAttributes({ attributes }) {
   return (
@@ -44,6 +45,7 @@ function VariantAttributes({ attributes }) {
 }
 
 const VariantSummary = ({ variant, setQuantity, quantity, price }) => {
+  const { getLocalizedValue } = useLanguage()
   return (
     <Grid
       container
@@ -67,7 +69,7 @@ const VariantSummary = ({ variant, setQuantity, quantity, price }) => {
           <Grid container direction="column">
             <Grid item>
               <Typography>
-                <b>{variant.name}</b>
+                <b>{getLocalizedValue(variant.name)}</b>
               </Typography>
             </Grid>
             <Grid item>

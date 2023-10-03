@@ -151,7 +151,7 @@ const CartService = () => {
         price: {
           priceId: product.price.priceId,
           effectiveAmount:
-            product.price.effectiveValue || product.price.effectiveValue,
+            product.price.effectiveAmount || product.price.effectiveValue,
           originalAmount:
             product.price.originalAmount || product.price.originalValue,
           currency: product.price.currency,

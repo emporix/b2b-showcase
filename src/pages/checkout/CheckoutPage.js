@@ -297,7 +297,7 @@ const CheckoutPage = () => {
 
   const subtotalWithoutVat = useMemo(() => {
     let subTotal =
-      cartAccount.subtotalAggregate && cartAccount.subtotalAggregate
+      cartAccount.subtotalAggregate
         ? cartAccount.subtotalAggregate.grossValue
         : 0
     if (cartAccount.totalDiscount && cartAccount.totalDiscount.amount) {
@@ -349,7 +349,6 @@ const CheckoutPage = () => {
       browserInfo: payment.customAttributes.browserInfo 
     }
     const res = await api.post(`${authorizePayment()}`, body, { headers })
-    window.console.log("AUTH Response", res)
     order.paymentDetails = {
       externalPaymentHttpMethod: res.data.externalPaymentHttpMethod,
       authorizationToken: res.data.authorizationToken,

@@ -10,9 +10,11 @@ import { LargePrimaryButton } from '../../components/Utilities/button'
 import { trimImage } from '../../helpers/images'
 import { useAuth } from 'context/auth-provider'
 import { formatPrice } from 'helpers/price'
+import { useLanguage } from 'context/language-provider'
 
 const EachProduct = ({ item, available, rating, productCount }) => {
   const { isLoggedIn, userTenant } = useAuth()
+  const { getLocalizedValue } = useLanguage()
   const imageSrc = useMemo(() => {
     return item.media[0] === undefined ? '' : item.media[0]['url']
   }, [item])
@@ -66,7 +68,7 @@ const EachProduct = ({ item, available, rating, productCount }) => {
           {item.code}
         </div>
         <div className="mt-2 text-left max-w-[240px] min-h-[60px] lg:h-12 text-[16px]/[24px] text-eerieBlack font-medium">
-          {item.name}
+          {getLocalizedValue(item.name)}
         </div>
       </div>
       {item.productType !== 'PARENT_VARIANT' && (

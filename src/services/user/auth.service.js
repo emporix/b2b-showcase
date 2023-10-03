@@ -51,7 +51,6 @@ export const register = async (
 }
 
 export const login = async (username, password, userTenant) => {
-  let responseData = null
   const anonymousToken = localStorage.getItem(ANONYMOUS_TOKEN)
   const { data } = await axios.post(
     API_URL + `/customer/${userTenant}/login`,
@@ -66,7 +65,11 @@ export const login = async (username, password, userTenant) => {
       },
     }
   )
+  return loginBasedOnCustomerToken(data, userTenant);
+}
 
+export const loginBasedOnCustomerToken = async (data, userTenant) => {
+  let responseData = null
   if (data.accessToken) {
     let now = Date.now()
     localStorage.setItem(
@@ -99,9 +102,12 @@ export const login = async (username, password, userTenant) => {
     userTenant: userTenant,
     username: responseData.firstName + ' ' + responseData.lastName,
   }
-  const anonCart = await CartService.getAnnonymousCart()
-  // save anonymous cart to merge
-  localStorage.setItem('anonymousCart', JSON.stringify(anonCart))
+  try {
+    const anonCart = await CartService.getAnnonymousCart()
+    // save anonymous cart to merge
+    localStorage.setItem('anonymousCart', JSON.stringify(anonCart))
+  } catch(ex) {}
+
   localStorage.setItem('user', JSON.stringify(userdata))
   return responseData
 }

@@ -40,8 +40,8 @@ const getCartAccount = async ({ customerId, sessionId }) => {
         } finally {
           // remove anonymous cart to merge
           localStorage.removeItem('anonymousCart')
-          return customerCart
         }
+        return customerCart
       } else {
         return customerCart
       }

@@ -24,7 +24,6 @@ const CheckoutSummary = ({ setFinal, order }) => {
 
 
   useEffect(() => {
-    window.console.log("3DS", payment?.paymentMode?.scaProviderToken, order?.paymentDetails?.authorizationToken)
    if(payment?.paymentMode?.scaProviderToken && order?.paymentDetails?.authorizationToken) {
     var lifecycle = new window['Spreedly'].ThreeDS.Lifecycle({
       environmentKey: payment?.paymentMode?.environmentKey,
