@@ -38,6 +38,7 @@ import priceService from '../../services/product/price.service'
 import { useNavigate } from 'react-router-dom'
 import { ProductConfiguration } from './ProductConfiguration'
 import { Checkbox, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TextField } from '@mui/material'
+import { check } from 'prettier'
 
 const ProductContext = createContext()
 
@@ -244,10 +245,13 @@ const ProductBasicInfo = ({ product }) => {
   )
 }
 
-const ProductBundleInfo = ({product}) => {
+const ProductBudle = ({product, bundledProduct}) => {
 
   const { getLocalizedValue } = useLanguage()
   const [bundledProducts, setBundledProducts] = useState([])
+  const [checked, setChecked] = useState(true)
+  const [totalPrice, setTotalPrice] = useState(0)
+  const [amount, setAmount] = useState(0)
   const navigate = useNavigate()
   const { isLoggedIn, userTenant } = useAuth()
 
@@ -256,22 +260,16 @@ const ProductBundleInfo = ({product}) => {
   }
 
   useEffect(() => {
-    ; (async () => {
-      const bundledProductsIds = product.bundledProducts.map(i => i.productId)
-      const products = await productService.getProductsWithIds(bundledProductsIds)
-      const prices = await priceService.getPriceWithProductIds(bundledProductsIds)
-      const res = products.map(p => {
-        const price = prices.filter(i => i.itemId.id === p.id)[0]
-        const amount = product.bundledProducts.filter(prod => prod.productId === p.id)[0]
-        return {
-          product : p,
-          price: price,
-          amount : amount.amount
-        }
-      })
-      setBundledProducts(res)
-    })()
-  }, [product])
+    setAmount(bundledProduct.amount)
+  }, [])  
+
+  useEffect(() => {
+    if(!checked) {
+      setTotalPrice(0)
+    } else {
+      setTotalPrice(bundledProduct.price.effectiveValue * amount)
+    }
+  }, [checked, amount])
 
   const isBundledProductMandatory = (id) => {
     const r = product?.mixins?.bundlesAttributes?.bundledProducts.filter(p => p.id === id).map(p => p.mandatory)
@@ -280,27 +278,11 @@ const ProductBundleInfo = ({product}) => {
 
   return (
     <>
-      <div className="product-match-caption w-full" style={{paddingBottom: 0}}>Bundled products</div>
-      <TableContainer component={Paper}>
-        <Table>
-          <TableHead>
-            <TableRow>
-              <TableCell style={{fontWeight: 'bold'}}>Required or optional</TableCell>
-              <TableCell style={{fontWeight: 'bold'}}>Image</TableCell>
-              <TableCell style={{fontWeight: 'bold'}}>Code</TableCell>
-              <TableCell style={{fontWeight: 'bold'}}>Product Name</TableCell>
-              <TableCell style={{fontWeight: 'bold'}}>Quantity In Bundle</TableCell>
-              <TableCell style={{fontWeight: 'bold'}}>Price item</TableCell>
-              <TableCell style={{fontWeight: 'bold'}}>Price total</TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {bundledProducts && bundledProducts.map((bundledProduct) => (
-              <TableRow
+      <TableRow
                 key={bundledProduct.product.code}
                 sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
               >
-                <TableCell><Checkbox  defaultChecked={true} value={true} disabled={isBundledProductMandatory(bundledProduct.product.id)} /> {isBundledProductMandatory(bundledProduct.product.id)}</TableCell>
+                <TableCell><Checkbox  defaultChecked={true} value={checked} disabled={isBundledProductMandatory(bundledProduct.product.id)} onChange={e => setChecked(e.target.checked)} /> {isBundledProductMandatory(bundledProduct.product.id)}</TableCell>
                 <TableCell component="th" scope="row">
                   {bundledProduct.product.media && bundledProduct.product.media.length > 0 && (
                     <img
@@ -321,13 +303,60 @@ const ProductBundleInfo = ({product}) => {
                       InputLabelProps={{
                         shrink: true,
                       }}
-                      
+                      onChange={e =>setAmount(e.target.value)}
                       defaultValue={bundledProduct.amount}
                     />
                 </TableCell>
                 <TableCell style={{color: isBundledProductMandatory(bundledProduct.product.id) ? 'grey' : 'black'}}><CurrencyBeforeValue value={bundledProduct.price.effectiveValue} currency={bundledProduct.price.currency} /></TableCell>
-                <TableCell style={{color: isBundledProductMandatory(bundledProduct.product.id) ? 'grey' : 'black'}}><CurrencyBeforeValue value={bundledProduct.price.effectiveValue * bundledProduct.amount} currency={bundledProduct.price.currency} /></TableCell>
+                <TableCell style={{color: isBundledProductMandatory(bundledProduct.product.id) ? 'grey' : 'black'}}><CurrencyBeforeValue value={totalPrice} currency={bundledProduct.price.currency} /></TableCell>
               </TableRow>
+    </>
+  )
+}
+
+const ProductBundleInfo = ({product}) => {
+
+  const [bundledProducts, setBundledProducts] = useState([])
+
+  useEffect(() => {
+    ; (async () => {
+      const bundledProductsIds = product.bundledProducts.map(i => i.productId)
+      const products = await productService.getProductsWithIds(bundledProductsIds)
+      const prices = await priceService.getPriceWithProductIds(bundledProductsIds)
+      const res = products.map(p => {
+        const price = prices.filter(i => i.itemId.id === p.id)[0]
+        const amount = product.bundledProducts.filter(prod => prod.productId === p.id)[0]
+        return {
+          product : p,
+          price: price,
+          amount : amount.amount
+        }
+      })
+      setBundledProducts(res)
+    })()
+  }, [product])
+
+
+
+  return (
+    <>
+      <div className="product-match-caption w-full" style={{paddingBottom: 0}}>Bundled products</div>
+      <TableContainer component={Paper}>
+        <Table>
+          <TableHead>
+            <TableRow>
+              <TableCell style={{fontWeight: 'bold'}}>Required or optional</TableCell>
+              <TableCell style={{fontWeight: 'bold'}}>Image</TableCell>
+              <TableCell style={{fontWeight: 'bold'}}>Code</TableCell>
+              <TableCell style={{fontWeight: 'bold'}}>Product Name</TableCell>
+              <TableCell style={{fontWeight: 'bold'}}>Quantity In Bundle</TableCell>
+              <TableCell style={{fontWeight: 'bold'}}>Price item</TableCell>
+              <TableCell style={{fontWeight: 'bold'}}>Price total</TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {bundledProducts && bundledProducts.map((bundledProduct) => (
+              <ProductBudle product={product} bundledProduct={bundledProduct} />
             ))}
           </TableBody>
         </Table>
