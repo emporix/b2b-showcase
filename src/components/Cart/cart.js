@@ -305,7 +305,7 @@ export const CartSubTotalExcludeVat = ({ value, currency }) => {
       <span className="font-semibold">Subtotal without VAT</span>
       <span className="font-semibold">
         <CurrencyBeforeValue
-          value={Math.trunc(value * 100) / 100}
+          value={value}
           currency={currency}
         />
       </span>
@@ -323,16 +323,16 @@ export const CartSubTotalIncludeVat = ({ grossValue, currency }) => {
   )
 }
 
-export const CartVat = ({ value, taxPercentage, currency }) => {
+export const CartVat = ({ taxAggregate, currency }) => {
   return (
     <>
       <span>
-        VAT {taxPercentage}% of{' '}
-        <CurrencyBeforeValue value={value} currency={currency} />
+        VAT {taxAggregate.rate}% of{' '}
+        <CurrencyBeforeValue value={taxAggregate.taxable} currency={currency} />
       </span>
       <span>
         <CurrencyBeforeValue
-          value={Math.trunc(value * (taxPercentage / 100) * 100) / 100}
+          value={taxAggregate.amount}
           currency={currency}
         />
       </span>
@@ -397,7 +397,7 @@ const CartGoProcurementSystem = () => {
 }
 
 export const getShippingCost = (shippingMethod) => {
-  return shippingMethod != null ? shippingMethod?.fee : 0
+  return shippingMethod != null ? shippingMethod?.fees[0].amount : 0
 }
 
 export const CartActionPanel = ({ action }) => {
@@ -434,23 +434,29 @@ export const CartActionPanel = ({ action }) => {
           </CartActionRow>
         )}
 
+        {cartAccount &&
+          cartAccount?.taxAggregate &&
+          cartAccount?.taxAggregate.lines.length > 0 && (
+          cartAccount?.taxAggregate.lines.map((taxItem) => {
+            return (
+              <CartActionRow>
+                <LayoutBetween>
+                  <CartVat
+                    taxAggregate={taxItem}
+                    currency={cartAccount?.currency}
+                  />
+                </LayoutBetween>
+              </CartActionRow>
+            )
+          })
+        )}
+        
         <CartActionRow>
-          <LayoutBetween>
-            {cartAccount &&
-              cartAccount?.taxAggregate &&
-              cartAccount?.taxAggregate.lines.length > 0 && (
-                <CartVat
-                  value={cartAccount.totalPrice.amount}
-                  taxPercentage={cartAccount?.taxAggregate.lines[0].rate}
-                  currency={cartAccount?.currency}
-                />
-              )}
-          </LayoutBetween>
           <LayoutBetween>
             {cartAccount?.subtotalAggregate &&
               cartAccount?.subtotalAggregate.grossValue && (
                 <CartSubTotalIncludeVat
-                  grossValue={cartAccount.totalPrice.amount + cartAccount.totalPrice.amount * cartAccount?.taxAggregate.lines[0].rate / 100 }
+                  grossValue={cartAccount?.subtotalAggregate.grossValue}
                   currency={cartAccount.currency}
                 />
               )}
@@ -468,11 +474,7 @@ export const CartActionPanel = ({ action }) => {
             <LayoutBetween>
               {cartAccount.totalPrice && cartAccount.totalPrice.amount && (
                 <CartTotalPrice
-                  totalValue={
-                    cartAccount.totalPrice.amount +
-                      + cartAccount.totalPrice.amount * cartAccount?.taxAggregate.lines[0].rate / 100 
-                      + getShippingCost(shippingMethod)
-                  }
+                  totalValue={cartAccount.totalPrice.amount}
                   currency={cartAccount.currency}
                 />
               )}
