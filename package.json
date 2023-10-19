@@ -37,6 +37,9 @@
     "redux-thunk": "^2.4.1",
     "slick-carousel": "^1.8.1"
   },
+  "resolutions": {
+    "nth-check": "^2.0.1"
+  },
   "scripts": {
     "start": "react-scripts start",
     "start:prod": "env-cmd -f .env.prod npm run-script start",
