@@ -296,8 +296,8 @@ export const CartSubTotalExcludeVat = ({value, currency}) => {
             <span className="font-semibold">Subtotal without VAT</span>
             <span className="font-semibold">
         <CurrencyBeforeValue
-            value={Math.trunc(value * 100) / 100}
-            currency={currency}
+          value={value}
+          currency={currency}
         />
       </span>
         </>
@@ -314,17 +314,17 @@ export const CartSubTotalIncludeVat = ({grossValue, currency}) => {
     )
 }
 
-export const CartVat = ({value, taxPercentage, currency}) => {
-    return (
-        <>
+export const CartVat = ({ taxAggregate, currency }) => {
+  return (
+    <>
       <span>
-        VAT {taxPercentage}% of{' '}
-          <CurrencyBeforeValue value={value} currency={currency}/>
+        VAT {taxAggregate.rate}% of{' '}
+        <CurrencyBeforeValue value={taxAggregate.taxable} currency={currency} />
       </span>
             <span>
         <CurrencyBeforeValue
-            value={Math.trunc(value * (taxPercentage / 100) * 100) / 100}
-            currency={currency}
+          value={taxAggregate.amount}
+          currency={currency}
         />
       </span>
         </>
@@ -381,7 +381,7 @@ const CartGoCart = () => {
 }
 
 export const getShippingCost = (shippingMethod) => {
-    return shippingMethod != null ? shippingMethod?.fee : 0
+  return shippingMethod != null ? shippingMethod?.fees[0].amount : 0
 }
 
 export const CartActionPanel = ({action}) => {
@@ -418,28 +418,34 @@ export const CartActionPanel = ({action}) => {
                     </CartActionRow>
                 )}
 
-                <CartActionRow>
-                    <LayoutBetween>
-                        {cartAccount &&
-                            cartAccount?.taxAggregate &&
-                            cartAccount?.taxAggregate.lines.length > 0 && (
-                                <CartVat
-                                    value={cartAccount.totalPrice.amount}
-                                    taxPercentage={cartAccount?.taxAggregate.lines[0].rate}
-                                    currency={cartAccount?.currency}
-                                />
-                            )}
-                    </LayoutBetween>
-                    <LayoutBetween>
-                        {cartAccount?.subtotalAggregate &&
-                            cartAccount?.subtotalAggregate.grossValue && (
-                                <CartSubTotalIncludeVat
-                                    grossValue={cartAccount.totalPrice.amount + cartAccount.totalPrice.amount * cartAccount?.taxAggregate.lines[0].rate / 100}
-                                    currency={cartAccount.currency}
-                                />
-                            )}
-                    </LayoutBetween>
-                </CartActionRow>
+        {cartAccount &&
+          cartAccount?.taxAggregate &&
+          cartAccount?.taxAggregate.lines.length > 0 && (
+          cartAccount?.taxAggregate.lines.map((taxItem) => {
+            return (
+              <CartActionRow>
+                <LayoutBetween>
+                  <CartVat
+                    taxAggregate={taxItem}
+                    currency={cartAccount?.currency}
+                  />
+                </LayoutBetween>
+              </CartActionRow>
+            )
+          })
+        )}
+        
+        <CartActionRow>
+          <LayoutBetween>
+            {cartAccount?.subtotalAggregate &&
+              cartAccount?.subtotalAggregate.grossValue && (
+                <CartSubTotalIncludeVat
+                  grossValue={cartAccount?.subtotalAggregate.grossValue}
+                  currency={cartAccount.currency}
+                />
+              )}
+          </LayoutBetween>
+        </CartActionRow>
 
                 <CartActionRow>
                     <LayoutBetween>
@@ -448,22 +454,18 @@ export const CartActionPanel = ({action}) => {
                     </LayoutBetween>
                 </CartActionRow>
 
-                <CartActionRow>
-                    <div className="cart-total-price-wrapper">
-                        <LayoutBetween>
-                            {cartAccount.totalPrice && cartAccount.totalPrice.amount && (
-                                <CartTotalPrice
-                                    totalValue={
-                                        cartAccount.totalPrice.amount +
-                                        +cartAccount.totalPrice.amount * cartAccount?.taxAggregate.lines[0].rate / 100
-                                        + getShippingCost(shippingMethod)
-                                    }
-                                    currency={cartAccount.currency}
-                                />
-                            )}
-                        </LayoutBetween>
-                    </div>
-                </CartActionRow>
+        <CartActionRow>
+          <div className="cart-total-price-wrapper">
+            <LayoutBetween>
+              {cartAccount.totalPrice && cartAccount.totalPrice.amount && (
+                <CartTotalPrice
+                  totalValue={cartAccount.totalPrice.amount}
+                  currency={cartAccount.currency}
+                />
+              )}
+            </LayoutBetween>
+          </div>
+        </CartActionRow>
 
                 {action === undefined || action === true ? (
                     <>

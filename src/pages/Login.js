@@ -144,7 +144,7 @@ const Login = () => {
                                 className="w-full cta-button bg-primary h-12"
                                 type="submit"
                             >
-                                {loading ? <CircularProgress color="highlight"/> : 'LOG IN'}
+                                {loading ? <CircularProgress color="primary"/> : 'LOG IN'}
                             </button>
                         </Box>
                     </form>
