@@ -2,7 +2,7 @@ FROM  node:16-alpine as builder
 WORKDIR /app
 COPY . .
 RUN yarn install
-RUN yarn build:prod
+RUN yarn build
 
 # Production image, copy all the files and run next
 FROM node:16-alpine AS storefront
