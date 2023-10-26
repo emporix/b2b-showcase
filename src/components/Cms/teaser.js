@@ -20,6 +20,7 @@ const Teaser = (props) => {
         getData();
     }, [])
 
+    if (headline === undefined && text === undefined && image === undefined) return;
     return (
         <div className="teaser"
              style={resolvedImage ? {
