@@ -1,10 +1,8 @@
 import { ApolloClient, ApolloLink, HttpLink, InMemoryCache, gql } from "@apollo/client";
-import { APIAuthenticator } from "./api-authenticator";
-import config from '../index'
 
 let client = null
 
-export const getClient = (config) => {
+export const getClient = () => {
   if (client != null) return client;
 
   client = new ApolloClient({
@@ -26,20 +24,11 @@ export async function fetchGraphqlApi (
   isMutation
 ) {
 
-  const client = getClient(config)
-
-  const apiAuthenticator = new APIAuthenticator(
-    client
-  )
-
-  const token = await apiAuthenticator.getAccessToken()
-  const sessionId = await apiAuthenticator.getSessionIdOrIdToken()
+  const client = getClient()
 
   const context = {
     headers: {
-      'x-access-token': token,
       'accept-language': 'de_DE',
-      'session-id': sessionId
     }
   }
 
@@ -65,7 +54,7 @@ export async function fetchGraphqlApi (
       }
   } catch(e) {
     console.error(
-      'query failed (with token: ' + token + '):',
+      'query failed:',
       query,
       'reason:',
       JSON.stringify(e)
