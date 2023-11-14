@@ -56,6 +56,9 @@ const ShippingContent = () => {
     setSelectedDeliveryMethod,
   } = useUserAddress()
 
+  useEffect(() => {
+    setShippingMethod(null)
+  }, [])
  
   const onShippingChange = (value) => {
     const selectedShippingMethod = shippingMethods.filter(
@@ -133,7 +136,7 @@ const ShippingContent = () => {
                   method.fee === 0 ? (
                     'Free'
                   ) : (
-                    <CurrencyBeforeValue value={method.fee} />
+                    <CurrencyBeforeValue value={method.grossFee} />
                   )
                 }
                 onClick={onShippingChange}

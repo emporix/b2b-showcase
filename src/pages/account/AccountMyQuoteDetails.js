@@ -398,7 +398,7 @@ const AccountMyOrdersDetails = () => {
                   quote.taxAggregate.lines[0].rate
                 }% of ${formatCurrency(
                   quote.subtotalPrice.currency,
-                  quote.subtotalPrice.grossValue
+                  quote.subtotalPrice.netValue
                 )}`}</div>
                 <div>
                   {formatCurrency(
@@ -419,10 +419,10 @@ const AccountMyOrdersDetails = () => {
               <div className="flex justify-between font-light mt-4 border-b border-[#D7D7D7] pb-4">
                 <div>Shipping Costs</div>
                 <div>
-                  {quote.shippingCost
+                  {quote.shipping
                     ? formatCurrency(
-                        quote.shippingCost.currency,
-                        quote.shippingCost.value
+                        quote.currency,
+                        quote.shipping.grossValue
                       )
                     : '-'}
                 </div>
@@ -431,8 +431,8 @@ const AccountMyOrdersDetails = () => {
                 <div>Total Price</div>
                 <div>
                   {formatCurrency(
-                    quote.totalPrice.currency,
-                    quote.totalPrice.grossValue
+                    quote.subtotalPrice.currency,
+                    quote.shipping ? quote.subtotalPrice.grossValue + quote.shipping.grossValue : quote.subtotalPrice.grossValue
                   )}
                 </div>
               </div>

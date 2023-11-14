@@ -50,6 +50,9 @@ export const shippingApi = () =>
   `${API_URL}/shipping/${getTenant()}`
 export const customerManagementApi = () =>
   `${API_URL}/customer-management/${getTenant()}`
+export const customerApi = () => `${API_URL}/caas-customer/${getTenant()}`
+export const iamApi = () => `${API_URL}/iam/${getTenant()}`
+export const approvalsApi = () => `${API_URL}/approval/${getTenant()}/approvals`
 // URLS
 export const addLocationUrl = () => `/${getTenant()}/my-account/locations/add`
 export const myAccountLocationUrl = () => `/${getTenant()}/my-account/locations`
@@ -89,3 +92,10 @@ export const fetchSingleReturnUrl = (id) => `/return/${getTenant()}/returns/${id
 export const fetchPaymentGatewayModes = () => `/payment-gateway/${getTenant()}/paymentmodes/frontend`
 export const authorizePayment = () => `/payment-gateway/${getTenant()}/payment/frontend/authorize`
 export const initializePayment = () => `/payment-gateway/${getTenant()}/payment/frontend/initialize`
+
+export const approvalPermitted = () => `/approval/${getTenant()}/approval/permitted`
+export const approvalApprovers = () => `/approval/${getTenant()}/search/users`
+export const approvalConfirmationPage = () => `/${getTenant()}/approval-request`
+export const approvalOrderCreatedPage = () => `/${getTenant()}/approval-order-created`
+export const approvalCheckoutPage = (approvalId) => `/${getTenant()}/saved-carts/${approvalId}/checkout`
+export const savedCartsPage = () => `/${getTenant()}/my-account/saved-carts`

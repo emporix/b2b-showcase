@@ -87,6 +87,9 @@ const VariantSummary = ({ variant, setQuantity, quantity, price }) => {
             value={quantity}
             increase={() => setQuantity(quantity + 1)}
             decrease={() => setQuantity(quantity - 1)}
+            onChange={(value) => {
+              setQuantity(value)
+            }}
           ></Quantity>
         </Item>
       </Grid>

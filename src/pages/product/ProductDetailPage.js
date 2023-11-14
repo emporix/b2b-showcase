@@ -319,7 +319,6 @@ const PrdouctAddToCart = () => {
     let newProduct = { ...product }
     newProduct.quantity = quantitiy
     putCartProduct(newProduct)
-    syncCart()
     action(true)
   }, [])
 
@@ -340,6 +339,9 @@ const PrdouctAddToCart = () => {
           value={quantity}
           increase={increaseQty}
           decrease={decreaseQty}
+          onChange={(value) => {
+            setQuantity(value)
+          }}
         />
       </div>
       <div className="">

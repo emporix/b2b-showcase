@@ -8,7 +8,7 @@ import TableBody from '@mui/material/TableBody'
 import Status, { renderStatus } from './common'
 import {
   CurrencyAfterValue,
-  formatDateTime,
+  formatDate,
 } from '../../components/Utilities/common'
 import { Link, useNavigate } from 'react-router-dom'
 import {
@@ -67,27 +67,30 @@ export const OrderList = (props) => {
   const [showAlreadySubmittedError, setError] = useState(false)
 
   const downloadInvoice = (order) => {
-    const invoiceUrl = order?.mixins?.invoice?.invoiceDocument.replace("mediaObject", "customerMediaObject")
+    const invoiceUrl = order?.mixins?.invoice?.invoiceDocument.replace(
+      'mediaObject',
+      'customerMediaObject'
+    )
     const token = localStorage.getItem(ACCESS_TOKEN)
     axios({
       url: invoiceUrl,
       headers: {
-        Authorization: 'Bearer ' + token 
+        Authorization: 'Bearer ' + token,
       },
       method: 'GET',
-      responseType: 'blob', 
-  }).then((response) => {
-      const href = URL.createObjectURL(response.data);
-      const link = document.createElement('a');
-      link.href = href;
-      link.setAttribute('download', 'invoice_'+order.id+'.pdf'); 
-      document.body.appendChild(link);
-      link.click();
+      responseType: 'blob',
+    }).then((response) => {
+      const href = URL.createObjectURL(response.data)
+      const link = document.createElement('a')
+      link.href = href
+      link.setAttribute('download', 'invoice_' + order.id + '.pdf')
+      document.body.appendChild(link)
+      link.click()
 
-      document.body.removeChild(link);
-      URL.revokeObjectURL(href);
-  });
-}
+      document.body.removeChild(link)
+      URL.revokeObjectURL(href)
+    })
+  }
 
   const handleCreateReturn = useCallback(
     (id) => {
@@ -113,31 +116,29 @@ export const OrderList = (props) => {
         <Table sx={{ minWidth: 650 }}>
           <TableHead>
             <TableRow className="!py-6">
-              <TableCell
-                align="left"
-                className="grid-column-title"
-              >
+              <TableCell align="center" className="grid-column-title">
                 Order Number
               </TableCell>
-              <TableCell
-                align="left"
-                className="grid-column-title"
-              >
+              <TableCell align="center" className="grid-column-title">
                 Status
               </TableCell>
-              <TableCell
-                align="left"
-                className="grid-column-title"
-              >
-                Total
+              <TableCell align="center" className="grid-column-title">
+                <div className="font-normal grid grid-cols-1 text-center">
+                  <div className="">
+                    Total with shipping cost
+                  </div>
+                  <div className="text-[12px]">
+                     incl. VAT
+                  </div>
+                </div>
               </TableCell>
-              <TableCell
-                align="left"
-                className="grid-column-title"
-              >
+              <TableCell align="center" className="grid-column-title">
+                Exp. Delivery Date
+              </TableCell>
+              <TableCell align="center" className="grid-column-title">
                 Created
               </TableCell>
-              <TableCell align="left" />
+              <TableCell align="center" />
             </TableRow>
           </TableHead>
           <TableBody>
@@ -153,19 +154,22 @@ export const OrderList = (props) => {
                 >
                   {row.id}
                 </TableCell>
-                <TableCell align="left" className="!py-6">
+                <TableCell align="center" className="!py-6">
                   {renderStatus(row.status)}
                 </TableCell>
-                <TableCell align="left" className="!py-6">
+                <TableCell align="center" className="!py-6">
                   <CurrencyAfterValue
-                    value={row.totalPrice}
+                    value={row.subTotalPrice + row.shipping.lines[0].amount + row.tax.lines.reduce((sum, el) => sum + el.amount, 0) }
                     currency={row.currency}
                   />
                 </TableCell>
-                <TableCell align="left" className="!py-6">
-                  {formatDateTime(row.created)}
+                <TableCell align="center" className="!py-6">
+                  {row.deliveryWindow?.deliveryDate ? formatDate(row.deliveryWindow?.deliveryDate) : '-'}
                 </TableCell>
-                <TableCell align="left" className="!py-6">
+                <TableCell align="center" className="!py-6">
+                  {formatDate(row.created)}
+                </TableCell>
+                <TableCell align="center" className="!py-6">
                   <div className="flex">
                     <div className="font-inter font-semibold text-[14px] underline">
                       <Link to={`${myAccountMyOrdersViewUrl()}${row.id}`}>
@@ -182,7 +186,14 @@ export const OrderList = (props) => {
                     </div>
                     {invoiceAvailable && (
                       <div className="font-inter font-semibold text-[14px] underline ml-6">
-                        {row?.mixins?.invoice?.invoiceDocument && <a onClick={() => downloadInvoice(row)} className='download-invoice-link'>Download invoice</a> }
+                        {row?.mixins?.invoice?.invoiceDocument && (
+                          <a
+                            onClick={() => downloadInvoice(row)}
+                            className="download-invoice-link"
+                          >
+                            Download invoice
+                          </a>
+                        )}
                       </div>
                     )}
                   </div>

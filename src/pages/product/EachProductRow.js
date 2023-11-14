@@ -111,6 +111,9 @@ const EachProductRow = ({ item, type, available, rating, productCount }) => {
                     return prev - 1 > 1 ? prev - 1 : 1
                   })
                 }}
+                onChange={(value) => {
+                  setQuantity(value)
+                }}
               />
               <div
                 className="ml-6 mt-4 h-10 w-40 cursor-pointer cta-button bg-yellow flex items-center justify-center"

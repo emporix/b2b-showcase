@@ -55,7 +55,20 @@ export const AuthProvider = ({ children }) => {
     localStorage.removeItem(CUSTOMER_TOKEN)
     localStorage.removeItem(CUSTOMER_TOKEN_EXPIRES_IN)
   }
+  
+  const insertLocalStorageValue = (key, value) => {
+    if(value) {
+      localStorage.setItem(key, value)
+    }
+  }
+
   const syncAuth = useCallback(async () => {
+    const urlParams = new URLSearchParams(window.location.search)
+    
+    insertLocalStorageValue(EXTERNAL_CUSTOMER_TOKEN, urlParams.get('customerToken'))
+    insertLocalStorageValue(EXTERNAL_TOKEN_EXPIRIES_IN, urlParams.get('customerTokenExpiresIn'))
+    insertLocalStorageValue(EXTERNAL_SAAS_TOKEN, urlParams.get('saasToken'))
+        
     setUser(getUser())
     setSessionId(getSessionId())
     setIsLoggedIn(!!getUser())

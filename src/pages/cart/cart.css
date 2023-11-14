@@ -11,7 +11,7 @@
   @apply font-inter !font-bold !text-[14px] !leading-[20px];
 }
 .cart-row-item {
-  @apply !font-bold !py-6 !border-none;
+  @apply !py-6 !border-none;
 }
 
 .quantity-wrapper {

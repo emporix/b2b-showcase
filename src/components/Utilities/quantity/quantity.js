@@ -1,7 +1,7 @@
 import React from 'react'
 import './quantity.css'
 
-const Quantity = ({ value, increase = () => {}, decrease = () => {} }) => {
+const Quantity = ({ value, increase = () => {}, decrease = () => {}, onChange = (value) => {} }) => {
   return (
     <div className="quantity-input rounded border border-quartz" sx={{ width: '84px' }}>
       <button
@@ -18,7 +18,14 @@ const Quantity = ({ value, increase = () => {}, decrease = () => {} }) => {
           <path d="M10 0.908417V2.47092H0V0.908417H10Z" fill="#818385" />
         </svg>
       </button>
-      <div className="quantity-input_screen">{value}</div>
+      <input className="quantity-input_screen" value={value} onChange={(ev) => {
+        window.console.log(ev.target.value)
+        if(!ev.target.value) {
+          onChange(1)
+        } else if(!isNaN(ev.target.value)) {
+          onChange(parseInt(ev.target.value))
+        }
+      }} />
       <button
         className="quantity-input_modifier quantity-input__modifier--right"
         onClick={() => increase()}

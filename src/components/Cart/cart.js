@@ -58,7 +58,7 @@ export const PriceExcludeVAT1 = ({ price, caption }) => {
 }
 
 export const CartMobileItem = ({ cartItem }) => {
-  const { incrementCartItemQty, decrementCartItemQty } = useCart()
+  const { incrementCartItemQty, decrementCartItemQty, setCartItemQty } = useCart()
   const { getLocalizedValue } = useLanguage()
 
   return (
@@ -153,6 +153,7 @@ export const CartMobileItem = ({ cartItem }) => {
             value={cartItem.quantity}
             increase={() => incrementCartItemQty(cartItem.id)}
             decrease={() => decrementCartItemQty(cartItem.id)}
+            onChange={(value) => setCartItemQty(cartItem.id, value)}
           />
         </div>
         <div className="!font-bold">
@@ -174,7 +175,7 @@ export const CartMobileItem = ({ cartItem }) => {
 }
 
 const CartProductImageAndQuantity = ({ cartItem }) => {
-  const { incrementCartItemQty, decrementCartItemQty } = useCart()
+  const { incrementCartItemQty, decrementCartItemQty, setCartItemQty } = useCart()
   return (
     <div className="cart-product-image-and-quantity">
       <GridLayout className="gap-11">
@@ -183,6 +184,7 @@ const CartProductImageAndQuantity = ({ cartItem }) => {
           value={cartItem.quantity}
           increase={() => incrementCartItemQty(cartItem.id)}
           decrease={() => decrementCartItemQty(cartItem.id)}
+          onChange={(value) => setCartItemQty(cartItem.id, value)}
         />
       </GridLayout>
     </div>
@@ -225,13 +227,13 @@ export const CartProductBasicInfo = ({ cart }) => {
           >
             {cart.product.stock} Stock
           </span>
-          <span className="cart-product-lead-time">Lead Time: 1 week</span>
+          {/* <span className="cart-product-lead-time">Lead Time: 1 week</span> */}
         </div>
       </GridLayout>
     </div>
   )
 }
-const CartProductPriceExcludeVat = ({ price, currency }) => {
+export const CartProductPriceExcludeVat = ({ price, currency }) => {
   return (
     <div className="text-right">
       <GridLayout>
@@ -323,7 +325,8 @@ export const CartSubTotalIncludeVat = ({ grossValue, currency }) => {
   )
 }
 
-export const CartVat = ({ value, taxPercentage, currency }) => {
+export const CartVat = ({ value, taxPercentage, currency, taxValue }) => {
+  const effectiveTaxValue = taxValue ? taxValue : Math.trunc(value * (taxPercentage / 100) * 100) / 100
   return (
     <>
       <span>
@@ -332,7 +335,7 @@ export const CartVat = ({ value, taxPercentage, currency }) => {
       </span>
       <span>
         <CurrencyBeforeValue
-          value={Math.trunc(value * (taxPercentage / 100) * 100) / 100}
+          value={effectiveTaxValue}
           currency={currency}
         />
       </span>
@@ -397,11 +400,18 @@ const CartGoProcurementSystem = () => {
 }
 
 export const getShippingCost = (shippingMethod) => {
-  return shippingMethod != null ? shippingMethod?.fee : 0
+  return shippingMethod != null ? shippingMethod?.grossFee : 0
 }
 
-export const CartActionPanel = ({ action }) => {
+export const getTotalPrice = (cartAccount, shippingCost) => {
+  return cartAccount?.totalPrice && cartAccount.taxAggregate ? cartAccount.totalPrice.amount +
+  + cartAccount.totalPrice.amount * cartAccount?.taxAggregate.lines[0].rate / 100 
+  + shippingCost : 0
+}
+
+export const CartActionPanel = ({ action, showShipping }) => {
   const { cartAccount, shippingMethod } = useCart()
+  const shippingCost = showShipping !== false ? getShippingCost(shippingMethod) : 0
   return (
     <div className="cart-action-panel">
       <GridLayout className="gap-4">
@@ -440,9 +450,10 @@ export const CartActionPanel = ({ action }) => {
               cartAccount?.taxAggregate &&
               cartAccount?.taxAggregate.lines.length > 0 && (
                 <CartVat
-                  value={cartAccount.totalPrice.amount}
+                  value={cartAccount?.subtotalAggregate?.taxValue}
                   taxPercentage={cartAccount?.taxAggregate.lines[0].rate}
                   currency={cartAccount?.currency}
+                  taxValue={cartAccount?.subtotalAggregate?.taxValue}
                 />
               )}
           </LayoutBetween>
@@ -450,32 +461,28 @@ export const CartActionPanel = ({ action }) => {
             {cartAccount?.subtotalAggregate &&
               cartAccount?.subtotalAggregate.grossValue && (
                 <CartSubTotalIncludeVat
-                  grossValue={cartAccount.totalPrice.amount + cartAccount.totalPrice.amount * cartAccount?.taxAggregate.lines[0].rate / 100 }
+                  grossValue={cartAccount?.subtotalAggregate.grossValue}
                   currency={cartAccount.currency}
                 />
               )}
           </LayoutBetween>
         </CartActionRow>
 
+        {showShipping !== false && (
         <CartActionRow>
           <LayoutBetween>
             <CartShipingCost currency={cartAccount.currency} shippingCost={getShippingCost(shippingMethod)}/>
           </LayoutBetween>
         </CartActionRow>
+        )}
 
         <CartActionRow>
           <div className="cart-total-price-wrapper">
             <LayoutBetween>
-              {cartAccount.totalPrice && cartAccount.totalPrice.amount && (
-                <CartTotalPrice
-                  totalValue={
-                    cartAccount.totalPrice.amount +
-                      + cartAccount.totalPrice.amount * cartAccount?.taxAggregate.lines[0].rate / 100 
-                      + getShippingCost(shippingMethod)
-                  }
-                  currency={cartAccount.currency}
-                />
-              )}
+              <CartTotalPrice
+                totalValue={getTotalPrice(cartAccount, shippingCost)}
+                currency={cartAccount.currency}
+              />
             </LayoutBetween>
           </div>
         </CartActionRow>
@@ -519,9 +526,7 @@ const Cart = () => {
           ))}
         </GridLayout>
       </CartProductContent>
-      {cartAccount?.subtotalAggregate
-        ? cartAccount?.subtotalAggregate.grossValue && <CartActionPanel />
-        : 'Error: Missing subtotal agregate. Some products are probably unavailiable on this site'}
+      {<CartActionPanel showShipping={false}/>}
     </>
   )
 }

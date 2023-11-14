@@ -23,6 +23,7 @@ import { getCompanyAddresses } from 'services/legal-entities.service'
 import { useNavigate } from 'react-router-dom'
 import { quoteIdUrl } from 'services/service.config'
 import cartService from 'services/cart.service'
+import { calculateTax } from 'services/product/tax.service'
 
 const QuotePage = () => {
   const [quoteId, setQuoteId] = useState()
@@ -80,7 +81,7 @@ const QuotePage = () => {
       .filter(
         (method) =>
           method.maxOrderValue === undefined ||
-          method.maxOrderValue.amount >= cart.totalPrice.amount
+          method.maxOrderValue.amount >= cart.totalPrice?.amount
       )
       .filter((method) => method.shippingTaxCode != null)
       .map((method) => ({
@@ -92,7 +93,11 @@ const QuotePage = () => {
           .sort((a, b) => a.cost.amount - b.cost.amount)[0].cost.amount,
       }))
       .sort((a, b) => a.fee - b.fee)
-
+      await Promise.all(filteredMethods.map(async (m) => {
+        const grossPrice =  await calculateTax(m.fee, m.shippingTaxCode, address?.contactDetails?.countryCode)
+        m.grossFee = grossPrice
+        return m
+    }))
     setShippingMethods(filteredMethods)
   }, [])
 
@@ -232,7 +237,7 @@ const QuotePage = () => {
                         method.fee === 0 ? (
                           'Free'
                         ) : (
-                          <CurrencyBeforeValue value={method.fee} />
+                          <CurrencyBeforeValue value={method.grossFee} />
                         )
                       }
                       onClick={onShippingChange}

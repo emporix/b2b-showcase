@@ -3,6 +3,7 @@ import { USER } from '../../constants/localstorage'
 import { useCart } from 'context/cart-provider'
 import { getShippingMethods } from 'services/shipping.service'
 import { getActualDeliveryWindows } from 'services/shipping.service'
+import { calculateTax } from 'services/product/tax.service'
 
 
 const AddressContext = createContext({})
@@ -45,18 +46,18 @@ export const AddressProvider = ({ children }) => {
     setAddresses(addresses)
     const locations = JSON.parse(user).addresses.map((address) => {
       return {
-        label: `${address.street} ${address.streetNumber},${address.city} ${address.zipCode}`,
+        label: `${address.street} ${address.streetNumber ?? ""},${address.city} ${address.zipCode}`,
         value: address.id,
       }
     })
     const defaultAddress = addresses.find((address) => address.isDefault)
     if (defaultAddress) {
       setDefaultAddress({
-        label: `${defaultAddress.street} ${defaultAddress.streetNumber},${defaultAddress.city} ${defaultAddress.zipCode}`,
+        label: `${defaultAddress.street} ${defaultAddress?.streetNumber ?? ""},${defaultAddress.city} ${defaultAddress.zipCode}`,
         value: defaultAddress.id,
       })
       setSelectedAddress({
-        label: `${defaultAddress.street} ${defaultAddress.streetNumber},${defaultAddress.city} ${defaultAddress.zipCode}`,
+        label: `${defaultAddress.street} ${defaultAddress?.streetNumber ?? ""},${defaultAddress.city} ${defaultAddress.zipCode}`,
         value: defaultAddress.id,
       })
       setBillingAddress(defaultAddress)
@@ -89,6 +90,11 @@ export const AddressProvider = ({ children }) => {
           .sort((a, b) => a.cost.amount - b.cost.amount)[0]?.cost?.amount,
       }))
       .sort((a, b) => a.fee - b.fee)
+      await Promise.all(filteredMethods.map(async (m) => {
+          const grossPrice =  await calculateTax(m.fee, m.shippingTaxCode, address?.country)
+          m.grossFee = grossPrice
+          return m
+      }))
     setShippingMethods(filteredMethods)
   }, [])
 

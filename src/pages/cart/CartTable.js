@@ -32,7 +32,7 @@ const CartProductInfo = ({ cart }) => {
 }
 
 const CartTable = ({ cartList, classname }) => {
-  const { removeCartItem, incrementCartItemQty, decrementCartItemQty } =
+  const { removeCartItem, incrementCartItemQty, decrementCartItemQty, setCartItemQty } =
     useCart()
   return (
     <TableContainer className={classname}>
@@ -75,7 +75,7 @@ const CartTable = ({ cartList, classname }) => {
               </TableCell>
               <TableCell className="cart-row-item">
                 <PriceExcludeVAT
-                  price={cartItem.product.price.effectiveValue}
+                  price={cartItem.product.price.effectiveAmount}
                 />
               </TableCell>
               <TableCell align="center">
@@ -84,6 +84,7 @@ const CartTable = ({ cartList, classname }) => {
                     value={cartItem.quantity}
                     increase={() => incrementCartItemQty(cartItem.id)}
                     decrease={() => decrementCartItemQty(cartItem.id)}
+                    onChange={(value) => setCartItemQty(cartItem.id, value)}
                   />
                 </div>
               </TableCell>
@@ -91,13 +92,13 @@ const CartTable = ({ cartList, classname }) => {
               <TableCell className="cart-row-item">
                 <PriceExcludeVAT
                   price={
-                    cartItem.product.price.originalAmount * cartItem.quantity
+                    cartItem.itemPrice.amount
                   }
                 />
               </TableCell>
 
               <TableCell className="cart-row-item">
-                <PriceExcludeVAT price={0} />
+                <PriceExcludeVAT price={cartItem.totalDiscount?.amount} />
               </TableCell>
 
               <TableCell className="cart-row-item">
@@ -111,12 +112,7 @@ const CartTable = ({ cartList, classname }) => {
 
               <TableCell className="cart-row-item">
                 <PriceExcludeVAT
-                  price={Math.round(
-                    cartItem.product.price.originalAmount * cartItem.quantity +
-                      cartItem.product.price.originalAmount *
-                        cartItem.quantity *
-                        (cartItem.itemTaxInfo[0].rate / 100)
-                  )}
+                  price={cartItem.itemTaxInfo[0].grossValue}
                   caption="incl. VAT"
                 />
               </TableCell>

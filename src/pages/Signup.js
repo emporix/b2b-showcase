@@ -1,9 +1,8 @@
-import React, { useEffect, useMemo, useState } from 'react'
-import { Navigate, Link, useNavigate } from 'react-router-dom'
+import React, { useMemo, useState } from 'react'
+import { Link, useNavigate } from 'react-router-dom'
 import { login, register } from '../services/user/auth.service'
 import Snackbar from '@mui/material/Snackbar'
 import MuiAlert from '@mui/material/Alert'
-import CircularProgress from '@mui/material/CircularProgress'
 import PhoneField from '../components/Utilities/phoneinput/PhoneField'
 import { GridLayout, Container } from '../components/Utilities/common'
 import { Heading2, Heading4 } from '../components/Utilities/typography'
@@ -13,6 +12,8 @@ import { homeUrl } from '../services/service.config'
 import { Logo } from '../components/Logo'
 import { useAuth } from 'context/auth-provider'
 import { createAddress } from 'services/user/adresses'
+import { LargePrimaryButton } from 'components/Utilities/button'
+import { useCurrency } from 'context/currency-context'
 
 const Input = ({ label, value, action, className, placeholder }) => {
   return (
@@ -142,6 +143,26 @@ const addressValid = (address) => {
     address.country.length > 0
   )
 }
+
+const addressEmptyValid = (address) => {
+  return (
+    address.contactName.length == 0 &&
+    address.street.length == 0 &&
+    address.streetNumber.length == 0 &&
+    address.zipCode.length == 0 &&
+    address.city.length == 0 &&
+    address.country.length == 0
+  )
+  || (
+    address.contactName.length > 0 &&
+    address.street.length > 0 &&
+    address.streetNumber.length > 0 &&
+    address.zipCode.length > 0 &&
+    address.city.length > 0 &&
+    address.country.length > 0
+  )
+}
+
 const Signup = (props) => {
   const [loading, setLoading] = useState(false)
   const [message, setMessage] = useState(null)
@@ -152,8 +173,8 @@ const Signup = (props) => {
   const [firstName, setFirstName] = useState('')
   const [lastName, setLastName] = useState('')
   const [company, setCompany] = useState('')
+  const [registrationId, setRegistrationId] = useState('')
   const [phoneNumber, setPhoneNumber] = useState('')
-  const [emailMessage, setEmailMessage] = useState('')
   const [shippingAddress, setShippingAddress] = useState({
     contactName: '',
     street: '',
@@ -174,6 +195,7 @@ const Signup = (props) => {
     state: '',
     city: '',
   })
+  const { activeCurrency } = useCurrency()
 
   const isAddressValid = useMemo(() => {
     return addressValid(shippingAddress) && addressValid(billingAddress)
@@ -185,8 +207,6 @@ const Signup = (props) => {
     return /\S+@\S+\.\S+/.test(email)
   }
   const [isSignedUp, setIsSignedUp] = useState(false)
-  const [shippingAddressCreated, setShippingAddressCreated] = useState(false)
-  const [billingAddressCreated, setBillingAddressCreated] = useState(false)
   const navigate = useNavigate()
   const handleClose = (event, reason) => {
     if (reason === 'clickaway') {
@@ -201,11 +221,6 @@ const Signup = (props) => {
 
   const tenant = localStorage.getItem(TENANT)
   const onChangeUserEmail = (e) => {
-    if (!isValidEmail(e.target.value)) {
-      setEmailMessage('Email is invalid')
-    } else {
-      setEmailMessage(null)
-    }
     setUserEmail(e.target.value)
   }
   const onChangePassword = (e) => {
@@ -213,55 +228,58 @@ const Signup = (props) => {
     setPassword(password)
   }
 
+  const isCreationBlocked = () => {
+    const isCorrectEssentialData =
+      loading ||
+      !password ||
+      !confirmPassword ||
+      confirmPassword !== password ||
+      !userEmail ||
+      !isValidEmail(userEmail) ||
+      !firstName ||
+      !lastName ||
+      !addressEmptyValid(billingAddress) ||
+      !addressEmptyValid(shippingAddress)
+
+    return company
+      ? isCorrectEssentialData || !registrationId || !isAddressValid
+      : isCorrectEssentialData
+  }
+
   const handleSignup = async (e) => {
     e.preventDefault()
     try {
-      if (password.length < 6) {
-        setMessage('password must have at least 6 characters!')
-        setOpenNotification(true)
-      } else {
-        if (userEmail && password && confirmPassword) {
-          if (password === confirmPassword) {
-            setLoading(true)
-            if (!isSignedUp) {
-              await register(
-                userEmail,
-                password,
-                firstName,
-                lastName,
-                tenant,
-                company,
-                phoneNumber
-              )
-              await login(userEmail, password, tenant)
-              syncAuth()
-              setIsSignedUp(true)
-            }
-            if (!shippingAddressCreated) {
-              await createAddress({ ...shippingAddress, tags: ['shipping'] })
-              setShippingAddressCreated(true)
-            }
-            if (!billingAddressCreated) {
-              await createAddress({ ...billingAddress, tags: ['billing'] })
-              setBillingAddressCreated(true)
-            }
-            if (isSignedUp && shippingAddressCreated && billingAddressCreated) {
-              props.history.replace(`/${tenant}`)
-            }
-            navigate('/{tenant}')
-            setLoading(false)
-          } else {
-            setMessage('Confirm password is incorrect!')
-            setOpenNotification(true)
-          }
-        } else {
-          setMessage('Please enter at least useremail and password')
-          setOpenNotification(true)
-        }
+      setLoading(true)
+      if (!isSignedUp) {
+        await register(
+          userEmail,
+          password,
+          firstName,
+          lastName,
+          tenant,
+          company,
+          registrationId,
+          phoneNumber, 
+          activeCurrency
+        )
+        await login(userEmail, password, tenant)
+        syncAuth()
+        setIsSignedUp(true)
       }
+      if (addressValid(shippingAddress)) {
+        await createAddress({ ...shippingAddress, tags: ['shipping'] })
+      }
+      if (addressValid(billingAddress)) {
+        await createAddress({ ...billingAddress, tags: ['billing'] })
+      }
+      if (isSignedUp) {
+        props.history.replace(`/${tenant}`)
+      }
+      navigate(homeUrl())
+      setLoading(false)
     } catch (e) {
       console.log(e)
-      setMessage(e.response.data.message)
+      setMessage(e?.response?.data?.message)
       setOpenNotification(true)
     } finally {
       setLoading(false)
@@ -305,70 +323,91 @@ const Signup = (props) => {
               <label className="pb-2">E-mail address</label>
               <br />
               <input
-                placeholder="Placeholder"
+                placeholder="jon.doe@emporix.com"
                 onChange={onChangeUserEmail}
                 value={userEmail}
                 type="email"
                 required
                 className="border w-full px-3 py-2"
               />
-              {emailMessage && <h6 style={{ color: 'red' }}>{emailMessage}</h6>}
+              {!isValidEmail(userEmail) && (
+                <h6 style={{ color: 'red' }}>Email is invalid</h6>
+              )}
             </Box>
             <Box className="!pt-6 w-full text-black text-base">
               <label className="pb-2">Password</label>
               <br />
               <input
-                placeholder="Placeholder"
+                placeholder="Strong password"
                 onChange={onChangePassword}
                 value={password}
                 type="password"
                 required
                 className="border w-full px-3 py-2"
               />
+              {(!password || password.length < 6) && (
+                <h6 style={{ color: 'red' }}>
+                  Password must have at least 6 characters
+                </h6>
+              )}
             </Box>
 
             <Box className="!pt-6 w-full text-black text-base">
               <label className="pb-2">Confirm Password</label>
               <br />
               <input
-                placeholder="Placeholder"
+                placeholder="Strong password"
                 onChange={(e) => setConfirmPassword(e.target.value)}
                 value={confirmPassword}
                 type="password"
                 required
                 className="border w-full px-3 py-2"
               />
+              {(!confirmPassword || confirmPassword.length < 6) && (
+                <h6 style={{ color: 'red' }}>
+                  Password must have at least 6 characters
+                </h6>
+              )}
+              {password && confirmPassword && confirmPassword !== password && (
+                <h6 style={{ color: 'red' }}>Passwords must be the same</h6>
+              )}
             </Box>
 
             <Box className="!pt-6 w-full text-black text-base">
               <label className="pb-2">First Name</label>
               <br />
               <input
-                placeholder="Placeholder"
+                placeholder="Jon"
                 onChange={(e) => setFirstName(e.target.value)}
                 value={firstName}
                 type="text"
                 className="border w-full px-3 py-2"
               />
+              {!firstName && (
+                <h6 style={{ color: 'red' }}>First Name must be provided</h6>
+              )}
             </Box>
 
             <Box className="!pt-6 w-full text-black text-base">
               <label className="pb-2">Last Name</label>
               <br />
               <input
-                placeholder="Placeholder"
+                placeholder="Doe"
                 onChange={(e) => setLastName(e.target.value)}
                 value={lastName}
                 type="text"
                 className="border w-full px-3 py-2"
               />
+              {!lastName && (
+                <h6 style={{ color: 'red' }}>Last Name must be provided</h6>
+              )}
             </Box>
 
             <Box className="!pt-6 w-full text-black text-base">
               <label className="pb-2">Company</label>
               <br />
               <input
-                placeholder="Placeholder"
+                placeholder="Company name"
                 onChange={(e) => setCompany(e.target.value)}
                 value={company}
                 type="text"
@@ -377,20 +416,46 @@ const Signup = (props) => {
             </Box>
 
             <Box className="!pt-6 w-full text-black text-base">
+              <label className="pb-2">Registration Number</label>
+              <input
+                placeholder="123-456-789"
+                onChange={(e) => setRegistrationId(e.target.value)}
+                value={registrationId}
+                type="text"
+                className="border w-full px-3 py-2"
+              />
+              {company && !registrationId && (
+                <h6 style={{ color: 'red' }}>
+                  Registration Number must be provided
+                </h6>
+              )}
+            </Box>
+            <Box className="!pt-6 w-full text-black text-base">
               <PhoneField
                 value={phoneNumber}
                 onChange={(value) => setPhoneNumber(value)}
               />
             </Box>
+            <br />
             <div className="mt-2 text-black">Shipping Address</div>
+            {((company && !addressValid(shippingAddress)) ||
+              (!addressEmptyValid(shippingAddress))) && (
+              <h6 style={{ color: 'red' }}>
+                Correct shipping address must be provided
+              </h6>
+            )}
             <AddressForm
               form={shippingAddress}
               handleUpdate={(newAddress) => {
                 setShippingAddress(newAddress)
               }}
             />
-
+            <br />
             <div className="mt-2 text-black">Billing Address</div>
+            {((company && !addressValid(billingAddress)) ||
+              (!addressEmptyValid(billingAddress))) && (
+              <h6 style={{ color: 'red' }}>Correct billing address must be provided</h6>
+            )}
             <AddressForm
               form={billingAddress}
               handleUpdate={(newAddress) => {
@@ -398,13 +463,11 @@ const Signup = (props) => {
               }}
             />
             <Box className="w-full !pt-12">
-              <button
-                className="cta-button cursor-pointer bg-yellow w-full h-12 enabled:hover:bg-darkBlue disabled:bg-gray-400 disabled:lightGray"
-                type="submit"
-                disabled={loading || !isAddressValid}
-              >
-                {loading ? <CircularProgress color="secondary" /> : 'Sign Up'}
-              </button>
+              <LargePrimaryButton
+                className="w-full cta-button bg-yellow h-12"
+                disabled={isCreationBlocked()}
+                title="Sign Up"
+              ></LargePrimaryButton>
             </Box>
           </form>
         </GridLayout>

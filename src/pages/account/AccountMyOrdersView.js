@@ -24,7 +24,7 @@ const MyOrdersView = () => {
     <GridLayout className="mt-9 gap-12">
       <div className="pb-6 border-b border-bgWhite">
         <div className="lg:block hidden">
-          <OrderDetails entries={order.entries} />
+          <OrderDetails order={order} />
         </div>
       </div>
     </GridLayout>

@@ -4,6 +4,10 @@
 .large-primary-btn:disabled {
   @apply bg-bgWhite text-gray;
 }
+.large-primary-btn[disabled]:hover{
+  @apply bg-bgWhite !important;
+}
+
 .medium-primary-btn {
   @apply h-10 px-6 bg-primaryBlue text-white font-bold text-[14px] leading-[14px] tracking-[1px] hover:bg-emporixGold active:bg-primaryBlue;
 }

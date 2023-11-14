@@ -17,7 +17,9 @@ export const register = async (
   lastName,
   tenantName,
   company,
-  phoneNumber
+  registrationId,
+  phoneNumber,
+  currency
 ) => {
   let response
   const anonymousToken = localStorage.getItem(ANONYMOUS_TOKEN)
@@ -25,6 +27,11 @@ export const register = async (
     'Content-Type': 'application/json',
     Authorization: 'Bearer ' + anonymousToken,
   }
+  const siteCode = localStorage.getItem('siteCode')
+  const currentLanguage = localStorage.getItem('current-language')
+  const b2bValue = registrationId
+    ? { companyRegistrationId: registrationId }
+    : null
   const payload = {
     email: email,
     password: password,
@@ -33,8 +40,11 @@ export const register = async (
       lastName: lastName,
       contactPhone: phoneNumber,
       company: company,
+      b2b: b2bValue,
       contactEmail: email,
-      preferredCurrency: 'EUR',
+      preferredCurrency: currency.code,
+      preferredSite: siteCode,
+      preferredLanguage: currentLanguage
     },
     signup: {
       email: email,
@@ -65,7 +75,7 @@ export const login = async (username, password, userTenant) => {
       },
     }
   )
-  return loginBasedOnCustomerToken(data, userTenant);
+  return loginBasedOnCustomerToken(data, userTenant)
 }
 
 export const loginBasedOnCustomerToken = async (data, userTenant) => {
@@ -92,6 +102,8 @@ export const loginBasedOnCustomerToken = async (data, userTenant) => {
       }
     )
 
+    setScopes(userTenant, customerAccesstoken)
+
     if (me.firstName) {
       responseData = me
     }
@@ -106,8 +118,21 @@ export const loginBasedOnCustomerToken = async (data, userTenant) => {
     const anonCart = await CartService.getAnnonymousCart()
     // save anonymous cart to merge
     localStorage.setItem('anonymousCart', JSON.stringify(anonCart))
-  } catch(ex) {}
+  } catch (ex) {}
 
   localStorage.setItem('user', JSON.stringify(userdata))
   return responseData
+}
+
+const setScopes = async (tenant, customerAccessToken) => {
+  const { data: scopeResponse } = await axios.get(
+    API_URL + `/iam/${tenant}/users/me/scopes`,
+    {
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: 'Bearer ' + customerAccessToken,
+      },
+    }
+  )
+  localStorage.setItem('scopes', scopeResponse.scopes.split(' '))
 }

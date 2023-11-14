@@ -12,7 +12,7 @@ import CheckoutContent from './CheckoutContent'
 import CheckoutSummary from './CheckoutSummary'
 import { useUserAddress } from './AddressProvider'
 import { useCart } from 'context/cart-provider'
-import { Button, Chip, Dialog, Grid } from '@mui/material'
+import { Button, Chip, Grid } from '@mui/material'
 import { TextInput } from '../../components/Utilities/input'
 import CartService from '../../services/cart.service'
 import { usePayment } from './PaymentProvider'
@@ -20,8 +20,13 @@ import PaymentSpreedly from 'components/Checkout/PaymentSpreedly'
 import { RadioGroup } from 'components/Utilities/radio'
 import FilledButton from 'components/Utilities/FilledButton'
 import { api } from 'services/axios'
-import { authorizePayment } from 'services/service.config'
+import { approvalApprovers, approvalConfirmationPage, approvalPermitted, authorizePayment } from 'services/service.config'
 import { ACCESS_TOKEN } from 'constants/localstorage'
+import Dropdown, { DropdownWithLabel } from 'components/Utilities/dropdown'
+import { TextBold1, TextBold3, TextBold4, TextRegular1 } from 'components/Utilities/typography'
+import approvalService from 'services/approval.service'
+import { useNavigate } from 'react-router-dom'
+import Dialog from 'components/Utilities/Dialog'
 
 const PaymentAction = ({ action, disabled }) => {
   return (
@@ -59,6 +64,106 @@ const ReviewOrderAction = ({ action }) => {
       <MobileMDContainer>
         <LargePrimaryButton className='cta-button bg-yellow' title="CONFIRM AND PAY" onClick={action} />
       </MobileMDContainer>
+    </>
+  )
+}
+
+const ApprovalNeededAction = ({ approvers }) => {
+
+  const navigate = useNavigate()
+  const { selectedAddress, billingAddress, addresses } = useUserAddress()
+  const { cartAccount, syncCart, shippingMethod, cart } = useCart()
+  const { getPaymentMethods, payment, deferredPayment, setDeferredPayment } = usePayment()
+
+  const [ selectedApprover, setSelectedApprover] = useState(null) 
+  const [ comment, setComment] = useState(null) 
+  
+  const [ showDialog, setShowDialog] = useState(null)  
+  const approversOptions = approvers.map(approver => ({
+    label: approver.firstName + ' ' + approver.lastName,
+    value: approver.userId
+  }))
+
+  const handleCreateApproval = async () => {
+    const shipping = {
+      zoneId: shippingMethod.zoneId,
+      methodId: shippingMethod.id,
+      methodName: shippingMethod.name,
+      shippingTaxCode: shippingMethod.shippingTaxCode,
+      amount: shippingMethod.fee
+    }
+    const approval = await approvalService.triggerApproval(cartAccount.id, [
+      selectedAddress,
+      billingAddress,
+    ], shipping, getPaymentMethods(), { userId : selectedApprover}, comment )
+    
+    setShowDialog(false)
+    await syncCart()
+    navigate(approvalConfirmationPage())
+  }
+
+  const handleCancelApproval = () =>{
+    setShowDialog(false)
+  }
+
+  return (
+    <>
+      <Dialog
+        maxWidth="xl"
+        open={showDialog}
+        onClose={() => {
+          setShowDialog(false)
+        }}
+      >
+        <div className="approvalDialog">
+          <div className="text-xl font-bold mb-[10px]">Request Approval</div>
+          <div className="approvalDialogContent">
+            <div className={'approvalComment'}>
+              <TextBold4>Approvers</TextBold4>
+              <Dropdown
+                className={'approversDropdown'}
+                options={approversOptions}
+                onChange={(e) => {
+                  setSelectedApprover(e[0].value)
+                }}
+              />
+            </div>
+
+            <GridLayout className={'approvalComment'}>
+              <TextBold4>Additional Information (optional)</TextBold4>
+              <GridLayout className="">
+                <textarea
+                  className="h-[126px] p-4 border-black border"
+                  value={comment}
+                  onChange={(e) => {
+                    setComment(e.target.value)
+                  }}
+                />
+              </GridLayout>
+            </GridLayout>
+            <div className="approvalDialogFooter">
+              <LargePrimaryButton
+                className="md:block hidden gray-button mt-[50px]"
+                title="CANCEL"
+                onClick={handleCancelApproval}
+              />
+              <LargePrimaryButton
+                className="md:block hidden bg-yellow mt-[50px]"
+                title="SUBMIT"
+                onClick={handleCreateApproval}
+              />
+            </div>
+          </div>
+        </div>
+      </Dialog>
+      <LargePrimaryButton
+        className="md:block hidden cta-button bg-yellow"
+        title="APPROVAL REQUEST"
+        onClick={() => setShowDialog(true)}
+      />
+      <div className="approvalErrorBox">
+        You exceeded your limit. Please submit your cart for approval.
+      </div>
     </>
   )
 }
@@ -294,6 +399,8 @@ const CheckoutPage = () => {
   const { selectedAddress, billingAddress, addresses } = useUserAddress()
   const { cartAccount, syncCart, shippingMethod, cart } = useCart()
   const { getPaymentMethods, payment, deferredPayment, setDeferredPayment } = usePayment()
+  const [ approvalNeeded, setApprovalNeeded] = useState(false)  
+  const [ approvers, setApprovers] = useState([])  
 
   const subtotalWithoutVat = useMemo(() => {
     let subTotal =
@@ -357,6 +464,29 @@ const CheckoutPage = () => {
     }
     setDeferredPayment(false)   
   }
+
+  useEffect(() => {
+    ;
+    (async() => {
+     const body = {
+       resourceId : cartAccount.id,
+       resourceType: 'CART',
+       action: 'CHECKOUT'
+     }
+     const headers = {
+       Authorization: `Bearer ${localStorage.getItem(ACCESS_TOKEN)}`
+     }
+     const res = await api.post(`${approvalPermitted()}`, body, { headers })
+     setApprovalNeeded(!res.data.permitted)
+     
+     if(!res.permitted) {
+      const approversResponse = await api.post(`${approvalApprovers()}`, body, { headers })
+      setApprovers(approversResponse.data)
+     }
+
+    })()
+   }, [cartAccount])
+
   return (
     <div className="checkout-page-wrapper ">
       <div className="checkout-page-content">
@@ -403,8 +533,14 @@ const CheckoutPage = () => {
                   ) : (
                     ''
                   )}
-                  {status === 'review_order' ? (
+
+                  {status === 'review_order' && !approvalNeeded ? (
                     <ReviewOrderAction action={handleViewOrder} />
+                  ) : (
+                    ''
+                  )}
+                  {status === 'review_order' && approvalNeeded ? (
+                    <ApprovalNeededAction approvers={approvers} />
                   ) : (
                     ''
                   )}

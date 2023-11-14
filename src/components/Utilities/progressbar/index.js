@@ -67,7 +67,7 @@ export const ProgressBarItem = ({ status, title, activeTab }) => {
       <img
         src={icons[title.toLowerCase()]}
         className={`progress-bar_icons`}
-        text
+        text={title.toLowerCase()}
         alt={title}
       />
       <span>{title}</span>

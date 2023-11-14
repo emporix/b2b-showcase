@@ -10,11 +10,12 @@ const Dropdown = ({
   defaultValue,
   style,
   className,
+  searchable
 }) => {
   return (
     <Select
       options={options}
-      searchable={true}
+      searchable={searchable === undefined ? true : searchable}
       values={defaultValue ? [defaultValue] : []}
       onChange={onChange}
       style={style}

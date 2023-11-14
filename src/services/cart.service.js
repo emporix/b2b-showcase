@@ -56,8 +56,12 @@ const CartService = () => {
   }
 
   const getRewardPointsForLoggedUser = async () => {
-    const { data } = await api.get(getRewardPoints())
-    return data
+    try{
+      const { data } = await api.get(getRewardPoints())
+      return data
+    } catch(e){
+      return null;
+    }
   }
 
   const getRedeemOptionsForLoggedUser = async () => {

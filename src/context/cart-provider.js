@@ -31,7 +31,7 @@ const getCartAccount = async ({ customerId, sessionId }) => {
         try {
           const anonymousCart = JSON.parse(cart2merge)
           await CartService.mergeCarts(customerCart.id, anonymousCart.id)
-          const { data: updatedCustomerCart } = await CartService.getUserCart(
+          const updatedCustomerCart = await CartService.getUserCart(
             customerId
           )
           return updatedCustomerCart
@@ -107,7 +107,7 @@ const CartProvider = ({ children }) => {
 
   useEffect(() => {
     syncCart()
-  }, [user, userTenant, currentSite, sessionId])
+  }, [user, userTenant, sessionId])
 
   const removeCartItem = async (item) => {
     await CartService.removeProductFromCart(cartAccount.id, item.id)
@@ -118,6 +118,25 @@ const CartProvider = ({ children }) => {
     })
     syncCart()
   }
+  const setCartItemQty = useCallback(
+    async (itemId, qty) => {
+      const item = cartAccount.items.find((item) => item.id === itemId)
+      if (!item) {
+        throw new Error(`No item with id ${itemId} in cart`)
+      }
+      item.quantity = qty
+      const { quantity } = item
+
+      await CartService.updateCartProduct(
+        cartAccount.id,
+        item.id,
+        { quantity },
+        true
+      )
+      syncCart()
+    },
+    [cartAccount]
+  )
   const incrementCartItemQty = useCallback(
     async (itemId) => {
       const item = cartAccount.items.find((item) => item.id === itemId)
@@ -159,20 +178,6 @@ const CartProvider = ({ children }) => {
   const clearCart = () => {
     setCartAccount({ items: [] })
   }
-
-  useEffect(() => {
-    changeCurrency(context.currency)
-  }, [context.currency])
-
-  const changeCurrency = useCallback(
-    async (newCurrency) => {
-      if (cartAccount.id) {
-        await CartService.changeCurrency(newCurrency, cartAccount.id)
-        await syncCart()
-      }
-    },
-    [cartAccount?.id]
-  )
 
   const applyDiscount = useCallback(
     async (code) => {
@@ -230,20 +235,21 @@ const CartProvider = ({ children }) => {
     } else {
       newCart = await getCartAccount({ sessionId })
     }
-    const items = await getCartList(newCart.items || [])
+    const items = await getCartList(newCart?.items || [])
     newCart.items = items
     setCartAccount(newCart)
+    return newCart
   }, [sessionId])
 
   const value = {
     removeCartItem,
-    changeCurrency,
     putCartProduct,
     applyDiscount,
     removeDiscount,
     deleteCart,
     clearCart,
     syncCart,
+    setCartItemQty,
     incrementCartItemQty,
     decrementCartItemQty,
     cartAccount,
