@@ -10,6 +10,7 @@ import {
   GridLayout,
   formatDate,
 } from '../../components/Utilities/common'
+import OrderInfoStatus from './OrderInfoStatus'
 
 const ProductInfo = ({ product }) => {
   return (
@@ -42,8 +43,24 @@ const PriceWithInfo = ({ price, includeVat = false, caption }) => {
   )
 }
 
+const orderCheck = (order) => {
+  if(order?.mixins?.['6557595fa735225f8bf288c2']?.interactionsCheck === false || order?.mixins?.['6557595fa735225f8bf288c2']?.substanceCheck === false) {
+    let message = ""  
+    if(order?.mixins?.['6557595fa735225f8bf288c2']?.interactionsCheck === false) {
+      message += order?.mixins?.['6557595fa735225f8bf288c2']?.interactionsCheckMessage + " \n."
+    }
+    if(order?.mixins?.['6557595fa735225f8bf288c2']?.substanceCheck === false) {
+      message += order?.mixins?.['6557595fa735225f8bf288c2']?.substanceCheckMessage + " \n."
+    }
+    return message
+  }
+  return undefined
+}
+
 const OrderDetails = ({ order }) => {
   return (
+  <>
+    {orderCheck(order) && (<OrderInfoStatus status={order.status} message={orderCheck(order)} ></OrderInfoStatus>)}
     <TableContainer>
       <Table sx={{ minWidth: 650 }}>
         <TableHead>
@@ -146,6 +163,7 @@ const OrderDetails = ({ order }) => {
         </TableBody>
       </Table>
     </TableContainer>
+  </>
   )
 }
 
