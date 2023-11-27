@@ -215,13 +215,13 @@ const Navbar = () => {
     const {fields} = useContentful()
     useEffect(() => {
         setCartTotal(cartAccount.items.length || 0)
+        console.log(cartAccount)
         if (
             cartAccount &&
-            cartAccount.subtotalAggregate &&
-            cartAccount.subtotalAggregate.grossValue
+            cartAccount.totalPrice &&
+            cartAccount.totalPrice.amount
         ) {
-            setCartTotalPrice(cartAccount.totalPrice.amount +
-                +cartAccount.totalPrice.amount * cartAccount?.taxAggregate.lines[0].rate / 100)
+            setCartTotalPrice(cartAccount.totalPrice.amount)
         } else {
             setCartTotalPrice(0)
         }

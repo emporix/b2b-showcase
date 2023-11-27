@@ -25,21 +25,21 @@ const Category = () => {
                 Kategorien
             </div>
             <div className="home_cat_content">
-                <Link to={addTenantToUrl(`product/wine/rot`)}>
+                <Link to={addTenantToUrl(`product/wein/rot`)}>
                     <EachCategory
                         src="/category/red-wine-category-image.png"
                         title="Rotwein"
                         content="Tellus ornare at consequat ipsum,non lobortis"
                     />
                 </Link>
-                <Link to={addTenantToUrl(`product/wine/weiss`)}>
+                <Link to={addTenantToUrl(`product/wein/weiss`)}>
                     <EachCategory
                         src="/category/white-wine-category-image.png"
                         title="Weißwein"
                         content="Tellus ornare at consequat ipsum,non lobortis"
                     />
                 </Link>
-                <Link to={addTenantToUrl(`product/wine/rose`)}>
+                <Link to={addTenantToUrl(`product/wein/rose`)}>
                     <EachCategory
                         src="/category/white-wine-category-image.png"
                         title="Rosewein"
