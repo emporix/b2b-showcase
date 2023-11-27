@@ -64,7 +64,7 @@ const Category = ({item}) => {
                                 color: "#E03F58",
                             },
                             '& .MuiSvgIcon-root': {fontSize: 18}
-                        }} iconStyle={{fill: 'white'}}/>
+                        }} style={{fill: 'white'}}/>
                         <div>Select All</div>
                     </div>
                     {items.map((item, index) => (
