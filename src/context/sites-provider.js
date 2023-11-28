@@ -14,7 +14,7 @@ import { LoadingCircleProgress } from 'components/Utilities/progress'
 const SiteContext = createContext({})
 export const useSites = () => useContext(SiteContext)
 
-export const SitesProvider = ({ children }) => {
+export const  SitesProvider = ({ children }) => {
   const { context } = useAppContext()
   const [sites, setSites] = useState([])
   const [currentSite, setCurrentSite] = useState()
