@@ -1,12 +1,13 @@
 import React, {useEffect, useState} from 'react'
 import './content.css'
-import { getPage } from 'services/content/page.service'
 import FsGenericComponent from 'resolver/firstSpirit.resolver'
+import { getCmsFilteredPage } from 'services/content/filteredPage.service'
 
-const Content = () => {
+const Content = ({type, page}) => {
+	console.log(type, page	)
     const [content, setContent] = useState([])
 	const getData = async () => {
-		const pageData = await getPage()
+		const pageData = await getCmsFilteredPage(page, type)
 		setContent(pageData)
 	};
 	useEffect(() => {

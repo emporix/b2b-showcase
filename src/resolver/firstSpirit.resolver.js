@@ -18,10 +18,11 @@ export const normalizeFsStructure = (content) => {
 
 const FsGenericComponent = (props) => {
     let componentData = [
-        ...Object.values(props?.props?.data?.cmsContentReference?.page?.formData ?? {}),
+        ...Object.values(props?.props?.data?.cmsFilteredPage?.page?.data ?? {}),
     ] ?? [];
 
-    const children = props?.props?.data?.cmsContentReference?.page?.children[0].children;
+
+    const children = props?.props?.data?.cmsFilteredPage?.page?.children[0].children;
     if (children !== undefined && Array.isArray(children)) {
         componentData = [
             ...componentData,

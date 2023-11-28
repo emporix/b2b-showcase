@@ -28,6 +28,9 @@ import priceService from '../../services/product/price.service'
 import { useNavigate } from 'react-router-dom'
 import { ProductConfiguration } from './ProductConfiguration'
 import { Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material'
+import Content from 'pages/home/Content'
+import { CMSFilterType } from 'services/content/filteredPage.service'
+
 
 const ProductContext = createContext()
 
@@ -615,6 +618,33 @@ const ProductDetailInfo = ({ product }) => {
       </div>
     </div>
   )
+const ProductDetailInfo = ({product}) => {
+    return (
+        <div className="product-detail-page-info-wrapper lg:py-12 pb-12">
+            <div className="product-detail-content">
+                <div className="desktop-lg">
+                    <Content type={CMSFilterType.PRODUCT} page={product.id} />
+                </div>
+
+                <div className="desktop-lg">
+                    <ProductDetailTabContent product={product}/>
+                </div>
+                <div className="mobile-lg">
+                    <Accordion>
+                        <AccordionItem index={0} title="Details">
+                            <ProductDetailsTabContent product={product}/>
+                        </AccordionItem>
+                        <AccordionItem index={1} title="Additional Information">
+                            {product.description}
+                        </AccordionItem>
+                        <AccordionItem index={2} title="Reviews">
+                            Reviews
+                        </AccordionItem>
+                    </Accordion>
+                </div>
+            </div>
+        </div>
+    )
 }
 
 const products = [
