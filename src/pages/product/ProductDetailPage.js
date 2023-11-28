@@ -529,10 +529,6 @@ const ProductDetailInfo = ({product}) => {
         <div className="product-detail-page-info-wrapper lg:py-12 pb-12">
             <div className="product-detail-content">
                 <div className="desktop-lg">
-                    <Content type={CMSFilterType.PRODUCT} page={product.id} />
-                </div>
-
-                <div className="desktop-lg">
                     <ProductDetailTabContent product={product}/>
                 </div>
                 <div className="mobile-lg">
@@ -547,6 +543,10 @@ const ProductDetailInfo = ({product}) => {
                             Reviews
                         </AccordionItem>
                     </Accordion>
+                </div>
+
+                <div className="desktop-lg mt-4">
+                    <Content type={CMSFilterType.PRODUCT} page={product.id} />
                 </div>
             </div>
         </div>
