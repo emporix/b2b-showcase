@@ -32,7 +32,11 @@ const FsGenericComponent = (props) => {
     return (
         <div>
             {componentData.map(entry => {
-                const key = entry?.template?.uid ? entry?.template?.uid : entry?.name;
+                let key = entry?.template?.uid ? entry?.template?.uid : entry?.name;
+
+                if (entry?.sectionType) {
+                    key = entry?.sectionType;
+                }
                 const Component = firstSpiritComponentMap[key];
 
                 // Prevent undefined components to be rendered
