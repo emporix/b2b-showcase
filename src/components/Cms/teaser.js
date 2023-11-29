@@ -1,30 +1,16 @@
-import parse from 'html-react-parser'
-import {useEffect, useState} from 'react';
-import {getImage} from 'services/content/image.service';
 import './teaser.css';
 
 const Teaser = (props) => {
-    const content = props.props.formData
-    const headline = content?.st_headline?.value;
-    const text = content?.st_text?.value;
-    const image = content?.st_picture?.value;
-
-    const [resolvedImage, setImage] = useState([])
-    const getData = async () => {
-        if (content?.st_picture?.value?.url !== undefined) {
-            const resolvedImage = await getImage(content?.st_picture?.value?.url)
-            setImage(resolvedImage.data.cmsImage)
-        }
-    };
-    useEffect(() => {
-        getData();
-    }, [])
+    const content = props.props.data
+    const headline = content?.st_headline;
+    const text = content?.st_text;
+    const image = content?.st_picture.resolutions.ORIGINAL;
 
     if (headline === undefined && text === undefined && image === undefined) return;
     return (
         <div className="teaser"
-             style={resolvedImage ? {
-                 backgroundImage: `url(${resolvedImage.url})`,
+             style={image ? {
+                 backgroundImage: `url(${image.url})`,
                  backgroundSize: 'cover',
              } : null}>
             <div
@@ -34,9 +20,11 @@ const Teaser = (props) => {
                         {headline}
                     </div>
                 ) : ""}
-                {text ? (
+                {text.length ? (
                     <div className="teaser__text">
-                        {parse(text)}
+                        {text.map((item, index) => {
+                            return <p key={index}>{item.content[0]?.content}</p>
+                        })}
                     </div>
                 ) : ""}
             </div>

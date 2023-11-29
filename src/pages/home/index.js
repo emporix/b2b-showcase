@@ -1,16 +1,16 @@
-import React, { useState, createContext, useContext } from 'react'
 import About from './About'
 import Service from './Service'
 import Category from './Category'
-import Product from './Product'
 import Subscribe from './Subscribe'
 import Layout from '../Layout'
 import Content from './Content'
+import { CMSFilterType, ContentPageMapping } from 'services/content/filteredPage.service'
+
 
 const Home = () => {
   return (
     <Layout title={'home'}>
-      <Content />
+      <Content type={CMSFilterType.PAGE_FOR_SEO_ROUTE} page={ContentPageMapping.homepage} />
       <About />
       <Service />
       <Category />
