@@ -4,7 +4,6 @@ import FsGenericComponent from 'resolver/firstSpirit.resolver'
 import { getCmsFilteredPage } from 'services/content/filteredPage.service'
 
 const Content = ({type, page}) => {
-	console.log(type, page	)
     const [content, setContent] = useState([])
 	const getData = async () => {
 		const pageData = await getCmsFilteredPage(page, type)
