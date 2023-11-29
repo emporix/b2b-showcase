@@ -215,7 +215,6 @@ const Navbar = () => {
     const {fields} = useContentful()
     useEffect(() => {
         setCartTotal(cartAccount.items.length || 0)
-        console.log(cartAccount)
         if (
             cartAccount &&
             cartAccount.totalPrice &&
