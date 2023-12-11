@@ -1,21 +1,22 @@
 const { fetchGraphqlApi } = require("graphql/utils/fetch-graphql-api")
 
-const DealerQuery = `query DealerQuery {
-    dealers {
-      id
-      name
-      latitude
-      longitude
-      street
-      houseNumber
-      zipCode
-      city
-      country
-      phoneNumber
-      email
-      website
-    }
-  }`
+const DealerQuery = `query DealerQuery($language: Language) {
+  dealers(language: $language) {
+    id
+    name
+    latitude
+    longitude
+    street
+    houseNumber
+    zipCode
+    city
+    country
+    phoneNumber
+    email
+    website
+  }
+}
+`
 
 
 export const getDealers = async () => {
