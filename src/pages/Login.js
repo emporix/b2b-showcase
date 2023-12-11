@@ -113,6 +113,7 @@ const Login = () => {
               <label className="pb-2 text-[14px]/[22px]">E-mail</label>
               <br />
               <input
+                id="input-email"
                 placeholder="example@gmail.com"
                 onChange={onChangeUserEmail}
                 value={userEmail}
@@ -126,6 +127,7 @@ const Login = () => {
             <label className="pb-2 text-[14px]/[22px]">Password</label>
               <br />
               <input
+                id="input-password"
                 placeholder="your password"
                 onChange={onChangePassword}
                 value={password}
