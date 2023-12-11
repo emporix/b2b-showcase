@@ -1,10 +1,11 @@
 import { fetchGraphqlApi } from "graphql/utils/fetch-graphql-api";
 
-const FilteredPageQuery = `query FilteredPageQuery($cmsFilteredPageId: String!, $type: CMSFilterType!) {
-    cmsFilteredPage(id: $cmsFilteredPageId, type: $type) {
-      page
-    }
-  }`
+const FilteredPageQuery = `query FilteredPageQuery($cmsFilteredPageId: String!, $type: CMSFilterType!, $language: Language) {
+  cmsFilteredPage(id: $cmsFilteredPageId, type: $type, language: $language) {
+    page
+  }
+}
+`
 
 export const CMSFilterType = {
     PRODUCT: 'PRODUCT',
@@ -17,8 +18,8 @@ export const ContentPageMapping = {
   homepage: "/Homepage/index-2.html"
 }
 
-  export const getCmsFilteredPage = async (cmsFilteredPageId, type) => {
-    const data = await fetchGraphqlApi(FilteredPageQuery, { cmsFilteredPageId, type })
+  export const getCmsFilteredPage = async (cmsFilteredPageId, type, language) => {
+    const data = await fetchGraphqlApi(FilteredPageQuery, { cmsFilteredPageId, type, language })
     return data;
 }
 
