@@ -27,6 +27,9 @@ import productService from '../../services/product/product.service'
 import priceService from '../../services/product/price.service'
 import {useNavigate} from 'react-router-dom'
 import { ProductConfiguration } from './ProductConfiguration'
+import Content from 'pages/home/Content'
+import { CMSFilterType } from 'services/content/filteredPage.service'
+
 
 const ProductContext = createContext()
 
@@ -541,6 +544,10 @@ const ProductDetailInfo = ({product}) => {
                         </AccordionItem>
                     </Accordion>
                 </div>
+
+                <div className="desktop-lg mt-4">
+                    <Content type={CMSFilterType.PRODUCT} page={product.id} />
+                </div>
             </div>
         </div>
     )
@@ -602,7 +609,6 @@ const products = [
 
 const getRelatedProducts = async (language, product) => {
     let productIds = []
-    console.log(product)
     const relatedItems = product.relatedItems
     if (!relatedItems) return null
 

@@ -19,6 +19,7 @@ import {useQuotes} from 'context/quotes-context'
 import {useContentful} from '../../context/contentful-provider'
 import {useCart} from 'context/cart-provider'
 import {useCurrency} from 'context/currency-context'
+import { getCmsNavigation } from 'services/content/navigation.service'
 
 const Navbar = () => {
     const {userTenant: tenant} = useAuth()
@@ -40,6 +41,17 @@ const Navbar = () => {
     const currencyChangeHandler = async (value, site) => {
         updateCurrency(value, site)
     }
+
+    const [cmsNavigation, setCmsNavigation] = useState([])
+	const cmsNavigationData = async () => {
+        //we don't use the navigation implementation for now
+
+		//const nav = await getCmsNavigation()
+		//setCmsNavigation(nav))
+	};
+	useEffect(() => {
+		cmsNavigationData();
+	}, [])
 
     const ParentBoard = () => {
         return (
@@ -217,11 +229,10 @@ const Navbar = () => {
         setCartTotal(cartAccount.items.length || 0)
         if (
             cartAccount &&
-            cartAccount.subtotalAggregate &&
-            cartAccount.subtotalAggregate.grossValue
+            cartAccount.totalPrice &&
+            cartAccount.totalPrice.amount
         ) {
-            setCartTotalPrice(cartAccount.totalPrice.amount +
-                +cartAccount.totalPrice.amount * cartAccount?.taxAggregate.lines[0].rate / 100)
+            setCartTotalPrice(cartAccount.totalPrice.amount)
         } else {
             setCartTotalPrice(0)
         }
