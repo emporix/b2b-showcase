@@ -283,6 +283,7 @@ const Navbar = () => {
         <div className="ml-[22px]">
           {fields.currencyLabel}:
           <select
+            id="currency-select"
             value={activeCurrency.code !== undefined ? activeCurrency.code : ''}
             onChange={(e) =>
               currencyChangeHandler(e.target.value, currentSiteObject)
@@ -312,7 +313,7 @@ const Navbar = () => {
               ) : (
                 <AiOutlineShoppingCart size={20} onClick={handleOpenCart} />
               )}
-              <div className="pl-3 text-white flex">
+              <div id="cart-value" className="pl-3 text-white flex">
                 <CurrencyBeforeValue value={cartTotalPrice} />
               </div>
             </li>

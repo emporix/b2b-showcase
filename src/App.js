@@ -52,6 +52,7 @@ import ApprovalCheckout from 'pages/approval'
 import ApprovalOrderCreated from 'pages/approval/ApprovalOrderCreated'
 import AccountManageUsers from 'pages/account/AccountManageUsers'
 import ResetPassword from 'pages/ResetPassword'
+import Auth0Callback from 'pages/Auth0Callback'
 
 function App() {
   const dispatch = useDispatch()
@@ -64,8 +65,14 @@ function App() {
   return (
     <Router>
       <Routes>
+        <Route
+            path="auth0"
+            exact
+            element={<Auth0Callback />}
+          />
         <Route path="/:tenant">
           <Route index exact element={<Home />} />
+
           <Route path="product/:maincategory" exact element={<ProductList />} />
           <Route
             path="product/:maincategory/:subcategory/"

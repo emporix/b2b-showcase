@@ -104,10 +104,11 @@ export const loginBasedOnCustomerToken = async (data, userTenant) => {
 
     setScopes(userTenant, customerAccesstoken)
 
-    if (me.firstName) {
+    if (me) {
       responseData = me
     }
   }
+
 
   let userdata = {
     ...responseData,
@@ -122,6 +123,24 @@ export const loginBasedOnCustomerToken = async (data, userTenant) => {
 
   localStorage.setItem('user', JSON.stringify(userdata))
   return responseData
+}
+
+export const refreshCustomerData = async (userTenant) => {
+  const { data: me } = await axios.get(
+    API_URL + `/customer/${userTenant}/me?expand=addresses,mixin:*`,
+    {
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: 'Bearer ' + localStorage.getItem(CUSTOMER_TOKEN)
+      },
+    }
+  )
+  let userdata = {
+    ...me,
+    userTenant: userTenant,
+    username: me.firstName + ' ' + me.lastName,
+  }
+  localStorage.setItem('user', JSON.stringify(userdata)) 
 }
 
 const setScopes = async (tenant, customerAccessToken) => {

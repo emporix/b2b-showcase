@@ -15,6 +15,7 @@ import {
   myAccountMyOrdersInvoiceUrl,
   myAccountMyOrdersViewUrl,
   createReturnUrl,
+  shippingApi,
 } from '../../services/service.config'
 import { useReturns } from 'context/returns-provider'
 import ReturnInfoStatus from './ReturnInfoStatus'
@@ -107,6 +108,14 @@ export const OrderList = (props) => {
     },
     [returns]
   )
+
+  const getShippingCost = (row) => {
+    if(row && row.shipping && row.shipping.lines && row.shipping.lines.length > 0 && row.shipping.lines[0].amount) {
+      return row.shipping.lines[0].amount
+    }
+    return 0
+  }
+
   return (
     <div>
       {showAlreadySubmittedError && (
@@ -159,7 +168,7 @@ export const OrderList = (props) => {
                 </TableCell>
                 <TableCell align="center" className="!py-6">
                   <CurrencyAfterValue
-                    value={row.subTotalPrice + row.shipping.lines[0].amount + row.tax.lines.reduce((sum, el) => sum + el.amount, 0) }
+                    value={row.subTotalPrice + getShippingCost(row) + row.tax.lines.reduce((sum, el) => sum + el.amount, 0) }
                     currency={row.currency}
                   />
                 </TableCell>

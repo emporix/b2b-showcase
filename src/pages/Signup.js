@@ -1,6 +1,6 @@
 import React, { useMemo, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
-import { login, register } from '../services/user/auth.service'
+import { login, register, refreshCustomerData} from '../services/user/auth.service'
 import Snackbar from '@mui/material/Snackbar'
 import MuiAlert from '@mui/material/Alert'
 import PhoneField from '../components/Utilities/phoneinput/PhoneField'
@@ -272,6 +272,7 @@ const Signup = (props) => {
       if (addressValid(billingAddress)) {
         await createAddress({ ...billingAddress, tags: ['billing'] })
       }
+      await refreshCustomerData(tenant)
       if (isSignedUp) {
         props.history.replace(`/${tenant}`)
       }

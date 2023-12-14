@@ -15,6 +15,11 @@ import { homeUrl, signupUrl } from '../services/service.config'
 import { useAuth } from 'context/auth-provider'
 import { TENANT } from '../constants/localstorage'
 import { Logo } from '../components/Logo'
+import './login.css'
+
+
+const AUTH0_DOMAIN = process.env.REACT_APP_AUTH0_DOMAIN
+const AUTH0_CLIENT_ID = process.env.REACT_APP_AUTH0_CLIENT_ID
 
 const Login = () => {
   const { syncAuth } = useAuth()
@@ -113,6 +118,7 @@ const Login = () => {
               <label className="pb-2 text-[14px]/[22px]">E-mail</label>
               <br />
               <input
+                id="email-input"
                 placeholder="example@gmail.com"
                 onChange={onChangeUserEmail}
                 value={userEmail}
@@ -126,6 +132,7 @@ const Login = () => {
             <label className="pb-2 text-[14px]/[22px]">Password</label>
               <br />
               <input
+                id="password-input"
                 placeholder="your password"
                 onChange={onChangePassword}
                 value={password}
@@ -153,6 +160,22 @@ const Login = () => {
             </Box>
           </form>
 
+       {AUTH0_DOMAIN ? (
+                    <GridLayout className="pt-6 w-full  items-center text-center text-base">
+                    <Box className="w-full !pt-8">
+                    <button
+                        className="w-full h-12 social-login-btn"
+                        onClick={() => {window.location.href=`${AUTH0_DOMAIN}/authorize?response_type=code&scope=profile email openid offline_access&client_id=${AUTH0_CLIENT_ID}&redirect_uri=${window.location.origin}/auth0`}}
+                      >
+                        <img src="https://cdn.auth0.com/styleguide/components/1.0.8/media/logos/img/badge.png" width="32"/>
+                        <span className='social-login-btn-label'>Social Login</span> 
+                      </button>
+                  
+                    </Box>
+                  </GridLayout>
+       ) : (<></>)}
+
+          
           <GridLayout className="pt-6 w-full  items-center text-center text-base">
             <Box className="mx-auto">
             <span className="text-[146x]/[24px] text-eerieBlack">

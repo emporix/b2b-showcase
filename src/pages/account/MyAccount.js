@@ -30,11 +30,18 @@ const AccountPersonalInfo = () => {
       <div className="account-profile">
         <div className="mx-auto flex flex-col gap-8 items-center">
         <div className="flex flex-row flex-1 w-full">
-            <img
+          {user.photoUrl ? (<img
+              className="personal-photo"
+              src={user.photoUrl}
+              alt="profile photography"
+            />) : (
+              <img
               className="personal-photo"
               src="/photo.png"
               alt="profile photography"
             />
+            )}
+            
             <div className="flex flex-col justify-start items-start pl-6">
             <div className="text-center m-auto text-[20px]/[28px] font-semibold">
                 {user.username}

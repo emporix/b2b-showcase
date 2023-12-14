@@ -1,7 +1,6 @@
-import { ACCESS_TOKEN, USER } from 'constants/localstorage'
+import { ACCESS_TOKEN } from 'constants/localstorage'
 import { iamApi } from './service.config'
 import { api } from './axios'
-import axios from 'axios'
 
 
 export const getCustomerGroups = async () => {

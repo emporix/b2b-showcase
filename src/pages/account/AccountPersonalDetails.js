@@ -35,7 +35,7 @@ const PersonalInfo = ({ user }) => {
             </li>
           </ul>
           <div className="personal-photo-wrapper">
-            <img className="personal-photo" src="/photo.png" />
+            {user.photoUrl ? (<img className="personal-photo" src={user.photoUrl} />) : (<img className="personal-photo" src="/photo.png" />)}
             <div className="add-photo-wrapper mt-2">
               <a href={''} className="add-new-photo">
                 Add New Photo

@@ -27,7 +27,7 @@ export const Logo = ({ onMouseOver, size, text }) => {
 
     return (
         <Link to={homeUrl()} className="flex" onMouseOver={onMouseOver}>
-            <img src={newLogo} alt={'Logo'} className="w-[203px] h-[84px] mt-[-20px]"/>
+            <img id="logo-img" src={newLogo} alt={'Logo'} className="w-[203px] h-[84px] mt-[-20px]"/>
         </Link>
     )
 }

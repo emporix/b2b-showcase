@@ -326,7 +326,7 @@ export const CartSubTotalIncludeVat = ({ grossValue, currency }) => {
 }
 
 export const CartVat = ({ value, taxPercentage, currency, taxValue }) => {
-  const effectiveTaxValue = taxValue ? taxValue : Math.trunc(value * (taxPercentage / 100) * 100) / 100
+  const effectiveTaxValue = taxValue ? taxValue : (value * (taxPercentage / 100)).toFixed(2)
   return (
     <>
       <span>
@@ -404,8 +404,7 @@ export const getShippingCost = (shippingMethod) => {
 }
 
 export const getTotalPrice = (cartAccount, shippingCost) => {
-  return cartAccount?.totalPrice && cartAccount.taxAggregate ? cartAccount.totalPrice.amount +
-  + cartAccount.totalPrice.amount * cartAccount?.taxAggregate.lines[0].rate / 100 
+  return cartAccount?.subtotalAggregate ? cartAccount.subtotalAggregate.grossValue + 
   + shippingCost : 0
 }
 
@@ -450,7 +449,7 @@ export const CartActionPanel = ({ action, showShipping }) => {
               cartAccount?.taxAggregate &&
               cartAccount?.taxAggregate.lines.length > 0 && (
                 <CartVat
-                  value={cartAccount?.subtotalAggregate?.taxValue}
+                  value={cartAccount?.subtotalAggregate?.netValue}
                   taxPercentage={cartAccount?.taxAggregate.lines[0].rate}
                   currency={cartAccount?.currency}
                   taxValue={cartAccount?.subtotalAggregate?.taxValue}
@@ -461,7 +460,7 @@ export const CartActionPanel = ({ action, showShipping }) => {
             {cartAccount?.subtotalAggregate &&
               cartAccount?.subtotalAggregate.grossValue && (
                 <CartSubTotalIncludeVat
-                  grossValue={cartAccount?.subtotalAggregate.grossValue}
+                  grossValue={getTotalPrice(cartAccount, 0)}
                   currency={cartAccount.currency}
                 />
               )}

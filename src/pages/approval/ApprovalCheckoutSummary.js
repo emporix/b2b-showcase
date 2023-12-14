@@ -146,19 +146,17 @@ export const CartActionPanel = ({ action }) => {
 
         <CartActionRow>
           <LayoutBetween>
-            {resource &&
-              resource?.taxAggregate &&
-              resource?.taxAggregate.lines.length > 0 && (
-                <CartVat
-                  value={resource.subtotalAggregate.taxValue}
-                  taxPercentage={
-                    (resource.subtotalAggregate.taxValue * 100) /
-                    resource.subtotalAggregate.netValue
-                  }
-                  currency={resource?.currency}
-                  taxValue={resource?.subtotalAggregate?.taxValue}
-                />
-              )}
+            {resource && resource?.subtotalAggregate && (
+              <CartVat
+                value={resource.subtotalAggregate.netValue}
+                taxPercentage={
+                  +((resource.subtotalAggregate.taxValue * 100) /
+                  resource.subtotalAggregate.netValue).toFixed(2)
+                }
+                currency={resource?.currency}
+                taxValue={resource?.subtotalAggregate?.taxValue}
+              />
+            )}
           </LayoutBetween>
           <LayoutBetween>
             {

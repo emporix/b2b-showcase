@@ -67,6 +67,7 @@ const ProductListViewSettingBar = ({
               <div className="gap-4 flex">
                 <div className="lg:block products-filter-name">View:</div>
                 <div
+                  id="grid-view"
                   className="cursor-pointer hover:text-yellow"
                   onClick={() => changeDisplayType(true)}
                 >
@@ -82,6 +83,7 @@ const ProductListViewSettingBar = ({
                   </IconContext.Provider>
                 </div>
                 <div
+                  id="list-view"
                   className="cursor-pointer"
                   onClick={() => changeDisplayType(false)}
                 >

@@ -1,0 +1,23 @@
+.social-login-btn {
+    justify-content: center;
+    display: flex;
+    position: relative;
+    background: #fff;
+    align-items: center;
+    font-size: 16px;
+    font-family: inherit;
+    border: 1px solid #8c939c;
+    border-radius: 3px;
+    border-radius: var(--button-border-radius);
+    color: #2d333a;
+    cursor: pointer;
+}
+
+.social-login-btn:hover {
+    background: #c1c5ca;;
+}
+
+.social-login-btn-label {
+    margin-left: 10px;
+    font-weight: 600;
+}

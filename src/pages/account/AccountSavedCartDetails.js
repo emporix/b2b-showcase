@@ -247,9 +247,12 @@ const AccountSavedCartDetails = () => {
                   </div>
                 </div>
                 <div className="flex justify-between font-light mt-4 pb-4">
-                  <div>{`VAT of ${formatCurrency(
+                  <div>{`VAT ${+(
+                    (approval.resource.subtotalAggregate.taxValue * 100) /
+                    approval.resource.subtotalAggregate.netValue
+                  ).toFixed(2)}% of ${formatCurrency(
                     approval.details.currency,
-                    approval.resource.subtotalAggregate.grossValue
+                    approval.resource.subtotalAggregate.netValue
                   )}`}</div>
                   <div>
                     {formatCurrency(
@@ -270,10 +273,7 @@ const AccountSavedCartDetails = () => {
                 <div className="flex justify-between font-light mt-4 border-b border-[#D7D7D7] pb-4">
                   <div>Shipping Costs</div>
                   <div>
-                    {formatCurrency(
-                      approval.details.currency,
-                      shippingCost
-                    )}
+                    {formatCurrency(approval.details.currency, shippingCost)}
                   </div>
                 </div>
                 <div className="flex justify-between font-bold text-lg pt-4 pb-32">
@@ -281,7 +281,8 @@ const AccountSavedCartDetails = () => {
                   <div>
                     {formatCurrency(
                       approval.resource.totalPrice.currency,
-                      approval.resource.subtotalAggregate.grossValue + shippingCost
+                      approval.resource.subtotalAggregate.grossValue +
+                        shippingCost
                     )}
                   </div>
                 </div>

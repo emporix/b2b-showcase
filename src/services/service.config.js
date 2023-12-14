@@ -99,3 +99,5 @@ export const approvalConfirmationPage = () => `/${getTenant()}/approval-request`
 export const approvalOrderCreatedPage = () => `/${getTenant()}/approval-order-created`
 export const approvalCheckoutPage = (approvalId) => `/${getTenant()}/saved-carts/${approvalId}/checkout`
 export const savedCartsPage = () => `/${getTenant()}/my-account/saved-carts`
+
+export const auth0TokenExchange = () => `/customer/${getTenant()}/socialLogin`
