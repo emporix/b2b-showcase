@@ -617,36 +617,8 @@ const ProductDetailInfo = ({ product }) => {
         </div>
       </div>
     </div>
-  )
-const ProductDetailInfo = ({product}) => {
-    return (
-        <div className="product-detail-page-info-wrapper lg:py-12 pb-12">
-            <div className="product-detail-content">
-                <div className="desktop-lg">
-                    <ProductDetailTabContent product={product}/>
-                </div>
-                <div className="mobile-lg">
-                    <Accordion>
-                        <AccordionItem index={0} title="Details">
-                            <ProductDetailsTabContent product={product}/>
-                        </AccordionItem>
-                        <AccordionItem index={1} title="Additional Information">
-                            {product.description}
-                        </AccordionItem>
-                        <AccordionItem index={2} title="Reviews">
-                            Reviews
-                        </AccordionItem>
-                    </Accordion>
-                </div>
-
-                <div className="desktop-lg mt-4">
-                    <Content type={CMSFilterType.PRODUCT} page={product.id} />
-                </div>
-            </div>
-        </div>
-    )
-}
-
+  )}
+  
 const products = [
     {
         stock: 'Low',
