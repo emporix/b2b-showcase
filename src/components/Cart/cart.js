@@ -330,7 +330,7 @@ export const CartVat = ({value, taxPercentage, currency}) => {
       </span>
             <span>
         <CurrencyBeforeValue
-          value={effectiveTaxValue}
+          value={value}
           currency={currency}
         />
       </span>
