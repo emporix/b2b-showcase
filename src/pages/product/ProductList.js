@@ -11,26 +11,23 @@ import { LoadingCircleProgress1 } from 'components/Utilities/progress'
 const ProductList = ({ handleSideFilterContent, filterItems }) => {
 
   const {category: categoryTree} = useProductList()
-  const [isLoading, setIsLoading] = useState(false)
-  const [subCategoryId, setSubCategoryId] = useState("")
+  const [isLoading, setIsLoading] = useState(true)
+  const [categoryId, setCategoryId] = useState("")
   const {maincategory, subcategory, category} = useParams()
+
 
   useEffect(() => {
     async function fetchFSContent() {
       setIsLoading(true);
       if (categoryTree && categoryTree.length > 0 && maincategory) {
-        const { subCategoryId: subCatId } = await getProductCategoryDetail(
+        const { categoryId: catId } = await getProductCategoryDetail(
           maincategory,
           subcategory,
           category,
           categoryTree
           )
-
-        if(subCatId) {
-          setSubCategoryId(() => subCatId)
-          setIsLoading(false)
-        } else {
-          setSubCategoryId(() => "")
+        if(catId) {
+          setCategoryId(() => catId)
           setIsLoading(false)
         }
       }
@@ -60,7 +57,7 @@ const ProductList = ({ handleSideFilterContent, filterItems }) => {
         isLoading ? (
           <LoadingCircleProgress1 />
         ) :
-        <Content type={CMSFilterType.CATEGORY} page={subCategoryId} />
+        <Content type={CMSFilterType.CATEGORY} page={categoryId} />
       }
       </div>
 

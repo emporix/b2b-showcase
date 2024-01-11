@@ -74,7 +74,7 @@ export const getProductCategoryDetail = async (
           : productCounts[res.categoryId] + 1
   })
   matchMainCategory = putProductCount(matchMainCategory, productCounts)
-  let resTitle, resCategories, resCategoryId, resSubCategoryId
+  let resTitle, resCategories, resCategoryId
   let products = []
 
   if (subCategoryKey === undefined) {
@@ -87,8 +87,6 @@ export const getProductCategoryDetail = async (
     )
 
     matchSubCategory = matchSubCategory.length > 0 ? matchSubCategory[0] : []
-    
-    resSubCategoryId = matchSubCategory.categoryId
 
     if (categoryKey === undefined) {
       resTitle = matchSubCategory.title
@@ -118,8 +116,7 @@ export const getProductCategoryDetail = async (
     title: resTitle,
     categories: resCategories,
     productIds: products,
-    categoryId: resCategoryId,
-    subCategoryId: resSubCategoryId
+    categoryId: resCategoryId
   }
 }
 
