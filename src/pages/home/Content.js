@@ -6,8 +6,8 @@ import { useLanguage } from '../../context/language-provider'
 
 
 const Content = ({type, page}) => {
-    const [content, setContent] = useState([])
-		const { currentLanguage } = useLanguage()
+	const [ content, setContent ] = useState([])
+	const { currentLanguage } = useLanguage()
 	const getData = async (currentLang) => {
 		const pageData = await getCmsFilteredPage(page, type, currentLang)
 		setContent(pageData)
