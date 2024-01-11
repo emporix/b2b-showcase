@@ -1,16 +1,18 @@
 import './storefinder-table.css'
 import {getDealers} from "../../../services/storefinder.service";
 import {useEffect, useState} from "react";
+import { useLanguage } from 'context/language-provider';
 
 const StoreFinderTable = () => {
-    const [dealers, setDealers] = useState([])
-    const getData = async () => {
-        const dealerData = await getDealers()
+    const [ dealers, setDealers ] = useState([])
+    const { currentLanguage } = useLanguage()
+    const getData = async (currentLang) => {
+        const dealerData = await getDealers(currentLang)
         setDealers(dealerData.data.dealers)
     };
     useEffect(() => {
-        getData();
-    }, [])
+        getData(currentLanguage);
+    },[currentLanguage])
 
 
     return (

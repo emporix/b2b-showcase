@@ -11,7 +11,7 @@ const Home = () => {
   return (
     <Layout title={'home'}>
       <About />
-      <Content type={CMSFilterType.PAGE_FOR_SEO_ROUTE} page={ContentPageMapping.homepage} />
+      <Content type={CMSFilterType.NAME} page={ContentPageMapping.homepage} />
       <Service />
       <Category/>
       <Subscribe />
