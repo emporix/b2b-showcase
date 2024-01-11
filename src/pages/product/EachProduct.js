@@ -1,17 +1,23 @@
 import React, {useCallback, useMemo} from 'react'
 import ReactStars from 'react-stars'
-import {useNavigate} from 'react-router-dom'
-import {CurrencyBeforeComponent, CurrencyBeforeValue,} from 'components/Utilities/common'
-import {LargePrimaryButton} from '../../components/Utilities/button'
-import {trimImage} from '../../helpers/images'
-import {useAuth} from 'context/auth-provider'
-import {formatPrice} from 'helpers/price'
+import { useNavigate } from 'react-router-dom'
+import { TENANT } from '../../constants/localstorage'
+import {
+  CurrencyBeforeComponent,
+  CurrencyBeforeValue,
+} from 'components/Utilities/common'
+import { LargePrimaryButton } from '../../components/Utilities/button'
+import { trimImage } from '../../helpers/images'
+import { useAuth } from 'context/auth-provider'
+import { formatPrice } from 'helpers/price'
+import { useLanguage } from 'context/language-provider'
 
-const EachProduct = ({item, available, rating, productCount}) => {
-    const {isLoggedIn, userTenant} = useAuth()
-    const imageSrc = useMemo(() => {
-        return item.media[0] === undefined ? '' : item.media[0]['url']
-    }, [item])
+const EachProduct = ({ item, available, rating, productCount }) => {
+  const { isLoggedIn, userTenant } = useAuth()
+  const { getLocalizedValue } = useLanguage()
+  const imageSrc = useMemo(() => {
+    return item.media[0] === undefined ? '' : item.media[0]['url']
+  }, [item])
 
     const price = useMemo(() => {
         return formatPrice(item, isLoggedIn)
@@ -54,39 +60,37 @@ const EachProduct = ({item, available, rating, productCount}) => {
                 </div>
             </div>
 
-            <div
-                className="pt-10 lg:w-[200px] lg:h-[260px] w-[100px] h-[140px] md:w-[150px] md:h-[200px] items-center mx-auto ">
-                <img src={trimImage(`${imageSrc}`)} className="mx-auto h-full"/>
-            </div>
-            <div className="mt-2 lg:mt-9 w-full font-inter">
-                <div className="text-left text-[14px]/[20px] font-normal leading-xs text-manatee">
-                    {item.code}
-                </div>
-                <div
-                    className="mt-2 text-left max-w-[240px] min-h-[60px] lg:h-12 text-[16px]/[24px] text-eerieBlack font-medium">
-                    {item.name}
-                </div>
-            </div>
-            {item.productType !== 'PARENT_VARIANT' && (
-                <div
-                    className={
-                        isLoggedIn
-                            ? 'w-full h-[56px] pt-2'
-                            : 'w-full pt-2 text-left h-[56px] font-bold'
-                    }
-                >
-                    {isLoggedIn ? (
-                        <>
-                            <div className="text-[14px]/[20px] font-normal text-eerieBlack w-[200px] text-left">
-                                {price !== null ? (
-                                    <>
-                                        {isLoggedIn ? 'Your negotiated price' : 'List Price'}
-                                        <CurrencyBeforeComponent>
-                                            <del>{price} </del>
-                                        </CurrencyBeforeComponent>
-                                    </>
-                                ) : (
-                                    <span className="text-xs text-primaryBlue font-bold">
+      <div className="pt-10 lg:w-[200px] lg:h-[260px] w-[100px] h-[140px] md:w-[150px] md:h-[200px] items-center mx-auto ">
+        <img src={trimImage(`${imageSrc}`)} className="mx-auto h-full" />
+      </div>
+      <div className="mt-2 lg:mt-9 w-full font-inter">
+          <div className="text-left text-[14px]/[20px] font-normal leading-xs text-manatee">
+          {item.code}
+        </div>
+        <div className="mt-2 text-left max-w-[240px] min-h-[60px] lg:h-12 text-[16px]/[24px] text-eerieBlack font-medium">
+          {getLocalizedValue(item.name)}
+        </div>
+      </div>
+      {item.productType !== 'PARENT_VARIANT' && (
+        <div
+          className={
+            isLoggedIn
+              ? 'w-full h-[56px] pt-2'
+              : 'w-full pt-2 text-left h-[56px] font-bold'
+          }
+        >
+          {isLoggedIn ? (
+            <>
+              <div className="text-[14px]/[20px] font-normal text-eerieBlack w-[200px] text-left">
+                {price !== null ? (
+                  <>
+                    {isLoggedIn ? 'Your negotiated price' : 'List Price'}
+                    <CurrencyBeforeComponent>
+                      <del>{price} </del>
+                    </CurrencyBeforeComponent>
+                  </>
+                ) : (
+                  <span className="text-xs text-primaryBlue font-bold">
                     No Price
                   </span>
                                 )}

@@ -1,12 +1,17 @@
 import { api } from './axios'
 
-export const patchContext = (tenant, context) => {
+export const patchContext = async (tenant, context) => {
   const config = {
     params: {
       upsert: true,
     },
   }
-  return api.patch(`session-context/${tenant}/me/context`, context, config)
+  const currentContext = await fetchContext(tenant)
+  const body = {
+    ...context,
+    metadata: currentContext.data.metadata
+  }
+  return api.patch(`session-context/${tenant}/me/context`, body, config)
 }
 
 export const fetchContext = (tenant) => {

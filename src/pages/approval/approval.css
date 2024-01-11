@@ -1,0 +1,60 @@
+.approval-shipment-button{
+  margin: 1rem;
+  float: right
+}
+
+.approval-shipment-edit-wrapper{
+  margin-top: auto;
+}
+
+.flex-container{
+  flex: 1;
+}
+
+.margin-bottom{
+  margin-bottom: 1rem;
+}
+
+.gray-button {
+  color: white !important;
+  background-color: lightgray !important;
+  margin-right: 1rem;
+}
+
+.gray-button:hover {
+  background-color: gainsboro !important;
+}
+
+.declineApprovalDialog {
+  padding: 20px;
+}
+
+.declineApprovalDialogContent {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+}
+
+.declineApprovalComment {
+  order: 1;
+}
+
+.declineApprovalDialogFooter {
+  order: 2;
+  margin-left: auto;
+  display: flex;
+  flex-direction: row-reverse;
+}
+
+.checkout-page-wrapper {
+  @apply w-full md:pt-60 pt-24 md:px-24 px-[16.5px] md:pb-24 pb-12 font-inter;
+}
+.checkout-page-content {
+  @apply max-w-screen-xl grid grid-cols-1 md:gap-12 gap-6;
+}
+.checkout-content-wrapper {
+  @apply xl:w-[calc((100%-48px)*0.68)] lg:w-[calc((100%-48px)*0.6)] w-full;
+}
+.checkout-action-panel-wrapper {
+  @apply xl:w-[calc((100%-48px)*0.32)] lg:w-[calc((100%-48px)*0.4)] w-full;
+}

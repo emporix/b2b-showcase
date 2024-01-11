@@ -3,13 +3,14 @@
 }
 
 .dropdown .dropbtn {
+  font: inherit;
   font-size: 16px;
   border: none;
   outline: none;
   /* color: white; */
   /* padding: 7px 48px 0 0; */
   background-color: inherit;
-  font: inherit;
+
   margin: 0;
 }
 
@@ -72,7 +73,6 @@
 
 
 input[type='search'] {
-  border: none;
   background: transparent;
   margin: 0;
   padding: 7px 8px;

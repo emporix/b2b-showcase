@@ -27,7 +27,7 @@ export const Logo = ({ onMouseOver, size, text }) => {
     //todo get image from cms
     return (
         <Link to={homeUrl()} className="flex" onMouseOver={onMouseOver}>
-            <img src="/img/n11logo.png" alt={'Logo'}/>
+            <img id="logo-img" src="/img/n11logo.png" alt={'Logo'}/>
         </Link>
     )
 }
