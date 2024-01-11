@@ -85,6 +85,7 @@ export const getProductCategoryDetail = async (
     let matchSubCategory = matchMainCategory.items.filter(
       (category) => category.key === subCategoryKey
     )
+
     matchSubCategory = matchSubCategory.length > 0 ? matchSubCategory[0] : []
 
     if (categoryKey === undefined) {
@@ -115,7 +116,7 @@ export const getProductCategoryDetail = async (
     title: resTitle,
     categories: resCategories,
     productIds: products,
-    categoryId: resCategoryId,
+    categoryId: resCategoryId
   }
 }
 

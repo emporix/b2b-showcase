@@ -12,6 +12,7 @@ const Content = ({type, page}) => {
 		const pageData = await getCmsFilteredPage(page, type, currentLang)
 		setContent(pageData)
 	};
+
 	useEffect(() => {
 		getData(currentLanguage);
 	}, [currentLanguage])
