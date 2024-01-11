@@ -12,7 +12,8 @@ const Teaser = (props) => {
              style={image ? {
                  backgroundImage: `url(${image.url})`,
                  backgroundSize: 'cover',
-             } : null}>
+             } : null}
+             >
             <div
                 className="teaser__content">
                 {headline ? (

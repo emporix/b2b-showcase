@@ -21,5 +21,6 @@ export const EXTERNAL_CUSTOMER_TOKEN = "externalCustomerToken"
 export const EXTERNAL_SAAS_TOKEN = "externalSaasToken"
 export const EXTERNAL_TOKEN_EXPIRIES_IN = "externalTokenExpiresIn"
 export const PROCUREMENT_SYSTEM_URL = 'procurementSystemUrl'
+export const CURRENT_LANGUAGE = 'current-language'
 
 export const CLIENT_ID = 'clientId'
