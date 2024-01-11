@@ -241,128 +241,129 @@ const Navbar = () => {
         }
     }, [cartAccount])
 
-    return (
-        <header className="header">
-            {/* Dektop language and currency selection */}
-            <div className="desktop_only_flex font-inter text-sm text-white">
-                <div className='flex items-center'>
-                    <span className='world-icon'></span>
-                    {fields.siteLabel}:
-                    <select
-                        className="bg-primary w-38 mr-[22px]"
-                        onChange={handleSiteChange}
-                        value={currentSite}
-                    >
-                        {sites
-                            .filter((s) => s.active)
-                            .sort((a, b) => a.code.localeCompare(b.code))
-                            .map((site) => {
-                                return (
-                                    <option key={site.code} value={site.code}>
-                                        {site.name}
-                                    </option>
-                                )
-                            })}
-                    </select>
-                </div>
-                <div>
-                    {fields.languageLabel}:
-                    <select
-                        className="bg-primary"
-                        onChange={(event) => setLanguage(event.target.value)}
-                        value={currentLanguage}
-                    >
-                        {languages
-                            .sort((a, b) => a.localeCompare(b))
-                            .map((language) => {
-                                return (
-                                    <option key={language} value={language}>
-                                        {language}
-                                    </option>
-                                )
-                            })}
-                    </select>
-                </div>
-                <div className="ml-[22px]">
-                    {fields.currencyLabel}:
-                    <select
-                        value={activeCurrency.code !== undefined ? activeCurrency.code : ''}
-                        onChange={(e) =>
-                            currencyChangeHandler(e.target.value, currentSiteObject)
-                        }
-                        className="bg-primary"
-                    >
-                        {currencyList.map((currency) => {
-                            return (
-                                <option key={currency.code} value={currency.code}>
-                                    {currency.symbol}
-                                </option>
-                            )
-                        })}
-                    </select>
-                </div>
-            </div>
+  return (
+    <header className="header">
+      {/* Dektop language and currency selection */}
+      <div className="desktop_only_flex font-inter text-sm text-white">
+        <div className='flex items-center'>
+          <span className='world-icon'></span>
+          {fields.siteLabel}:
+          <select
+            className="bg-primary w-38 mr-[22px]"
+            onChange={handleSiteChange}
+            value={currentSite}
+          >
+            {sites
+              .filter((s) => s.active)
+              .sort((a, b) => a.code.localeCompare(b.code))
+              .map((site) => {
+                return (
+                  <option key={site.code} value={site.code}>
+                    {site.name}
+                  </option>
+                )
+              })}
+          </select>
+        </div>
+        <div>
+          {fields.languageLabel}:
+          <select
+            className="bg-primary"
+            onChange={(event) => setLanguage(event.target.value)}
+            value={currentLanguage}
+          >
+            {languages
+              .sort((a, b) => a.localeCompare(b))
+              .map((language) => {
+                return (
+                  <option key={language} value={language}>
+                    {language}
+                  </option>
+                )
+              })}
+          </select>
+        </div>
+        <div className="ml-[22px]">
+          {fields.currencyLabel}:
+          <select
+            id="currency-select"
+            value={activeCurrency.code !== undefined ? activeCurrency.code : ''}
+            onChange={(e) =>
+              currencyChangeHandler(e.target.value, currentSiteObject)
+            }
+            className="bg-primary"
+          >
+            {currencyList.map((currency) => {
+              return (
+                <option key={currency.code} value={currency.code}>
+                  {currency.symbol}
+                </option>
+              )
+            })}
+          </select>
+        </div>
+      </div>
 
-            {/* Dektop navigation selection */}
-            <div className="desktop_only_flex font-inter font-normal text-sm text-white">
-                {!user ? (
-                    <ul className="flex">
-                        <li className="px-4 flex">
-                            {cartTotal !== 0 ? (
-                                <Badge badgeContent={cartTotal} color="error">
-                                    <AiOutlineShoppingCart size={20} onClick={handleOpenCart}/>
-                                </Badge>
-                            ) : (
-                                <AiOutlineShoppingCart size={20} onClick={handleOpenCart}/>
-                            )}
-                            <div className="pl-3 text-white flex">
-                                <CurrencyBeforeValue value={cartTotalPrice}/>
-                            </div>
-                        </li>
-                        <li className="px-2">
-                            <a className="hover:text-highlight" href={`/${tenant}/login`}>
-                                Login
-                            </a>
-                        </li>
-                        |
-                        <li className="px-2">
-                            <a className="hover:text-highlight" href={`/${tenant}/signup`}>
-                                Sign Up
-                            </a>
-                        </li>
-                    </ul>
-                ) : (
-                    <ul className="flex">
-                        <li className="px-4">
-                            <AiOutlineMail size={20}/>
-                        </li>
-                        |
-                        <li className="px-4 pt-[2px]">
-                            {quotesTotal !== 0 ? (
-                                <Badge badgeContent={quotesTotal} color="error">
-                                    <CgNotes
-                                        size={16}
-                                        className="cursor-pointer"
-                                        onClick={handleOpenQuotes}
-                                    />
-                                </Badge>
-                            ) : (
-                                <CgNotes
-                                    size={16}
-                                    className="cursor-pointer"
-                                    onClick={handleOpenQuotes}
-                                />
-                            )}
-                        </li>
-                        |
-                        <li className="px-4 flex cursor-pointer" onClick={handleOpenCart}>
-                            {cartTotal !== 0 ? (
-                                <Badge badgeContent={cartTotal} color="warning">
-                                    <AiOutlineShoppingCart size={20} className="cursor-pointer"/>
-                                </Badge>
-                            ) : (
-                                <AiOutlineShoppingCart size={20}/>
-                            )}
+      {/* Dektop navigation selection */}
+      <div className="desktop_only_flex font-inter font-normal text-sm text-white">
+        {!user ? (
+          <ul className="flex">
+            <li className="px-4 flex">
+              {cartTotal !== 0 ? (
+                <Badge badgeContent={cartTotal} color="error">
+                  <AiOutlineShoppingCart size={20} onClick={handleOpenCart} />
+                </Badge>
+              ) : (
+                <AiOutlineShoppingCart size={20} onClick={handleOpenCart} />
+              )}
+              <div id="cart-value" className="pl-3 text-white flex">
+                <CurrencyBeforeValue value={cartTotalPrice} />
+              </div>
+            </li>
+            <li className="px-2">
+              <a className="hover:text-emporixGold" href={`/${tenant}/login`}>
+                Login
+              </a>
+            </li>
+            |
+            <li className="px-2">
+              <a className="hover:text-emporixGold" href={`/${tenant}/signup`}>
+                Sign Up
+              </a>
+            </li>
+          </ul>
+        ) : (
+          <ul className="flex">
+            <li className="px-4">
+              <AiOutlineMail size={20} />
+            </li>
+            |
+            <li className="px-4 pt-[2px]">
+              {quotesTotal !== 0 ? (
+                <Badge badgeContent={quotesTotal} color="error">
+                  <CgNotes
+                    size={16}
+                    className="cursor-pointer"
+                    onClick={handleOpenQuotes}
+                  />
+                </Badge>
+              ) : (
+                <CgNotes
+                  size={16}
+                  className="cursor-pointer"
+                  onClick={handleOpenQuotes}
+                />
+              )}
+            </li>
+            |
+            <li className="px-4 flex cursor-pointer" onClick={handleOpenCart}>
+              {cartTotal !== 0 ? (
+                <Badge badgeContent={cartTotal} color="warning">
+                  <AiOutlineShoppingCart size={20} className="cursor-pointer" />
+                </Badge>
+              ) : (
+                <AiOutlineShoppingCart size={20} />
+              )}
 
                             <div className="pl-[17.5px] text-white flex">
                                 <CurrencyBeforeValue

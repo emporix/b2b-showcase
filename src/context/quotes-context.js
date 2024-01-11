@@ -30,7 +30,7 @@ export const QuotesProvider = ({ children }) => {
     }
   }, [isLoggedIn])
   return (
-    <QuoteContext.Provider value={{ quotes, quotesTotal }}>
+    <QuoteContext.Provider value={{ quotes, quotesTotal, setQuotes }}>
       {children}
     </QuoteContext.Provider>
   )

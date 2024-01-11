@@ -13,6 +13,7 @@ import returns from '../../assets/returns.svg'
 import discounts from '../../assets/discounts.svg'
 import locations from '../../assets/locations.svg'
 import payments from '../../assets/payments.svg'
+import manageUsers from '../../assets/manage-users.svg'
 
 const AccountMenu = ({ page, className }) => {
   
@@ -20,6 +21,7 @@ const AccountMenu = ({ page, className }) => {
     'My Account',
     'Personal Details',
     'Company Details',
+    'Manage Users',
     'Addresses',
     'My Orders',
     'All Quotes',
@@ -36,6 +38,7 @@ const AccountMenu = ({ page, className }) => {
     'My Account',
     'Personal Details',
     'Company Details',
+    'Manage Users',
     'Addresses',
     'My Orders',
     'My Quotes',
@@ -51,6 +54,7 @@ const AccountMenu = ({ page, className }) => {
     'account-summary',
     'personal-details',
     'company-details',
+    'manage-users',
     'addresses',
     'my-orders',
     'my-quotes',
@@ -66,6 +70,7 @@ const AccountMenu = ({ page, className }) => {
     'account-summary': accountSummary,
     'personal-details': personalDetails,
     'company-details': companyDetails,
+    'manage-users': manageUsers,
     'my-orders': myOrders,
     'my-quotes': myQuotes,
     'replenishment-orders': replenishmentOrders,
@@ -78,10 +83,26 @@ const AccountMenu = ({ page, className }) => {
     payments: payments,
   }
 
+  const requiredScopes = {
+    'Manage Users': 'customer.customer_read_own'
+  }
+
+  const hasRequiredScopes = (value) => {
+    if (requiredScopes[value]) {
+      const scopes = localStorage.getItem('scopes')
+      if (scopes) {
+        return scopes.includes(requiredScopes[value])
+      }
+      return false
+    }
+    return true
+  }
+
   return (
     <ul className={className}>
       {itemsKey.map((value, index) =>
-        value !== '' ? (
+        hasRequiredScopes(value) &&
+         (value !== '' ? (
           index === 0 ? (
             page === 'Index' ? (
               <Link to={addTenantToUrl(`my-account/${items_link[index]}`)}>
@@ -134,6 +155,7 @@ const AccountMenu = ({ page, className }) => {
         ) : (
           <li key={index} className="item" />
         )
+      )
       )}
     </ul>
   )

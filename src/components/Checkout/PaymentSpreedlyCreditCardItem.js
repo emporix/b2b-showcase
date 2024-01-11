@@ -24,7 +24,6 @@ const PaymentSpreedlyCreditCardItem = ({ radioKey, props, paymentMode }) => {
       });
 
       window['SpreedlyExpress'].onPaymentMethod(function(token, paymentMethod) {
-        window.console.log("Listener", token)
         let browserInfo = paymentMode.scaProviderToken ? window['Spreedly'].ThreeDS.serialize('4') : null
     
         const currentPayment =  {

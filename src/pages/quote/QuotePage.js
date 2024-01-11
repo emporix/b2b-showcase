@@ -19,6 +19,7 @@ import {getShippingMethods} from 'services/shipping.service'
 import {getCompanyAddresses} from 'services/legal-entities.service'
 import {useNavigate} from 'react-router-dom'
 import cartService from 'services/cart.service'
+import { calculateTax } from 'services/product/tax.service'
 
 const QuotePage = () => {
     const [quoteId, setQuoteId] = useState()
@@ -65,32 +66,36 @@ const QuotePage = () => {
         setCartValue(cartAccount?.totalPrice?.amount)
     }, [cartAccount])
 
-    const fetchShippingMethods = useCallback(async (cart, address) => {
-        const methods = await getShippingMethods(cart.siteCode)
-        const filteredMethods = methods
-            .filter((method) =>
-                method.shipTo.some(
-                    (e) => e.country === address?.contactDetails?.countryCode
-                )
-            )
-            .filter(
-                (method) =>
-                    method.maxOrderValue === undefined ||
-                    method.maxOrderValue.amount >= cart.totalPrice.amount
-            )
-            .filter((method) => method.shippingTaxCode != null)
-            .map((method) => ({
-                ...method,
-                fee: method.fees
-                    .filter(
-                        (feeEl) => feeEl.minOrderValue.amount <= cart.totalPrice.amount
-                    )
-                    .sort((a, b) => a.cost.amount - b.cost.amount)[0].cost.amount,
-            }))
-            .sort((a, b) => a.fee - b.fee)
-
-        setShippingMethods(filteredMethods)
-    }, [])
+  const fetchShippingMethods = useCallback(async (cart, address) => {
+    const methods = await getShippingMethods(cart.siteCode)
+    const filteredMethods = methods
+      .filter((method) =>
+        method.shipTo.some(
+          (e) => e.country === address?.contactDetails?.countryCode
+        )
+      )
+      .filter(
+        (method) =>
+          method.maxOrderValue === undefined ||
+          method.maxOrderValue.amount >= cart.totalPrice?.amount
+      )
+      .filter((method) => method.shippingTaxCode != null)
+      .map((method) => ({
+        ...method,
+        fee: method.fees
+          .filter(
+            (feeEl) => feeEl.minOrderValue.amount <= cart.totalPrice.amount
+          )
+          .sort((a, b) => a.cost.amount - b.cost.amount)[0].cost.amount,
+      }))
+      .sort((a, b) => a.fee - b.fee)
+      await Promise.all(filteredMethods.map(async (m) => {
+        const grossPrice =  await calculateTax(m.fee, m.shippingTaxCode, address?.contactDetails?.countryCode)
+        m.grossFee = grossPrice
+        return m
+    }))
+    setShippingMethods(filteredMethods)
+  }, [])
 
     const fetchCompanyAddresses = useCallback(async (company) => {
         const addresses = await getCompanyAddresses(company)
@@ -112,136 +117,136 @@ const QuotePage = () => {
         setSelectedShippingId(value)
     }
 
-    return (
-        <div className="cart-page-wrapper">
-            <div className="cart-page-content">
-                {!quoteId ? (
-                    <>
-                        <CartActionBar classname="lg:block hidden" view={true}/>
-                        <CartTable
-                            classname="lg:block hidden"
-                            cartList={cartAccount.items}
-                        />
-                        <GridLayout className="address-wrapper gap-6 grid-cols-2">
-                            <GridLayout className=" gap-3">
-                                <TextBold1 className="gap-3">Shipping Details</TextBold1>
-                                <div className="address-dropdown-wrapper">
-                                    <DropdownWithLabel
-                                        label="Location"
-                                        options={locations}
-                                        defaultValue={locations[0]}
-                                        onChange={(e) => {
-                                            const addressId = e[0].value
-                                            const address = addresses.find(
-                                                (address) => address.id === addressId
-                                            )
-                                            if (address !== undefined) {
-                                                if (!isDifferentBilling) {
-                                                    setSelectedBillingAddress(address)
-                                                }
-                                                setSelectedShippingAddress(address)
-                                            }
-                                        }}
-                                    />
-                                    {addresses.length === 0 && (
-                                        <GridLayout className="text-xs text-red-600 text-center">
-                                            Must have at least one address to request your quote
-                                        </GridLayout>
-                                    )}
-                                    <GridLayout className="location-info">
-                                        {selectedShippingAddress && (
-                                            <Address
-                                                data={{
-                                                    city: selectedShippingAddress.contactDetails.city,
-                                                    street: [
-                                                        selectedShippingAddress.contactDetails.addressLine1,
-                                                        selectedShippingAddress.contactDetails.addressLine2,
-                                                    ].join(' '),
-                                                    zipCode:
-                                                    selectedShippingAddress.contactDetails.postcode,
-                                                    coutry:
-                                                    selectedShippingAddress.contactDetails.countryCode,
-                                                }}
-                                            />
-                                        )}
-                                    </GridLayout>
-                                </div>
-                            </GridLayout>
-                            <GridLayout className="billing-details-wrapper gap-3">
-                                <TextBold1>Billing Details</TextBold1>
-                                <Checkbox
-                                    value={!isDifferentBilling}
-                                    title="My billing address and shipping address are the same"
-                                    onChange={(e) => {
-                                        setIsDifferentBilling(!e.target.checked)
-                                        if (!e.target.checked) {
-                                            setSelectedBillingAddress(selectedShippingAddress)
-                                        }
-                                    }}
-                                />
-                                {isDifferentBilling && (
-                                    <GridLayout className="gap-3">
-                                        <div className="address-dropdown-wrapper">
-                                            <DropdownWithLabel
-                                                label="Address"
-                                                options={locations}
-                                                placeholder="Please select delivery address"
-                                                defaultValue={locations[0]}
-                                                onChange={(e) => {
-                                                    const addressId = e[0].value
-                                                    const address = addresses.find(
-                                                        (address) => address.id === addressId
-                                                    )
-                                                    setSelectedBillingAddress(address)
-                                                }}
-                                            />
-                                        </div>
-                                        {selectedBillingAddress && (
-                                            <Address
-                                                data={{
-                                                    city: selectedBillingAddress.contactDetails.city,
-                                                    street: [
-                                                        selectedShippingAddress.contactDetails.addressLine1,
-                                                        selectedShippingAddress.contactDetails.addressLine2,
-                                                    ].join(' '),
-                                                    zipCode:
-                                                    selectedBillingAddress.contactDetails.postcode,
-                                                    coutry:
-                                                    selectedBillingAddress.contactDetails.countryCode,
-                                                }}
-                                            />
-                                        )}
-                                    </GridLayout>
-                                )}
-                            </GridLayout>
-                        </GridLayout>
-                        <GridLayout className="gap-6">
-                            <Heading3>Shipping Method</Heading3>
-                            <RadioGroup>
-                                {shippingMethods.map((method) => {
-                                    return (
-                                        <ShippingMethod
-                                            key={method.id}
-                                            radioKey={method.id}
-                                            shippingmode={method.id}
-                                            price={
-                                                method.fee === 0 ? (
-                                                    'Free'
-                                                ) : (
-                                                    <CurrencyBeforeValue value={method.fee}/>
-                                                )
-                                            }
-                                            onClick={onShippingChange}
-                                        />
-                                    )
-                                })}
-                            </RadioGroup>
-                        </GridLayout>
-                        <CartMobileContent
-                            className="lg:hidden"
-                            cartList={cartAccount.items}
-                        />
-                        <CartActionBar className="lg:hidden"/>
+  return (
+    <div className="cart-page-wrapper">
+      <div className="cart-page-content">
+        {!quoteId ? (
+          <>
+            <CartActionBar classname="lg:block hidden" view={true} />
+            <CartTable
+              classname="lg:block hidden"
+              cartList={cartAccount.items}
+            />
+            <GridLayout className="address-wrapper gap-6 grid-cols-2">
+              <GridLayout className=" gap-3">
+                <TextBold1 className="gap-3">Shipping Details</TextBold1>
+                <div className="address-dropdown-wrapper">
+                  <DropdownWithLabel
+                    label="Location"
+                    options={locations}
+                    defaultValue={locations[0]}
+                    onChange={(e) => {
+                      const addressId = e[0].value
+                      const address = addresses.find(
+                        (address) => address.id === addressId
+                      )
+                      if (address !== undefined) {
+                        if (!isDifferentBilling) {
+                          setSelectedBillingAddress(address)
+                        }
+                        setSelectedShippingAddress(address)
+                      }
+                    }}
+                  />
+                  {addresses.length === 0 && (
+                    <GridLayout className="text-xs text-red-600 text-center">
+                      Must have at least one address to request your quote
+                    </GridLayout>
+                  )}
+                  <GridLayout className="location-info">
+                    {selectedShippingAddress && (
+                      <Address
+                        data={{
+                          city: selectedShippingAddress.contactDetails.city,
+                          street: [
+                            selectedShippingAddress.contactDetails.addressLine1,
+                            selectedShippingAddress.contactDetails.addressLine2,
+                          ].join(' '),
+                          zipCode:
+                            selectedShippingAddress.contactDetails.postcode,
+                          coutry:
+                            selectedShippingAddress.contactDetails.countryCode,
+                        }}
+                      />
+                    )}
+                  </GridLayout>
+                </div>
+              </GridLayout>
+              <GridLayout className="billing-details-wrapper gap-3">
+                <TextBold1>Billing Details</TextBold1>
+                <Checkbox
+                  value={!isDifferentBilling}
+                  title="My billing address and shipping address are the same"
+                  onChange={(e) => {
+                    setIsDifferentBilling(!e.target.checked)
+                    if (!e.target.checked) {
+                      setSelectedBillingAddress(selectedShippingAddress)
+                    }
+                  }}
+                />
+                {isDifferentBilling && (
+                  <GridLayout className="gap-3">
+                    <div className="address-dropdown-wrapper">
+                      <DropdownWithLabel
+                        label="Address"
+                        options={locations}
+                        placeholder="Please select delivery address"
+                        defaultValue={locations[0]}
+                        onChange={(e) => {
+                          const addressId = e[0].value
+                          const address = addresses.find(
+                            (address) => address.id === addressId
+                          )
+                          setSelectedBillingAddress(address)
+                        }}
+                      />
+                    </div>
+                    {selectedBillingAddress && (
+                      <Address
+                        data={{
+                          city: selectedBillingAddress.contactDetails.city,
+                          street: [
+                            selectedShippingAddress.contactDetails.addressLine1,
+                            selectedShippingAddress.contactDetails.addressLine2,
+                          ].join(' '),
+                          zipCode:
+                            selectedBillingAddress.contactDetails.postcode,
+                          coutry:
+                            selectedBillingAddress.contactDetails.countryCode,
+                        }}
+                      />
+                    )}
+                  </GridLayout>
+                )}
+              </GridLayout>
+            </GridLayout>
+            <GridLayout className="gap-6">
+              <Heading3>Shipping Method</Heading3>
+              <RadioGroup>
+                {shippingMethods.map((method) => {
+                  return (
+                    <ShippingMethod
+                      key={method.id}
+                      radioKey={method.id}
+                      shippingmode={method.id}
+                      price={
+                        method.fee === 0 ? (
+                          'Free'
+                        ) : (
+                          <CurrencyBeforeValue value={method.grossFee} />
+                        )
+                      }
+                      onClick={onShippingChange}
+                    />
+                  )
+                })}
+              </RadioGroup>
+            </GridLayout>
+            <CartMobileContent
+              className="lg:hidden"
+              cartList={cartAccount.items}
+            />
+            <CartActionBar className="lg:hidden" />
 
                         <div className="quote-cart-buttons">
                             <LargePrimaryButton

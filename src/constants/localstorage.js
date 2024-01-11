@@ -17,5 +17,9 @@ export const USER = 'user'
 export const APPLICATION_ID = 'applicationId'
 export const INDEX_NAME = 'indexName'
 export const SEARCH_KEY = 'searchKey'
+export const EXTERNAL_CUSTOMER_TOKEN = "externalCustomerToken"
+export const EXTERNAL_SAAS_TOKEN = "externalSaasToken"
+export const EXTERNAL_TOKEN_EXPIRIES_IN = "externalTokenExpiresIn"
+export const PROCUREMENT_SYSTEM_URL = 'procurementSystemUrl'
 
 export const CLIENT_ID = 'clientId'
