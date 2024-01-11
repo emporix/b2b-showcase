@@ -4,24 +4,23 @@ import {addTenantToUrl} from '../../services/service.config'
 
 const EachCategory = (props) => {
     return (
-        <div>
-            <div>
-                <img src={props.src} alt="" className="relative w-[312px] h-[312px] object-cover home_category_shadow"/>
-            </div>
+        <>
+        
+            <img src={props.src} alt="" className="relative w-fit aspect-square object-cover home_category_shadow rounded-2xl"/>
             <div className="pt-6 font-inter font-semibold text-[20px] leading-[32px]">
                 {props.title}
             </div>
             <div className="pt-[8px] font-normal text-base">
                 {props.content}
             </div>
-        </div>
+        </>
     )
 }
 
 const Category = () => {
     return (
-        <div className="home_category mt-10">
-            <div className="desktop_only font-inter font-bold text-2xl text-center">
+        <div className="home_category">
+            <div className=" desktop_only teaser__headline mx-auto">
                 Kategorien
             </div>
             <div className="home_cat_content">

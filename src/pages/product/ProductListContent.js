@@ -11,6 +11,10 @@ import EachProduct from './EachProduct'
 import EachProductRow from './EachProductRow'
 import {useAuth} from 'context/auth-provider'
 
+const productListBoxShadow = {
+    boxShadow: "rgba(100, 100, 111, 0.2) 0px 7px 29px 0px"
+}
+
 const ProductListViewSettingBar = ({
                                        changeDisplayType,
                                        productListCount,
@@ -19,10 +23,10 @@ const ProductListViewSettingBar = ({
                                        displayType,
                                    }) => {
     return (
-        <div className="view-setting-wrapper h-6">
-            <div className="view-setting-bar gap-6">
-                <div className="gap-2">
-                    <ul className="setting gap-6 flex justify-between h-[24px] font-inter text-base font-normal">
+        <div className="view-setting-wrapper h-fit mb-6 px-4 py-2 bg-aliceBlue rounded-lg" style={productListBoxShadow}>
+            <div className="view-setting-bar">
+                <div>
+                    <ul className="setting gap-6 flex justify-between font-inter text-base font-normal">
                         <li className="per-page hidden xl:block">
                             <div className="products-filter-name">
                                 Products Per Page: &nbsp;
@@ -64,7 +68,7 @@ const ProductListViewSettingBar = ({
               </div>
             </li>
             <li className="view-type">
-              <div className="gap-4 flex">
+            <div className="gap-4 flex p-1"> 
                 <div className="lg:block products-filter-name">View:</div>
                 <div
                   id="grid-view"
@@ -114,6 +118,7 @@ const ProductListItems = ({products, auth, displayType}) => {
     let subItemArr = []
     let ItemArrOnMobile = []
     let available
+
     if (displayType) {
         products.forEach((item, i) => {
             available = availability['k' + item.id]?.available
@@ -121,7 +126,7 @@ const ProductListItems = ({products, auth, displayType}) => {
             switch ((i + 1) % 3) {
                 case 1:
                     subItemArr.push(
-                        <div key={i} className="w-1/3 mr-2 border border-quartz rounded">
+                        <div key={i} className="w-1/3 mr-12 rounded-lg bg-aliceBlue" style={productListBoxShadow}>
                             <EachProduct
                                 key={item.id}
                                 available={available}
@@ -136,7 +141,7 @@ const ProductListItems = ({products, auth, displayType}) => {
                     subItemArr.push(
                         <div
                             key={i}
-                            className="w-1/3  mx-2 border border-quartz rounded"
+                            className="w-1/3 mr-12 rounded-lg bg-aliceBlue" style={productListBoxShadow}
                         >
                             <EachProduct
                                 key={item.id}
@@ -152,7 +157,7 @@ const ProductListItems = ({products, auth, displayType}) => {
                     subItemArr.push(
                         <div
                             key={i}
-                            className="w-1/3 pb-4 border ml-2 border-quartz rounded"
+                            className="w-1/3 rounded-lg bg-aliceBlue" style={productListBoxShadow}
                         >
                             <EachProduct
                                 key={item.id}
@@ -166,7 +171,7 @@ const ProductListItems = ({products, auth, displayType}) => {
                     itemArr.push(
                         <div
                             key={'row' + i.toString()}
-                            className="list-row flex lg:my-4 my-4"
+                            className="list-row flex lg:mb-12 mb-12"
                         >
                             {subItemArr}
                         </div>

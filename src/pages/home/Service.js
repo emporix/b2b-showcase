@@ -13,7 +13,7 @@ const EachService = (props) => {
       <div className="text-primary md:text-[20px] leading-[24px] pt-7 text-[18px]/[30px] font-semibold">
         {props.title}
       </div>
-      <div className="font-inter font-normal text-[14px] leading-[24px] md:text-[16px] pt-2 md:pt-4 text-left">
+      <div className="font-inter font-normal text-[14px] leading-[24px] md:text-[16px] pt-2 md:pt-4">
         {props.content}
       </div>
     </div>

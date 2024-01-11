@@ -16,15 +16,18 @@
 
 .header-mega_dropdown-content {
   /* display: none; */
+  @apply rounded-lg;
   margin-top: 66px;
-  height: 580px;
+  height: 300px;
   position: absolute;
-  background-color: #f9f9f9;
-  width: 100%;
+  width: 55%;
   left: 0;
+  right: 0;
   box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
   z-index: 10;
-  border-top: 1px solid #C4C5CC ;
+  margin-left: auto;
+  margin-right: auto;
+  /* border-top: 1px solid #C4C5CC ; */
 }
 
 /* .dropdown:hover  .dropdown-content {

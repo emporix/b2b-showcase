@@ -30,14 +30,14 @@ const About = () => {
             // style={{ backgroundImage: `url(${landingBg})` }}
             className="home_about"
         >
-            <div className="mx-6 md:ml-16 mt-[48px] md:mt-[114px] w-[600px] text-eerieBlack">
-                <div className="text-[48px] md:text-[48px] font-inter font-semibold md:leading-[64px] leading-[56px]">
-                    Erleben Sie den <span className="text-primary">Luxus</span><br/> mit Neteleven <span
+            <div className="w-1/2 h-fit flex flex-col text-eerieBlack pt-52">
+                <div className="text-[72px] font-inter font-semibold md:leading-[64px] leading-[56px]">
+                    Erleben Sie den <span className="text-primary">Luxus</span><br/> mit neteleven <span
                     className="text-primary">Wein</span>
                 </div>
                 <div className="text-[18px] leading-[30px] font-inter font-normal pt-[24px] md:max-w-[525px]">
                     Unsere exquisiten, handverlesenen Weine spiegeln die Eleganz und Qualität wider, die Sie von
-                    Neteleven erwarten
+                    neteleven erwarten
                 </div>
                 <div className="pt-[44px] desktop_only text-sm">
                     <button className="px-6 py-4 font-semibold bg-primary text-white rounded">
@@ -46,9 +46,10 @@ const About = () => {
                 </div>
             </div>
 
-            <div className="flex justify-end">
-                <img src="/img/bottlesandberries.png"/>
+            <div className='flex justify-end w-2/5 pt-28 h-fit'>
+                <img className="w-fit h-fit" alt='' src="/img/bottlesandberries.png"/>
             </div>
+            
 
         </div>
     )

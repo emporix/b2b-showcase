@@ -5,7 +5,7 @@ const Pt_Headline = (props) => {
     const content = normalizeFsStructure(props)
 
     return (
-        <h1 className="py-10 text-center text-[48px] md:text-[48px] font-inter font-semibold md:leading-[64px] leading-[56px]">
+        <h1 className="py-10 text-center text-[48px] md:text-[48px] font-semibold md:leading-[64px] leading-[56px]">
             {content?.value}
         </h1>
     );
