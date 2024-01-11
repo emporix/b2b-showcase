@@ -22,35 +22,34 @@ const CheckoutSummary = ({setFinal, order}) => {
     })
 
 
-    useEffect(() => {
-        window.console.log("3DS", payment?.paymentMode?.scaProviderToken, order?.paymentDetails?.authorizationToken)
-        if (payment?.paymentMode?.scaProviderToken && order?.paymentDetails?.authorizationToken) {
-            var lifecycle = new window['Spreedly'].ThreeDS.Lifecycle({
-                environmentKey: payment?.paymentMode?.environmentKey,
-                hiddenIframeLocation: 'device-fingerprint',
-                challengeIframeLocation: 'challenge',
-                transactionToken: order?.paymentDetails?.authorizationToken,
-                challengeIframeClasses: 'fitToModal'
-            })
-            var on3DSstatusUpdatesFn = function (threeDsStatusEvent) {
-                if (threeDsStatusEvent.action === 'succeeded') {
-                    setChallenge(false)
-
-                } else if (threeDsStatusEvent.action === 'error') {
-                    // present an error to the user to retry
-                } else if (threeDsStatusEvent.action === 'finalization-timeout') {
-                    // present an error to the user to retry
-                } else if (threeDsStatusEvent.action === 'challenge') {
-                    setChallenge(true)
-                    document.getElementById('challenge-modal').classList.remove('hidden');
-                }
-            }
-            window['Spreedly'].on('3ds:status', on3DSstatusUpdatesFn)
-            lifecycle.start()
-        } else {
-            setChallenge(false)
-        }
-    }, [payment?.paymentMode?.scaProviderToken, order?.paymentDetails?.authorizationToken])
+  useEffect(() => {
+   if(payment?.paymentMode?.scaProviderToken && order?.paymentDetails?.authorizationToken) {
+    var lifecycle = new window['Spreedly'].ThreeDS.Lifecycle({
+      environmentKey: payment?.paymentMode?.environmentKey,
+      hiddenIframeLocation: 'device-fingerprint', 
+      challengeIframeLocation: 'challenge', 
+      transactionToken: order?.paymentDetails?.authorizationToken,
+      challengeIframeClasses: 'fitToModal'
+    })
+    var on3DSstatusUpdatesFn = function(threeDsStatusEvent) {
+      if (threeDsStatusEvent.action === 'succeeded') {
+        setChallenge(false)
+    
+      } else if (threeDsStatusEvent.action === 'error') {
+        // present an error to the user to retry
+      } else if (threeDsStatusEvent.action === 'finalization-timeout') {
+        // present an error to the user to retry
+      } else if (threeDsStatusEvent.action === 'challenge') {
+        setChallenge(true)
+        document.getElementById('challenge-modal').classList.remove('hidden');
+      }
+    }
+    window['Spreedly'].on('3ds:status', on3DSstatusUpdatesFn)
+    lifecycle.start()    
+   } else {
+    setChallenge(false)
+   }
+  }, [payment?.paymentMode?.scaProviderToken, order?.paymentDetails?.authorizationToken])
 
 
     return (

@@ -34,10 +34,10 @@ const Dialog = ({ children, onClose, open }) => {
   if (open) {
     return (
       <div className="flex justify-center items-center w-screen h-screen bg-black/[0.5] fixed inset-x-0 inset-y-0 z-50">
-        <div className="bg-white w-1/2 relative px-8 py-16">
+        <div className="bg-white w-1/2 relative px-4 py-8">
           <CloseButton
             onClick={() => onClose()}
-            className="absolute right-0 top-0 mt-16 mr-8"
+            className="absolute right-0 top-0 mt-8 mr-4"
           />
           {children}
         </div>

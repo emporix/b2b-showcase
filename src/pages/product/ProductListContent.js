@@ -44,66 +44,68 @@ const ProductListViewSettingBar = ({
                         {/* <li className="product-result-caption  lg:hidden">
               {productListCount} Products
             </li> */}
-                        <li className="sort-by">
-                            <div className="products-filter-name">
-                                Sort:&nbsp;
-                                <select className="products-filter-value">
-                                    <option value="">Price (High to Low)</option>
-                                    <option value="">Price (Low to High)</option>
-                                    <option value="">Name (A-Z)</option>
-                                    <option value="">Name (Z-A)</option>
-                                </select>
-                            </div>
-                            <div className="md:hidden  flex">
-                                <div className="font-bold">Sort:</div>
-                                <HiChevronDown
-                                    size={20}
-                                    className="ml-1 mt-0 h-6 w-6 font-normal"
-                                    aria-hidden="true"
-                                />
-                            </div>
-                        </li>
-                        <li className="view-type">
-                            <div className="gap-4 flex">
-                                <div className="lg:block products-filter-name">View:</div>
-                                <div
-                                    className="cursor-pointer hover:text-highlight"
-                                    onClick={() => changeDisplayType(true)}
-                                >
-                                    <IconContext.Provider
-                                        value={{
-                                            size: 20,
-                                            color: displayType ? 'highlight' : 'black',
-                                        }}
-                                    >
-                                        <>
-                                            <CgMenuGridR/>
-                                        </>
-                                    </IconContext.Provider>
-                                </div>
-                                <div
-                                    className="cursor-pointer"
-                                    onClick={() => changeDisplayType(false)}
-                                >
-                                    <IconContext.Provider
-                                        value={{
-                                            size: 20,
-                                            color: displayType ? 'black' : 'highlight',
-                                        }}
-                                    >
-                                        <>
-                                            <BiMenu/>
-                                        </>
-                                    </IconContext.Provider>
-                                </div>
-                            </div>
-                        </li>
-                    </ul>
-                    {/* <div className="mt-2 split-line h-0 border-b border-bgWhite border-solid"></div> */}
+            <li className="sort-by">
+              <div className="products-filter-name">
+                Sort:&nbsp;
+                <select className="products-filter-value">
+                  <option value="">Price (High to Low)</option>
+                  <option value="">Price (Low to High)</option>
+                  <option value="">Name (A-Z)</option>
+                  <option value="">Name (Z-A)</option>
+                </select>
+              </div>
+              <div className="md:hidden  flex">
+                <div className="font-bold">Sort:</div>
+                <HiChevronDown
+                  size={20}
+                  className="ml-1 mt-0 h-6 w-6 font-normal"
+                  aria-hidden="true"
+                />
+              </div>
+            </li>
+            <li className="view-type">
+              <div className="gap-4 flex">
+                <div className="lg:block products-filter-name">View:</div>
+                <div
+                  id="grid-view"
+                  className="cursor-pointer hover:text-yellow"
+                  onClick={() => changeDisplayType(true)}
+                >
+                  <IconContext.Provider
+                    value={{
+                      size: 20,
+                      color: displayType ? '#FAC420' : 'black',
+                    }}
+                  >
+                    <>
+                      <CgMenuGridR />
+                    </>
+                  </IconContext.Provider>
                 </div>
-            </div>
+                <div
+                  id="list-view"
+                  className="cursor-pointer"
+                  onClick={() => changeDisplayType(false)}
+                >
+                  <IconContext.Provider
+                    value={{
+                      size: 20,
+                      color: displayType ? 'black' : '#FAC420',
+                    }}
+                  >
+                    <>
+                      <BiMenu />
+                    </>
+                  </IconContext.Provider>
+                </div>
+              </div>
+            </li>
+          </ul>
+          {/* <div className="mt-2 split-line h-0 border-b border-bgWhite border-solid"></div> */}
         </div>
-    )
+      </div>
+    </div>
+  )
 }
 
 const ProductListItems = ({products, auth, displayType}) => {

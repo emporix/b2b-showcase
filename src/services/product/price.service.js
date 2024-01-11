@@ -13,7 +13,7 @@ const PriceService = () => {
     let data = {
       items: [],
     }
-    product_ids.map((id) => {
+    product_ids.forEach((id) => {
       data['items'].push({
         itemId: {
           itemType: 'PRODUCT',

@@ -19,102 +19,109 @@ import priceService from 'services/product/price.service'
 import LayoutContext from 'pages/context'
 import {CurrencyBeforeValue} from 'components/Utilities/common'
 import './quickorder.css'
-import {useDebounce} from 'hooks/useDebounce'
-import {useQuickOrder} from 'context/quickorder-context'
-import {LargePrimaryButton, MediumPrimaryButton,} from 'components/Utilities/button'
-import {useCart} from 'context/cart-provider'
+import { useDebounce } from 'hooks/useDebounce'
+import { useQuickOrder } from 'context/quickorder-context'
+import {
+  LargePrimaryButton,
+  MediumPrimaryButton,
+} from 'components/Utilities/button'
+import { useCart } from 'context/cart-provider'
+import { useLanguage } from 'context/language-provider'
 
 const CartItem = ({
-                      item,
-                      codeHandler,
-                      quantityHandler,
-                      feature,
-                      focusHanlder,
-                      blurHandler,
-                      activeFocusCode,
-                      removeHandler,
-                  }) => {
-    return (
-        <TableRow
-            sx={{'&:last-child td, &:last-child th': {border: 0}}}
-            className="text-base"
-        >
-            <TableCell component="th" scope="row" className="!py-6">
-                {feature === 'action' ? (
-                    <TextInputOnly
-                        value={item.code}
-                        action={codeHandler}
-                        placeholder="Enter Code"
-                        className="border max-w-[160px]"
-                    />
-                ) : (
-                    <TextInputOnly value={item.code} className="border max-w-[160px]"/>
-                )}
-            </TableCell>
-            <TableCell align="left" className="!py-6 !font-bold w-[250px]">
-                {item.name}
-            </TableCell>
-            <TableCell align="left" className="!py-6">
-                <TextInputOnly
-                    value={item.quantity}
-                    action={(value) => quantityHandler(value, item.code, feature)}
-                    onFocus={() => {
-                        if (focusHanlder !== undefined) focusHanlder(item.code)
-                    }}
-                    onBlur={() => {
-                        if (blurHandler !== undefined) blurHandler(item.code)
-                    }}
-                    className="border max-w-[56px] "
-                    autoFocus={activeFocusCode === item.code ? true : false}
-                />
-            </TableCell>
-            <TableCell align="left" className="!py-6">
-                {item.price.totalValue ? (
-                    <CurrencyBeforeValue value={item.price.totalValue}/>
-                ) : null}
-            </TableCell>
-            <TableCell align="left" className="!py-6">
-                {item.price.totalValue ? (
-                    <CurrencyBeforeValue
-                        value={
-                            Math.trunc(item.price.totalValue * item.quantity * 100) / 100
-                        }
-                    />
-                ) : null}
-            </TableCell>
-            <TableCell
-                align="left"
-                className="!py-6 cursor-pointer"
-                onClick={() => removeHandler(item.code)}
-            >
-                {item.code ? <span className="underline font-bold">X</span> : null}
-            </TableCell>
-        </TableRow>
-    )
+  item,
+  codeHandler,
+  quantityHandler,
+  feature,
+  focusHanlder,
+  blurHandler,
+  activeFocusCode,
+  removeHandler,
+}) => {
+  const { getLocalizedValue } = useLanguage()
+
+  return (
+    <TableRow
+      sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+      className="text-base"
+    >
+      <TableCell component="th" scope="row" className="!py-6">
+        {feature === 'action' ? (
+          <TextInputOnly
+            value={item.code}
+            action={codeHandler}
+            placeholder="Enter Code"
+            className="border max-w-[160px]"
+          />
+        ) : (
+          <TextInputOnly value={item.code} className="border max-w-[160px]" />
+        )}
+      </TableCell>
+      <TableCell align="left" className="!py-6 !font-bold w-[250px]">
+        {getLocalizedValue(item.name)}
+      </TableCell>
+      <TableCell align="left" className="!py-6">
+        <TextInputOnly
+          value={item.quantity}
+          action={(value) => quantityHandler(value, item.code, feature)}
+          onFocus={() => {
+            if (focusHanlder !== undefined) focusHanlder(item.code)
+          }}
+          onBlur={() => {
+            if (blurHandler !== undefined) blurHandler(item.code)
+          }}
+          className="border max-w-[56px] "
+          autoFocus={activeFocusCode === item.code ? true : false}
+        />
+      </TableCell>
+      <TableCell align="left" className="!py-6">
+        {item?.price?.totalValue ? (
+          <CurrencyBeforeValue value={item?.price?.totalValue} />
+        ) : (<div>Missing price</div>)}
+      </TableCell>
+      <TableCell align="left" className="!py-6">
+        {item?.price?.totalValue ? (
+          <CurrencyBeforeValue
+            value={
+              Math.trunc(item.price.totalValue * item.quantity * 100) / 100
+            }
+          />
+        ) : (<div>Missing price</div>)}
+      </TableCell>
+      <TableCell
+        align="left"
+        className="!py-6 cursor-pointer"
+        onClick={() => removeHandler(item.code)}
+      >
+        {item.code ? <span className="underline font-bold">X</span> : null}
+      </TableCell>
+    </TableRow>
+  )
 }
 const Alert = React.forwardRef(function Alert(props, ref) {
     return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />
 })
 
 const DesktopContent = () => {
-    const {
-        fetchProductsByCode,
-        productsSuggestions,
-        tempProductList,
-        setTempProductList,
-        newProduct,
-        setNewProduct,
-        handleAddItem,
-        updateQuantity,
-    } = useQuickOrder()
-    const productOptions = useMemo(() => {
-        return productsSuggestions.map((item) => {
-            return {
-                id: item.code,
-                label: item.name,
-            }
-        })
-    }, [productsSuggestions])
+  const { getLocalizedValue } = useLanguage()
+  const {
+    fetchProductsByCode,
+    productsSuggestions,
+    tempProductList,
+    setTempProductList,
+    newProduct,
+    setNewProduct,
+    handleAddItem,
+    updateQuantity,
+  } = useQuickOrder()
+  const productOptions = useMemo(() => {
+    return productsSuggestions.map((item) => {
+      return {
+        id: item.code,
+        label: getLocalizedValue(item.name),
+      }
+    })
+  }, [productsSuggestions])
 
     const {debounce} = useDebounce(300)
     const {setShowCart} = useContext(LayoutContext)

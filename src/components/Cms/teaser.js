@@ -4,7 +4,7 @@ const Teaser = (props) => {
     const content = props.props.data
     const headline = content?.st_headline;
     const text = content?.st_text;
-    const image = content?.st_picture?.resolutions?.ORIGINAL;
+    const image = content?.st_picture?.resolutions.ORIGINAL;
 
     if (headline === undefined && text === undefined && image === undefined) return;
     return (

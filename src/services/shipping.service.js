@@ -1,7 +1,7 @@
-import ApiRequest from './index'
 import { ACCESS_TOKEN } from 'constants/localstorage'
 import { shippingApi } from './service.config'
 import { api } from './axios'
+import { calculateTax } from './product/tax.service'
 
 export const getShippingMethods = async (site) => {
   const accessToken = localStorage.getItem(ACCESS_TOKEN)
@@ -42,4 +42,34 @@ export const getActualDeliveryWindows = async (postalCode, country) => {
   },
   { headers, params })
   return res;
+}
+
+export const fetchFilteredShippingMethods = async (siteCode, totalPriceAmount, address) => {
+  const methods = await getShippingMethods(siteCode)
+  const filteredMethods = methods
+    .filter((method) =>
+      method.shipTo.some((e) => e.country === address?.country)
+    )
+    .filter(
+      (method) =>
+        method.maxOrderValue === undefined ||
+        method.maxOrderValue.amount >= totalPriceAmount
+    )
+    .filter((method) => method.shippingTaxCode != null)
+    .map((method) => ({
+      ...method,
+      fee: method.fees
+        .filter(
+          (feeEl) => feeEl.minOrderValue.amount <= totalPriceAmount
+        )
+        .sort((a, b) => a.cost.amount - b.cost.amount)[0]?.cost?.amount,
+    }))
+    .sort((a, b) => a.fee - b.fee)
+    await Promise.all(filteredMethods.map(async (m) => {
+      const grossPrice =  await calculateTax(m.fee, m.shippingTaxCode, address?.country)
+      m.grossFee = grossPrice
+      return m
+  }))
+  window.console.log("SHIPPING METHODS", methods, filteredMethods, address, totalPriceAmount)  
+  return filteredMethods
 }
