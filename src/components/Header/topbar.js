@@ -27,6 +27,11 @@ const MegaNav = ({ showMegaMenuContent, setShowMegaMenuContent }) => {
   const menuList = useSelector(pageMenuSelector)
 
   const { fields } = useContentful()
+
+  const bgGradient = {
+    backgroundImage: "radial-gradient(73% 147%, #EADFDF 59%, #ECE2DF 100%), radial-gradient(91% 146%, rgba(255,255,255,0.50) 47%, rgba(0,0,0,0.50) 100%)",
+    backgroundBlendMode: "screen"
+  }
   return (
     <div className="dropdown flex text-base">
       {menuList.map((item, index) => (
@@ -56,13 +61,13 @@ const MegaNav = ({ showMegaMenuContent, setShowMegaMenuContent }) => {
       ))}
       {showMegaMenuContent ? (
         <div
-          className="header-mega_dropdown-content"
+          className="header-mega_dropdown-content py-12 px-24"
           onMouseEnter={onShowMegaMenu}
           onClick={() => setShowMegaMenuContent(false)}
+          style={bgGradient}
         >
           <div className="row w-full h-full flex">
-            <div className="h-full w-[24%] text-[16px]/[24px] text-eerieBlack">
-              <div className="pl-[76px] pt-[48px] overflow-y-auto max-h-full">
+            <div className="w-[24%] h-fit text-[16px] text-eerieBlack">
                 <ul className="text-base font-bold">
                   {subMenuItems.map((item, index) => (
                     <Link replace key={index} to={addTenantToUrl(item.url)}>
@@ -81,10 +86,9 @@ const MegaNav = ({ showMegaMenuContent, setShowMegaMenuContent }) => {
                     </Link>
                   ))}
                 </ul>
-              </div>
             </div>
             <div
-              className="h-full w-[76%] grid grid-cols-4 overflow-y-auto gap-4 pl-[24px] pt-[48px] max-h-full"
+              className="h-fit w-[76%] grid grid-cols-4 overflow-y-auto gap-4 pl-[24px]"
               onMouseOver={() => setShowMegaMenuRightContent(true)}
             >
               {showMegaMenuRightContent
@@ -126,13 +130,13 @@ const TopNav = ({ title }) => {
     <div
       className={
         title === 'home'
-          ? 'desktop_only_flex w-full md:h-36 absolute z-10 bg-white'
+          ? 'desktop_only_flex w-full md:h-36 absolute z-10'
           : title === ''
           ? 'desktop_only_flex h-36'
-          : 'desktop_only_flex w-full md:h-60 absolute z-10 bg-white'
+          : 'desktop_only_flex w-full md:h-60 absolute z-10'
       }
     >
-      <div className="px-10 pt-[76px] w-full  flex xl:px-24  h-36 border border-herringSilver">
+      <div className="px-10 pt-[76px] w-full  flex xl:px-24  h-36">
         <div
           className="menu-wrapper flex w-full"
           onMouseLeave={() => {
@@ -157,7 +161,7 @@ const TopNav = ({ title }) => {
         </div>
       </div>
       {nav_title_condition && (
-        <div className="md:absolute top-44 left-24 text-eerieBlack font-inter font-semibold text-[24px]/[32px]">
+        <div className="md:absolute top-44 left-24 text-eerieBlack font-inter font-semibold text-[32px]/[32px]">
         {title}
         </div>
       )}

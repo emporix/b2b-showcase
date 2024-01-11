@@ -5,9 +5,11 @@
 body {
     margin: 0;
     min-width: 375px;
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
     'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
     sans-serif;
+    background-image: radial-gradient(73% 147%, #EADFDF 59%, #ECE2DF 100%), radial-gradient(91% 146%, rgba(255,255,255,0.50) 47%, rgba(0,0,0,0.50) 100%);
+    background-blend-mode: screen;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
 }
@@ -18,11 +20,11 @@ code {
 }
 
 .header {
-    @apply w-full h-20  md:h-14 z-20 fixed  bg-primary sm:px-5 md:px-7 lg:px-24 flex justify-between items-center;
+    @apply w-full h-20  md:h-14 z-20 fixed  md:bg-primary sm:px-5 md:px-7 lg:px-24 flex justify-between items-center;
 }
 
 .home_category {
-    @apply w-full h-[1752px] md:h-[682px]  text-eerieBlack;
+    @apply w-full text-eerieBlack py-24;
 }
 
 .desktop_only {
@@ -42,11 +44,11 @@ code {
 }
 
 .home_about {
-    @apply flex bg-[length:100%_167%] md:bg-[length:100%_100%] pt-20 md:pt-0 w-full h-[513px] md:h-[988px] justify-between text-white;
+    @apply flex bg-[length:100%_167%] md:bg-[length:100%_100%] w-full text-white justify-end  !mt-36;
 }
 
 .home_service {
-    @apply bg-white w-full h-[470px] md:h-[304px] -mt-[1px] md:mt-[-28px] grid grid-cols-2 md:grid-cols-4 px-6 py-[104px] md:px-[100px] xl:px-[204px]  gap-y-12 md:gap-[52px];
+    @apply bg-white w-full h-[470px] md:h-[304px] grid grid-cols-2 md:grid-cols-4 px-6 py-[104px] md:px-[100px] xl:px-[204px]  gap-y-12 md:gap-[52px];
 }
 
 .home_product {
@@ -58,7 +60,7 @@ code {
 }
 
 .footer {
-    @apply w-full h-[358px] md:h-[342px] bg-aliceBlue;
+    @apply w-full h-[358px] md:h-[342px];
 }
 
 .content-wrapper {
@@ -94,7 +96,7 @@ code {
 }
 
 .home_cat_content {
-    @apply px-6 py-12 md:pt-16 md:py-24 grid grid-cols-1 md:grid-cols-3 md:gap-12 gap-y-16 md:px-16  max-w-md  md:max-w-[1248px] mx-auto;
+    @apply grid grid-cols-1 md:grid-cols-3 md:gap-12 gap-y-16 max-w-md  md:max-w-[1100px] mx-auto pt-12;
     place-items: center;
 }
 
@@ -121,7 +123,7 @@ code {
 }
 
 .invalid-tenant-page {
-    @apply w-full text-darkGray items-center h-screen  text-center font-inter;
+    @apply w-full text-darkGray items-center h-screen  text-center;
 }
 
 .rotatable {
@@ -141,15 +143,14 @@ code {
 } */
 
 .subscribe {
-    height: 392px;
+    height: 500px;
     position: relative;
     overflow: hidden;
     background-color: black;
     background-image: url('/src/assets/winewithredbackground.svg');
     background-repeat: no-repeat;
-    background-position: right;
-    background-size: auto 100%;
-    background-attachment: fixed;
+    background-position: right 0px;
+    background-size: 50% 150%;
 }
 
 .subscribe::after {
@@ -223,6 +224,5 @@ input[type='checkbox'] {
 }
 
 .home_category_shadow {
-    box-shadow: 0 0 8px rgba(0, 0, 0, 0.2);
+    box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
 }
-

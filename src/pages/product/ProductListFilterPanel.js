@@ -57,7 +57,7 @@ const Category = ({item}) => {
                 // }
             >
                 <div className="content content-center justify-center">
-                    <div className="w-[90%] text-eerieBlack text-[14px]/[22px] font-normal flex items-center">
+                    <div className="w-[90%] text-eerieBlack text-[14px]/[22px] font-normal flex items-center border-b-[1px] border-spacing-3 border-eerieBlack">
                         <Checkbox defaultChecked sx={{
                             color: "#cccccc",
                             '&.Mui-checked': {
@@ -96,7 +96,7 @@ const Category = ({item}) => {
 
 const FilterListPanel = ({filterItems, handleSideFilterContent}) => {
     return (
-        <div className="pr-6">
+        <div>
             <div className="flex justify-between">
                 <div className="flex">
                     <img
@@ -156,7 +156,7 @@ const CategoryPanel = () => {
             {isLoading ? (
                 <LoadingCircleProgress1/>
             ) : (
-                <ul className="category_accordion pr-6">
+                <ul className="category_accordion">
                     {categoryList.map((item, index) => (
                         <Category key={index} item={item}/>
                     ))}

@@ -304,10 +304,10 @@
 }
 
 .products-filter-name {
-  @apply hidden md:block text-manatee text-sm/[20px];
+  @apply hidden md:block text-eerieBlack text-sm/[20px];
 }
 .products-filter-value {
-  @apply bg-[white] font-normal text-eerieBlack
+  @apply bg-aliceBlue font-normal text-eerieBlack p-1;
 }
 .product-available {
   @apply text-limeGreen font-inter font-medium text-[14px]/[20px] float-right lg:float-none

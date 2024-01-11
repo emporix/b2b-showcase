@@ -4,7 +4,7 @@
 } */
 .home_about {
     /*background: url('../../assets/mainpage.png') no-repeat;*/
-    height: 36rem;
+    /* height: 36rem;
+    margin-top: 6rem; */
     background-size: cover;
-    margin-top: 9rem;
   }

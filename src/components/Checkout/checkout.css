@@ -1,5 +1,5 @@
 .shipping_method {
-  @apply w-full md:flex p-4 mb-2  font-inter;
+  @apply w-full md:flex p-4 mb-2 font-inter;
 }
 
 .shipping_method_selected {

@@ -10,10 +10,10 @@ import { CMSFilterType, ContentPageMapping } from 'services/content/filteredPage
 const Home = () => {
   return (
     <Layout title={'home'}>
-      <Content type={CMSFilterType.PAGE_FOR_SEO_ROUTE} page={ContentPageMapping.homepage} />
       <About />
+      <Content type={CMSFilterType.PAGE_FOR_SEO_ROUTE} page={ContentPageMapping.homepage} />
       <Service />
-      <Category />
+      <Category/>
       <Subscribe />
     </Layout>
   )
