@@ -19,8 +19,8 @@ const DealerQuery = `query DealerQuery($language: Language) {
 `
 
 
-export const getDealers = async () => {
-    const data = await fetchGraphqlApi(DealerQuery)
+export const getDealers = async (language) => {
+    const data = await fetchGraphqlApi(DealerQuery, { language })
 
     return data;
 }

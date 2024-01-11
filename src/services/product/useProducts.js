@@ -1,6 +1,5 @@
 import { TENANT } from 'constants/localstorage'
 import { api } from 'services/axios'
-import { getLanguageFromLocalStorage } from '../../context/language-provider'
 
 const getTenant = () => localStorage.getItem(TENANT)
 

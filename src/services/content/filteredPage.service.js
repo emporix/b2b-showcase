@@ -10,12 +10,12 @@ const FilteredPageQuery = `query FilteredPageQuery($cmsFilteredPageId: String!, 
 export const CMSFilterType = {
     PRODUCT: 'PRODUCT',
     CATEGORY: 'CATEGORY',
-    PAGE_FOR_SEO_ROUTE: 'PAGE_FOR_SEO_ROUTE',
+    NAME: 'NAME'
 }
 
 // Until the routing strategy is implemented, we need manual mapping between the FS Urls and our FE routes
 export const ContentPageMapping = {
-  homepage: "/Homepage/index-2.html"
+  homepage: "homepage"
 }
 
   export const getCmsFilteredPage = async (cmsFilteredPageId, type, language) => {

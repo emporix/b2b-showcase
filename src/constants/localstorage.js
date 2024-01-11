@@ -17,5 +17,6 @@ export const USER = 'user'
 export const APPLICATION_ID = 'applicationId'
 export const INDEX_NAME = 'indexName'
 export const SEARCH_KEY = 'searchKey'
+export const CURRENT_LANGUAGE = 'current-language'
 
 export const CLIENT_ID = 'clientId'
