@@ -6,13 +6,14 @@ import {GridLayout, Item, LayoutBetween,} from '../../components/Utilities/commo
 import {CartActionRow, CartSubTotalExcludeVat, CartVat,} from '../../components/Cart/cart'
 import Typography from '@mui/material/Typography'
 import Quantity from '../../components/Utilities/quantity/quantity'
-import {usePrices} from '../../services/product/usePrices'
-import {formatCurrency} from '../../helpers/currency'
-import {LargePrimaryButton} from '../../components/Utilities/button'
-import {useSites} from '../../context/sites-provider'
-import {useCart} from 'context/cart-provider'
-import {useCurrency} from 'context/currency-context'
-import {useAuth} from 'context/auth-provider'
+import { usePrices } from '../../services/product/usePrices'
+import { formatCurrency } from '../../helpers/currency'
+import { LargePrimaryButton } from '../../components/Utilities/button'
+import { useSites } from '../../context/sites-provider'
+import { useCart } from 'context/cart-provider'
+import { useCurrency } from 'context/currency-context'
+import { useAuth } from 'context/auth-provider'
+import { useLanguage } from 'context/language-provider';
 
 function VariantAttributes({attributes}) {
     return (
@@ -35,71 +36,75 @@ function VariantAttributes({attributes}) {
     )
 }
 
-const VariantSummary = ({variant, setQuantity, quantity, price}) => {
-    return (
-        <Grid
-            container
-            spacing={2}
-            direction="row"
-            alignItems="center"
-            justifyContent="space-around"
-        >
-            <Grid item xs={2}>
-                <Item>
-                    {variant.media.length > 0 && (
-                        <img
-                            style={{width: '100%', maxHeight: 'auto'}}
-                            src={variant.media[0].url}
-                        />
-                    )}
-                </Item>
+const VariantSummary = ({ variant, setQuantity, quantity, price }) => {
+  const { getLocalizedValue } = useLanguage()
+  return (
+    <Grid
+      container
+      spacing={2}
+      direction="row"
+      alignItems="center"
+      justifyContent="space-around"
+    >
+      <Grid item xs={2}>
+        <Item>
+          {variant.media.length > 0 && (
+            <img
+              style={{ width: '100%', maxHeight: 'auto' }}
+              src={variant.media[0].url}
+            />
+          )}
+        </Item>
+      </Grid>
+      <Grid item xs={4}>
+        <Item>
+          <Grid container direction="column">
+            <Grid item>
+              <Typography>
+                <b>{getLocalizedValue(variant.name)}</b>
+              </Typography>
             </Grid>
-            <Grid item xs={4}>
-                <Item>
-                    <Grid container direction="column">
-                        <Grid item>
-                            <Typography>
-                                <b>{variant.name}</b>
-                            </Typography>
-                        </Grid>
-                        <Grid item>
-                            <Typography>SKU: {variant.code}</Typography>
-                        </Grid>
-                        <Grid item>
-                            <Typography>IN STOCK</Typography>
-                        </Grid>
-                    </Grid>
-                </Item>
+            <Grid item>
+              <Typography>SKU: {variant.code}</Typography>
             </Grid>
-            <Grid item xs={2}>
-                <Item>
-                    <Quantity
-                        value={quantity}
-                        increase={() => setQuantity(quantity + 1)}
-                        decrease={() => setQuantity(quantity - 1)}
-                    ></Quantity>
-                </Item>
+            <Grid item>
+              <Typography>IN STOCK</Typography>
             </Grid>
-            <Grid item xs={2}>
-                <Item>
-                    <VariantAttributes
-                        attributes={variant.mixins.productVariantAttributes}
-                    ></VariantAttributes>
-                </Item>
-            </Grid>
-            <Grid item xs={2}>
-                <Item>
-                    <Typography>
-                        {price &&
-                            formatCurrency(
-                                price.currency,
-                                price.tax.prices.effectiveValue.grossValue
-                            )}
-                    </Typography>
-                </Item>
-            </Grid>
-        </Grid>
-    )
+          </Grid>
+        </Item>
+      </Grid>
+      <Grid item xs={2}>
+        <Item>
+          <Quantity
+            value={quantity}
+            increase={() => setQuantity(quantity + 1)}
+            decrease={() => setQuantity(quantity - 1)}
+            onChange={(value) => {
+              setQuantity(value)
+            }}
+          ></Quantity>
+        </Item>
+      </Grid>
+      <Grid item xs={2}>
+        <Item>
+          <VariantAttributes
+            attributes={variant.mixins.productVariantAttributes}
+          ></VariantAttributes>
+        </Item>
+      </Grid>
+      <Grid item xs={2}>
+        <Item>
+          <Typography>
+            {price &&
+              formatCurrency(
+                price.currency,
+                price.tax.prices.effectiveValue.grossValue
+              )}
+          </Typography>
+        </Item>
+      </Grid>
+    </Grid>
+  )
 }
 
 export const PriceTierValues = ({price, quantity}) => {

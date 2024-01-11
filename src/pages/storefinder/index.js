@@ -10,4 +10,3 @@ const StoreFinder = () => {
     )
 }
 export default StoreFinder
-

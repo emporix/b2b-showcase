@@ -13,6 +13,9 @@ import {
   CURRENCY_CODE,
   CUSTOMER_TOKEN,
   CUSTOMER_TOKEN_EXPIRES_IN,
+  EXTERNAL_CUSTOMER_TOKEN,
+  EXTERNAL_SAAS_TOKEN,
+  EXTERNAL_TOKEN_EXPIRIES_IN,
   INDEX_NAME,
   SEARCH_KEY,
   TENANT,
@@ -20,6 +23,8 @@ import {
 import { LoadingCircleProgress } from 'components/Utilities/progress'
 
 import AccessToken from 'services/user/accessToken'
+import { loginBasedOnCustomerToken } from 'services/user/auth.service'
+import cartService from 'services/cart.service'
 
 const AuthContext = createContext({})
 
@@ -50,7 +55,20 @@ export const AuthProvider = ({ children }) => {
     localStorage.removeItem(CUSTOMER_TOKEN)
     localStorage.removeItem(CUSTOMER_TOKEN_EXPIRES_IN)
   }
+  
+  const insertLocalStorageValue = (key, value) => {
+    if(value) {
+      localStorage.setItem(key, value)
+    }
+  }
+
   const syncAuth = useCallback(async () => {
+    const urlParams = new URLSearchParams(window.location.search)
+    
+    insertLocalStorageValue(EXTERNAL_CUSTOMER_TOKEN, urlParams.get('customerToken'))
+    insertLocalStorageValue(EXTERNAL_TOKEN_EXPIRIES_IN, urlParams.get('customerTokenExpiresIn'))
+    insertLocalStorageValue(EXTERNAL_SAAS_TOKEN, urlParams.get('saasToken'))
+        
     setUser(getUser())
     setSessionId(getSessionId())
     setIsLoggedIn(!!getUser())
@@ -78,6 +96,26 @@ export const AuthProvider = ({ children }) => {
     }
     setAccessToken(token)
     setIsLoading(false)
+    const externalCustomerToken = localStorage.getItem(EXTERNAL_CUSTOMER_TOKEN)
+    const externalExpiresIn = localStorage.getItem(EXTERNAL_TOKEN_EXPIRIES_IN)
+    const externalSaasToken = localStorage.getItem(EXTERNAL_SAAS_TOKEN)
+
+    if(externalCustomerToken && externalExpiresIn && externalSaasToken) {
+      const response = await loginBasedOnCustomerToken({
+        accessToken: externalCustomerToken,
+        expiresIn : externalExpiresIn,
+        saasToken : externalSaasToken
+      }, userTenant)
+      localStorage.removeItem(EXTERNAL_CUSTOMER_TOKEN)
+      localStorage.removeItem(EXTERNAL_TOKEN_EXPIRIES_IN)
+      localStorage.removeItem(EXTERNAL_SAAS_TOKEN)
+      localStorage.setItem('user', JSON.stringify({
+        ...response,
+        userTenant: userTenant,
+        username: response.firstName + ' ' + response.lastName,
+      }))
+      syncAuth()
+    }
   }, [userTenant, accessToken])
 
   useEffect(() => {

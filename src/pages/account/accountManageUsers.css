@@ -1,0 +1,53 @@
+.action-discard-button {
+    @apply mt-6 sm:mt-0 h-12 w-full sm:w-[327px] text-tinBlue font-inter font-bold text-[14px] leading-[14px] bg-bgWhite;
+}
+
+.create-customer-wrapper {
+    padding-top: 1rem;
+}
+
+.dialog-user-active{
+    padding-left: 1rem;
+}
+
+.dialog-user-checkbox{
+    height: 20px;
+    width: 20px;
+}
+
+.dialog-user-input{
+    padding-right: 1rem;
+    padding-bottom: 1rem;
+}
+
+.dialog-user-input-role{
+    width: 100%
+}
+  
+.dialog-user-contenet {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+
+.dialog-user-footer{
+    width: 100%;
+    margin-right: 2rem;
+    display: flex;
+    flex-direction: row-reverse;
+}
+
+.large-primary-btn{
+    margin-right: 1rem;
+}
+
+.dialog-user-btn{
+    width: fit-content
+}
+
+.dialog-user-cancel-btn{
+    @apply hover:bg-lightGray;
+    color: royalblue;
+    background-color: #F7F8F8;
+    
+}

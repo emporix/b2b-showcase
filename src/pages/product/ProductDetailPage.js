@@ -27,6 +27,7 @@ import productService from '../../services/product/product.service'
 import priceService from '../../services/product/price.service'
 import {useNavigate} from 'react-router-dom'
 import { ProductConfiguration } from './ProductConfiguration'
+import { Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material'
 import Content from 'pages/home/Content'
 import { CMSFilterType } from 'services/content/filteredPage.service'
 
@@ -171,8 +172,9 @@ const ProductSkuAndReview = ({product}) => {
         </div>
     )
 }
-const ProductTitle = ({name}) => {
-    return <div className="mt-6 product-title">{name}</div>
+const ProductTitle = ({ name }) => {
+  const { getLocalizedValue } = useLanguage()
+  return <div className="mt-6 product-title">{getLocalizedValue(name)}</div>
 }
 const ProductPriceAndAmount = ({price, productCount, estimatedDelivery}) => {
     const {isLoggedIn} = useAuth()
@@ -235,18 +237,83 @@ const ProductBasicInfo = ({product}) => {
     )
 }
 
+const ProductBundleInfo = ({product}) => {
+
+  const { getLocalizedValue } = useLanguage()
+  const [bundledProducts, setBundledProducts] = useState([])
+
+  useEffect(() => {
+    ; (async () => {
+      const bundledProductsIds = product.bundledProducts.map(i => i.productId)
+      const products = await productService.getProductsWithIds(bundledProductsIds)
+      const prices = await priceService.getPriceWithProductIds(bundledProductsIds)
+      const res = products.map(p => {
+        const price = prices.filter(i => i.itemId.id === p.id)[0]
+        const amount = product.bundledProducts.filter(prod => prod.productId === p.id)[0]
+        return {
+          product : p,
+          price: price,
+          amount : amount.amount
+        }
+      })
+      setBundledProducts(res)
+    })()
+  }, [product])
+
+  return (
+    <>
+      <div className="product-match-caption w-full" style={{paddingBottom: 0}}>Bundled products</div>
+      <TableContainer component={Paper}>
+        <Table>
+          <TableHead>
+            <TableRow>
+              <TableCell>Image</TableCell>
+              <TableCell>Code</TableCell>
+              <TableCell>Product Name</TableCell>
+              <TableCell>Quantity In Bundle</TableCell>
+              <TableCell>Price item</TableCell>
+              <TableCell>Price total</TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {bundledProducts && bundledProducts.map((bundledProduct) => (
+              <TableRow
+                key={bundledProduct.product.code}
+                sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+              >
+                <TableCell component="th" scope="row">
+                  {bundledProduct.product.media && bundledProduct.product.media.length > 0 && (
+                    <img
+                      src={bundledProduct.product.media[0].url}
+                      className="w-fit h-8"
+                    />
+                  )}
+                </TableCell>
+                <TableCell>{bundledProduct.product.code}</TableCell>
+                <TableCell>{getLocalizedValue(bundledProduct.product.name)}</TableCell>
+                <TableCell>{bundledProduct.amount}</TableCell>
+                <TableCell><CurrencyBeforeValue value={bundledProduct.price.effectiveValue} currency={bundledProduct.price.currency} /></TableCell>
+                <TableCell><CurrencyBeforeValue value={bundledProduct.price.effectiveValue * bundledProduct.amount} currency={bundledProduct.price.currency} /></TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </TableContainer>
+    </>
+  )
+}
+
 const PrdouctAddToCart = () => {
-    const product = useContext(ProductContext)
-    const {setShowCart} = useContext(LayoutContext)
-    const [quantity, setQuantity] = useState(1)
-    const {syncCart, putCartProduct} = useCart()
-    const HandleProductAddToCart1 = useCallback((product, action, quantitiy) => {
-        let newProduct = {...product}
-        newProduct.quantity = quantitiy
-        putCartProduct(newProduct)
-        syncCart()
-        action(true)
-    }, [])
+  const product = useContext(ProductContext)
+  const { setShowCart } = useContext(LayoutContext)
+  const [quantity, setQuantity] = useState(1)
+  const { syncCart, putCartProduct } = useCart()
+  const HandleProductAddToCart1 = useCallback((product, action, quantitiy) => {
+    let newProduct = { ...product }
+    newProduct.quantity = quantitiy
+    putCartProduct(newProduct)
+    action(true)
+  }, [])
 
     const increaseQty = () => {
         setQuantity((prevState) => prevState + 1)
@@ -257,28 +324,31 @@ const PrdouctAddToCart = () => {
         setQuantity((prevState) => prevState - 1)
     }
 
-    return (
-        <div className="product-add-to-cart-wrapper py-12">
-            <div className="quantity">
-                Quantity
-                <Quantity
-                    value={quantity}
-                    increase={increaseQty}
-                    decrease={decreaseQty}
-                />
-            </div>
-            <div className="">
-                <LargePrimaryButton
-                    disabled={!product.price}
-                    className="product-add-to-cart-btn cta-button bg-primary"
-                    onClick={() =>
-                        HandleProductAddToCart1(product, setShowCart, quantity)
-                    }
-                    title="ADD TO CART"
-                />
-            </div>
-        </div>
-    )
+  return (
+    <div className="product-add-to-cart-wrapper py-12">
+      <div className="quantity">
+        Quantity
+        <Quantity
+          value={quantity}
+          increase={increaseQty}
+          decrease={decreaseQty}
+          onChange={(value) => {
+            setQuantity(value)
+          }}
+        />
+      </div>
+      <div className="">
+        <LargePrimaryButton
+          disabled={!product.price}
+          className="product-add-to-cart-btn cta-button bg-yellow"
+          onClick={() =>
+            HandleProductAddToCart1(product, setShowCart, quantity)
+          }
+          title="ADD TO CART"
+        />
+      </div>
+    </div>
+  )
 }
 const ProductDiscount = ({price, quantity}) => {
     return (
@@ -395,57 +465,57 @@ function TabPanel(props) {
     )
 }
 
-const ProductDetailsTabContent = ({product}) => {
-    const getFeatureName = (str) => {
-        let loop = 0
-        let res = ''
-        let flg = false
-        while (loop < str.length) {
-            if (loop === 0) res += str[loop].toUpperCase()
-            else {
-                if (!isNaN(str[loop] * 1)) res += str[loop]
-                else {
-                    if (str[loop] === '_') flg = true
-                    else {
-                        if (flg === true || str[loop] === str[loop].toUpperCase())
-                            res += ' ' + str[loop].toUpperCase()
-                        else res += str[loop]
-                        flg = false
-                    }
-                }
-            }
-            loop++
+const ProductDetailsTabContent = ({ product }) => {
+  const getFeatureName = (str) => {
+    let loop = 0
+    let res = ''
+    let flg = false
+    while (loop < str.length) {
+      if (loop === 0) res += str[loop].toUpperCase()
+      else {
+        if (!isNaN(str[loop] * 1)) res += str[loop]
+        else {
+          if (str[loop] === '_') flg = true
+          else {
+            if (flg === true || str[loop] === str[loop].toUpperCase())
+              res += ' ' + str[loop].toUpperCase()
+            else res += str[loop]
+            flg = false
+          }
         }
-        return res
+      }
+      loop++
     }
-    const getAttributes = (items) => {
-        let res = []
-        Object.keys(items).map((key) => {
-            let value = items[key]
-            let caption = getFeatureName(key)
-            if (typeof value !== 'object') value = value
-            else if ('value' in value && 'uom' in value)
-                value = value['value'] + ' ' + value['uom']
-            else value = ''
-            res.push({property: caption, value: value})
-        })
-        return res
-    }
-    return (
-        <div className="product-details-tab-content-wrapper">
-            <div className="grid grid-cols-1 gap-12">
-                {Object.keys(product.mixins).map((key) => {
-                    return (
-                        <ProductInfoPortal
-                            key={key}
-                            caption={getFeatureName(key)}
-                            items={getAttributes(product.mixins[key])}
-                        />
-                    )
-                })}
-            </div>
-        </div>
-    )
+    return res
+  }
+  const getAttributes = (items) => {
+    let res = []
+    Object.keys(items).forEach((key) => {
+      let value = items[key]
+      let caption = getFeatureName(key)
+      if (typeof value !== 'object') value = items[key]
+      else if ('value' in value && 'uom' in value)
+        value = value['value'] + ' ' + value['uom']
+      else value = ''
+      res.push({ property: caption, value: value })
+    })
+    return res
+  }
+  return (
+    <div className="product-details-tab-content-wrapper">
+      <div className="grid grid-cols-1 gap-12">
+        {Object.keys(product.mixins ? product.mixins : []).map((key) => {
+          return (
+            <ProductInfoPortal
+              key={key}
+              caption={getFeatureName(key)}
+              items={getAttributes(product.mixins[key])}
+            />
+          )
+        })}
+      </div>
+    </div>
+  )
 }
 
 const ProductDetailTabContent = ({product}) => {
@@ -524,35 +594,34 @@ const ProductInfoPortal = ({caption, items}) => {
     )
 }
 
-const ProductDetailInfo = ({product}) => {
-    return (
-        <div className="product-detail-page-info-wrapper lg:py-12 pb-12">
-            <div className="product-detail-content">
-                <div className="desktop-lg">
-                    <ProductDetailTabContent product={product}/>
-                </div>
-                <div className="mobile-lg">
-                    <Accordion>
-                        <AccordionItem index={0} title="Details">
-                            <ProductDetailsTabContent product={product}/>
-                        </AccordionItem>
-                        <AccordionItem index={1} title="Additional Information">
-                            {product.description}
-                        </AccordionItem>
-                        <AccordionItem index={2} title="Reviews">
-                            Reviews
-                        </AccordionItem>
-                    </Accordion>
-                </div>
-
-                <div className="desktop-lg mt-4">
-                    <Content type={CMSFilterType.PRODUCT} page={product.id} />
-                </div>
-            </div>
+const ProductDetailInfo = ({ product }) => {
+  const { getLocalizedValue } = useLanguage()
+  return (
+    <div className="product-detail-page-info-wrapper lg:py-12 pb-12">
+      <div className="product-detail-content">
+        <div className="desktop-lg">
+          <ProductDetailTabContent product={product} />
         </div>
-    )
-}
-
+        <div className="mobile-lg">
+          <Accordion>
+            <AccordionItem index={0} title="Details">
+              <ProductDetailsTabContent product={product} />
+            </AccordionItem>
+            <AccordionItem index={1} title="Additional Information">
+              {getLocalizedValue(product.description)}
+            </AccordionItem>
+            <AccordionItem index={2} title="Reviews">
+              Reviews
+            </AccordionItem>
+          </Accordion>
+        </div>
+        <div className="desktop-lg mt-4">
+            <Content type={CMSFilterType.PRODUCT} page={product.id} />
+        </div>
+      </div>
+    </div>
+  )}
+  
 const products = [
     {
         stock: 'Low',
@@ -608,9 +677,9 @@ const products = [
 ]
 
 const getRelatedProducts = async (language, product) => {
-    let productIds = []
-    const relatedItems = product.relatedItems
-    if (!relatedItems) return null
+  let productIds = []
+  const relatedItems = product.relatedItems
+  if (!relatedItems) return null
 
     relatedItems.forEach((item) => {
         productIds.push(item.refId)
@@ -685,19 +754,22 @@ const ProductMatchItems = ({productInput}) => {
     )
 }
 
-const ProductDetailPage = ({product, brand, labels}) => {
-    return (
-        <div className="product-detail-page-wrapper ">
-            <div className="product-detail-page-content">
-                <ProductDetailCategoryCaptionBar category={product.category}/>
-                <ProductContent product={product} brand={brand} labels={labels}/>
-                {product.productType === 'PARENT_VARIANT' && (
-                    product?.mixins?.b2bShowcase?.productConfiguration === false ? <ProductVariants product={product} /> : <ProductConfiguration product={product} />
-                )}
-                <ProductDetailInfo product={product}/>
-                <ProductMatchItems productInput={product}/>
-            </div>
-        </div>
-    )
+const ProductDetailPage = ({ product, brand, labels }) => {
+  return (
+    <div className="product-detail-page-wrapper ">
+      <div className="product-detail-page-content">
+        <ProductDetailCategoryCaptionBar category={product.category} />
+        <ProductContent product={product} brand={brand} labels={labels} />
+        {product.productType === 'PARENT_VARIANT' && (
+           product?.mixins?.b2bShowcase?.productConfiguration === false ? <ProductVariants product={product} /> : <ProductConfiguration product={product} />
+        )}
+        {product.productType === 'BUNDLE' && (
+          <ProductBundleInfo product={product} />
+        )}
+        <ProductDetailInfo product={product} />
+        <ProductMatchItems productInput={product} />
+      </div>
+    </div>
+  )
 }
 export default ProductDetailPage

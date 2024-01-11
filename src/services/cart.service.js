@@ -56,8 +56,12 @@ const CartService = () => {
   }
 
   const getRewardPointsForLoggedUser = async () => {
-    const { data } = await api.get(getRewardPoints())
-    return data
+    try{
+      const { data } = await api.get(getRewardPoints())
+      return data
+    } catch(e){
+      return null;
+    }
   }
 
   const getRedeemOptionsForLoggedUser = async () => {
@@ -151,7 +155,7 @@ const CartService = () => {
         price: {
           priceId: product.price.priceId,
           effectiveAmount:
-            product.price.effectiveValue || product.price.effectiveValue,
+            product.price.effectiveAmount || product.price.effectiveValue,
           originalAmount:
             product.price.originalAmount || product.price.originalValue,
           currency: product.price.currency,

@@ -4,8 +4,11 @@ import '../index.css'
 import {Link} from 'react-router-dom'
 import {CurrencyBeforeValue, GridLayout, LayoutBetween,} from 'components/Utilities/common'
 import Quantity from 'components/Utilities/quantity/quantity'
-import {cartUrl, checkoutUrl, quoteUrl} from 'services/service.config'
-import {useCart} from 'context/cart-provider'
+import { cartUrl, checkoutUrl, quoteUrl } from 'services/service.config'
+import { useCart } from 'context/cart-provider'
+import { border } from '@mui/system'
+import { PROCUREMENT_SYSTEM_URL } from 'constants/localstorage'
+import { useLanguage } from 'context/language-provider'
 
 const CartProductContent = ({children}) => {
     return <div className="cart-product-content">{children}</div>
@@ -50,25 +53,26 @@ export const PriceExcludeVAT1 = ({price, caption}) => {
     )
 }
 
-export const CartMobileItem = ({cartItem}) => {
-    const {incrementCartItemQty, decrementCartItemQty} = useCart()
+export const CartMobileItem = ({ cartItem }) => {
+  const { incrementCartItemQty, decrementCartItemQty, setCartItemQty } = useCart()
+  const { getLocalizedValue } = useLanguage()
 
-    return (
-        <GridLayout className="gap-4">
-            <div className="flex gap-6">
-                <div className="w-[56px]">
-                    <CartProductImage
-                        className="cart-product-image-mobile"
-                        src={cartItem.product.src}
-                    />
-                </div>
-                <div className="flex-auto gap-4">
-                    <LayoutBetween>
-                        <GridLayout className="gap-[10px]">
-                            <div className="cart-product-name">{cartItem.product.name}</div>
-                            <div className="cart-product-sku-wrapper">
-                                SKU:&nbsp;
-                                <span className="cart-product-sku">
+  return (
+    <GridLayout className="gap-4">
+      <div className="flex gap-6">
+        <div className="w-[56px]">
+          <CartProductImage
+            className="cart-product-image-mobile"
+            src={cartItem.product.src}
+          />
+        </div>
+        <div className="flex-auto gap-4">
+          <LayoutBetween>
+            <GridLayout className="gap-[10px]">
+              <div className="cart-product-name">{getLocalizedValue(cartItem.product.name)}</div>
+              <div className="cart-product-sku-wrapper">
+                SKU:&nbsp;
+                <span className="cart-product-sku">
                   {cartItem.product.code}
                 </span>
                             </div>
@@ -137,48 +141,50 @@ export const CartMobileItem = ({cartItem}) => {
         >
           {cartItem.product.stock} Stock
         </span>
-                <span className="">Est. delivery time: 3 days</span>
-            </div>
-            <LayoutBetween className="items-center">
-                <div className="w-[67px]">
-                    <Quantity
-                        value={cartItem.quantity}
-                        increase={() => incrementCartItemQty(cartItem.id)}
-                        decrease={() => decrementCartItemQty(cartItem.id)}
-                    />
-                </div>
-                <div className="!font-bold">
-                    <PriceExcludeVAT1
-                        price={
-                            Math.trunc(
-                                cartItem.quantity *
-                                cartItem.product.price.originalAmount *
-                                1.2 *
-                                100
-                            ) / 100
-                        }
-                        caption="incl. VAT"
-                    />
-                </div>
-            </LayoutBetween>
-        </GridLayout>
-    )
+        <span className="">Est. delivery time: 3 days</span>
+      </div>
+      <LayoutBetween className="items-center">
+        <div className="w-[67px]">
+          <Quantity
+            value={cartItem.quantity}
+            increase={() => incrementCartItemQty(cartItem.id)}
+            decrease={() => decrementCartItemQty(cartItem.id)}
+            onChange={(value) => setCartItemQty(cartItem.id, value)}
+          />
+        </div>
+        <div className="!font-bold">
+          <PriceExcludeVAT1
+            price={
+              Math.trunc(
+                cartItem.quantity *
+                  cartItem.product.price.originalAmount *
+                  1.2 *
+                  100
+              ) / 100
+            }
+            caption="incl. VAT"
+          />
+        </div>
+      </LayoutBetween>
+    </GridLayout>
+  )
 }
 
-const CartProductImageAndQuantity = ({cartItem}) => {
-    const {incrementCartItemQty, decrementCartItemQty} = useCart()
-    return (
-        <div className="cart-product-image-and-quantity">
-            <GridLayout className="gap-11">
-                <CartProductImage src={cartItem.product.src}/>
-                <Quantity
-                    value={cartItem.quantity}
-                    increase={() => incrementCartItemQty(cartItem.id)}
-                    decrease={() => decrementCartItemQty(cartItem.id)}
-                />
-            </GridLayout>
-        </div>
-    )
+const CartProductImageAndQuantity = ({ cartItem }) => {
+  const { incrementCartItemQty, decrementCartItemQty, setCartItemQty } = useCart()
+  return (
+    <div className="cart-product-image-and-quantity">
+      <GridLayout className="gap-11">
+        <CartProductImage src={cartItem.product.src} />
+        <Quantity
+          value={cartItem.quantity}
+          increase={() => incrementCartItemQty(cartItem.id)}
+          decrease={() => decrementCartItemQty(cartItem.id)}
+          onChange={(value) => setCartItemQty(cartItem.id, value)}
+        />
+      </GridLayout>
+    </div>
+  )
 }
 
 export const CartProductImageAndReadOnlyQuantity = ({ cartItem }) => {
@@ -195,10 +201,11 @@ export const CartProductImageAndReadOnlyQuantity = ({ cartItem }) => {
 }
 
 export const CartProductBasicInfo = ({ cart }) => {
+  const { getLocalizedValue } = useLanguage()
   return (
     <div className="cart-product-basic-info">
       <GridLayout className="gap-2">
-        <div className="cart-product-name">{cart.product.name}</div>
+        <div className="cart-product-name">{getLocalizedValue(cart.product.name)}</div>
         <div className="cart-product-sku-wrapper">
           SKU:&nbsp;
           <span className="cart-product-sku">{cart.product.code}</span>
@@ -216,23 +223,23 @@ export const CartProductBasicInfo = ({ cart }) => {
           >
             {cart.product.stock} Stock
           </span>
-                    <span className="cart-product-lead-time">Lead Time: 1 week</span>
-                </div>
-            </GridLayout>
+          {/* <span className="cart-product-lead-time">Lead Time: 1 week</span> */}
         </div>
-    )
+      </GridLayout>
+    </div>
+  )
 }
-const CartProductPriceExcludeVat = ({price, currency}) => {
-    return (
-        <div className="text-right">
-            <GridLayout>
-                <div className="cart-product-price-except-vat">
-                    <CurrencyBeforeValue value={price} currency={currency}/>
-                </div>
-                <div>exclu. VAT</div>
-            </GridLayout>
+export const CartProductPriceExcludeVat = ({ price, currency }) => {
+  return (
+    <div className="text-right">
+      <GridLayout>
+        <div className="cart-product-price-except-vat">
+          <CurrencyBeforeValue value={price} currency={currency} />
         </div>
-    )
+        <div>exclu. VAT</div>
+      </GridLayout>
+    </div>
+  )
 }
 export const CartProductInfo = ({ cartItem }) => {
   return (
@@ -314,16 +321,17 @@ export const CartSubTotalIncludeVat = ({grossValue, currency}) => {
     )
 }
 
-export const CartVat = ({ taxAggregate, currency }) => {
-  return (
-    <>
+export const CartVat = ({value, taxPercentage, currency, taxValue}) => {
+  const effectiveTaxValue = taxValue ? taxValue : (value * (taxPercentage / 100)).toFixed(2)
+    return (
+        <>
       <span>
-        VAT {taxAggregate.rate}% of{' '}
-        <CurrencyBeforeValue value={taxAggregate.taxable} currency={currency} />
+        VAT {taxPercentage}% of{' '}
+          <CurrencyBeforeValue value={value} currency={currency}/>
       </span>
             <span>
         <CurrencyBeforeValue
-          value={taxAggregate.amount}
+          value={effectiveTaxValue}
           currency={currency}
         />
       </span>
@@ -380,25 +388,42 @@ const CartGoCart = () => {
     )
 }
 
-export const getShippingCost = (shippingMethod) => {
-  return shippingMethod != null ? shippingMethod?.fees[0].amount : 0
+const CartGoProcurementSystem = () => {
+  return (
+    <Link to={localStorage.getItem(PROCUREMENT_SYSTEM_URL)} className="w-full">
+      <button className="cart-go-checkout-btn py-[12px] px-[14px] bg-yellow rounded text-eerieBlack">
+        TRANSFER TO PROCUREMENT SYSTEM
+      </button>
+    </Link>
+  )
 }
 
-export const CartActionPanel = ({action}) => {
-    const {cartAccount, shippingMethod} = useCart()
-    return (
-        <div className="cart-action-panel">
-            <GridLayout className="gap-4">
-                <CartActionRow>
-                    <LayoutBetween>
-                        {cartAccount.subtotalAggregate?.netValue && (
-                            <CartSubTotalExcludeVat
-                                value={cartAccount.subtotalAggregate.netValue}
-                                currency={cartAccount.currency}
-                            />
-                        )}
-                    </LayoutBetween>
-                </CartActionRow>
+export const getShippingCost = (shippingMethod) => {
+  return shippingMethod != null ? shippingMethod?.fee : 0
+  // return shippingMethod != null ? shippingMethod?.grossFee : 0
+}
+
+export const getTotalPrice = (cartAccount, shippingCost) => {
+  return cartAccount?.subtotalAggregate ? cartAccount.subtotalAggregate.grossValue + 
+  + shippingCost : 0
+}
+
+export const CartActionPanel = ({ action, showShipping }) => {
+  const { cartAccount, shippingMethod } = useCart()
+  const shippingCost = showShipping !== false ? getShippingCost(shippingMethod) : 0
+  return (
+    <div className="cart-action-panel">
+      <GridLayout className="gap-4">
+        <CartActionRow>
+          <LayoutBetween>
+            {cartAccount.subtotalAggregate?.netValue && (
+              <CartSubTotalExcludeVat
+                value={cartAccount.subtotalAggregate.netValue}
+                currency={cartAccount.currency}
+              />
+            )}
+          </LayoutBetween>
+        </CartActionRow>
 
                 {cartAccount.totalDiscount?.amount > 0 && (
                     <CartActionRow>
@@ -426,8 +451,10 @@ export const CartActionPanel = ({action}) => {
               <CartActionRow>
                 <LayoutBetween>
                   <CartVat
-                    taxAggregate={taxItem}
+                    value={cartAccount?.subtotalAggregate?.netValue}
+                    taxPercentage={cartAccount?.taxAggregate.lines[0].rate}
                     currency={cartAccount?.currency}
+                    taxValue={cartAccount?.subtotalAggregate?.taxValue}
                   />
                 </LayoutBetween>
               </CartActionRow>
@@ -440,45 +467,53 @@ export const CartActionPanel = ({action}) => {
             {cartAccount?.subtotalAggregate &&
               cartAccount?.subtotalAggregate.grossValue && (
                 <CartSubTotalIncludeVat
-                  grossValue={cartAccount?.subtotalAggregate.grossValue}
+                  grossValue={getTotalPrice(cartAccount, 0)}
                   currency={cartAccount.currency}
                 />
               )}
           </LayoutBetween>
         </CartActionRow>
 
-                <CartActionRow>
-                    <LayoutBetween>
-                        <CartShipingCost currency={cartAccount.currency}
-                                         shippingCost={getShippingCost(shippingMethod)}/>
-                    </LayoutBetween>
-                </CartActionRow>
+        {showShipping !== false && (
+        <CartActionRow>
+          <LayoutBetween>
+            <CartShipingCost currency={cartAccount.currency} shippingCost={getShippingCost(shippingMethod)}/>
+          </LayoutBetween>
+        </CartActionRow>
+        )}
 
         <CartActionRow>
           <div className="cart-total-price-wrapper">
             <LayoutBetween>
-              {cartAccount.totalPrice && cartAccount.totalPrice.amount && (
-                <CartTotalPrice
-                  totalValue={cartAccount.totalPrice.amount}
-                  currency={cartAccount.currency}
-                />
-              )}
+              <CartTotalPrice
+                totalValue={getTotalPrice(cartAccount, shippingCost)}
+                currency={cartAccount.currency}
+              />
             </LayoutBetween>
           </div>
         </CartActionRow>
 
-                {action === undefined || action === true ? (
-                    <>
-                        <CartGoCheckout/>
-                        <CartGoCart/>
-                        <CartRequestQuote/>
-                    </>
-                ) : (
-                    <></>
-                )}
-            </GridLayout>
-        </div>
-    )
+        {(action === undefined || action === true) && !localStorage.getItem(PROCUREMENT_SYSTEM_URL) ? (
+            
+            <>
+                <CartGoCheckout />
+                <CartGoCart />
+                <CartRequestQuote />
+            </>
+        ) : (
+          <></>
+        )}
+        {(action === undefined || action === true) && localStorage.getItem(PROCUREMENT_SYSTEM_URL) ? (
+            
+            <>
+                <CartGoProcurementSystem/>
+            </>
+        ) : (
+          <></>
+        )}
+      </GridLayout>
+    </div>
+  )
 }
 const Cart = () => {
     const {cartAccount} = useCart()
@@ -489,18 +524,16 @@ const Cart = () => {
                 <span className="cart-caption-font">
           {cartAccount?.items.length || 0} items
         </span>
-            </LayoutBetween>
-            <CartProductContent>
-                <GridLayout className="gap-4">
-                    {cartAccount?.items.map((cartItem, idx) => (
-                        <CartProductWrapper key={cartItem.id + idx} cartItem={cartItem}/>
-                    ))}
-                </GridLayout>
-            </CartProductContent>
-            {cartAccount?.subtotalAggregate
-                ? cartAccount?.subtotalAggregate.grossValue && <CartActionPanel/>
-                : 'Error: Missing subtotal agregate. Some products are probably unavailiable on this site'}
-        </>
-    )
+      </LayoutBetween>
+      <CartProductContent>
+        <GridLayout className="gap-4">
+          {cartAccount?.items.map((cartItem, idx) => (
+            <CartProductWrapper key={cartItem.id + idx} cartItem={cartItem} />
+          ))}
+        </GridLayout>
+      </CartProductContent>
+      {<CartActionPanel showShipping={false}/>}
+    </>
+  )
 }
 export default Cart

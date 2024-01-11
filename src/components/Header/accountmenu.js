@@ -25,6 +25,7 @@ export default function AccountMenu(props) {
     return (
         <div ref={menuRef} className="relative inline-block text-left">
             <button
+                id="account-menu"
                 onClick={() => setIsOpen(!isOpen)}
                 className="inline-flex justify-center w-full text-sm text-white focus:outline-none"
             >

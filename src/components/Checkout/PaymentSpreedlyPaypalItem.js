@@ -19,7 +19,6 @@ const PaymentSpreedlyPaypalItem = ({ radioKey, props, paymentMode }) => {
   }, [radioActive])
 
   const generateToken = () => {
-    window.console.log("MODE", paymentMode)
     var formData = new FormData();
     formData.append("redirect_url", window.location.href)
     formData.append("environment_key", paymentMode.environmentKey)
@@ -42,7 +41,6 @@ const PaymentSpreedlyPaypalItem = ({ radioKey, props, paymentMode }) => {
   const storeToken = (response) => {
     const url = new URL(response.request.responseURL)
     const token = url.searchParams.get("token")
-    window.console.log("TOKEN", token)
     setPayment({
       provider: 'payment-gateway',
       mode: "offsite",

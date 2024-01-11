@@ -27,10 +27,9 @@ const PaymentSpreedlySaferpayItem = ({radioKey, props, paymentMode}) => {
                 "customerId": props.customerId
             });
 
-            window['SpreedlyExpress'].onPaymentMethod(function (token, paymentMethod) {
-                window.console.log("Listener", token)
-                setSaferpayCardDetailsProvided(true)
-                setSpreedlyToken(token)
+      window['SpreedlyExpress'].onPaymentMethod(function(token, paymentMethod) {
+        setSaferpayCardDetailsProvided(true)
+        setSpreedlyToken(token)
 
                 const currentPayment = {
                     provider: 'payment-gateway',
@@ -48,22 +47,21 @@ const PaymentSpreedlySaferpayItem = ({radioKey, props, paymentMode}) => {
         window['SpreedlyExpress'].openView()
     }
 
-    const executePayment = async () => {
-        const accessToken = localStorage.getItem(ACCESS_TOKEN)
-        const headers = {
-            Authorization: `Bearer ${accessToken}`
-        }
-        const body = {
-            order: {
-                id: props.orderId
-            },
-            paymentModeId: paymentMode.id,
-            creditCardToken: spreedlyToken
-        }
-        const res = await api.post(`${initializePayment()}`, body, {headers})
-        window.location.replace(res.data.externalPaymentRedirectURL)
-        window.console.log("SAFERPAY init", res)
+  const executePayment = async () => {
+    const accessToken = localStorage.getItem(ACCESS_TOKEN)
+    const headers = {
+      Authorization: `Bearer ${accessToken}`
     }
+    const body = {
+      order : {
+        id : props.orderId
+      },
+      paymentModeId: paymentMode.id,
+      creditCardToken: spreedlyToken
+    }
+    const res = await api.post(`${initializePayment()}`, body, { headers })
+    window.location.replace(res.data.externalPaymentRedirectURL)
+  }
 
     return (
         <div

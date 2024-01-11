@@ -57,3 +57,53 @@
   margin: auto;
   position: relative;
 }
+
+.approversDropdown {
+  order: 1;
+  flex: 0 0 50%;
+  padding-right: 10px;
+}
+
+.approvalComment {
+  order: 2;
+  flex: 0 0 50%;
+  padding-left: 10px;
+}
+
+.approvalDialog {
+  padding: 20px;
+}
+
+.approvalDialogContent {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+
+.approvalDialogFooter {
+  order: 3;
+  margin-left: auto;
+  display: flex;
+
+  .large-primary-btn {
+    margin-right: 0;
+  }
+
+  .gray-button {
+    color: white !important;
+    background-color: lightgray !important;
+    margin-left: 0;
+    margin-right: 1rem;
+  }
+
+  .gray-button:hover {
+    background-color: gainsboro !important;
+  }
+}
+
+.approvalErrorBox {
+  background-color: rgba(243, 3, 3, 0.05);
+  border: 1px solid rgba(243, 3, 3, 1);
+  color: rgba(243, 3, 3, 1);
+  padding: 10px;
+}

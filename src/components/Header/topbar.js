@@ -33,7 +33,7 @@ const MegaNav = ({ showMegaMenuContent, setShowMegaMenuContent }) => {
     backgroundBlendMode: "screen"
   }
   return (
-    <div className="dropdown flex text-base">
+    <div id="topbar-buttons" className="dropdown flex text-base">
       {menuList.map((item, index) => (
         <button
           key={index}
