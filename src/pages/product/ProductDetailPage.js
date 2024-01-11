@@ -615,6 +615,9 @@ const ProductDetailInfo = ({ product }) => {
             </AccordionItem>
           </Accordion>
         </div>
+        <div className="desktop-lg mt-4">
+            <Content type={CMSFilterType.PRODUCT} page={product.id} />
+        </div>
       </div>
     </div>
   )}

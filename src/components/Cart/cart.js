@@ -321,7 +321,8 @@ export const CartSubTotalIncludeVat = ({grossValue, currency}) => {
     )
 }
 
-export const CartVat = ({value, taxPercentage, currency}) => {
+export const CartVat = ({value, taxPercentage, currency, taxValue}) => {
+  const effectiveTaxValue = taxValue ? taxValue : (value * (taxPercentage / 100)).toFixed(2)
     return (
         <>
       <span>
@@ -330,7 +331,7 @@ export const CartVat = ({value, taxPercentage, currency}) => {
       </span>
             <span>
         <CurrencyBeforeValue
-          value={value}
+          value={effectiveTaxValue}
           currency={currency}
         />
       </span>
@@ -450,8 +451,10 @@ export const CartActionPanel = ({ action, showShipping }) => {
               <CartActionRow>
                 <LayoutBetween>
                   <CartVat
-                    taxAggregate={taxItem}
+                    value={cartAccount?.subtotalAggregate?.netValue}
+                    taxPercentage={cartAccount?.taxAggregate.lines[0].rate}
                     currency={cartAccount?.currency}
+                    taxValue={cartAccount?.subtotalAggregate?.taxValue}
                   />
                 </LayoutBetween>
               </CartActionRow>
