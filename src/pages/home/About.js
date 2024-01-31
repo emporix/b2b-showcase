@@ -30,8 +30,8 @@ const About = () => {
             // style={{ backgroundImage: `url(${landingBg})` }}
             className="home_about"
         >
-            <div className="w-1/2 h-fit flex flex-col text-eerieBlack pt-52">
-                <div className="text-[72px] font-inter font-semibold md:leading-[64px] leading-[56px]">
+            <div className="w-full lg:w-3/5 h-fit flex flex-col text-eerieBlack pt-40 md:pt-52 lg:pt-28 px-4 md:px-16 lg:pr-0 xl:pl-64 xl:pt-36">
+                <div className="text-5xl md:!text-6xl !leading-[60px] lg:!text-7xl font-inter font-semibold md:leading-[64px] block">
                     Erleben Sie den <span className="text-primary">Luxus</span><br/> mit neteleven <span
                     className="text-primary">Wein</span>
                 </div>
@@ -40,14 +40,14 @@ const About = () => {
                     neteleven erwarten
                 </div>
                 <div className="pt-[44px] desktop_only text-sm">
-                    <button className="px-6 py-4 font-semibold bg-primary text-white rounded">
+                    <button className="px-6 py-4 font-semibold bg-primary text-white rounded-xl">
                         {fields.startShoppingButtonLabel}
                     </button>
                 </div>
             </div>
 
-            <div className='flex justify-end w-2/5 pt-28 h-fit'>
-                <img className="w-fit h-fit" alt='' src="/img/bottlesandberries.png"/>
+            <div className='flex justify-end w-full lg:w-2/5 lg:pt-48 h-fit md:-mt-16'>
+                <img className="w-fit md:w-2/3 lg:w-fit h-fit" alt='' src="/img/bottlesandberries.png"/>
             </div>
             
 

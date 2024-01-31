@@ -6,14 +6,14 @@ import verifiedUser from '../../assets/verified_user.svg'
 
 const EachService = (props) => {
   return (
-    <div className="text-white text-center md:text-center md:items-center h-[158px] w-[276px] md">
-      <div className="w-full">
-        <img src={props.src} className="h-10 md:mx-auto filter-white"></img>
+    <div className="text-white text-center md:text-center items-center px-4 py-8 flex flex-col gap-6">
+      <div className="w-fit">
+        <img src={props.src} className="h-10 md:mx-auto filter-white" alt=""></img>
       </div>
-      <div className="text-primary md:text-[20px] leading-[24px] pt-7 text-[18px]/[30px] font-semibold">
+      <div className="text-primary font-inter font-semibold text-2xl">
         {props.title}
       </div>
-      <div className="font-inter font-normal text-[14px] leading-[24px] md:text-[16px] pt-2 md:pt-4">
+      <div className="font-inter font-normal text-lg">
         {props.content}
       </div>
     </div>
@@ -21,7 +21,7 @@ const EachService = (props) => {
 }
 const Service = () => {
   return (
-    <div className="home_service h-[366px] bg-black text -white">
+    <div className="home_service bg-black text-white">
       <EachService
         src={logo}
         title="Kostenlose Lieferung"
