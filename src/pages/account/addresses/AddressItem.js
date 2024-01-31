@@ -1,3 +1,5 @@
+import React from "react"
+
 const Label = ({ txt }) => {
   return <span className="font-bold">{txt}</span>
 }

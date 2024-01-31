@@ -15,7 +15,11 @@ li.item-divide-line {
 }
 
 li.item-active {
-    @apply h-[44px] p-3 rounded bg-primary text-[16px]/[24px] font-normal;
+    @apply h-[44px] p-3 rounded bg-primary text-aliceBlue text-[16px]/[24px] font-normal;
+}
+
+li.item-active img {
+    filter: brightness(100);
 }
 
 li.index-item-active {
@@ -83,7 +87,7 @@ li.index-item-active {
 }
 
 .personal-and-summary-content-wrapper {
-    @apply pb-8;
+    @apply pb-4;
 }
 
 .account-personal-info-wrapper {

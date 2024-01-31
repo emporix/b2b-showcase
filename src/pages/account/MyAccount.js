@@ -13,7 +13,7 @@ const AccountPersonalInfo = () => {
         return <Navigate to="/login"/>
     }
     return (
-        <div className="account-personal-info-wrapper">
+        <div className="account-personal-info-wrapper standard_box_shadow bg-aliceBlue !rounded-xl p-4">
             <div className="account-personal-info-caption">
                 <div className="account-personal-info flex">
                     <div className="my-auto  flex w-full justify-between items-center">
@@ -28,7 +28,7 @@ const AccountPersonalInfo = () => {
         </div>
       </div>
       <div className="account-profile">
-        <div className="mx-auto flex flex-col gap-8 items-center">
+        <div className="mx-auto flex flex-col gap-4 items-center">
         <div className="flex flex-row flex-1 w-full">
           {user.photoUrl ? (<img
               className="personal-photo"
@@ -52,13 +52,13 @@ const AccountPersonalInfo = () => {
                         </div>
                     </div>
                     <div className="profile-info flex gap-4">
-                        <div className="profile-items gap-2 flex flex-col justify-items-start">
+                        <div className="profile-items gap-4 flex flex-col justify-items-start">
                             {/* <p>Name</p> */}
                             <p>Company</p>
                             <p>Phone</p>
                             <p>Email</p>
                         </div>
-                        <div className="profile-items-info gap-2 flex flex-col justify-items-start">
+                        <div className="profile-items-info gap-4 flex flex-col justify-items-start">
                             {/* <p className="font-bold">{user.username}</p> */}
                             <p>{user.company}</p>
                             <p>
@@ -74,9 +74,9 @@ const AccountPersonalInfo = () => {
 }
 const PaymentProgressBar = () => {
     return (
-        <div className="w-full h-6 bg-bgWhite rounded-2xl dark:bg-bgWhite">
+        <div className="w-full h-6 bg-bgWhite rounded-xl dark:bg-bgWhite">
             <div
-                className="h-6 bg-primary rounded-2xl dark:bg-primary"
+                className="h-6 bg-primary rounded-xl dark:bg-primary"
                 style={{width: '45%'}}
             />
         </div>
@@ -89,7 +89,7 @@ const PaymentStatus = () => {
             <li className="spent-amount">
                 <CurrencyBeforeValue value={'2,540.28'}/>
             </li>
-            <li className="limit-bar-wrapper flex flex-col gap-2">
+            <li className="limit-bar-wrapper flex flex-col gap-4">
                 <div className="limit-bar">
                     <PaymentProgressBar/>
                 </div>
@@ -121,7 +121,7 @@ const PaymentInfoDetails = () => {
 }
 const AccountSummary = () => {
     return (
-        <div className="account-summary-wrapper flex flex-col gap-6">
+        <div className="account-summary-wrapper flex flex-col gap-4 standard_box_shadow bg-aliceBlue !rounded-xl p-4">
             <div className="account-summary-caption">
                 <div className="account-summary-info flex">
                     <div className="my-auto  flex w-full justify-between items-center">
@@ -167,7 +167,7 @@ const RecentOrders = () => {
     }, [])
 
     return (
-        <div className="account-recent-orders-wrapper portal-wrapper">
+        <div className="account-recent-orders-wrapper portal-wrapper standard_box_shadow bg-aliceBlue !rounded-xl p-4">
             <PortalCaptionBar
                 className="text-[16px]/[24px] text-dodgerBlue font-medium"
                 title="Recent Orders"
@@ -181,7 +181,7 @@ const RecentOrders = () => {
 const RecentSavedCarts = () => {
     const actions = [{title: 'View'}]
     return (
-        <div className="account-saved-carts-wrapper portal-wrapper border border-quartz rounded mt-8 p-6">
+        <div className="account-saved-carts-wrapper portal-wrapper border border-quartz mt-4 standard_box_shadow bg-aliceBlue !rounded-xl p-4">
             <PortalCaptionBar
                 className="text-[16px]/[24px] text-dodgerBlue font-medium"
                 title="Saved Carts"

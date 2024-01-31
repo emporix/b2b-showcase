@@ -37,11 +37,11 @@ const MyDiscounts = () => {
 
   return (
     <div className="flex">
-      <div className="account-menu-items-left-panel left-menu-panel grey-rounded-container p-3">
+      <div className="account-menu-items-left-panel left-menu-panel grey-rounded-container standard_box_shadow bg-aliceBlue rounded-xl p-4">
         <AccountMenu page={'My Discounts'} />
       </div>
       <div
-        className={'account-page-content content-panel md:pl-6 flex flex-col'}
+        className={'account-page-content content-panel flex flex-col standard_box_shadow bg-aliceBlue rounded-xl p-4 ml-12'}
       >
         <div className="pb-4">
           <div className="font-inter font-bold text-xl text-tinBlue mb-2">
