@@ -124,11 +124,11 @@ const QuotePage = () => {
           <>
             <CartActionBar classname="lg:block hidden" view={true} />
             <CartTable
-              classname="lg:block hidden"
+              classname="lg:block hidden rounded-xl bg-aliceBlue standard_box_shadow"
               cartList={cartAccount.items}
             />
-            <GridLayout className="address-wrapper gap-6 grid-cols-2">
-              <GridLayout className=" gap-3">
+            <GridLayout className="address-wrapper gap-4 grid-cols-2">
+              <GridLayout className="gap-3 rounded-xl bg-aliceBlue standard_box_shadow p-4">
                 <TextBold1 className="gap-3">Shipping Details</TextBold1>
                 <div className="address-dropdown-wrapper">
                   <DropdownWithLabel
@@ -172,7 +172,7 @@ const QuotePage = () => {
                   </GridLayout>
                 </div>
               </GridLayout>
-              <GridLayout className="billing-details-wrapper gap-3">
+              <GridLayout className="billing-details-wrapper gap-3 rounded-xl bg-aliceBlue standard_box_shadow p-4">
                 <TextBold1>Billing Details</TextBold1>
                 <Checkbox
                   value={!isDifferentBilling}
@@ -220,7 +220,7 @@ const QuotePage = () => {
                 )}
               </GridLayout>
             </GridLayout>
-            <GridLayout className="gap-6">
+            <GridLayout className="gap-4 p-4 rounded-xl bg-aliceBlue standard_box_shadow">
               <Heading3>Shipping Method</Heading3>
               <RadioGroup>
                 {shippingMethods.map((method) => {
