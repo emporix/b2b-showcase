@@ -23,7 +23,7 @@ const ProductListViewSettingBar = ({
                                        displayType,
                                    }) => {
     return (
-        <div className="view-setting-wrapper h-fit mb-6 px-4 py-2 bg-aliceBlue rounded-lg" style={productListBoxShadow}>
+        <div className="view-setting-wrapper h-fit px-4 py-2 bg-aliceBlue rounded-xl mb-4" style={productListBoxShadow}>
             <div className="view-setting-bar">
                 <div>
                     <ul className="setting gap-6 flex justify-between font-inter text-base font-normal">
@@ -117,19 +117,19 @@ const ProductListItems = ({products, auth, displayType}) => {
     let itemArr = []
     let subItemArr = []
     let ItemArrOnMobile = []
-    let available
+    let available, stockLevel
 
     if (displayType) {
         products.forEach((item, i) => {
             available = availability['k' + item.id]?.available
-
+            stockLevel = availability['k' + item.id]?.stockLevel
             switch ((i + 1) % 3) {
                 case 1:
                     subItemArr.push(
-                        <div key={i} className="w-1/3 mr-12 rounded-lg bg-aliceBlue" style={productListBoxShadow}>
+                        <div key={i} className="w-1/3 rounded-xl bg-aliceBlue hover:scale-[1.01] transition-all duration-150 ease-in" style={productListBoxShadow}>
                             <EachProduct
                                 key={item.id}
-                                available={available}
+                                available={stockLevel}
                                 rating={4}
                                 productCount={8}
                                 item={item}
@@ -141,11 +141,11 @@ const ProductListItems = ({products, auth, displayType}) => {
                     subItemArr.push(
                         <div
                             key={i}
-                            className="w-1/3 mr-12 rounded-lg bg-aliceBlue" style={productListBoxShadow}
+                            className="w-1/3 rounded-xl bg-aliceBlue hover:scale-[1.01] transition-all duration-150 ease-in" style={productListBoxShadow}
                         >
                             <EachProduct
                                 key={item.id}
-                                available={available}
+                                available={stockLevel}
                                 rating={4}
                                 productCount={8}
                                 item={item}
@@ -157,11 +157,11 @@ const ProductListItems = ({products, auth, displayType}) => {
                     subItemArr.push(
                         <div
                             key={i}
-                            className="w-1/3 rounded-lg bg-aliceBlue" style={productListBoxShadow}
+                            className="w-1/3 rounded-xl bg-aliceBlue hover:scale-[1.01] transition-all duration-150 ease-in" style={productListBoxShadow}
                         >
                             <EachProduct
                                 key={item.id}
-                                available={available}
+                                available={stockLevel}
                                 rating={4}
                                 productCount={8}
                                 item={item}
@@ -171,7 +171,7 @@ const ProductListItems = ({products, auth, displayType}) => {
                     itemArr.push(
                         <div
                             key={'row' + i.toString()}
-                            className="list-row flex lg:mb-12 mb-12"
+                            className="list-row flex gap-x-4 xl:gap-x-12"
                         >
                             {subItemArr}
                         </div>
@@ -201,10 +201,10 @@ const ProductListItems = ({products, auth, displayType}) => {
             switch ((i + 1) % 2) {
                 case 1:
                     subItemArr.push(
-                        <div key={i} className="w-1/2 p-2">
+                        <div key={i} className="w-1/2 h-fit lg:h-full lg:hover:scale-[1.01] lg:transition-all lg:duration-150 lg:ease-in standard_box_shadow rounded-xl bg-aliceBlue">
                             <EachProduct
                                 key={item.id}
-                                available={available}
+                                available={stockLevel}
                                 rating={4}
                                 productCount={8}
                                 item={item}
@@ -216,11 +216,11 @@ const ProductListItems = ({products, auth, displayType}) => {
                     subItemArr.push(
                         <div
                             key={i}
-                            className="w-1/2  p-2 border-l border-bgWhite border-solid"
+                            className="w-1/2 border-l border-bgWhite border-solid hover:scale-[1.01] transition-all duration-150 ease-in  standard_box_shadow rounded-xl bg-aliceBlue"
                         >
                             <EachProduct
                                 key={item.id}
-                                available={available}
+                                available={stockLevel}
                                 rating={4}
                                 productCount={8}
                                 item={item}
@@ -230,7 +230,7 @@ const ProductListItems = ({products, auth, displayType}) => {
                     ItemArrOnMobile.push(
                         <div
                             key={'rowMobile' + i.toString()}
-                            className="list-row flex lg:my-12 my-4"
+                            className="list-row flex lg:my-12 my-4 gap-4"
                         >
                             {subItemArr}
                         </div>
@@ -258,12 +258,15 @@ const ProductListItems = ({products, auth, displayType}) => {
     } else {
         products.forEach((item, i) => {
             available = availability['k' + item.id]?.available
+            stockLevel = availability['k' + item.id]?.stockLevel
             itemArr.push(
-                <div key={i} className="w-full my-4 items-center">
+                <div key={i} className="w-full my-6 items-center hover:scale-[1.01] transition-all duration-150 ease-in">
                     <EachProductRow
                         key={item.id}
-                        available={available}
+                        available={stockLevel}
                         item={item}
+                        rating={4}
+                        productCount={8}
                     />
                 </div>
             )
@@ -278,7 +281,7 @@ const ProductListItems = ({products, auth, displayType}) => {
     }
     return (
         <>
-            <div className={displayType ? 'hidden lg:block' : ''}>{itemArr}</div>
+            <div className={displayType ? 'hidden lg:flex lg:flex-col gap-y-4 xl:gap-y-12 mb-4 xl:mb-12' : ''}>{itemArr}</div>
             <div className="lg:hidden">{ItemArrOnMobile}</div>
         </>
     )

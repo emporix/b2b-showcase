@@ -72,6 +72,7 @@ export const ProductDetails = () => {
     ;(async () => {
       try {
         let res = await getProduct(productId)
+        console.log(res)
         res.src = res.media[0] === undefined ? '' : res.media[0]['url']
         let stock,
           stockLevel = 0

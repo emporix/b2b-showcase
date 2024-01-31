@@ -127,20 +127,20 @@ const ProductDetailCategoryCaptionBar = ({category}) => {
 const ProductImage = ({product}) => {
     return (
         <div className="product-detail-image-content">
-            <div className="product-detail-main-image rounded">
-                <img src={`${product.src}`} alt="product" className="w-full"/>
+            <div className="product-detail-main-image rounded-3xl standard_box_shadow p-4">
+                <img src={`${product.src}`} alt="product" className="w-full rounded-2xl"/>
             </div>
-            <div className="product-detail-sub-images">
+            <div className="product-detail-sub-images rounded-3xl standard_box_shadow">
                 {product.subImages.map((link, index) => {
                     return (
                         <div
                             key={index}
-                            className="rounded product-detail-sub-image-item flex items-center"
+                            className="rounded-2xl product-detail-sub-image-item flex items-center"
                         >
                             <img
                                 src={`${link}`}
                                 alt="product_"
-                                className="w-full m-auto items-center"
+                                className="w-full m-auto items-center rounded-2xl"
                             />
                         </div>
                     )
@@ -157,7 +157,7 @@ const ProductSkuAndReview = ({product}) => {
             </div>
             <div className="reviews-info">
                 <div className="lg:flex">
-                    <div className="flex float-right lg:float-left lg:pb-0 pb-4">
+                    <div className="flex float-right lg:float-left">
                         <ReactStars
                             size={16}
                             value={product.rating}
@@ -166,7 +166,7 @@ const ProductSkuAndReview = ({product}) => {
                         />
                         ({product.count})
                     </div>
-                    <div className="lg:ml-4  product-all-reviews">Reviews</div>
+                    {/* <div className="lg:ml-4  product-all-reviews">Reviews</div> */}
                 </div>
             </div>
         </div>
@@ -174,21 +174,21 @@ const ProductSkuAndReview = ({product}) => {
 }
 const ProductTitle = ({ name }) => {
   const { getLocalizedValue } = useLanguage()
-  return <div className="mt-6 product-title">{getLocalizedValue(name)}</div>
+  return <div className="mt-6 product-title text-left w-full text-eerieBlack font-light">{getLocalizedValue(name)}</div>
 }
 const ProductPriceAndAmount = ({price, productCount, estimatedDelivery}) => {
     const {isLoggedIn} = useAuth()
 
     return (
-        <div className="product-price-and-amount-wrapper mt-12 ">
-            <div className="product-price-wrapper flex space-x-4 items-center">
+        <div className="product-price-and-amount-wrapper">
+            <div className="product-price-wrapper flex gap-4 items-end">
                 {price !== '' ? (
                     <>
-                        <div className="product-price h-12">
+                        <div className="product-price">
                             <CurrencyBeforeValue value={price}/>
                         </div>
                         <div className="vat-caption">
-                            {isLoggedIn ? 'VAT Excluded' : 'VAT Included'}
+                            {isLoggedIn ? 'Excl. VAT' : 'Incl. VAT'}
                         </div>
                     </>
                 ) : (
@@ -223,7 +223,7 @@ const ProductBasicInfo = ({product}) => {
         return formatPrice(product, isLoggedIn)
     }, [isLoggedIn, product])
     return (
-        <div className="product-basic-info-wrapper hidden lg:block">
+        <div className="product-basic-info-wrapper hidden lg:flex flex-col gap-4">
             <ProductSkuAndReview product={product}/>
             <ProductTitle name={product.name}/>
             {product.productType !== 'PARENT_VARIANT' && (
@@ -325,7 +325,7 @@ const PrdouctAddToCart = () => {
     }
 
   return (
-    <div className="product-add-to-cart-wrapper py-12">
+    <div className="product-add-to-cart-wrapper lg:py-12">
       <div className="quantity">
         Quantity
         <Quantity
@@ -340,7 +340,7 @@ const PrdouctAddToCart = () => {
       <div className="">
         <LargePrimaryButton
           disabled={!product.price}
-          className="product-add-to-cart-btn cta-button bg-yellow"
+          className="product-add-to-cart-btn cta-button bg-yellow !text-aliceBlue !text-lg"
           onClick={() =>
             HandleProductAddToCart1(product, setShowCart, quantity)
           }
@@ -566,10 +566,10 @@ const ProductDetailTabContent = ({product}) => {
                 <ProductDetailsTabContent product={product}/>
             </TabPanel>
             <TabPanel value={tab} index={1}>
-                <div dangerouslySetInnerHTML={{__html: product.description}}/>
+                <div dangerouslySetInnerHTML={{__html: product.description}} className='product-details-tab-content-wrapper text-lg font-light'/>
             </TabPanel>
             <TabPanel value={tab} index={2}>
-                Reviews
+                <div className='product-details-tab-content-wrapper font-light'>Reviews</div>
             </TabPanel>
         </Box>
     )
@@ -577,14 +577,14 @@ const ProductDetailTabContent = ({product}) => {
 const ProductInfoPortal = ({caption, items}) => {
     return (
         <div className="information-portal-wrapper grid grid-cols-1 gap-4">
-            <div className="information-caption">{caption}</div>
-            <div className="information-content grid grid-cols-1 gap-[6px]">
+            {/* <div className="information-caption">{caption}</div> */}
+            <div className="information-content grid grid-cols-1 gap-2">
                 {items.map((row, index) => (
-                    <div key={index} className="grid grid-cols-2 gap-2">
-                        <div className="information-properties pl-6 grid grid-cols-1">
+                    <div key={index} className="grid grid-cols-2 gap-4">
+                        <div className="information-properties grid grid-cols-1 text-lg">
                             <span key={index}>{row.property}</span>
                         </div>
-                        <div className="information-values pl-6 grid grid-cols-1 ">
+                        <div className="information-values grid grid-cols-1 text-lg font-light">
                             <span key={index}>{row.value}</span>
                         </div>
                     </div>
@@ -597,7 +597,7 @@ const ProductInfoPortal = ({caption, items}) => {
 const ProductDetailInfo = ({ product }) => {
   const { getLocalizedValue } = useLanguage()
   return (
-    <div className="product-detail-page-info-wrapper lg:py-12 pb-12">
+    <div className="product-detail-page-info-wrapper pb-12">
       <div className="product-detail-content">
         <div className="desktop-lg">
           <ProductDetailTabContent product={product} />
@@ -608,10 +608,14 @@ const ProductDetailInfo = ({ product }) => {
               <ProductDetailsTabContent product={product} />
             </AccordionItem>
             <AccordionItem index={1} title="Additional Information">
-              {getLocalizedValue(product.description)}
+                <div className="product-details-tab-content-wrapper">
+                    {getLocalizedValue(product.description)}
+                </div>
             </AccordionItem>
-            <AccordionItem index={2} title="Reviews">
-              Reviews
+            <AccordionItem index={2} title="Reviews" className="product-details-tab-content-wrapper">
+                <div className="product-details-tab-content-wrapper">
+                    Reviews
+                </div>
             </AccordionItem>
           </Accordion>
         </div>
@@ -723,7 +727,7 @@ const ProductMatchItems = ({productInput}) => {
     }, [currentLanguage, productInput])
     return (
         <div className="product-match-items-wrapper grid grid-cols-1">
-            <div className="product-match-caption w-full">Related products</div>
+            <div className="product-match-caption mx-auto font-light w-full lg:w-1/3 border-b-2 pb-2">Related products</div>
             {products.length > 0 ? (
                 <div className="product-match-items-content w-full">
                     <SliderComponent>
@@ -748,7 +752,7 @@ const ProductMatchItems = ({productInput}) => {
                     </SliderComponent>
                 </div>
             ) : (
-                <div className="w-full text-center">No matchig products</div>
+                <div className="w-full text-center text-lg font-light">No matchig products</div>
             )}
         </div>
     )
