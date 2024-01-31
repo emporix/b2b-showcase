@@ -16,8 +16,8 @@
 
 .header-mega_dropdown-content {
   /* display: none; */
-  @apply rounded-lg;
-  margin-top: 66px;
+  @apply rounded-xl mt-12;
+  /* margin-top: 66px; */
   height: 300px;
   position: absolute;
   width: 55%;
@@ -144,6 +144,14 @@ input.nosubmit {
 
 .mega_menu_dropbtn {
   @apply dropbtn flex pt-2 pr-2 md:pr-8 xl:pr-12 hover:text-manatee text-eerieBlack;
+}
+
+.mega_menu_dropbtn:last-of-type {
+  @apply !pr-0;
+
+}
+
+.mega_menu_dropbtn:last-of-type() {
 }
 
 .mega_content_bg {

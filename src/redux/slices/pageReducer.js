@@ -4,21 +4,26 @@ export const initialState = {
   menu: [
     {
       contentfulFieldName: 'catalogLabel',
-      title: 'Shop',
+      title: 'Katalog',
       items: [],
     },
+    // {
+    //   contentfulFieldName: 'brandLabel',
+    //   title: 'Brands',
+    //   items: [],
+    //   url: 'brand',
+    // },
     {
-      contentfulFieldName: 'brandLabel',
-      title: 'Brands',
+      title: 'Storefinder',
       items: [],
-      url: 'brand',
+      url: 'storefinder'
     },
-    {
-      contentfulFieldName: 'quickOrderLabel',
-      title: 'Quick Order',
-      items: [],
-      url: 'quick_order',
-    },
+    // {
+      //   contentfulFieldName: 'quickOrderLabel',
+      //   title: 'Quick Order',
+      //   items: [],
+    //   url: 'quick_order',
+    // },
     {
       contentfulFieldName: 'aboutUsLabel',
       title: 'About Us',
