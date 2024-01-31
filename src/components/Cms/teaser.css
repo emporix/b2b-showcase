@@ -2,13 +2,14 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 100px 200px;   
+    padding: 100px 0;   
 }
 
 .teaser__content {
+    width: 70%;
     @apply rounded-3xl;
     /* box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px, rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px; */
-    box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+    /* box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px; */
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -22,11 +23,10 @@
 }
 
 .teaser__headline {
-    @apply text-[36px] leading-[42px];
+    @apply text-2xl md:text-[36px] leading-[42px] pb-7 md:pb-10;
     width: 70%;
     font-weight: 600;
     color: #BA113C;
-    padding-bottom: 10px;
     text-align: center;
 }
 
