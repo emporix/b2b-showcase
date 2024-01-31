@@ -9,6 +9,8 @@ import { useCart } from 'context/cart-provider'
 import { border } from '@mui/system'
 import { PROCUREMENT_SYSTEM_URL } from 'constants/localstorage'
 import { useLanguage } from 'context/language-provider'
+import { useSelector } from 'react-redux'
+import { availabilityDataSelector } from 'redux/slices/availabilityReducer'
 
 const CartProductContent = ({children}) => {
     return <div className="cart-product-content">{children}</div>
@@ -18,10 +20,10 @@ export const CartProductCaption = () => {
 }
 export const CartProductImage = ({src, className}) => {
     return (
-        <div className="border border-quartz rounded p-4 w-[84px] h-[84px]">
+        <div className="rounded-xl w-full">
             <img
                 src={src}
-                className={'cart-product-image ' + (className ? className : '')}
+                className={'rounded-xl w-full' + (className ? className : '')}
                 alt="product from cart"
             />
         </div>
@@ -56,6 +58,9 @@ export const PriceExcludeVAT1 = ({price, caption}) => {
 export const CartMobileItem = ({ cartItem }) => {
   const { incrementCartItemQty, decrementCartItemQty, setCartItemQty } = useCart()
   const { getLocalizedValue } = useLanguage()
+  const availability = useSelector(availabilityDataSelector)
+
+  const inStock = availability["k" + cartItem.id].stockLevel
 
   return (
     <GridLayout className="gap-4">
@@ -129,18 +134,17 @@ export const CartMobileItem = ({ cartItem }) => {
                 </div>
             </div>
             <div className="cart-product-stock-wrapper flex">
+
         <span
-            className={
-                'cart-product-stock w-[80px] ' +
-                (cartItem.product.stock === 'Low'
-                    ? 'text-primary'
-                    : cartItem.product.stock === 'In'
-                        ? 'text-brightGreen '
-                        : 'text-primaryBlue')
-            }
-        >
-          {cartItem.product.stock} Stock
-        </span>
+              className={
+                  ' text-brightGreen font-inter font-bold cart-product-stock w-[80px] ' +
+                  (inStock
+                      ? 'text-limeGreen'
+                      : 'text-primaryBlue')
+              }
+          >
+            {inStock} Stock
+          </span>
         <span className="">Est. delivery time: 3 days</span>
       </div>
       <LayoutBetween className="items-center">
@@ -174,7 +178,7 @@ const CartProductImageAndQuantity = ({ cartItem }) => {
   const { incrementCartItemQty, decrementCartItemQty, setCartItemQty } = useCart()
   return (
     <div className="cart-product-image-and-quantity">
-      <GridLayout className="gap-11">
+      <GridLayout className="gap-4">
         <CartProductImage src={cartItem.product.src} />
         <Quantity
           value={cartItem.quantity}
@@ -202,26 +206,27 @@ export const CartProductImageAndReadOnlyQuantity = ({ cartItem }) => {
 
 export const CartProductBasicInfo = ({ cart }) => {
   const { getLocalizedValue } = useLanguage()
+  const availability = useSelector(availabilityDataSelector)
+  const inStock = availability["k" + cart.product.id].stockLevel
+
   return (
     <div className="cart-product-basic-info">
       <GridLayout className="gap-2">
         <div className="cart-product-name">{getLocalizedValue(cart.product.name)}</div>
-        <div className="cart-product-sku-wrapper">
+        {/* <div className="cart-product-sku-wrapper">
           SKU:&nbsp;
           <span className="cart-product-sku">{cart.product.code}</span>
-        </div>
+        </div> */}
         <div className="cart-product-stock-wrapper">
           <span
               className={
-                  'cart-product-stock ' +
-                  (cart.product.stock === 'Low'
-                      ? 'text-primary'
-                      : cart.product.stock === 'In'
-                          ? 'text-brightGreen '
-                          : 'text-primaryBlue')
+                  ' text-brightGreen font-inter font-bold cart-product-stock ' +
+                  (inStock
+                      ? 'text-limeGreen'
+                      : 'text-primaryBlue')
               }
           >
-            {cart.product.stock} Stock
+            {inStock} Stock
           </span>
           {/* <span className="cart-product-lead-time">Lead Time: 1 week</span> */}
         </div>
@@ -236,7 +241,7 @@ export const CartProductPriceExcludeVat = ({ price, currency }) => {
         <div className="cart-product-price-except-vat">
           <CurrencyBeforeValue value={price} currency={currency} />
         </div>
-        <div>exclu. VAT</div>
+        <div>Exclu. VAT</div>
       </GridLayout>
     </div>
   )
@@ -244,14 +249,16 @@ export const CartProductPriceExcludeVat = ({ price, currency }) => {
 export const CartProductInfo = ({ cartItem }) => {
   return (
     <div className="cart-product-info">
-      <GridLayout className="gap-[22px]">
+      <div className='gap-11 flex justify-between flex-col h-full'>
         <CartProductBasicInfo cart={cartItem} />
         {cartItem.price.currency && cartItem.itemTaxInfo && (
           <CartProductPriceExcludeVat
-            price={cartItem.itemTaxInfo[0].netValue}
-            currency={cartItem.price.currency}
+          price={cartItem.itemTaxInfo[0].netValue}
+          currency={cartItem.price.currency}
           />
-        )}
+          )}
+      </div>
+      <GridLayout className="gap-[22px]">
       </GridLayout>
     </div>
   )
@@ -259,7 +266,7 @@ export const CartProductInfo = ({ cartItem }) => {
 const CartProductItem = ({cartItem, onMouseEnter, onMouseLeave}) => {
     return (
         <div
-            className="cart-product-item p-2"
+            className="cart-product-item p-4 rounded-xl bg-aliceBlue standard_box_shadow flex gap-4"
             onMouseEnter={onMouseEnter}
             onMouseLeave={onMouseLeave}
         >
@@ -277,21 +284,20 @@ const CartProductWrapper = ({cartItem}) => {
     const {removeCartItem} = useCart()
 
     return (
+      <div
+          className="cart-product-wrapper"
+          onMouseEnter={() => setIsHover(true)}
+          onMouseLeave={() => setIsHover(false)}
+      >
         <div
-            className="cart-product-wrapper"
-            onMouseEnter={() => setIsHover(true)}
-            onMouseLeave={() => setIsHover(false)}
+            className="cart-product-wrapper-btn"
+            onClick={() => removeCartItem(cartItem)}
         >
-            {isHover && (
-                <div
-                    className="cart-product-wrapper-btn"
-                    onClick={() => removeCartItem(cartItem)}
-                >
-                    &#10006;
-                </div>
-            )}
-            <CartProductItem cartItem={cartItem}/>
+            &#10006;
         </div>
+            
+        <CartProductItem cartItem={cartItem}/>
+      </div>
     )
 }
 export const CartActionRow = ({children}) => {
@@ -371,7 +377,7 @@ const CartRequestQuote = () => {
 const CartGoCheckout = () => {
     return (
         <Link to={checkoutUrl()} className="w-full">
-            <button className="cart-go-checkout-btn py-[12px] px-[14px] bg-primary rounded text-eerieBlack">
+            <button className="cart-go-checkout-btn py-[12px] px-[14px] bg-primary rounded-xl !text-aliceBlue !text-lg">
                 GO TO CHECKOUT
             </button>
         </Link>
@@ -412,7 +418,7 @@ export const CartActionPanel = ({ action, showShipping }) => {
   const { cartAccount, shippingMethod } = useCart()
   const shippingCost = showShipping !== false ? getShippingCost(shippingMethod) : 0
   return (
-    <div className="cart-action-panel">
+    <div className="cart-action-panel standard_box_shadow">
       <GridLayout className="gap-4">
         <CartActionRow>
           <LayoutBetween>

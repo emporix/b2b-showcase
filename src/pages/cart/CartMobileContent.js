@@ -1,4 +1,4 @@
-import Reactd from 'react'
+import React from 'react'
 import { GridLayout } from '../../components/Utilities/common'
 import { CartProductCaption, CartMobileItem } from '../../components/Cart/cart'
 import './cart.css'

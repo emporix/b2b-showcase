@@ -3,7 +3,7 @@ import './cart.css'
 
 const CartActionItem = ({ title, children }) => {
   return (
-    <div className="flex gap-2 items-center cursor-pointer">
+    <div className="flex gap-2 items-center cursor-pointer text-eerieBlack text-sm/[20px] font-normal">
       {children}
       <span>{title}</span>
     </div>
@@ -17,7 +17,7 @@ const CartActionContent = ({ view }) => {
           width="16"
           height="16"
           viewBox="0 0 16 16"
-          fill="none"
+          fill="black"
           xmlns="http://www.w3.org/2000/svg"
         >
           <path
@@ -95,7 +95,7 @@ const CartActionBar = ({ view }) => {
   return (
     <div
       className={
-        'cart-action-bar-wrapper ' + (view ? 'lg:block hidden' : 'lg:hidden')
+        'cart-action-bar-wrapper px-4 py-3 bg-aliceBlue rounded-xl standard_box_shadow setting gap-6 flex justify-between font-inter text-base font-normal ' + (view ? 'lg:block hidden' : 'lg:hidden')
       }
     >
       <CartActionContent view={view} />

@@ -273,25 +273,27 @@ const Coupon = () => {
     return (
         <Grid container spacing={2} sx={{marginBottom: '1rem'}}>
             <Grid item xs={12} className={couponsLimitPerCart === discounts?.length && 'hidden'}>
+              <div className='p-4 bg-aliceBlue rounded-xl standard_box_shadow'>
                 <TextInput
                     label="Coupon"
                     value={code}
                     placeholder="Put coupon code here"
                     action={setCode}
-                />
+                    />
                 <div className="flex justify-between">
                     <Button title="Apply Coupon" onClick={redeemCode}>
                         Apply
                     </Button>
                     {rewardPoints > 0 && (
-                        <button
-                            className="font-bold cursor-pointer"
-                            onClick={openDialogAndFetchRedeemOptions}
-                        >
+                      <button
+                      className="font-bold cursor-pointer"
+                      onClick={openDialogAndFetchRedeemOptions}
+                      >
                             Get coupons for points: {JSON.stringify(rewardPoints)}
                         </button>
                     )}
                 </div>
+              </div>
             </Grid>
             {discounts && (
                 <Grid item xs={12}>
@@ -501,7 +503,7 @@ const CheckoutPage = () => {
                       <DesktopMDContainer>
                         <Coupon />
                         <LargePrimaryButton
-                          className="md:block hidden cta-button bg-yellow"
+                          className="md:block hidden cta-button standard_box_shadow disabled:bg-opacity-70 disabled:opacity-70 disabled:hover:!bg-aliceBlue"
                           title="GO TO PAYMENT"
                           disabled={addresses.length === 0 || shippingMethod == null}
                           onClick={handlePayment}
