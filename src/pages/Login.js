@@ -91,13 +91,11 @@ const Login = () => {
       </Snackbar>
       <GridLayout className="md:w-[540px] w-[95%] mx-auto h-[740px]">
         <Container className="w-full items-center text-center text-eerieBlack font-bold text-7xl ">
-          <Container className="mx-auto">
-            <Link to={homeUrl} className="flex">
+          <Container className="mx-auto flex">
               <Logo
                 size={'w-[78px] h-[86px] mr-5'}
                 text={'px-4 flex text-eerieBlack text-[48px]'}
               />
-            </Link>
           </Container>
         </Container>
         <GridLayout className="w-full bg-white p-12 rounded">
@@ -148,7 +146,7 @@ const Login = () => {
             </LayoutBetween>
             <Box className="w-full !pt-8">
               <button
-                className="w-full cta-button bg-yellow h-12"
+                className="w-full cta-button bg-yellow h-12 !text-white"
                 type="submit"
               >
                 {loading ? <CircularProgress color="secondary" /> : 'LOG IN'}
