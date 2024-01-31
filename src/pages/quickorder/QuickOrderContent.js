@@ -174,7 +174,7 @@ const DesktopContent = () => {
         setShowCart(true)
     }
     return (
-        <div className="desktop_only border border-quartz rounded p-6">
+        <div className="desktop_only">
             <Snackbar
                 open={openNotification}
                 autoHideDuration={3000}
@@ -191,7 +191,7 @@ const DesktopContent = () => {
         </span>
                 <span>Order list</span>
             </div>
-            <div className="pt-[58px]">
+            <div className="pt-[58px] border-b-darkGray border-b-[1px] pb-14">
                 <TableContainer>
                     <Table sx={{minWidth: 650}}>
                         <TableHead>
@@ -300,9 +300,9 @@ const DesktopContent = () => {
                         }}
                     />
                     <MediumPrimaryButton
-                        title={'Add'}
+                        title={'ADD'}
                         onClick={handleAddItem}
-                        className="w-auto cta-button bg-primary"
+                        className="w-auto cta-button bg-primary !text-aliceBlue"
                     />
                 </div>
             </div>
@@ -394,7 +394,7 @@ const MobileContent = () => {
 
 const QuickOrderContent = () => {
     return (
-        <div className="md:w-2/3">
+        <div className="md:w-2/3 standard_box_shadow bg-aliceBlue p-4 rounded-xl h-fit">
             <DesktopContent/>
             <MobileContent/>
         </div>

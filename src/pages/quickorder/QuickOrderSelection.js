@@ -61,7 +61,7 @@ const QuickOrderSelection = () => {
                     onChange={handleFileChange}
                 />
                 <LargePrimaryButton
-                    className="cta-button bg-primary"
+                    className="cta-button bg-primary !text-aliceBlue"
 
                     title="UPLOAD FILE"
                     onClick={() => {
@@ -74,7 +74,7 @@ const QuickOrderSelection = () => {
             </div>
             <div className="pt-6">
         <textarea
-            className="w-full h-[126px] p-4 border-quartz border rounded"
+            className="w-full h-[126px] p-4 standard_box_shadow bg-aliceBlue rounded-xl"
             placeholder="Text Area"
             value={productCodes}
             onChange={(e) => {
@@ -87,7 +87,7 @@ const QuickOrderSelection = () => {
             </div>
             <div className="pt-6">
                 <LargePrimaryButton
-                    className="cta-button bg-primary"
+                    className="cta-button bg-primary hover:!bg-primary hover:disabled:!bg-transparent disabled:!bg-transparent disabled:!text-gray "
 
                     title="ADD TO LIST"
                     disabled={!isValid}
