@@ -79,13 +79,13 @@ const Dektop_footer = () => {
                 </div>
                 <div className="flex">
                     <div className="flex pl-6 mt-[-2px] text-bgWhite">
-                        <div className="pl-6 mt-[-2px] text-bgWhite">
+                        <div className="pl-6 mt-[-2px] text-bgWhite flex items-center">
                             <AiFillInstagram size={30}/>
                         </div>
-                        <div className="pl-6 mt-[-2px] text-bgWhite">
+                        <div className="pl-6 mt-[-2px] text-bgWhite flex items-center">
                             <AiFillFacebook size={30} />
                         </div>
-                        <div className="pl-6 mt-[-2px] text-bgWhite">
+                        <div className="pl-6 mt-[-2px] text-bgWhite flex items-center">
                             <AiFillYoutube size={30}/>
                         </div>
                     </div>

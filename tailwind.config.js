@@ -4,6 +4,10 @@ module.exports = {
     content: ['./src/**/*.{js,jsx,ts,tsx}', './public/**/*.html'],
     theme: {
         extend: {
+            screens: {
+                'xs': '480px',
+                'sm': '640px'
+            },
             colors: {
                 white: '#FFFFFF',
                 black: '#000000',
@@ -37,6 +41,9 @@ module.exports = {
                 emporixGold: '#FFA800',
                 
             },
+            backgroundImage: {
+                bgGradient: "radial-gradient(73% 147%, #EADFDF 59%, #ECE2DF 100%), radial-gradient(91% 146%, rgba(255,255,255,0.50) 47%, rgba(0,0,0,0.50) 100%)"
+            }
         },
     },
     plugins: [require('tailwindcss-font-inter')],

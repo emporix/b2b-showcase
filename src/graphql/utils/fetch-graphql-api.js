@@ -9,7 +9,7 @@ export const getClient = () => {
     cache: new InMemoryCache(),
     link: ApolloLink.from([
       new HttpLink({
-        uri: process.env.REACT_APP_GQL_API_URL || "test"
+        uri: process.env.REACT_APP_GQL_API_URL || "http://localhost:4000/graphql"
       })
     ]),
     name: '',

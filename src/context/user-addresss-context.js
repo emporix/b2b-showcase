@@ -1,4 +1,4 @@
-import { createContext, useContext, useEffect, useState } from 'react'
+import React, { createContext, useContext, useEffect, useState } from 'react'
 import { fetchAddresses } from '../services/user/adresses'
 
 const UserAddressContext = createContext({})
