@@ -25,7 +25,7 @@ code {
 }
 
 .home_category {
-    @apply w-full text-eerieBlack py-4 sm:py-8 lg:py-12 xl:py-20 px-4 md:px-6 xl:px-36;
+    @apply w-full text-eerieBlack py-8 lg:py-12 xl:py-20 px-4 md:px-6 xl:px-36;
 }
 
 .desktop_only {
@@ -62,7 +62,7 @@ code {
 }
 
 .footer {
-    @apply w-full h-[358px] md:h-[342px];
+    @apply w-full h-fit;
 }
 
 .content-wrapper {
