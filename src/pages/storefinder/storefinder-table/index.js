@@ -33,7 +33,7 @@ const StoreFinderTable = () => {
                                         <div className='text-left w-full text-2xl text-eerieBlack font-light'>
                                             {store.name}
                                         </div>
-                                        <div class="">
+                                        <div>
                                             <div className='storefinderTable__table__item__key'>
                                                 {store.street ? store.street + " " + (store.houseNumber ? store.houseNumber : "") : ""}
                                             </div>

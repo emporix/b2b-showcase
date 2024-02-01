@@ -400,7 +400,7 @@ const Navbar = () => {
                   </Link>
               </div>
 
-              <div class="w-1/2 flex justify-end gap-8">
+              <div className="w-1/2 flex justify-end gap-8">
 
                 <div className="mobile_only">
                     <AiOutlineSearch size={20}/>

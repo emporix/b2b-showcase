@@ -8,7 +8,7 @@ const Subscribe = () => {
                     Abonnieren Sie unseren Newsletter und erhalten sie die neuesten Nachrichten und Angebote
                 </div>
 
-                <form className="w-fit md:w-1/2 xl:w-1/3 grid grid-cols-2 grid-rows-2 gap-y-6 md:gap-y-4">
+                <form className="w-2/3 md:w-1/2 xl:w-1/3 grid grid-cols-2 grid-rows-2 gap-y-6 md:gap-y-4">
                     <label className='mr-2 justify-self-start self-center'>Vorname:</label>
                     <input className="p-2 rounded-md border-[3px] border-black" type="text"/>
                     <label className='mr-2 justify-self-start self-center'>E-Mail:</label>

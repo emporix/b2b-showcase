@@ -361,7 +361,6 @@ const ProductListPagination = ({
                     <li
                         className="cursor-pointer"
                         onClick={() => {
-                            console.log('click')
                             if (pageNumber < totalPage) {
                                 changePageNumber(pageNumber + 1)
                             }

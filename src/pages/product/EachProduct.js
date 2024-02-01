@@ -16,7 +16,6 @@ const EachProduct = ({ item, available, rating, productCount }) => {
   
   const { isLoggedIn, userTenant } = useAuth()
   const { getLocalizedValue } = useLanguage()
-  console.log(available)
   const imageSrc = useMemo(() => {
     return item.media[0] === undefined ? '' : item.media[0]['url']
   }, [item])

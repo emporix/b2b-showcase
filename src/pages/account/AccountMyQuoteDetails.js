@@ -350,7 +350,7 @@ const AccountMyOrdersDetails = () => {
                                                     />
                                                 )}
                                             </div>
-                                            <div class="col-span-6 flex justify-center items-center">
+                                            <div className="col-span-6 flex justify-center items-center">
                                                 <div className="">
                                                     <div className="text-md font-bold">
                                                         {item.product.name.en}

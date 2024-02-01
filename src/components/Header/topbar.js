@@ -20,7 +20,6 @@ const MegaNav = ({ showMegaMenuContent, setShowMegaMenuContent }) => {
   const overMenuItem = (items) => {
     setSubMenuItems(items)
     if (!showMegaMenuContent) {
-      console.log(showMegaMenuContent)
       setShowMegaMenuContent(true)
     }
   }
