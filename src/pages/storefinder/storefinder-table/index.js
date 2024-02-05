@@ -17,9 +17,6 @@ const StoreFinderTable = () => {
 
     return (
         <div className='storefinderTable'>
-            {/* <div className='storefinderTable__table__header'>
-                Unsere Lokalen Verkaufspartner
-            </div> */}
             <div className='storefinderTable__table'>
                 <div className='storefinderTable__table__items gap-4'>
                     {dealers.map((store, index) => {

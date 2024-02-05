@@ -19,7 +19,6 @@ export const ContentPageMapping = {
 }
 
   export const getCmsFilteredPage = async (cmsFilteredPageId, type, language) => {
-    console.log(cmsFilteredPageId, type, language)
     const data = await fetchGraphqlApi(FilteredPageQuery, { cmsFilteredPageId, type, language })
     return data;
 }

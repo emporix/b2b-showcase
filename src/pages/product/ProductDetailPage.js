@@ -166,7 +166,6 @@ const ProductSkuAndReview = ({product}) => {
                         />
                         ({product.count})
                     </div>
-                    {/* <div className="lg:ml-4  product-all-reviews">Reviews</div> */}
                 </div>
             </div>
         </div>
@@ -577,7 +576,6 @@ const ProductDetailTabContent = ({product}) => {
 const ProductInfoPortal = ({caption, items}) => {
     return (
         <div className="information-portal-wrapper grid grid-cols-1 gap-4">
-            {/* <div className="information-caption">{caption}</div> */}
             <div className="information-content grid grid-cols-1 gap-2">
                 {items.map((row, index) => (
                     <div key={index} className="grid grid-cols-2 gap-4">
