@@ -1,14 +1,14 @@
 import {normalizeFsStructure} from "resolver/firstSpirit.resolver";
 import React from "react";
 
-// for headlines and text-banners
+// single item in a list (blog = weinipedia, events, manufacturer, manufacturing processes)
 
-const Pt_Headline = (props) => {
+const Card = (props) => {
     return (
         <h1 className="w-full h-fit bg-primary text-aliceBlue py-10 text-center text-[48px] md:text-[48px]  font-light md:leading-[64px] leading-[56px]">
-            {props?.props}
+            Card item
         </h1>
     );
 }
 
-export default Pt_Headline
+export default Card;

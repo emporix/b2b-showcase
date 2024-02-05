@@ -2,9 +2,9 @@ import React from 'react';
 import { useParams } from 'react-router-dom';
 import './teaser.css';
 
-// for content like teasers or simple content with with title, text and image (manufacturer, manufacturer process)
+// for text content with title, text and image (manufacturer, manufacturer process)
 
-const Teaser = (props) => {
+const Additional_Text = (props) => {
     const { productId } = useParams();
     const content = props.props.data
     const headline = content?.st_headline;
@@ -38,4 +38,4 @@ const Teaser = (props) => {
     )
 }
 
-export default Teaser
+export default Additional_Text
