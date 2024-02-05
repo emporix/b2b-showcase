@@ -3,7 +3,7 @@ import { useParams } from 'react-router-dom';
 import './teaser.css';
 
 const Teaser = (props) => {
-    const { maincategory, subcategory, category } = useParams();
+    const { productId } = useParams();
     const content = props.props.data
     const headline = content?.st_headline;
     const text = content?.st_text;
@@ -18,7 +18,7 @@ const Teaser = (props) => {
              } : null}>
             <div
                 // className="teaser__content">
-                className={"teaser__content " + (!maincategory && !subcategory && !category ? 'hp_teaser_box_shadow' : 'standard_box_shadow')}>
+                className={"teaser__content " + (!productId ? 'hp_teaser_box_shadow' : 'standard_box_shadow')}>
                 {headline ? (
                     <div className="teaser__headline">
                         {headline}

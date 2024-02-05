@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react'
 import Topbar from 'components/Header/topbar'
-import Footer from 'components/Footer'
 import Drawer from 'components/Utilities/drawer/drawer'
 import Cart from 'components/Cart/cart'
 import LayoutContext from './context'
@@ -11,6 +10,8 @@ import { GetAvailability } from 'redux/slices/availabilityReducer'
 import InvalidTenant from './InvalidTenant'
 import { useAuth } from 'context/auth-provider'
 import { useCart } from 'context/cart-provider'
+import Content from './home/Content'
+import { CMSFilterType, ContentPageMapping } from 'services/content/filteredPage.service'
 
 const Layout = ({ children, title }) => {
   const { accesstToken, userTenant } = useAuth()
@@ -39,7 +40,7 @@ const Layout = ({ children, title }) => {
               <Cart />
             </Drawer>
             {children}
-            <Footer />
+            <Content type={CMSFilterType.NAME} page={ContentPageMapping.footer} />
           </GridLayout>
         </LayoutContext.Provider>
       ) : (

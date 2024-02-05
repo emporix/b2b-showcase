@@ -4,8 +4,7 @@ import FsGenericComponent from 'resolver/firstSpirit.resolver'
 import { getCmsFilteredPage } from 'services/content/filteredPage.service'
 import { useLanguage } from '../../context/language-provider'
 
-
-const Content = ({type, page}) => {
+const Content = ({type, page, classList}) => {
 	const [ content, setContent ] = useState([])
 	const { currentLanguage } = useLanguage()
 	const getData = async (currentLang) => {
@@ -17,10 +16,8 @@ const Content = ({type, page}) => {
 		getData(currentLanguage);
 	}, [currentLanguage])
 
-
-
     return (
-        <div className="content">
+        <div className={"content " + classList}>
             <FsGenericComponent props={content} />
         </div>
     )
