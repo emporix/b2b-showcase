@@ -13,6 +13,7 @@ import { formatPrice } from 'helpers/price'
 import { useLanguage } from 'context/language-provider'
 
 const EachProduct = ({ item, available, rating, productCount }) => {
+  
   const { isLoggedIn, userTenant } = useAuth()
   const { getLocalizedValue } = useLanguage()
   const imageSrc = useMemo(() => {
@@ -28,66 +29,59 @@ const EachProduct = ({ item, available, rating, productCount }) => {
         navigate(`/${userTenant}/product/details/${item.id}`)
     }, [userTenant, item.id])
     return (
-        <div className="p-4" onClick={handleProductDetail}>
-            <div className="w-full h-5  justify-between hidden lg:flex">
+        <div className="font-inter p-4 h-full flex flex-col gap-4 justify-between cursor-pointer" onClick={handleProductDetail}>
+          <div className='flex flex-col gap-4'>
+            <div className="w-full h-5 justify-between hidden lg:flex">
                 {item.productType !== 'PARENT_VARIANT' && (
                     <div
                         className={
-                            'text-limeGreen font-inter text-[14px]/[20px] font-medium float-right lg:float-none'
+                            'text-limeGreen font-inter font-medium float-right lg:float-none'
                         }
                     >
-                        {available ? 'In Stock' : 'Out Of Stock'}
+                        {available > 0 ? 'In Stock' : 'Out Of Stock'}
                     </div>
                 )}
-                <div className="flex h-5 float-right lg:float-none">
+                <div className="flex float-right lg:float-none">
                     <ReactStars size={16} value={rating} color2={'#FBB13C'}/>(
                     {productCount})
                 </div>
             </div>
 
             <div className=" block float-right lg:hidden">
-                <div className=" flex h-5  float-right">
+                <div className=" flex float-right">
                     <ReactStars size={16} value={rating} color2={'#FBB13C'}/>(
                     {productCount})
                 </div>
                 <br/>
                 <div
                     className={
-                        'text-limeGreen font-inter text-[14px]/[20px] font-medium float-right lg:float-none'
+                        'text-limeGreen font-inter font-medium float-right lg:float-none'
                     }
                 >
-                    {available ? 'In Stock' : 'Out Of Stock'}
+                    {available > 0 ? 'In Stock' : 'Out Of Stock'}
                 </div>
             </div>
-
-      <div className="pt-10 lg:w-[200px] lg:h-[260px] w-[100px] h-[140px] md:w-[150px] md:h-[200px] items-center mx-auto ">
-        <img src={trimImage(`${imageSrc}`)} className="mx-auto h-full" />
-      </div>
-      <div className="mt-2 lg:mt-9 w-full font-inter">
-          <div className="text-left text-[14px]/[20px] font-normal leading-xs text-manatee">
-          {item.code}
-        </div>
-        <div className="mt-2 text-left max-w-[240px] min-h-[60px] lg:h-12 text-[16px]/[24px] text-eerieBlack font-medium">
-          {getLocalizedValue(item.name)}
-        </div>
-      </div>
-      {item.productType !== 'PARENT_VARIANT' && (
+            <div className="items-center mx-auto ">
+              <img src={imageSrc} alt="" className="w-full h-fit rounded-xl" />
+            </div>
+            <div className="text-left w-full text-2xl text-eerieBlack font-light">
+              {getLocalizedValue(item.name)}
+            </div>
+          </div>
+              {item.productType !== 'PARENT_VARIANT' && (
         <div
           className={
             isLoggedIn
-              ? 'w-full h-[56px] pt-2'
-              : 'w-full pt-2 text-left h-[56px] font-bold'
+            ? 'flex flex-col w-full gap-4'
+            : 'flex flex-col w-full gap-4 text-left font-bold'
           }
         >
           {isLoggedIn ? (
             <>
-              <div className="text-[14px]/[20px] font-normal text-eerieBlack w-[200px] text-left">
+              <div className="text-xl flex items-center gap-2">
                 {price !== null ? (
                   <>
                     {isLoggedIn ? 'Your negotiated price' : 'List Price'}
-                    <CurrencyBeforeComponent>
-                      <del>{price} </del>
-                    </CurrencyBeforeComponent>
                   </>
                 ) : (
                   <span className="text-xs text-primaryBlue font-bold">
@@ -98,7 +92,6 @@ const EachProduct = ({ item, available, rating, productCount }) => {
                             <div className="flex">
                                 {price !== null ? (
                                     <>
-                                        {/* <img src="/products/pencil.png" className="w-4 h-4 mt-1" /> */}
                                         <div className="text-[22px]/[22px] lg:text-xl leading-[24px] font-bold ml-1">
                                             <div className='flex flex-col'>
                                                 <CurrencyBeforeValue value={price}/>
@@ -112,11 +105,11 @@ const EachProduct = ({ item, available, rating, productCount }) => {
                             </div>
                         </>
                     ) : (
-                        <div className="text-base pt-4">
+                        <div className="text-xl flex items-center gap-2">
                             {price !== null ? (
                                 <>
                                     <CurrencyBeforeValue value={price}/>
-                                    <span className="text-xs font-normal text-manatee">
+                                    <span className="text-sm font-normal text-manatee">
                     (Incl. VAT)
                   </span>
                                 </>

@@ -51,6 +51,8 @@ const AlgoliaSearchbar = () => {
     localStorage.getItem(SEARCH_KEY)
   )
   const index = client.initIndex(localStorage.getItem(INDEX_NAME))
+
+  console.log(index)
   const [searchResults, setSearchResults] = useState([])
   const navigate = useNavigate()
   const searchBar = useRef()
@@ -82,6 +84,7 @@ const AlgoliaSearchbar = () => {
   }
 
   const ProductDisplay = ({ hit }) => {
+    console.log(hit.image)
     return (
       <div
         className="flex flex-initial p-2 cursor-pointer hover:bg-gray-50 rounded"
@@ -107,7 +110,7 @@ const AlgoliaSearchbar = () => {
       <form ref={searchBar} className="nosubmit">
         <input
           id="search-input"
-          className="nosubmit lg:w-[250px] xl:w-[360px] relative !bg-transparent"
+          className="nosubmit lg:w-[250px] xl:w-[360px] relative !bg-aliceBlue"
           type="search"
           placeholder={fields.searchHelpLabel}
           onChange={handleSearch}

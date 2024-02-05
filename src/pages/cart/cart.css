@@ -2,20 +2,24 @@
   @apply w-full md:pt-60 pt-24 md:px-24 px-[16.5px] md:pb-24 pb-12 font-inter;
 }
 .cart-page-content {
-  @apply mx-auto grid grid-cols-1 md:gap-8 gap-8;
+  @apply mx-auto grid grid-cols-1 md:gap-4 gap-4;
 }
 .cart-action-content {
   @apply gap-6 text-[14px] leading-[18px] font-semibold text-dodgerBlue;
 }
 .cart-head-item {
-  @apply font-inter !font-bold !text-[14px] !leading-[20px];
+  @apply font-inter !font-semibold !text-eerieBlack !text-base !leading-[20px];
 }
 .cart-row-item {
-  @apply !py-6 !border-none;
+  @apply !py-6;
+}
+
+.cart-row-item div {
+  @apply !text-left !text-base;
 }
 
 .quantity-wrapper {
-  @apply w-[68px];
+  @apply w-fit;
 }
 .cart-product-info-wrapper {
   @apply !w-[356px];
@@ -29,10 +33,9 @@
 }
 
 .cart-product-wrapper-btn {
+  @apply top-4 right-4;
   position: absolute;
   cursor: pointer;
-  top: 0;
-  right: 0;
   width: 20px;
   height: 20px;
   background-color: #fe6964;

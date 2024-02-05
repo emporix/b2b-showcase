@@ -97,7 +97,7 @@ const Category = ({item}) => {
 const FilterListPanel = ({filterItems, handleSideFilterContent}) => {
     return (
         <div>
-            <div className="flex justify-between">
+            <div className="flex justify-between flex-col xl:flex-row">
                 <div className="flex">
                     <img
                         src="/filter_alt.svg"
@@ -107,7 +107,7 @@ const FilterListPanel = ({filterItems, handleSideFilterContent}) => {
                     <span className="mr-2">Filters</span>({filterItems.length})
                 </div>
                 <div>
-                    <a className="font-inter font-semibold font-[14px] text-manatee">
+                    <a className="font-inter font-semibold font-[14px] text-manatee text-right">
                         Clear Filters
                     </a>
                 </div>

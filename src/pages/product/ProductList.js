@@ -41,14 +41,14 @@ const ProductList = ({ handleSideFilterContent, filterItems }) => {
 
   return (
     <>
-      <div className="flex lg:space-x-12">
-        <div className="flex-auto lg:w-[23%] hidden lg:block bg-aliceBlue p-6 rounded-lg" style={productListBoxShadow} >
+      <div className="flex gap-4 xl:gap-12">
+        <div className="flex-auto lg:w-[23%] hidden lg:block bg-aliceBlue p-4 rounded-xl" style={productListBoxShadow} >
           <ProductListFilterPanel
             handleSideFilterContent={handleSideFilterContent}
             filterItems={filterItems}
             />
         </div>
-        <div className="flex-auto lg:w-[77%] w-full">
+        <div className="flex-auto lg:w-[77%] w-full gap-y-4 xl:gap-y-12">
           <ProductListContent />
         </div>
       </div>

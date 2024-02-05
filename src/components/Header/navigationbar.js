@@ -56,7 +56,7 @@ const Navbar = () => {
     const ParentBoard = () => {
         return (
             <>
-                <div className="pt-12 items-center ">
+                <div className="pt-12 pb-8 items-center ">
                     {user ? (
                         <div
                             className="h-[75px] border-y w-full justify-between flex text-gray text-center items-center font-inter ">
@@ -69,9 +69,9 @@ const Navbar = () => {
                             </div>
                         </div>
                     ) : (
-                        <div className="bg-tinBlue w-full h-12 text-sm  text-center items-center text-white">
+                        <div className="w-full h-12 text-sm text-center items-center text-white">
                             <Link to={loginUrl()}>
-                                <LargePrimaryButton className="" title="LOGIN | REGISTER"/>
+                                <LargePrimaryButton className="!bg-primary" title="Login | Register"/>
                             </Link>
                         </div>
                     )}
@@ -85,7 +85,8 @@ const Navbar = () => {
                 </div>
                 {user && (
                     <div
-                        className="w-full h-[59px] border-y flex justify-between items-center mt-6 font-inter text-base">
+                        // className="w-full h-[59px] border-y flex justify-between items-center mt-6 font-inter text-base">
+                        className=" flex justify-between py-6 border-b last:border-b-0 text-xl">
                         Site
                         <select className="text-tinBlue appearance-none">
                             {sites
@@ -101,7 +102,9 @@ const Navbar = () => {
                         </select>
                     </div>
                 )}
-                <div className="w-full h-[59px] border-y flex justify-between items-center mt-6 font-inter text-base">
+                <div 
+                    // className="w-full h-[59px] border-y flex justify-between items-center mt-6 font-inter text-base">
+                    className=" flex justify-between py-6 border-b last:border-b-0 text-xl">
                     Language
                     <select className="text-tinBlue appearance-none">
                         <option value="Engish">English</option>
@@ -109,7 +112,9 @@ const Navbar = () => {
                         <option value="French">French</option>
                     </select>
                 </div>
-                <div className="w-full h-[59px] border-y flex justify-between items-center">
+                <div 
+                    // className="w-full h-[59px] border-y flex justify-between items-center">
+                    className=" flex justify-between py-6 border-b last:border-b-0 text-xl">
                     Currency
                     <select
                         value={activeCurrency.code !== undefined ? activeCurrency.code : ''}
@@ -136,11 +141,16 @@ const Navbar = () => {
         return (
             <li
                 key={item.title}
-                className=" flex justify-between py-6 border-b last:border-b-0 text-2xl hover:text-slate-400"
+                className=" flex justify-between py-6 border-b text-xl"
                 onClick={() => parentMenuClicked(item.title, item.items)}
             >
-                {item.title}
-                <HiChevronRight size={20}
+              { item.contentfulFieldName ? 
+              
+                (fields[item.contentfulFieldName])
+                :
+                (item.title)
+              }
+                <HiChevronRight size={18}
                                 className={item.items.length ? 'h-8 w-8' : 'hidden'}
                 />
             </li>
@@ -155,7 +165,7 @@ const Navbar = () => {
                     <Link to={addTenantToUrl(item.url)}>
                         <li
                             key={item.title}
-                            className=" flex justify-between pb-4  text-base text-slate-400"
+                            className=" flex justify-between items-center pb-4  text-base text-eerieBlack"
                             onClick={() => parentMenuClicked(item.title, item.items)}
                         >
                             {item.title}
@@ -164,7 +174,7 @@ const Navbar = () => {
                 ) : (
                     <li
                         key={item.title}
-                        className=" flex justify-between pb-4  text-base text-slate-400"
+                        className=" flex justify-between items-center pb-4 text-base text-eerieBlack"
                         onClick={() => parentMenuClicked(item.title, item.items)}
                     >
                         {item.title}
@@ -179,14 +189,14 @@ const Navbar = () => {
         return (
             <>
                 <div
-                    className="w-full flex text-center items-center border-b pt-[50px] pb-6 text-4"
+                    className="w-full h-fit flex text-center items-center mt-12 pb-6 text-sm"
                     onClick={() => setDisplaySubItems(false)}
                 >
-                    <HiChevronLeft size={20} className="h-8 w-8 pr-1"/>
+                    <HiChevronLeft size={20} className="h-12 w-8 pr-1"/>
                     Back
                 </div>
-                <div className="pt-6 text-left text-black text-xl">{title}</div>
-                <div className="pt-12 px-6">
+                <div className=" flex justify-between py-6 border-b text-xl">{title}</div>
+                <div className=" flex justify-between py-6 text-xl px-12">
                     <ul>
                         {subMenuItems.map((item, index) => (
                             <SubMenu key={index} item={item}/>
@@ -244,10 +254,10 @@ const Navbar = () => {
   return (
     <header className="header">
       {/* Dektop language and currency selection */}
-      <div className="desktop_only_flex font-inter text-sm text-white">
+      <div className="desktop_only_flex font-inter text-sm text-white items-center">
         <div className='flex items-center'>
           <span className='world-icon'></span>
-          {fields.siteLabel}:
+          <span className='hidden lg:inline'>{fields.siteLabel}:</span>
           <select
             className="bg-primary w-38 mr-[22px]"
             onChange={handleSiteChange}
@@ -266,7 +276,7 @@ const Navbar = () => {
           </select>
         </div>
         <div>
-          {fields.languageLabel}:
+          <span className='hidden lg:inline'>{fields.languageLabel}:</span>
           <select
             className="bg-primary"
             onChange={(event) => setLanguage(event.target.value)}
@@ -284,7 +294,7 @@ const Navbar = () => {
           </select>
         </div>
         <div className="ml-[22px]">
-          {fields.currencyLabel}:
+              <span className='hidden lg:inline'>{fields.currencyLabel}:</span>
           <select
             id="currency-select"
             value={activeCurrency.code !== undefined ? activeCurrency.code : ''}
@@ -307,14 +317,14 @@ const Navbar = () => {
       {/* Dektop navigation selection */}
       <div className="desktop_only_flex font-inter font-normal text-sm text-white">
         {!user ? (
-          <ul className="flex">
-            <li className="px-4 flex">
+          <ul className="flex items-center">
+            <li className="px-4 flex cursor-pointer" onClick={handleOpenCart}>
               {cartTotal !== 0 ? (
                 <Badge badgeContent={cartTotal} color="error">
-                  <AiOutlineShoppingCart size={20} onClick={handleOpenCart} />
+                  <AiOutlineShoppingCart size={20}  />
                 </Badge>
               ) : (
-                <AiOutlineShoppingCart size={20} onClick={handleOpenCart} />
+                <AiOutlineShoppingCart size={20} />
               )}
               <div id="cart-value" className="pl-3 text-white flex">
                 <CurrencyBeforeValue value={cartTotalPrice} />
@@ -334,7 +344,7 @@ const Navbar = () => {
           </ul>
         ) : (
           <ul className="flex">
-            <li className="px-4">
+            <li className="pl-4">
               <AiOutlineMail size={20} />
             </li>
             |
@@ -373,7 +383,7 @@ const Navbar = () => {
                             </div>
                         </li>
                         |
-                        <li className="px-4 flex">
+                        <li className="pl-4 flex">
                             <AccountMenu name={user.username}/>
                         </li>
                     </ul>
@@ -381,42 +391,51 @@ const Navbar = () => {
             </div>
 
             {/* mobile menu selection */}
-            <div className="mobile_only_flex pl-[30.25px]  text-white cursor-pointer">
-                {!open ? <AiOutlineMenu size={27.5} onClick={handleNavOpen}/> : null}
-                {/* absolut mobile navigation */}
-                <div
-                    className={
-                        !open
-                            ? 'hidden'
-                            : ' text-black absolute top-0 left-0 w-full  h-screen bg-white px-6 py-12  text-center font-medium overflow-y-auto'
-                    }
-                >
-                    <div className="h-10 justify-between flex">
-                        <div className="flex">
-                            <Link to={loginUrl()} className="flex">
-                                <img src="/img/n11logo.png" className="w-[37px]"></img>
-                                <div className="px-4 text-[25px] font-medium items-center">
-                                    <span>{fields.companyNameLabel}</span>
-                                </div>
-                            </Link>
-                        </div>
-                        <div className="flex text-center pt-2" onClick={handleNavOpen}>
-                            <span className="pr-4">Close</span>
-                            <AiOutlineClose size={25}/>
-                        </div>
-                    </div>
-                    {!displaySubItems ? <ParentBoard/> : <SubBoard/>}
+            <div className='flex md:hidden items-center justify-between w-full pl-4 pr-8 py-2 bg-aliceBlue'>
+
+
+              <div className="mobile_only_flex w-2/5 sm:w-1/3">
+                  <Link to={homeUrl()} className="flex">
+                      <img src="/img/n11logo.png"/>
+                  </Link>
+              </div>
+
+              <div className="w-1/2 flex justify-end gap-8">
+
+                <div className="mobile_only">
+                    <AiOutlineSearch size={20}/>
                 </div>
-            </div>
-
-            <div className="mobile_only_flex text-white">
-                <Link to={homeUrl()} className="flex">
-                    <img src="/img/n11logoblack.png"/>
-                </Link>
-            </div>
-
-            <div className="mobile_only text-white pr-[30px]">
-                <AiOutlineSearch size={20}/>
+                <div className="mobile_only_flex cursor-pointer">
+                    {!open ? <AiOutlineMenu size={20} onClick={handleNavOpen}/> : null}
+                    {/* absolut mobile navigation */}
+                    <div
+                        className={
+                          !open
+                          ? 'hidden'
+                          : ' text-black absolute top-0 left-0 w-full  h-screen bg-white p-4 text-center font-medium overflow-y-auto'
+                        }
+                        >
+                        <div className="h-10 justify-between flex">
+                            <div className="flex">
+                                <Link to={loginUrl()} className="flex">
+                                    <img src="/img/n11logo.png" className="" alt=""></img>
+                                    {/* <div className="px-4 text-[25px] font-medium items-center">
+                                        <span>{fields.companyNameLabel}</span>
+                                    </div> */}
+                                </Link>
+                            </div>
+                            <div className="flex text-center items-center" onClick={handleNavOpen}>
+                                <span className="pr-4">Close</span>
+                                <span className='text-xl'>
+                                  &#10006;
+                                </span>
+                                {/* <AiOutlineClose size={25}/> */}
+                            </div>
+                        </div>
+                        {!displaySubItems ? <ParentBoard/> : <SubBoard/>}
+                    </div>
+                </div>
+              </div>
             </div>
         </header>
     )

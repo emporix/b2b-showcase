@@ -5,8 +5,11 @@
   "dependencies": {
     "@algolia/autocomplete-js": "^1.7.4",
     "@apollo/client": "^3.7.17",
+    "@emotion/react": "^11.11.3",
+    "@emotion/styled": "^11.11.0",
     "@material-ui/core": "^4.12.4",
-    "@mui/material": "^5.10.4",
+    "@mui/icons-material": "^5.15.4",
+    "@mui/material": "^5.15.4",
     "@reduxjs/toolkit": "^1.8.5",
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^13.3.0",

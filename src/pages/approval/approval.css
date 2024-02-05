@@ -50,7 +50,7 @@
   @apply w-full md:pt-60 pt-24 md:px-24 px-[16.5px] md:pb-24 pb-12 font-inter;
 }
 .checkout-page-content {
-  @apply max-w-screen-xl grid grid-cols-1 md:gap-12 gap-6;
+  @apply grid grid-cols-1 md:gap-12 gap-6;
 }
 .checkout-content-wrapper {
   @apply xl:w-[calc((100%-48px)*0.68)] lg:w-[calc((100%-48px)*0.6)] w-full;

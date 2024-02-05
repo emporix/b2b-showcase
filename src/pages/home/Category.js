@@ -4,16 +4,17 @@ import {addTenantToUrl} from '../../services/service.config'
 
 const EachCategory = (props) => {
     return (
-        <>
-        
-            <img src={props.src} alt="" className="relative w-fit aspect-square object-cover home_category_shadow rounded-2xl"/>
-            <div className="pt-6 font-inter font-semibold text-[20px] leading-[32px]">
-                {props.title}
+        <div className='bg-aliceBlue p-8 md:p-4 flex flex-col md:flex-row lg:flex-col gap-4 md:gap-8 standard_box_shadow rounded-xl'>
+            <img src={props.src} alt="" className="relative w-fit md:w-1/3 lg:w-fit aspect-square object-cover rounded-xl"/>
+            <div className="md:flex md:flex-col md:gap-8">
+                <div className="font-inter font-semibold text-2xl leading-[32px]">
+                    {props.title}
+                </div>
+                <div className="font-normal text-lg">
+                    {props.content}
+                </div>
             </div>
-            <div className="pt-[8px] font-normal text-base">
-                {props.content}
-            </div>
-        </>
+        </div>
     )
 }
 
@@ -41,7 +42,7 @@ const Category = () => {
                 <Link to={addTenantToUrl(`product/wein/rose`)}>
                     <EachCategory
                         src="/category/white-wine-category-image.png"
-                        title="Rosewein"
+                        title="Roséwein"
                         content="Tellus ornare at consequat ipsum,non lobortis"
                     />
                 </Link>

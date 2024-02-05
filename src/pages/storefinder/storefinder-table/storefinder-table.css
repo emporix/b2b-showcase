@@ -1,5 +1,5 @@
 .storefinderTable {
-    margin-top: 16rem;
+    @apply my-8 md:my-12 mx-4 font-inter xl:mx-24;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -7,17 +7,14 @@
 }
 
 .storefinderTable__table {
-    margin: 0 10rem;
+    @apply w-full sm:w-3/4 md:w-full;
     display: flex;
     justify-content: center;
     align-items: center;
 }
 
 .storefinderTable__table__items {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    align-items: center;
+    @apply w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-8 place-items-center;
 }
 
 .storefinderTable__table__header {
@@ -25,40 +22,14 @@
 }
 
 .storefinderTable__table__item {
-    width: 25%;
-    background-color: #ffffff;
-    border-radius: 10px;
-    padding: 1rem;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    margin: 1rem;
+    @apply flex flex-col p-4 gap-2;
+    width: 100%;
 }
 
-@media screen and (max-width: 1400px) {
-    .storefinderTable__table {
-        margin: 0 4rem;
-    }
-
-    .storefinderTable__table__item {
-        width: 33%;
-    }
+.storefinderTable__table__item__key {
+    text-align: end;
 }
 
-@media screen and (max-width: 1024px) {
-    .storefinderTable__table {
-        margin: 0 2rem;
-    }
-
-    .storefinderTable__table__item {
-        width: 50%;
-    }
-}
-
-@media screen and (max-width: 740px) {
-    .storefinderTable__table {
-        margin: 0 1rem;
-    }
-
-    .storefinderTable__table__item {
-        width: 100%;
-    }
+.storefinderTable__table__item__key a {
+    @apply text-primary;
 }

@@ -70,7 +70,7 @@ const ShippingContent = () => {
 
   return (
     <>
-      <GridLayout className="gap-10 border rounded border-quartz p-6">
+      <GridLayout className="gap-10 rounded-xl p-6 bg-aliceBlue standard_box_shadow">
         <GridLayout className="gap-4">
           <DesktopMDContainer>
             <LayoutBetween className="items-center">
@@ -116,7 +116,7 @@ const ShippingContent = () => {
         </GridLayout>
       </GridLayout>
 
-      <GridLayout className="gap-10 border rounded border-quartz p-6">
+      <GridLayout className="gap-10 rounded-xl p-6 bg-aliceBlue standard_box_shadow">
         <GridLayout className="gap-6">
           <Heading3>Shipping Method</Heading3>
           <MobileMDContainer>
@@ -169,7 +169,7 @@ const PaymentContent = ({cart}) => {
 
   return (
     <>
-      <GridLayout className="payment-method-wrapper gap-6">
+      <GridLayout className="payment-method-wrapper gap-6 bg-aliceBlue standard_box_shadow">
         <TextBold1>Payment Methods</TextBold1>
         <RadioGroup active="radio1">
           <GridLayout className="gap-4 border border-quartz rounded p-6">

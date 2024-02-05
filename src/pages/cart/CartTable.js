@@ -36,32 +36,32 @@ const CartTable = ({ cartList, classname }) => {
     useCart()
   return (
     <TableContainer className={classname}>
-    <div className="shopping-cart_table-title">your products</div>
+    {/* <div className="shopping-cart_table-title">Your products</div> */}
       <Table sx={{ minWidth: 650 }}>
         <TableHead>
           <TableRow className="!py-6">
             <TableCell align="left" className="cart-head-item">
               Product
             </TableCell>
-            <TableCell align="center" className="cart-head-item">
+            <TableCell align="left" className="cart-head-item">
               Price
             </TableCell>
             <TableCell align="left" className="cart-head-item">
               Quantity
             </TableCell>
-            <TableCell align="center" className="cart-head-item">
+            <TableCell align="left" className="cart-head-item">
               Subtotal
             </TableCell>
-            <TableCell align="center" className="cart-head-item">
+            <TableCell align="left" className="cart-head-item">
               Discount
             </TableCell>
-            <TableCell align="center" className="cart-head-item">
+            <TableCell align="left" className="cart-head-item">
               VAT
             </TableCell>
-            <TableCell align="center" className="cart-head-item">
+            <TableCell align="left" className="cart-head-item">
               Total Price
             </TableCell>
-            <TableCell align="center" className="cart-head-item"></TableCell>
+            <TableCell align="left" className="cart-head-item"></TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
@@ -73,7 +73,7 @@ const CartTable = ({ cartList, classname }) => {
               <TableCell sx={{ width: '356px' }}>
                 <CartProductInfo cart={cartItem} />
               </TableCell>
-              <TableCell className="cart-row-item">
+              <TableCell className="cart-row-item" align='left'>
                 <PriceExcludeVAT
                   price={cartItem.product.price.effectiveAmount}
                 />
@@ -118,12 +118,12 @@ const CartTable = ({ cartList, classname }) => {
               </TableCell>
 
               <TableCell className="cart-row-item">
-                <span
-                  onClick={() => removeCartItem(cartItem)}
-                  className="cursor-pointer"
+                <div
+                className="cart-product-wrapper-btn !top-0 !right-0 relative"
+                onClick={() => removeCartItem(cartItem)}
                 >
-                  &#10060;
-                </span>
+                  &#10006;
+                </div>
               </TableCell>
             </TableRow>
           ))}

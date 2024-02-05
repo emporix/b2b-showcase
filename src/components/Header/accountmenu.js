@@ -34,7 +34,7 @@ export default function AccountMenu(props) {
                 <HiChevronDown size={20} className="-mr-1 ml-2 h-5 w-5" aria-hidden="true" />
             </button>
 
-                <div className={`${isOpen ? " opacity-100" : "invisible opacity-0"} origin-top-right absolute bg-g right-0 mt-2 w-56 rounded-md shadow-lg bg-white ring-black ring-opacity-5 focus:outline-none transition-opacity duration-600`}>
+                <div className={`${isOpen ? " opacity-100" : "invisible opacity-0"} origin-top-right absolute bg-g right-0 w-56 rounded-md shadow-lg bg-white ring-black ring-opacity-5 focus:outline-none transition-opacity duration-600`}>
                     <div className="py-1">
                         <NavLink
                             to={`/${userTenant}/my-account`}

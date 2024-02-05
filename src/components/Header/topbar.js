@@ -19,7 +19,9 @@ const MegaNav = ({ showMegaMenuContent, setShowMegaMenuContent }) => {
   const onShowMegaMenu = () => setShowMegaMenuContent(true)
   const overMenuItem = (items) => {
     setSubMenuItems(items)
-    if (!showMegaMenuContent) setShowMegaMenuContent(true)
+    if (!showMegaMenuContent) {
+      setShowMegaMenuContent(true)
+    }
   }
   const hideMegaMenuContent = () => {
     setShowMegaMenuContent(false)
@@ -38,11 +40,16 @@ const MegaNav = ({ showMegaMenuContent, setShowMegaMenuContent }) => {
         <button
           key={index}
           className="mega_menu_dropbtn"
-          onMouseOver={() =>
+          onMouseOver={() => {
             item.items.length !== 0
-              ? overMenuItem(item.items)
-              : hideMegaMenuContent()
-          }
+            ? overMenuItem(item.items)
+            : hideMegaMenuContent()
+          }}
+          onClick={() => {
+            item.items.length !== 0
+            ? overMenuItem(item.items)
+            : hideMegaMenuContent()
+          }}
         >
           <Link to={!item.items.length ? addTenantToUrl(item.url) : homeUrl}>
             <div>
@@ -68,22 +75,24 @@ const MegaNav = ({ showMegaMenuContent, setShowMegaMenuContent }) => {
         >
           <div className="row w-full h-full flex">
             <div className="w-[24%] h-fit text-[16px] text-eerieBlack">
-                <ul className="text-base font-bold">
-                  {subMenuItems.map((item, index) => (
-                    <Link replace key={index} to={addTenantToUrl(item.url)}>
-                      <li
-                        className="mega_content_category_li"
-                        onMouseOver={() => {
-                          setSubMenuMegaContent(item.items)
-                          setShowMegaMenuRightContent(true)
-                        }}
-                        onMouseLeave={() => {
-                          setShowMegaMenuRightContent(false)
-                        }}
-                      >
-                        {item.title}
-                      </li>
-                    </Link>
+                <ul className="text-base font-bold md:flex gap-16 justify-between">
+                  {subMenuItems.map((item, index) => ( 
+                    <div> 
+                      <Link replace key={index} to={addTenantToUrl(item.url)}>
+                        <li
+                          className="mega_content_category_li text-xl"
+                        >
+                          {item.title}
+                        </li>
+                      </Link>
+                      {item.items.map((subItem, subIndex) => (  
+                        <Link replace key={index} to={addTenantToUrl(subItem.url)}>
+                          <li className="mega_content_category_li font-normal">
+                            {subItem.title}
+                          </li>
+                        </Link>
+                      ))}
+                    </div>
                   ))}
                 </ul>
             </div>
@@ -133,10 +142,10 @@ const TopNav = ({ title }) => {
           ? 'desktop_only_flex w-full md:h-36 absolute z-10'
           : title === ''
           ? 'desktop_only_flex h-36'
-          : 'desktop_only_flex w-full md:h-60 absolute z-10'
+          : 'w-full z-10'
       }
     >
-      <div className="px-10 pt-[76px] w-full  flex xl:px-24  h-36">
+      <div className="desktop_only_flex px-4 pt-[76px] pb-8 w-full xl:px-24">
         <div
           className="menu-wrapper flex w-full"
           onMouseLeave={() => {
@@ -161,7 +170,7 @@ const TopNav = ({ title }) => {
         </div>
       </div>
       {nav_title_condition && (
-        <div className="md:absolute top-44 left-24 text-eerieBlack font-inter font-semibold text-[32px]/[32px]">
+        <div className=" text-center xl:text-left mt-20 xs:mt-28 md:mt-4 px-4 w-full sm:mx-auto sm:w-3/4 md:w-full xl:px-24 top-44 text-eerieBlack font-inter font-semibold text-[32px]/[32px]">
         {title}
         </div>
       )}

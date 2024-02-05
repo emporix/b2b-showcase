@@ -15,7 +15,7 @@ const Drawer = ({ children }) => {
     >
       <section
         className={
-          'drawer-content max-w-[492px] right-0 absolute bg-white h-full shadow-xl delay-400 duration-500 ease-in-out transition-all transform ' +
+          'drawer-content max-w-[492px] right-0 absolute bg-bgGradient h-full shadow-2xl delay-400 duration-500 ease-in-out transition-all transform ' +
           (showCart ? ' translate-x-0 ' : ' translate-x-full ')
         }
       >

@@ -4,20 +4,13 @@ export const initialState = {
   menu: [
     {
       contentfulFieldName: 'catalogLabel',
-      title: 'Shop',
+      title: 'Katalog',
       items: [],
     },
     {
-      contentfulFieldName: 'brandLabel',
-      title: 'Brands',
+      title: 'Storefinder',
       items: [],
-      url: 'brand',
-    },
-    {
-      contentfulFieldName: 'quickOrderLabel',
-      title: 'Quick Order',
-      items: [],
-      url: 'quick_order',
+      url: 'storefinder'
     },
     {
       contentfulFieldName: 'aboutUsLabel',
@@ -41,14 +34,17 @@ const pageSlice = createSlice({
     },
   },
 })
+
 // The Page Reducer
 export default pageSlice.reducer
+
 // The Page Actions.
 export const { setShopItems, setTenantList } = pageSlice.actions
 
 export const putShopItems = (items) => async (dispatch) => {
   dispatch(setShopItems(items))
 }
+
 // The Page Selector
 export const pageMenuSelector = (state) => state.page.menu
 export const tenantListSelector = (state) => state.page.tenantList

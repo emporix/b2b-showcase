@@ -2,6 +2,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  height: fit-content;
   /* padding-bottom: 8px !important;
   border-bottom: 1px solid #d7dade; */
   @apply items-center;
@@ -14,17 +15,19 @@
 }
 
 .quantity-input_modifier {
-  width: 1rem;
+  padding: 0.75rem;
   cursor: pointer;
 }
 
 .quantity-input_screen {
-  width: 2rem;
+  @apply bg-aliceBlue;
+  width: 1.5rem;
+  padding: 0.25rem 0;
   text-align: center;
   border: 0;
 }
 .quantity-input {
-  @apply align-middle text-[20px] leading-[24px] !font-normal;
+  @apply bg-aliceBlue align-middle text-[20px] leading-[24px] !font-normal;
 }
 
 .quantity-input .MuiInput-underline::before {

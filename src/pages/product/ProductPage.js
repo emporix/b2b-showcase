@@ -8,7 +8,7 @@ import ProductListBanner from './ProductListBanner'
 const FilterButton = (props) => {
   return (
     <div
-      className="lg:hidden w-[327px] mb-12 h-12 mx-auto bg-tinBlue text-white flex items-center"
+      className="lg:hidden w-full mb-8 lg:mb-12 h-12 mx-auto bg-tinBlue text-white flex items-center"
       onClick={props.onClick}
     >
       <div className="mx-auto flex">
@@ -52,7 +52,7 @@ const ProductPage = () => {
           toggleSidebar={handleSideFilterContent}
           setFilterItemFunc={setFilterItemFunc}
         />
-        <div className="md:pt-16 mt-44 w-auto">
+        <div className="mt-8 w-auto">
           <FilterButton
             filtercount={4}
             onClick={() => {

@@ -46,49 +46,43 @@ const EachProductRow = ({ item, type, available, rating, productCount }) => {
     }
   }
   return (
-    <div className="flex h-full font-inter rounded border border-quartz p-4">
-      <div className="flex w-[15%] flex-col mr-4">
-        <div
-          className={
-            available
-              ? 'text-brightGreen font-inter font-bold text-xs float-right mb-14'
-              : 'text-primaryBlue font-inter font-bold text-xs float-right mb-14'
-          }
-        >
-          {available ? 'In Stock' : 'Out Of Stock'}
-        </div>
-        <img src={trimImage(`${imageSrc}`, 200, 150)} className="self-center" />
+    <div className="standard_box_shadow flex h-full font-inter rounded-xl bg-aliceBlue p-4 gap-4">
+      <div className="flex w-1/4 flex-col justify-between">
+        <img src={imageSrc} alt='' className=" aspect-square h-fit rounded-xl" />
       </div>
-      <div className="flex-auto w-[55%]">
-        <div className="text-xs font-bold text-gray">{item.code}</div>
-        <div className="text-2xl mt-4 font-semibold text-black h-16">
-          {getLocalizedValue(item.name)}
+      <div className="flex flex-col w-1/2">
+        <div
+          className={'text-limeGreen font-inter font-medium float-right lg:float-none'}
+        >
+          {available > 0 ? 'In Stock' : 'Out Of Stock'}
+        </div>
+        <div className='flex flex-col gap-2'>
+
+          <div className="mt-4 h-fit text-left w-full text-2xl text-eerieBlack font-light">
+            {getLocalizedValue(item.name)}
+          </div>
+          <div className="text-xs font-bold text-gray">{item.code}</div>
         </div>
         <div className="text-sm mt-4  text-black flex">
           <ReactStars size={16} value={rating} color2={'#FBB13C'} />(
           {productCount})
         </div>
-        <div className="text-sm mt-4  text-gray text-normal">
-          <span>${trimmedDescription}</span>
+        <div className="text-sm mt-4 text-eerieBlack text-base">
+          <span>{trimmedDescription}</span>
         </div>
       </div>
-      <div className="flex flex-col justify-between flex-auto w-[30%]">
-        <div className={'w-full flex justify-between h-[56px] pt-2'}>
+      <div className="flex flex-col justify-between flex-auto w-1/4">
+        <div className={'w-full flex justify-end gap-4'}>
           {item.productType !== 'PARENT_VARIANT' && (
             <>
-              <div className="text-[12px] text-gray w-[150px] text-left">
+              <div className="text-gray">
                 {isLoggedIn ? 'Your negotiated price' : 'List Price'}
               </div>
               <div className="flex">
-                <img
-                  src="/products/pencil.png"
-                  className="w-4 h-4 mt-1"
-                  alt="pencil"
-                />
-                <div className="text-[20px] leading-[24px] font-bold ml-1">
+                <div className="text-[20px] leading-[24px] text-end font-bold ml-1">
                   {renderPrice(price)} <br />
                   <span className="text-[12px] font-normal text-gray">
-                    {isLoggedIn ? 'Excl. VAT' : 'Incl. VAT'}
+                    ({isLoggedIn ? 'Excl. VAT' : 'Incl. VAT'})
                   </span>
                                 </div>
                             </div>
@@ -96,7 +90,7 @@ const EachProductRow = ({ item, type, available, rating, productCount }) => {
                     )}
                 </div>
 
-        <div className="mt-6 flex w-full flex-col items-end">
+        <div className="flex w-full flex-col gap-2 items-end">
           {item.productType !== 'PARENT_VARIANT' ? (
             <>
               <Quantity
@@ -115,12 +109,18 @@ const EachProductRow = ({ item, type, available, rating, productCount }) => {
                   setQuantity(value)
                 }}
               />
-              <div
-                className="ml-6 mt-4 h-10 w-40 cursor-pointer cta-button bg-yellow flex items-center justify-center"
-                onClick={handleAddToCart}
-              >
-                <span className="px-4">ADD TO CART</span>
-              </div>
+                <div
+                  className="cursor-pointer cta-button bg-yellow flex items-center justify-center px-10 py-4 transition-all duration-150 ease-in"
+                  onClick={handleAddToCart}
+                  >
+                  <span className="text-aliceBlue text-lg">ADD TO CART</span>
+                </div>
+                <div
+                  className="cursor-pointer cta-button bg-lightGray flex items-center justify-center px-5 py-2 w-fit hover:!bg-gray transition-all duration-150 ease-in"
+                  onClick={handleProductDetail}
+                  >
+                  <span className="text-aliceBlue">MORE DETAILS</span>
+                </div>
             </>
           ) : (
             <div>
