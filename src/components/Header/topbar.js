@@ -75,24 +75,6 @@ const MegaNav = ({ showMegaMenuContent, setShowMegaMenuContent }) => {
         >
           <div className="row w-full h-full flex">
             <div className="w-[24%] h-fit text-[16px] text-eerieBlack">
-                {/* <ul className="hidden lg:flex text-base font-bold">
-                  {subMenuItems.map((item, index) => (
-                    <Link replace key={index} to={addTenantToUrl(item.url)}>
-                      <li
-                        className="mega_content_category_li"
-                        onMouseOver={() => {
-                          setSubMenuMegaContent(item.items)
-                          setShowMegaMenuRightContent(true)
-                        }}
-                        onMouseLeave={() => {
-                          setShowMegaMenuRightContent(false)
-                        }}
-                      >
-                        {item.title}
-                      </li>
-                    </Link>
-                  ))}
-                </ul> */}
                 <ul className="text-base font-bold md:flex gap-16 justify-between">
                   {subMenuItems.map((item, index) => ( 
                     <div> 
@@ -103,19 +85,9 @@ const MegaNav = ({ showMegaMenuContent, setShowMegaMenuContent }) => {
                           {item.title}
                         </li>
                       </Link>
-                      {/* <div className='text-lg mb-8'>{item.title}</div> */}
                       {item.items.map((subItem, subIndex) => (  
                         <Link replace key={index} to={addTenantToUrl(subItem.url)}>
-                          <li
-                            className="mega_content_category_li font-normal"
-                            // onMouseOver={() => {
-                            //   setSubMenuMegaContent(subItem.items)
-                            //   setShowMegaMenuRightContent(true)
-                            // }}
-                            // onMouseLeave={() => {
-                            //   setShowMegaMenuRightContent(false)
-                            // }}
-                            >
+                          <li className="mega_content_category_li font-normal">
                             {subItem.title}
                           </li>
                         </Link>

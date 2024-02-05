@@ -79,11 +79,6 @@ const EachProductRow = ({ item, type, available, rating, productCount }) => {
                 {isLoggedIn ? 'Your negotiated price' : 'List Price'}
               </div>
               <div className="flex">
-                {/* <img
-                  src="/products/pencil.png"
-                  className="w-4 h-4 mt-1"
-                  alt="pencil"
-                /> */}
                 <div className="text-[20px] leading-[24px] text-end font-bold ml-1">
                   {renderPrice(price)} <br />
                   <span className="text-[12px] font-normal text-gray">

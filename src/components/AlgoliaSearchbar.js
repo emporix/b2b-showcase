@@ -51,6 +51,8 @@ const AlgoliaSearchbar = () => {
     localStorage.getItem(SEARCH_KEY)
   )
   const index = client.initIndex(localStorage.getItem(INDEX_NAME))
+
+  console.log(index)
   const [searchResults, setSearchResults] = useState([])
   const navigate = useNavigate()
   const searchBar = useRef()
@@ -82,6 +84,7 @@ const AlgoliaSearchbar = () => {
   }
 
   const ProductDisplay = ({ hit }) => {
+    console.log(hit.image)
     return (
       <div
         className="flex flex-initial p-2 cursor-pointer hover:bg-gray-50 rounded"

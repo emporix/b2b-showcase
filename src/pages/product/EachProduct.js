@@ -38,7 +38,6 @@ const EachProduct = ({ item, available, rating, productCount }) => {
                             'text-limeGreen font-inter font-medium float-right lg:float-none'
                         }
                     >
-                        {/* {item.productCount ? 'In Stock' : 'Out Of Stock'} */}
                         {available > 0 ? 'In Stock' : 'Out Of Stock'}
                     </div>
                 )}
@@ -59,19 +58,12 @@ const EachProduct = ({ item, available, rating, productCount }) => {
                         'text-limeGreen font-inter font-medium float-right lg:float-none'
                     }
                 >
-                    {/* {available ? 'In Stock' : 'Out Of Stock'} */}
                     {available > 0 ? 'In Stock' : 'Out Of Stock'}
                 </div>
             </div>
             <div className="items-center mx-auto ">
               <img src={imageSrc} alt="" className="w-full h-fit rounded-xl" />
             </div>
-
-            {/* <div className="w-full font-inter flex flex-col gap-4">
-                <div className="text-left text-sm/4 font-normal leading-xs text-manatee">
-                {item.code}
-              </div>
-            </div> */}
             <div className="text-left w-full text-2xl text-eerieBlack font-light">
               {getLocalizedValue(item.name)}
             </div>
@@ -90,7 +82,6 @@ const EachProduct = ({ item, available, rating, productCount }) => {
                 {price !== null ? (
                   <>
                     {isLoggedIn ? 'Your negotiated price' : 'List Price'}
-                    {/* <CurrencyBeforeValue value={price} /> */}
                   </>
                 ) : (
                   <span className="text-xs text-primaryBlue font-bold">
@@ -101,7 +92,6 @@ const EachProduct = ({ item, available, rating, productCount }) => {
                             <div className="flex">
                                 {price !== null ? (
                                     <>
-                                        {/* <img src="/products/pencil.png" className="w-4 h-4 mt-1" /> */}
                                         <div className="text-[22px]/[22px] lg:text-xl leading-[24px] font-bold ml-1">
                                             <div className='flex flex-col'>
                                                 <CurrencyBeforeValue value={price}/>

@@ -191,7 +191,7 @@ const DesktopContent = () => {
         </span>
                 <span>Order list</span>
             </div>
-            <div className="pt-[58px] border-b-darkGray border-b-[1px] pb-14">
+            <div className="pt-14 border-b-darkGray border-b-[1px] pb-14">
                 <TableContainer>
                     <Table sx={{minWidth: 650}}>
                         <TableHead>

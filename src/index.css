@@ -9,7 +9,6 @@ body {
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
     'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
     sans-serif;
-    /* background-image: radial-gradient(73% 147%, #EADFDF 59%, #ECE2DF 100%), radial-gradient(91% 146%, rgba(255,255,255,0.50) 47%, rgba(0,0,0,0.50) 100%); */
     background-blend-mode: screen;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
@@ -37,7 +36,7 @@ code {
 }
 
 .mobile_only {
-    @apply md:hidden;
+    @apply md:!hidden;
 }
 
 .mobile_only_flex {
@@ -106,10 +105,6 @@ code {
     @apply w-full h-[1980px];
 }
 
-.border-grey-bottom {
-    /* @apply border-b border-lightGray; */
-}
-
 ::-webkit-scrollbar {
     width: 9px;
 }
@@ -136,13 +131,6 @@ code {
 .rotatable.rotate {
     transform: rotate(180deg);
 }
-
-/* .home_cat_content img::before {
-  height: 312px;
-  width: 12px;
-  background-color: #FAC420;
-
-} */
 
 .subscribe {
     
@@ -182,7 +170,6 @@ code {
     font-size: 14px !important;
     line-height: 24px !important;
     font-weight: 600 !important;
-    /* box-shadow: none !important; */
 }
 
 .cta-button:hover {
