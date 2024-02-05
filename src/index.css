@@ -37,7 +37,7 @@ code {
 }
 
 .mobile_only {
-    @apply md:hidden;
+    @apply md:!hidden;
 }
 
 .mobile_only_flex {
