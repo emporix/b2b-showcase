@@ -198,7 +198,11 @@ const ProductSkuAndReview = ({ product }) => {
 }
 const ProductTitle = ({ name }) => {
   const { getLocalizedValue } = useLanguage()
-  return <div className="mt-6 product-title text-left w-full text-eerieBlack font-light">{getLocalizedValue(name)}</div>
+  return (
+    <div className="mt-6 product-title text-left w-full text-eerieBlack font-light">
+      {getLocalizedValue(name)}
+    </div>
+  )
 }
 const ProductPriceAndAmount = ({ price, productCount, estimatedDelivery }) => {
   const { isLoggedIn } = useAuth()
@@ -212,7 +216,7 @@ const ProductPriceAndAmount = ({ price, productCount, estimatedDelivery }) => {
               <CurrencyBeforeValue value={price} />
             </div>
             <div className="vat-caption">
-                {isLoggedIn ? 'Excl. VAT' : 'Incl. VAT'}
+              {isLoggedIn ? 'Excl. VAT' : 'Incl. VAT'}
             </div>
           </>
         ) : (
@@ -354,7 +358,7 @@ const ProductBundleInfo = ({ product }) => {
   )
 }
 
-const PrdouctAddToCart = () => {
+const ProductAddToCart = () => {
   const product = useContext(ProductContext)
   const { setShowCart } = useContext(LayoutContext)
   const [quantity, setQuantity] = useState(1)
@@ -419,7 +423,7 @@ const ProductInfo = ({ product }) => {
       <ProductBasicInfo product={product} />
       {product.productType !== 'PARENT_VARIANT' && (
         <>
-          <PrdouctAddToCart />
+          <ProductAddToCart />
           <ProductDiscount
             price={product.price}
             quantity={product.product_count}
@@ -618,11 +622,15 @@ const ProductDetailTabContent = ({ product }) => {
         <ProductDetailsTabContent product={product} />
       </TabPanel>
       <TabPanel value={tab} index={1}>
-        <div dangerouslySetInnerHTML={{__html: product.description}} 
-        className='product-details-tab-content-wrapper text-lg font-light'/>
+        <div
+          dangerouslySetInnerHTML={{ __html: product.description }}
+          className="product-details-tab-content-wrapper text-lg font-light"
+        />
       </TabPanel>
       <TabPanel value={tab} index={2}>
-        <div className='product-details-tab-content-wrapper font-light'>Reviews</div>
+        <div className="product-details-tab-content-wrapper font-light">
+          Reviews
+        </div>
       </TabPanel>
     </Box>
   )
@@ -661,14 +669,16 @@ const ProductDetailInfo = ({ product }) => {
               <ProductDetailsTabContent product={product} />
             </AccordionItem>
             <AccordionItem index={1} title="Additional Information">
-                <div className="product-details-tab-content-wrapper">
-                    {getLocalizedValue(product.description)}
-                </div>
+              <div className="product-details-tab-content-wrapper">
+                {getLocalizedValue(product.description)}
+              </div>
             </AccordionItem>
-            <AccordionItem index={2} title="Reviews" className="product-details-tab-content-wrapper">
-                <div className="product-details-tab-content-wrapper">
-                    Reviews
-                </div>
+            <AccordionItem
+              index={2}
+              title="Reviews"
+              className="product-details-tab-content-wrapper"
+            >
+              <div className="product-details-tab-content-wrapper">Reviews</div>
             </AccordionItem>
           </Accordion>
         </div>
@@ -781,7 +791,9 @@ const ProductMatchItems = ({ productInput }) => {
   }, [currentLanguage, productInput])
   return (
     <div className="product-match-items-wrapper grid grid-cols-1">
-      <div className="product-match-caption mx-auto font-light w-full lg:w-1/3 border-b-2 pb-2">Related products</div>
+      <div className="product-match-caption mx-auto font-light w-full lg:w-1/3 border-b-2 pb-2">
+        Related products
+      </div>
       {products.length > 0 ? (
         <div className="product-match-items-content w-full">
           <SliderComponent>
@@ -806,7 +818,9 @@ const ProductMatchItems = ({ productInput }) => {
           </SliderComponent>
         </div>
       ) : (
-        <div className="w-full text-center text-lg font-light">No matchig products</div>
+        <div className="w-full text-center text-lg font-light">
+          No matching products
+        </div>
       )}
     </div>
   )
