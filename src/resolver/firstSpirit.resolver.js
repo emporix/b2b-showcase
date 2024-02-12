@@ -1,5 +1,5 @@
-import { List } from "@mui/material";
 import Additional_Text from "components/Cms/additional_text";
+import CMS_List from "components/Cms/cms_list";
 import CMS_Footer from "components/Cms/footer";
 import Pt_Headline from "components/Cms/pt_headline";
 import Simple_List from "components/Cms/simple_list";
@@ -9,7 +9,7 @@ import Text_Banner from "components/Cms/text_banner";
 const firstSpiritComponentMap = {
     additional_text: Additional_Text,
     footer: CMS_Footer,
-    list: List,
+    list: CMS_List,
     pt_headline: Pt_Headline,
     simple_list: Simple_List,
     teaser: Teaser,
