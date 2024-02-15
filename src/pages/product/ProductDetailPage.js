@@ -546,17 +546,11 @@ const ProductDetailsTabContent = ({ product }) => {
     Object.keys(items).forEach((key) => {
       let value = items[key]
 
-      if (Array.isArray(value) && currentLanguage === "en") {
-        value = value[1].value
-      } else if (Array.isArray(value) && currentLanguage === "de") {
-        value = value[0].value
-      } else if (typeof value !== 'object') {
-         value = items[key]
-      } else if ('value' in value && 'uom' in value) {
-        value = value['value'] + ' ' + value['uom']
-      } else {
-        value = ''
-      }
+      if (Array.isArray(value) && currentLanguage === "en") value = value[1].value
+      else if (Array.isArray(value) && currentLanguage === "de") value = value[0].value
+      else if (typeof value === "string") value = items[key]
+      else value = ''
+      
       res.push({ property: key, value: value })
     })
     return res
