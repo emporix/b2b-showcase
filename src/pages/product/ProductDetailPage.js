@@ -518,6 +518,7 @@ function TabPanel(props) {
 }
 
 const ProductDetailsTabContent = ({ product }) => {
+  const { currentLanguage } = useLanguage()
   const getFeatureName = (str) => {
     let loop = 0
     let res = ''
@@ -544,12 +545,19 @@ const ProductDetailsTabContent = ({ product }) => {
     let res = []
     Object.keys(items).forEach((key) => {
       let value = items[key]
-      let caption = getFeatureName(key)
-      if (typeof value !== 'object') value = items[key]
-      else if ('value' in value && 'uom' in value)
+
+      if (Array.isArray(value) && currentLanguage === "en") {
+        value = value[1].value
+      } else if (Array.isArray(value) && currentLanguage === "de") {
+        value = value[0].value
+      } else if (typeof value !== 'object') {
+         value = items[key]
+      } else if ('value' in value && 'uom' in value) {
         value = value['value'] + ' ' + value['uom']
-      else value = ''
-      res.push({ property: caption, value: value })
+      } else {
+        value = ''
+      }
+      res.push({ property: key, value: value })
     })
     return res
   }
