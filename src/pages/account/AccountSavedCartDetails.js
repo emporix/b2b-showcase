@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import { useAuth } from '../../context/auth-provider'
-import { CircularProgress, Grid } from '@material-ui/core'
+import { CircularProgress, Grid } from '@mui/material'
 import AccountMenu from './AccountMenu'
 import { formatDateTime } from '../../components/Utilities/common'
 import { formatCurrency } from 'helpers/currency'
