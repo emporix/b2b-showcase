@@ -1,6 +1,7 @@
 import React from 'react'
 import ReactPhoneInput from 'react-phone-input-material-ui'
-import { TextField, withStyles } from '@material-ui/core'
+import { TextField } from '@mui/material'
+import { styled } from '@mui/system'
 
 const styles = (theme) => ({
   field: {
@@ -26,4 +27,4 @@ function PhoneField(props) {
     </React.Fragment>
   )
 }
-export default withStyles(styles)(PhoneField)
+export default styled(styles)(PhoneField)
