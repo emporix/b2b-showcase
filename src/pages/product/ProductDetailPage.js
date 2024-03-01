@@ -48,6 +48,7 @@ import {
 } from '@mui/material'
 import Content from 'pages/home/Content'
 import { CMSFilterType } from 'services/content/filteredPage.service'
+import { useTranslation } from 'react-i18next';
 
 const ProductContext = createContext()
 
@@ -638,6 +639,8 @@ const ProductDetailTabContent = ({ product }) => {
   )
 }
 const ProductInfoPortal = ({ caption, items }) => {
+  const { t } = useTranslation();
+
   return (
     <div className="information-portal-wrapper grid grid-cols-1 gap-4">
       <div className="information-caption">{caption}</div>
@@ -645,7 +648,7 @@ const ProductInfoPortal = ({ caption, items }) => {
         {items.map((row, index) => (
           <div key={index} className="grid grid-cols-2 gap-2">
             <div className="information-properties pl-6 grid grid-cols-1 text-lg">
-              <span key={index}>{row.property}</span>
+              <span key={index}>{t(row.property)}</span>
             </div>
             <div className="information-values pl-6 grid grid-cols-1 text-lg font-light">
               <span key={index}>{row.value}</span>

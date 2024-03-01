@@ -76,6 +76,7 @@ const FsGenericComponent = (props) => {
     } else {
         return (
             <div>
+                <Text_Banner></Text_Banner>
                 {componentData.map((entry, idx) => {
                     let key = ""
    
