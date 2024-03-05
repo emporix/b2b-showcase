@@ -44,13 +44,13 @@ const PriceWithInfo = ({ price, includeVat = false, caption }) => {
 }
 
 const orderCheck = (order) => {
-  if(order?.mixins?.['6557595fa735225f8bf288c2']?.interactionsCheck === false || order?.mixins?.['6557595fa735225f8bf288c2']?.substanceCheck === false) {
+  if(order?.mixins?.['65e5c169f4793329bcaf3eff']?.interactionsCheck === false || order?.mixins?.['65e5c169f4793329bcaf3eff']?.substanceCheck === false) {
     let message = ""  
-    if(order?.mixins?.['6557595fa735225f8bf288c2']?.interactionsCheck === false) {
-      message += order?.mixins?.['6557595fa735225f8bf288c2']?.interactionsCheckMessage + " \n."
+    if(order?.mixins?.['65e5c169f4793329bcaf3eff']?.interactionsCheck === false) {
+      message += order?.mixins?.['65e5c169f4793329bcaf3eff']?.interactionsCheckMessage + " \n."
     }
-    if(order?.mixins?.['6557595fa735225f8bf288c2']?.substanceCheck === false) {
-      message += order?.mixins?.['6557595fa735225f8bf288c2']?.substanceCheckMessage + " \n."
+    if(order?.mixins?.['65e5c169f4793329bcaf3eff']?.substanceCheck === false) {
+      message += order?.mixins?.['65e5c169f4793329bcaf3eff']?.substanceCheckMessage + " \n."
     }
     return message
   }
