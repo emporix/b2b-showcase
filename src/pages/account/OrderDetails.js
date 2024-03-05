@@ -137,10 +137,10 @@ const OrderDetails = ({ order }) => {
                     <PriceWithInfo
                     price={
                       ((entry.totalPrice - entry.totalDiscount.amount) *
-                        entry.tax.lines[0].rate) /
+                        entry?.tax?.lines[0]?.rate) /
                       100
                     }
-                      caption={`${entry.tax.lines[0].rate}%`}
+                      caption={`${entry?.tax?.lines[0]?.rate}%`}
                     />
                   ) : (
                     '-'
@@ -152,7 +152,7 @@ const OrderDetails = ({ order }) => {
                       entry.totalPrice -
                       entry.totalDiscount.amount +
                       (+(entry.totalPrice - entry.totalDiscount.amount) *
-                        entry.tax.lines[0].rate) /
+                        entry?.tax?.lines[0]?.rate) /
                         100
                     }
                     includeVat={true}
