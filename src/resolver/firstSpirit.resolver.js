@@ -84,7 +84,7 @@ const FsGenericComponent = (props) => {
         return (
             <div>
                 {componentData.map((entry, idx) => {
-                    let key = ""
+                    let key
 
                     if(entry?.template?.uid) {
                         key = entry?.template?.uid
@@ -101,7 +101,7 @@ const FsGenericComponent = (props) => {
                     if (Component === undefined) return
 
                     return (
-                        <div><Component props={entry}/></div>
+                        <div key={idx}><Component props={entry}/></div>
                     );
                 })}
             </div>
