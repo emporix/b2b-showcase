@@ -55,7 +55,7 @@ import ResetPassword from 'pages/ResetPassword'
 import Auth0Callback from 'pages/Auth0Callback'
 import StoreFinder from 'pages/storefinder'
 import ContentOverview from './pages/content/ContentOverview'
-import CMSContent from './pages/content/CMSContent'
+import ContentPage from './pages/content/ContentPage'
 
 function App() {
   const dispatch = useDispatch()
@@ -208,8 +208,10 @@ function App() {
           <Route path="quick_order" element={<QuickOrder />} />
           <Route path="aboutus" element={<AboutUs />} />
           <Route path="storefinder" element={<StoreFinder />} />
-          <Route path="content" element={<ContentOverview />} />
-          <Route path="content/:contentId" element={<CMSContent />} />
+          <Route path="Content" element={<ContentOverview />} />
+          <Route path="Inhalt" element={<ContentOverview />} />
+          <Route path="Content/:contentName" element={<ContentPage />} />
+          <Route path="Inhalt/:contentName" element={<ContentPage />} />
           <Route path="*" element={<NoPage />} />
         </Route>
         <Route path="*" element={<InvalidTenant />} />

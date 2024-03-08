@@ -1,29 +1,44 @@
 import Layout from '../Layout'
-import { Link } from 'react-router-dom'
 import './content.css'
+import { getLocalizedCmsNavigation } from '../../services/content/navigation.service'
+import { useEffect, useState } from 'react'
+import { useLanguage } from '../../context/language-provider'
+import { useNavigate } from 'react-router-dom'
 
 const ContentOverview = () => {
+  const [content, setContent] = useState([])
+  let { currentLanguage } = useLanguage()
+  const navigate = useNavigate()
+  const getData = async () => {
+    let data = await getLocalizedCmsNavigation(currentLanguage)
+    data = data.data.cmsNavigation.filter((item) => {
+      return (
+        (item.seoRoute?.startsWith('/Content') ||
+          item.seoRoute?.startsWith('/Inhalt')) &&
+        item.label !== 'Content' &&
+        item.label !== 'Inhalt'
+      )
+    })
+
+    setContent(data)
+  }
+
+  useEffect(() => {
+    getData()
+  }, [currentLanguage])
+
   return (
     <Layout>
-      <div className="content-link">
-        <Link to="/n11showcase/content/7c328a3c-b9b4-4ecd-8c73-1211e8c8513e">
-          <div className="content-card">
-            <h2>Geschichte des Wein</h2>
-            <p>Entdecken Sie die faszinierende Geschichte des Weins.</p>
+      <div>
+        {content.map((item, index) => (
+          <div key={index}>
+            <button onClick={() => navigate('/n11showcase' + item.seoRoute)}>
+              {item.label}
+            </button>
           </div>
-        </Link>
-      </div>
-
-      <div className="content-link">
-        <Link to="/n11showcase/content/de61983f-a2e1-40f3-9bfb-0519107b3b39">
-          <div className="content-card">
-            <h2>Ökologische Aspekte des Weinbaus</h2>
-            <p>Erfahren Sie mehr über die ökologischen Aspekte des Weinbaus.</p>
-          </div>
-        </Link>
+        ))}
       </div>
     </Layout>
-    //todo implement cms navigation
   )
 }
 

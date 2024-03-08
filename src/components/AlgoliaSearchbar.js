@@ -52,7 +52,7 @@ const AlgoliaSearchbar = () => {
   )
   const index = client.initIndex(localStorage.getItem(INDEX_NAME))
 
-  console.log(index)
+  //console.log(index)
   const [searchResults, setSearchResults] = useState([])
   const navigate = useNavigate()
   const searchBar = useRef()
