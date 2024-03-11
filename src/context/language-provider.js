@@ -1,6 +1,7 @@
 import { LoadingCircleProgress } from 'components/Utilities/progress'
 import React, { createContext, useContext, useEffect, useState } from 'react'
 import { useSites } from './sites-provider'
+import { useTranslation } from "react-i18next";
 
 export const CURRENT_LANGUAGE_KEY = 'current-language'
 
@@ -14,12 +15,14 @@ const LanguageContext = createContext({ languages: [] })
 export const useLanguage = () => useContext(LanguageContext)
 
 export const LanguageProvider = ({ children }) => {
+  const { i18n } = useTranslation();
   const [languages, setLanguages] = useState([])
   const { currentSite, sites } = useSites()
   const [currentLanguage, setCurrentLanguage] = useState()
 
   const setLanguage = (lang) => {
     setCurrentLanguage(lang)
+    i18n.changeLanguage(lang)
     localStorage.setItem(CURRENT_LANGUAGE_KEY, lang)
   }
 

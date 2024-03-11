@@ -55,6 +55,39 @@ import ResetPassword from 'pages/ResetPassword'
 import Auth0Callback from 'pages/Auth0Callback'
 import StoreFinder from 'pages/storefinder'
 
+import i18n from "i18next";
+import { initReactI18next } from "react-i18next";
+
+i18n
+  .use(initReactI18next)
+  .init({
+    resources: {
+      en: {
+        translation: {
+          "grape_n11showcase": "Grape",
+          "country_n11showcase": "Country of origin",
+          "region_n11showcase": "Wine growing region",
+          "winery_n11showcase": "Winery",
+          "vintage_n11showcase": "Vintage",
+        }
+      },
+      de: {
+        translation: {
+          "grape_n11showcase": "Rebsorte",
+          "country_n11showcase": "Herkunftsland",
+          "region_n11showcase": "Weinbaugebiet",
+          "winery_n11showcase": "Weingut",
+          "vintage_n11showcase": "Jahrgang",
+        }
+      }
+    },
+    lng: "de",
+    fallbackLng: "de",
+    interpolation: {
+      escapeValue: false
+    }
+  });
+
 function App() {
   const dispatch = useDispatch()
   useEffect(() => {
