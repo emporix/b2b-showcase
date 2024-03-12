@@ -15,8 +15,16 @@ import CurrencyProvider from 'context/currency-context'
 import ProductListProvider from 'context/product-list-context'
 import { ApolloProvider } from '@apollo/client'
 import { getClient } from 'graphql/utils/fetch-graphql-api'
+import { CLIENT_ID, TENANT } from './constants/localstorage'
 
 const client = getClient()
+
+if (localStorage.getItem(TENANT) === '' || !localStorage.getItem(TENANT)) {
+    if (process.env.REACT_APP_EMPORIX_STOREFRONT_TENANT_NAME && process.env.REACT_APP_EMPORIX_STOREFRONT_CLIENT_ID) {
+        localStorage.setItem(TENANT, process.env.REACT_APP_EMPORIX_STOREFRONT_TENANT_NAME)
+        localStorage.setItem(CLIENT_ID, process.env.REACT_APP_EMPORIX_STOREFRONT_CLIENT_ID)
+    }
+}
 
 const root = ReactDOM.createRoot(document.getElementById('root'))
 root.render(
