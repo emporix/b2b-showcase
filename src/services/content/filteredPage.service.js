@@ -12,7 +12,8 @@ export const CMSFilterType = {
     CATEGORY: 'CATEGORY',
     NAME: 'NAME',
     TEMPLATE_UID: 'TEMPLATE_UID',
-    PAGE_FOR_SEO_ROUTE: 'PAGE_FOR_SEO_ROUTE'
+    ROUTE: 'ROUTE',
+    IDENTIFIER: 'IDENTIFIER'
 }
 
 // Until the routing strategy is implemented, we need manual mapping between the FS Urls and our FE routes

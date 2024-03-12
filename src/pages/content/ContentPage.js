@@ -23,7 +23,7 @@ const ContentPage = () => {
             Zurück zur Übersicht
           </button>
         )}
-        <Content page={route} type={CMSFilterType.PAGE_FOR_SEO_ROUTE} />
+        <Content page={route} type={CMSFilterType.ROUTE} />
       </div>
     </Layout>
   )
