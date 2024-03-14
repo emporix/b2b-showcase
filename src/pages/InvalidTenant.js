@@ -5,6 +5,9 @@ import { LargePrimaryButton } from '../components/Utilities/button'
 import { useCallback, useEffect, useState } from 'react'
 import { CLIENT_ID, TENANT, PROCUREMENT_SYSTEM_URL, EXTERNAL_CUSTOMER_TOKEN, EXTERNAL_TOKEN_EXPIRIES_IN, EXTERNAL_SAAS_TOKEN } from 'constants/localstorage'
 const DEVPORTAL_URL = process.env.REACT_APP_DEVPORTAL_URL
+const tenantNameEnv = process.env.REACT_APP_EMPORIX_STOREFRONT_TENANT_NAME
+const clientIdEnv = process.env.REACT_APP_EMPORIX_STOREFRONT_CLIENT_ID
+
 const InvalidTenant = () => {
   const [tenant, setTenant] = useState('')
   const [clientId, setClientID] = useState('')
@@ -45,8 +48,9 @@ const InvalidTenant = () => {
 
   useEffect(() => {
     const urlParams = new URLSearchParams(window.location.search)
-    const tenantParam = urlParams.get("tenant")
-    const clientIdParam = urlParams.get("clientId")
+    const tenantParam = tenantNameEnv || tenant || urlParams.get("tenant")
+    const clientIdParam = clientIdEnv || clientId || urlParams.get("clientId")
+
     if(tenantParam && clientIdParam) {
       clearStorage()
       localStorage.setItem(CLIENT_ID, clientIdParam)

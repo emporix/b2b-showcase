@@ -34,7 +34,6 @@ import AccountPaymentsEditCardDetails from './pages/account/AccountPaymentsEditC
 import NoPage from './pages/NoPage'
 import { history } from './helpers/history'
 import { clearMessage } from './redux/slices/messageReducer'
-import InvalidTenant from './pages/InvalidTenant'
 import QuoteCart from './pages/quote'
 import AccountReturns from 'pages/account/AccountReturns'
 import AccountReturnDetails from './pages/account/AccountReturnDetails'
@@ -64,6 +63,7 @@ i18n
     resources: {
       en: {
         translation: {
+          "custom_product_attributes_n11": "Wine Details",
           "grape_n11showcase": "Grape",
           "country_n11showcase": "Country of origin",
           "region_n11showcase": "Wine growing region",
@@ -73,6 +73,7 @@ i18n
       },
       de: {
         translation: {
+          "custom_product_attributes_n11": "Weindetails",
           "grape_n11showcase": "Rebsorte",
           "country_n11showcase": "Herkunftsland",
           "region_n11showcase": "Weinbaugebiet",
@@ -237,7 +238,7 @@ function App() {
           <Route path="storefinder" element={<StoreFinder />} />
           <Route path="*" element={<NoPage />} />
         </Route>
-        <Route path="*" element={<InvalidTenant />} />
+        <Route path="*" element={<Home />} />
       </Routes>
     </Router>
   )
