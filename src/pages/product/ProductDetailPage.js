@@ -567,7 +567,7 @@ const ProductDetailsTabContent = ({ product }) => {
           return (
             <ProductInfoPortal
               key={key}
-              caption={getFeatureName(key)}
+              caption={key}
               items={getAttributes(product.mixins[key])}
             />
           )
@@ -643,7 +643,7 @@ const ProductInfoPortal = ({ caption, items }) => {
 
   return (
     <div className="information-portal-wrapper grid grid-cols-1 gap-4">
-      <div className="information-caption">{caption}</div>
+      <div className="information-caption">{t(caption)}</div>
       <div className="information-content grid grid-cols-1 gap-[6px]">
         {items.map((row, index) => (
           <div key={index} className="grid grid-cols-2 gap-2">

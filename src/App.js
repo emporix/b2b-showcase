@@ -64,6 +64,7 @@ i18n
     resources: {
       en: {
         translation: {
+          "custom_product_attributes_n11": "Wine Details",
           "grape_n11showcase": "Grape",
           "country_n11showcase": "Country of origin",
           "region_n11showcase": "Wine growing region",
@@ -73,6 +74,7 @@ i18n
       },
       de: {
         translation: {
+          "custom_product_attributes_n11": "Weindetails",
           "grape_n11showcase": "Rebsorte",
           "country_n11showcase": "Herkunftsland",
           "region_n11showcase": "Weinbaugebiet",
