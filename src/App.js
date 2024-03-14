@@ -34,7 +34,6 @@ import AccountPaymentsEditCardDetails from './pages/account/AccountPaymentsEditC
 import NoPage from './pages/NoPage'
 import { history } from './helpers/history'
 import { clearMessage } from './redux/slices/messageReducer'
-import InvalidTenant from './pages/InvalidTenant'
 import QuoteCart from './pages/quote'
 import AccountReturns from 'pages/account/AccountReturns'
 import AccountReturnDetails from './pages/account/AccountReturnDetails'
@@ -239,7 +238,7 @@ function App() {
           <Route path="storefinder" element={<StoreFinder />} />
           <Route path="*" element={<NoPage />} />
         </Route>
-        <Route path="*" element={<InvalidTenant />} />
+        <Route path="*" element={<Home />} />
       </Routes>
     </Router>
   )
