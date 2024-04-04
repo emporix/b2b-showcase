@@ -8,11 +8,16 @@ import { useCart } from 'context/cart-provider'
 
 const CartPage = () => {
   const { cartAccount } = useCart()
+  const subtotalWithoutVat =
+    cartAccount.subtotalAggregate && cartAccount.subtotalAggregate.grossValue
+      ? cartAccount.subtotalAggregate.grossValue
+      : 0
+
   return (
     <div className="cart-page-wrapper ">
       <div className="cart-page-content">
         <CartActionBar view={true} />
-        <div className="lg:block hidden border rounded border-quartz p-6">
+        <div className="lg:block hidden">
           <CartTable cartList={cartAccount.items} />
         </div>
 
@@ -22,7 +27,7 @@ const CartPage = () => {
 
         <div className="float-right">
           <div className="cart-action-panel-wrapper ml-auto">
-            <CartActionPanel showShipping={false}/>
+            <CartActionPanel subtotalWithoutVat={subtotalWithoutVat} />
           </div>
         </div>
         <CartActionBar />

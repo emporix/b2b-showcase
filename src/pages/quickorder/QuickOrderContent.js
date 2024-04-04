@@ -33,7 +33,6 @@ import {
   MediumPrimaryButton,
 } from 'components/Utilities/button'
 import { useCart } from 'context/cart-provider'
-import { useLanguage } from 'context/language-provider'
 
 const CartItem = ({
   item,
@@ -45,8 +44,6 @@ const CartItem = ({
   activeFocusCode,
   removeHandler,
 }) => {
-  const { getLocalizedValue } = useLanguage()
-
   return (
     <TableRow
       sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
@@ -65,7 +62,7 @@ const CartItem = ({
         )}
       </TableCell>
       <TableCell align="left" className="!py-6 !font-bold w-[250px]">
-        {getLocalizedValue(item.name)}
+        {item.name}
       </TableCell>
       <TableCell align="left" className="!py-6">
         <TextInputOnly
@@ -82,18 +79,18 @@ const CartItem = ({
         />
       </TableCell>
       <TableCell align="left" className="!py-6">
-        {item?.price?.totalValue ? (
-          <CurrencyBeforeValue value={item?.price?.totalValue} />
-        ) : (<div>Missing price</div>)}
+        {item.price.totalValue ? (
+          <CurrencyBeforeValue value={item.price.totalValue} />
+        ) : null}
       </TableCell>
       <TableCell align="left" className="!py-6">
-        {item?.price?.totalValue ? (
+        {item.price.totalValue ? (
           <CurrencyBeforeValue
             value={
               Math.trunc(item.price.totalValue * item.quantity * 100) / 100
             }
           />
-        ) : (<div>Missing price</div>)}
+        ) : null}
       </TableCell>
       <TableCell
         align="left"
@@ -110,7 +107,6 @@ const Alert = React.forwardRef(function Alert(props, ref) {
 })
 
 const DesktopContent = () => {
-  const { getLocalizedValue } = useLanguage()
   const {
     fetchProductsByCode,
     productsSuggestions,
@@ -125,7 +121,7 @@ const DesktopContent = () => {
     return productsSuggestions.map((item) => {
       return {
         id: item.code,
-        label: getLocalizedValue(item.name),
+        label: item.name,
       }
     })
   }, [productsSuggestions])
@@ -181,7 +177,7 @@ const DesktopContent = () => {
     setShowCart(true)
   }
   return (
-    <div className="desktop_only border border-quartz rounded p-6">
+    <div className="desktop_only">
       <Snackbar
         open={openNotification}
         autoHideDuration={3000}
@@ -192,7 +188,7 @@ const DesktopContent = () => {
           {message}
         </Alert>
       </Snackbar>
-      <div className="float-right text-[16px]/[24px] font-medium text-dodgerBlue">
+      <div className="float-right underline text-base font-medium text-lightBlue">
         <span className="pr-8 cursor-pointer" onClick={clearProductList}>
           Clear List
         </span>
@@ -205,31 +201,31 @@ const DesktopContent = () => {
               <TableRow className="!py-2">
                 <TableCell
                   align="left"
-                  className="font-inter !font-normal text-[14px]/[22px] !text-manatee"
+                  className="font-inter !font-bold text-[14px]"
                 >
                   Code
                 </TableCell>
                 <TableCell
                   align="left"
-                  className="font-inter !font-normal text-[14px]/[22px] !text-manatee"
+                  className="font-inter !font-bold text-[14px]"
                 >
                   Item
                 </TableCell>
                 <TableCell
                   align="left"
-                  className="font-inter !font-normal text-[14px]/[22px] !text-manatee"
+                  className="font-inter !font-bold text-[14px]"
                 >
                   Quantity
                 </TableCell>
                 <TableCell
                   align="left"
-                  className="font-inter !font-normal text-[14px]/[22px] !text-manatee"
+                  className="font-inter !font-bold text-[14px]"
                 >
                   Unit Price
                 </TableCell>
                 <TableCell
                   align="left"
-                  className="font-inter !font-normal text-[14px]/[22px] !text-manatee"
+                  className="font-inter !font-bold text-[14px]"
                 >
                   Total
                 </TableCell>
@@ -309,7 +305,7 @@ const DesktopContent = () => {
           <MediumPrimaryButton
             title={'Add'}
             onClick={handleAddItem}
-            className="w-auto cta-button bg-yellow"
+            className="w-auto"
           />
         </div>
       </div>

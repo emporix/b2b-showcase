@@ -62,7 +62,7 @@ const RadioCheckedIcon = styled(RadioIcon)({
   },
 })
 
-export const RadioItem = ({ radioKey, onChange }) => {
+export const RadioItem = ({ radioKey }) => {
   const { radioActive, setRadioActive } = useContext(RadioContext)
 
   return (
@@ -72,7 +72,6 @@ export const RadioItem = ({ radioKey, onChange }) => {
       color="default"
       checkedIcon={<RadioCheckedIcon />}
       icon={<RadioIcon />}
-      onChange={onChange}
       checked={radioKey == radioActive ? true : false}
       onClick={() => setRadioActive(radioKey)}
     />

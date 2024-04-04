@@ -3,10 +3,8 @@ import { Navigate } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 import AccountLayout from './AccountLayout'
 import { loginUrl } from '../../services/service.config'
-import AddressForm from 'components/addresses/AddressesForm'
-import { useAuth } from 'context/auth-provider'
 
-export const FromInputItem = ({ label, value }) => {
+const FromInputItem = ({ label, value }) => {
   const [val, setVal] = useState(value)
   return (
     <div className="form-item sm:justify-between">
@@ -100,13 +98,13 @@ const ActionDiscardButton = ({ caption }) => {
 }
 
 const PersonalDetails = () => {
-  const { user } = useAuth()
-  if (!user) {
+  const { user: currentUser } = useSelector((state) => state.auth)
+  if (!currentUser) {
     return <Navigate to={loginUrl()} />
   }
   return (
     <>
-      <PersonalInfo user={user} />
+      <PersonalInfo user={currentUser} />
       <ChangePasswordContent />
       <AccountPersonalSave />
     </>
@@ -116,8 +114,8 @@ const PersonalDetails = () => {
 const AccountPersonalDetails = () => {
   return (
     <AccountLayout page="Personal Details">
-      <PersonalDetails />
-      <AddressForm />
+      {' '}
+      <PersonalDetails />{' '}
     </AccountLayout>
   )
 }

@@ -127,20 +127,17 @@ export const getAllCategories = async () => {
   return data
 }
 
-const getCategoryTree = (categories, layer, parenturl = 'product', lang) => {
+const getCategoryTree = (categories, layer, parenturl = 'product') => {
   return categories.map((category) => {
-    const categoryName = category.name || category.localizedName[lang]
-    const categoryKey = categoryName.toLowerCase().replaceAll(' ', '_')
+    const categoryKey = category.name.toLowerCase().replaceAll(' ', '_')
     const url = `${parenturl}/${categoryKey}`
     const items =
       category.subcategories !== undefined
-        ? getCategoryTree(category.subcategories, layer + 1, url, lang)
+        ? getCategoryTree(category.subcategories, layer + 1, url)
         : []
 
-    let title = category.localizedName[lang] || category.name
-
     return {
-      title,
+      title: category.name,
       items: items,
       key: categoryKey,
       categoryId: category.id,
@@ -150,12 +147,12 @@ const getCategoryTree = (categories, layer, parenturl = 'product', lang) => {
   })
 }
 
-export const getProductCategoryTrees = async (rootCategoriesIds, lang) => {
+export const getProductCategoryTrees = async (rootCategoriesIds) => {
   const categories = await getAllCategories()
   const sortedCategories = categories.filter((category) =>
     rootCategoriesIds.includes(category.id)
   )
-  const categoryTrees = getCategoryTree(sortedCategories, 1, 'product', lang)
+  const categoryTrees = getCategoryTree(sortedCategories, 1)
 
   categoryTrees.sort((a, b) => a.key.localeCompare(b.key))
   localStorage.setItem(PRODUCT_CATEGORY_TREE, JSON.stringify(categoryTrees))

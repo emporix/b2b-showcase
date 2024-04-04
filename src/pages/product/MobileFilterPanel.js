@@ -1,7 +1,7 @@
 import React, { useState, useRef } from 'react'
 import { AiOutlineClose } from 'react-icons/ai'
-import { HiChevronRight , HiChevronDown } from "react-icons/hi";
-import MultiRangeSlider from "../../components/MultiRangeSlider/";
+import { ChevronRightIcon, ChevronDownIcon } from '@heroicons/react/solid'
+import MultiRangeSlider from '../../components/MultiRangeSlider/'
 import ReactStars from 'react-stars'
 
 const filterList = [
@@ -93,9 +93,9 @@ const FilterItem = ({ item }) => {
       <button className="button" onClick={handleToggle}>
         {title}
         {clicked ? (
-            <HiChevronDown size={20}  className="h-8" />
+          <ChevronDownIcon className="h-8" />
         ) : (
-            <HiChevronRight size={20} className="h-8" />
+          <ChevronRightIcon className="h-8" />
         )}
       </button>
 
@@ -130,9 +130,9 @@ const PriceRangeFilter = () => {
       <button className="button" onClick={handleToggle}>
         Price Range
         {clicked ? (
-            <HiChevronDown size={20} className="h-8" />
+          <ChevronDownIcon className="h-8" />
         ) : (
-            <HiChevronRight size={20} className="h-8" />
+          <ChevronRightIcon className="h-8" />
         )}
       </button>
       <div
@@ -185,9 +185,9 @@ const RatingFilter = () => {
       <button className="button" onClick={handleToggle}>
         Rating
         {clicked ? (
-            <HiChevronDown size={20} className="h-8" />
+          <ChevronDownIcon className="h-8" />
         ) : (
-            <HiChevronRight size={20} className="h-8" />
+          <ChevronRightIcon className="h-8" />
         )}
       </button>
       <div
@@ -235,11 +235,11 @@ const MobileFilterPanel = (props) => {
         </ul>
       </div>
       <div className="mt-12 font-inter font-bold">
-      <div className="w-full h-12 bg-yellow text-eerieBlack  flex items-center cursor-pointer">
+        <div className="w-full h-12 bg-tinBlue text-black  flex items-center ">
           <span className="text-center w-full">APPLY FILTER </span>
         </div>
-        <div className="w-full h-12 bg-aliceBlue text-eerieBlack  flex items-center mt-6 cursor-pointer">
-          <span className="text-center text-eerieBlack w-full">CLEAR ALL </span>
+        <div className="w-full h-12 bg-bgWhite text-black  flex items-center mt-6">
+          <span className="text-center text-tinBlue w-full">CLEAR ALL </span>
         </div>
       </div>
     </div>

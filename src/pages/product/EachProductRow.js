@@ -2,6 +2,7 @@ import React, { useCallback, useMemo, useState } from 'react'
 import ReactStars from 'react-stars'
 import Quantity from '../../components/Utilities/quantity/quantity'
 import { maxProductDescriptionLength } from '../../constants/page'
+import parse from 'html-react-parser'
 import { CurrencyBeforeValue } from 'components/Utilities/common'
 import { trimImage } from '../../helpers/images'
 import { useAuth } from 'context/auth-provider'
@@ -9,19 +10,16 @@ import { useCart } from 'context/cart-provider'
 import { formatPrice } from 'helpers/price'
 import { LargePrimaryButton } from 'components/Utilities/button'
 import { useNavigate } from 'react-router-dom'
-import { useLanguage } from 'context/language-provider'
 
 const EachProductRow = ({ item, type, available, rating, productCount }) => {
-  const { getLocalizedValue } = useLanguage()
   const imageSrc = useMemo(() => {
     return item.media[0] === undefined ? '' : item.media[0]['url']
   }, [item])
   const { putCartProduct } = useCart()
   const trimmedDescription = useMemo(() => {
-    const desc = getLocalizedValue(item.description)
-    return desc.length > maxProductDescriptionLength
-      ? `${desc.substr(0, maxProductDescriptionLength)} ...`
-      : desc
+    return item.description.length > maxProductDescriptionLength
+      ? `${item.description.substr(0, maxProductDescriptionLength)} ...`
+      : item.description
   }, [item.description])
 
   const { isLoggedIn, userTenant } = useAuth()
@@ -42,37 +40,28 @@ const EachProductRow = ({ item, type, available, rating, productCount }) => {
     if (price) {
       return <CurrencyBeforeValue value={price} />
     } else {
-      return <span className="text-xs text-primaryBlue font-bold">No Price</span>
+      return <span className="text-xs text-brightRed font-bold">No Price</span>
     }
   }
   return (
-    <div className="flex h-full font-inter rounded border border-quartz p-4">
-      <div className="flex w-[15%] flex-col mr-4">
-        <div
-          className={
-            available
-              ? 'text-brightGreen font-inter font-bold text-xs float-right mb-14'
-              : 'text-primaryBlue font-inter font-bold text-xs float-right mb-14'
-          }
-        >
-          {available ? 'In Stock' : 'Out Of Stock'}
-        </div>
+    <div className="flex h-full font-inter ">
+      <div className="flex w-[15%]">
         <img src={trimImage(`${imageSrc}`, 200, 150)} className="self-center" />
       </div>
       <div className="flex-auto w-[55%]">
         <div className="text-xs font-bold text-gray">{item.code}</div>
         <div className="text-2xl mt-4 font-semibold text-black h-16">
-          {getLocalizedValue(item.name)}
+          {item.name}
         </div>
         <div className="text-sm mt-4  text-black flex">
           <ReactStars size={16} value={rating} color2={'#FBB13C'} />(
           {productCount})
         </div>
         <div className="text-sm mt-4  text-gray text-normal">
-          <span>${trimmedDescription}</span>
+          {parse(`<span>${trimmedDescription}</span>`)}
         </div>
       </div>
-      <div className="flex flex-col justify-between flex-auto w-[30%]">
+      <div className="flex-auto w-[30%]">
         <div className={'w-full flex justify-between h-[56px] pt-2'}>
           {item.productType !== 'PARENT_VARIANT' && (
             <>
@@ -96,30 +85,40 @@ const EachProductRow = ({ item, type, available, rating, productCount }) => {
           )}
         </div>
 
-        <div className="mt-6 flex w-full flex-col items-end">
+        <div
+          className={
+            available
+              ? 'text-brightGreen font-inter font-bold text-xs mt-[90px] float-right'
+              : 'text-brightRed font-inter font-bold text-xs mt-[90px] float-right'
+          }
+        >
+          {available ? 'In Stock' : 'Out Of Stock'}
+        </div>
+        <div className="mt-6 lg:flex w-full float-right">
           {item.productType !== 'PARENT_VARIANT' ? (
             <>
-              <Quantity
-                value={quantity}
-                increase={() => {
-                  setQuantity((prev) => {
-                    return prev + 1
-                  })
-                }}
-                decrease={() => {
-                  setQuantity((prev) => {
-                    return prev - 1 > 1 ? prev - 1 : 1
-                  })
-                }}
-                onChange={(value) => {
-                  setQuantity(value)
-                }}
-              />
-              <div
-                className="ml-6 mt-4 h-10 w-40 cursor-pointer cta-button bg-yellow flex items-center justify-center"
-                onClick={handleAddToCart}
-              >
-                <span className="px-4">ADD TO CART</span>
+              <div>
+                <Quantity
+                  value={quantity}
+                  increase={() => {
+                    setQuantity((prev) => {
+                      return prev + 1
+                    })
+                  }}
+                  decrease={() => {
+                    setQuantity((prev) => {
+                      return prev - 1 > 1 ? prev - 1 : 1
+                    })
+                  }}
+                />
+              </div>
+              <div className="ml-6 h-10 w-40 bg-tinBlue text-black flex items-center">
+                <div
+                  className="mx-auto flex cursor-pointer"
+                  onClick={handleAddToCart}
+                >
+                  <span className="px-4">ADD TO CART</span>
+                </div>
               </div>
             </>
           ) : (
@@ -127,8 +126,6 @@ const EachProductRow = ({ item, type, available, rating, productCount }) => {
               <LargePrimaryButton
                 title={'VIEW VARIANTS'}
                 onClick={handleProductDetail}
-                className="cta-button bg-yellow"
-                sx={{ backgroundColor: '#FAC420 !important' }}
               />
             </div>
           )}

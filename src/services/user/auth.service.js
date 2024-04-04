@@ -6,20 +6,17 @@ import {
   CUSTOMER_TOKEN,
   SAAS_TOKEN,
 } from 'constants/localstorage'
-import CartService from '../cart.service'
 
 const API_URL = process.env.REACT_APP_API_URL
 
-export const register = async (
+const register = async (
   email,
   password,
   firstName,
   lastName,
   tenantName,
   company,
-  registrationId,
-  phoneNumber,
-  currency
+  phoneNumber
 ) => {
   let response
   const anonymousToken = localStorage.getItem(ANONYMOUS_TOKEN)
@@ -27,11 +24,6 @@ export const register = async (
     'Content-Type': 'application/json',
     Authorization: 'Bearer ' + anonymousToken,
   }
-  const siteCode = localStorage.getItem('siteCode')
-  const currentLanguage = localStorage.getItem('current-language')
-  const b2bValue = registrationId
-    ? { companyRegistrationId: registrationId }
-    : null
   const payload = {
     email: email,
     password: password,
@@ -40,11 +32,8 @@ export const register = async (
       lastName: lastName,
       contactPhone: phoneNumber,
       company: company,
-      b2b: b2bValue,
       contactEmail: email,
-      preferredCurrency: currency.code,
-      preferredSite: siteCode,
-      preferredLanguage: currentLanguage
+      preferredCurrency: 'EUR',
     },
     signup: {
       email: email,
@@ -53,14 +42,12 @@ export const register = async (
   }
   const signupApi = `${API_URL}/customer/${tenantName}/signup`
   response = await ApiRequest(signupApi, 'post', payload, headers)
-  if (response.status === 201) {
-    return Promise.resolve()
-  } else {
-    return Promise.reject()
-  }
+
+  return response
 }
 
-export const login = async (username, password, userTenant) => {
+const login = async (username, password, userTenant) => {
+  let responseData = null
   const anonymousToken = localStorage.getItem(ANONYMOUS_TOKEN)
   const { data } = await axios.post(
     API_URL + `/customer/${userTenant}/login`,
@@ -75,11 +62,7 @@ export const login = async (username, password, userTenant) => {
       },
     }
   )
-  return loginBasedOnCustomerToken(data, userTenant)
-}
 
-export const loginBasedOnCustomerToken = async (data, userTenant) => {
-  let responseData = null
   if (data.accessToken) {
     let now = Date.now()
     localStorage.setItem(
@@ -93,7 +76,7 @@ export const loginBasedOnCustomerToken = async (data, userTenant) => {
     let customerAccesstoken = data.accessToken
 
     const { data: me } = await axios.get(
-      API_URL + `/customer/${userTenant}/me?expand=addresses,mixin:*`,
+      API_URL + `/customer/${userTenant}/me?expand=addresses`,
       {
         headers: {
           'Content-Type': 'application/json',
@@ -102,37 +85,22 @@ export const loginBasedOnCustomerToken = async (data, userTenant) => {
       }
     )
 
-    setScopes(userTenant, customerAccesstoken)
-
     if (me.firstName) {
       responseData = me
     }
   }
 
-  let userdata = {
-    ...responseData,
-    userTenant: userTenant,
-    username: responseData.firstName + ' ' + responseData.lastName,
-  }
-  try {
-    const anonCart = await CartService.getAnnonymousCart()
-    // save anonymous cart to merge
-    localStorage.setItem('anonymousCart', JSON.stringify(anonCart))
-  } catch (ex) {}
-
-  localStorage.setItem('user', JSON.stringify(userdata))
   return responseData
 }
 
-const setScopes = async (tenant, customerAccessToken) => {
-  const { data: scopeResponse } = await axios.get(
-    API_URL + `/iam/${tenant}/users/me/scopes`,
-    {
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: 'Bearer ' + customerAccessToken,
-      },
-    }
-  )
-  localStorage.setItem('scopes', scopeResponse.scopes.split(' '))
+const logout = () => {
+  localStorage.removeItem('user')
+  localStorage.removeItem(CUSTOMER_TOKEN)
+  localStorage.removeItem(CUSTOMER_TOKEN_EXPIRES_IN)
 }
+const auth_services = {
+  register,
+  login,
+  logout,
+}
+export default auth_services

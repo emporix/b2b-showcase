@@ -1,14 +1,19 @@
+.cart-quantity-panel {
+  padding-top: 8px;
+  margin-bottom: 0.51rem;
+  margin-left: 25px !important;
+}
 .cart-caption-font {
   @apply text-[20px] leading-[22px] font-bold font-inter;
 }
 .cart-product-content {
-  /* @apply pr-[33px]; */
+  @apply pr-[33px];
 }
 .cart-product-item {
   @apply w-full flex gap-4 pb-4 border-bgWhite border-b last:border-b-0;
 }
 .cart-product-image-and-quantity {
-  @apply w-[84px] mr-[18px];
+  @apply w-[67px];
 }
 .cart-product-info {
   @apply w-full;
@@ -37,7 +42,7 @@
   @apply w-[270px];
 }
 .cart-product-image {
-  @apply w-[52px] h-[52px];
+  @apply w-[63px] h-[78px] px-2 pt-[10px] pb-[2px];
 }
 .cart-product-name {
   @apply text-[16px] leading-[24px] font-bold;
@@ -64,30 +69,27 @@
 .cart-product-price-except-vat {
   @apply text-[16px] leading-[20px] font-bold float-right;
 }
-.cart-action-panel {
-  @apply p-6 bg-bgWhite rounded;
-}
 .cart-action-row {
   @apply pb-4 grid grid-cols-1 gap-4 border-bgWhite border-b last:border-b-0;
 }
 .cart-action-panel {
-  @apply text-[16px] leading-[22px];
+  @apply p-6 text-[16px] leading-[22px];
 }
 .cart-total-price-wrapper {
   @apply text-[20px] leading-[22px] font-bold;
 }
 .cart-go-checkout-btn {
-  @apply w-full text-[14px] leading-[14px] text-center font-bold h-12 px-6 bg-darkBlue text-white;
+  @apply w-full text-[14px] leading-[14px] text-center font-bold h-12 px-6 bg-brightRed text-[color:white];
 }
 .cart-go-cart-btn {
-  @apply w-full text-[14px] leading-[14px] text-center font-bold h-12 px-6 bg-primaryBlue text-white;
+  @apply w-full text-[14px] leading-[14px] text-center font-bold h-12 px-6 bg-lightRed text-black;
 }
 .cart-request-quote-btn {
-  @apply w-full text-[14px] leading-[14px] text-center font-bold h-12 px-6 bg-lightBlue text-white;
+  @apply w-full text-[14px] leading-[14px] text-center font-bold h-12 px-6 bg-lightPink text-tinBlue;
 }
 .table-cart-product-image {
-  @apply w-[52px] h-[52px] p-0;
+  @apply w-[52px] h-[74px] p-0;
 }
 .cart-product-image-mobile {
-  @apply w-[52px] h-[52px] p-0;
+  @apply w-[56px] h-[74px] p-0;
 }

@@ -6,8 +6,6 @@ import {
   getCartAccountApi,
   getCartById,
   getCartMergeUrl,
-  getRedeemOptions,
-  getRewardPoints, redeemCouponForPoints,
 } from './service.config'
 import ApiRequest from './index'
 import { ACCESS_TOKEN } from '../constants/localstorage'
@@ -55,29 +53,6 @@ const CartService = () => {
     return cart
   }
 
-  const getRewardPointsForLoggedUser = async () => {
-    try{
-      const { data } = await api.get(getRewardPoints())
-      return data
-    } catch(e){
-      return null;
-    }
-  }
-
-  const getRedeemOptionsForLoggedUser = async () => {
-    const { data } = await api.get(getRedeemOptions())
-    return data
-  }
-  const getCouponForPointsForLoggedUser = async (optionId) => {
-    const payload = { id: optionId }
-    const params = {
-      siteCode: localStorage.getItem('siteCode'),
-    }
-    const { data } = await api.post(redeemCouponForPoints(), payload, { params })
-    console.log('returned coupon code: ', data)
-    return data
-  }
-
   const applyDiscount = async (cartAccountId, code) => {
     const accessToken = localStorage.getItem(ACCESS_TOKEN)
     const headers = {
@@ -108,7 +83,6 @@ const CartService = () => {
     )
     return res.data
   }
-
   const changeCurrency = async (newCurrency, cartAccountId) => {
     const accessToken = localStorage.getItem(ACCESS_TOKEN)
     const headers = {
@@ -135,15 +109,6 @@ const CartService = () => {
     return res
   }
 
-  const deleteAllProductsFromCart = async (cartAccountId) => {
-    const headers = {
-      'X-Version': 'v2',
-    }
-    const url = `${cartRemoveApi()}/${cartAccountId}/items`
-    const res = await api.delete(url, { headers })
-    return res
-  }
-
   const addMultipleProductsToCart = async (cartAccountId, products) => {
     const url = `${cartProductsApi()}/${cartAccountId}/itemsBatch`
     const headers = {
@@ -155,7 +120,7 @@ const CartService = () => {
         price: {
           priceId: product.price.priceId,
           effectiveAmount:
-            product.price.effectiveAmount || product.price.effectiveValue,
+            product.price.effectiveValue || product.price.effectiveValue,
           originalAmount:
             product.price.originalAmount || product.price.originalValue,
           currency: product.price.currency,
@@ -222,18 +187,6 @@ const CartService = () => {
     await api.put(url, body, { headers, params })
   }
 
-  const updateDeliveryWindow = async (
-    cartAccountId,
-    body,
-    partial = true
-  ) => {
-    const url = `${cartApi()}/${cartAccountId}`
-    const headers = {}
-    const params = { partial }
-
-    await api.put(url, body, { headers, params })
-  }
-
   return {
     getCart,
     changeCurrency,
@@ -245,13 +198,8 @@ const CartService = () => {
     removeProductFromCart,
     removeDiscount,
     removeCart,
-    deleteAllProductsFromCart,
     addMultipleProductsToCart,
     updateCartProduct,
-    getRewardPointsForLoggedUser,
-    getRedeemOptionsForLoggedUser,
-    getCouponForPointsForLoggedUser,
-    updateDeliveryWindow,
   }
 }
 export default CartService()

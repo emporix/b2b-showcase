@@ -24,7 +24,7 @@ const MyOrdersView = () => {
     <GridLayout className="mt-9 gap-12">
       <div className="pb-6 border-b border-bgWhite">
         <div className="lg:block hidden">
-          <OrderDetails order={order} />
+          <OrderDetails entries={order.entries} />
         </div>
       </div>
     </GridLayout>
@@ -32,10 +32,8 @@ const MyOrdersView = () => {
 }
 
 const AccountMyOrdersView = () => {
-  const { orderId } = useParams()
-
   return (
-    <AccountLayout page="View" detail={orderId}>
+    <AccountLayout page="View" detail="#CMD-2022-0119-001">
       <BackButton link={myAccountMyOrders()} title={'Back to orders list'} />
       <MyOrdersView />
     </AccountLayout>

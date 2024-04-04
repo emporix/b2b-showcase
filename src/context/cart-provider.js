@@ -8,6 +8,7 @@ import React, {
   useEffect,
 } from 'react'
 import { useSelector } from 'react-redux'
+import { sessionIdSelector } from 'redux/slices/authReducer'
 import productService from 'services/product/product.service'
 import CartService from 'services/cart.service'
 import { useAuth } from './auth-provider'
@@ -31,7 +32,7 @@ const getCartAccount = async ({ customerId, sessionId }) => {
         try {
           const anonymousCart = JSON.parse(cart2merge)
           await CartService.mergeCarts(customerCart.id, anonymousCart.id)
-          const updatedCustomerCart = await CartService.getUserCart(
+          const { data: updatedCustomerCart } = await CartService.getUserCart(
             customerId
           )
           return updatedCustomerCart
@@ -40,8 +41,8 @@ const getCartAccount = async ({ customerId, sessionId }) => {
         } finally {
           // remove anonymous cart to merge
           localStorage.removeItem('anonymousCart')
+          return customerCart
         }
-        return customerCart
       } else {
         return customerCart
       }
@@ -82,9 +83,9 @@ const getCartList = async (items) => {
 
 const CartProvider = ({ children }) => {
   const { context } = useAppContext()
-  const { userTenant, sessionId, user } = useAuth()
+  const { userTenant } = useAuth()
+  const sessionId = useSelector(sessionIdSelector)
   const [cartAccount, setCartAccount] = useState(DEFAULT_CART)
-  const [shippingMethod, setShippingMethod] = useState(null)
   const { currentSite } = useSites()
   const products = useMemo(() => {
     return cartAccount.items.map((cart) => {
@@ -100,14 +101,13 @@ const CartProvider = ({ children }) => {
       }
     })
   }, [cartAccount])
-
   const discounts = useMemo(() => {
     return cartAccount.discounts
   }, [cartAccount.discounts])
 
   useEffect(() => {
     syncCart()
-  }, [user, userTenant, sessionId])
+  }, [userTenant, currentSite, sessionId])
 
   const removeCartItem = async (item) => {
     await CartService.removeProductFromCart(cartAccount.id, item.id)
@@ -118,25 +118,6 @@ const CartProvider = ({ children }) => {
     })
     syncCart()
   }
-  const setCartItemQty = useCallback(
-    async (itemId, qty) => {
-      const item = cartAccount.items.find((item) => item.id === itemId)
-      if (!item) {
-        throw new Error(`No item with id ${itemId} in cart`)
-      }
-      item.quantity = qty
-      const { quantity } = item
-
-      await CartService.updateCartProduct(
-        cartAccount.id,
-        item.id,
-        { quantity },
-        true
-      )
-      syncCart()
-    },
-    [cartAccount]
-  )
   const incrementCartItemQty = useCallback(
     async (itemId) => {
       const item = cartAccount.items.find((item) => item.id === itemId)
@@ -179,6 +160,20 @@ const CartProvider = ({ children }) => {
     setCartAccount({ items: [] })
   }
 
+  useEffect(() => {
+    changeCurrency(context.currency)
+  }, [context.currency])
+
+  const changeCurrency = useCallback(
+    async (newCurrency) => {
+      if (cartAccount.id) {
+        await CartService.changeCurrency(newCurrency, cartAccount.id)
+        await syncCart()
+      }
+    },
+    [cartAccount?.id]
+  )
+
   const applyDiscount = useCallback(
     async (code) => {
       if (cartAccount.id) {
@@ -206,25 +201,16 @@ const CartProvider = ({ children }) => {
       })
       if (matchCart.length === 0) {
         await CartService.addProductToCart(cartAccount.id, product)
-        await syncCart()
+        syncCart()
       }
     },
     [cartAccount.id, cartAccount]
   )
 
-  const updateDeliveryWindow = useCallback(
-    async(deliveryWindow) => {
-      if (cartAccount.id) {
-        await CartService.updateDeliveryWindow(cartAccount.id, deliveryWindow)
-        await syncCart()
-      }
-    }, [cartAccount?.id]
-  )
-
   const deleteCart = async (cartAccountId, cartItemId) => {
     await CartService.removeCart(cartAccountId, cartItemId)
-    await removeCartItem(cartItemId)
-    await syncCart()
+    removeCartItem(cartItemId)
+    syncCart()
   }
 
   const syncCart = useCallback(async () => {
@@ -235,29 +221,25 @@ const CartProvider = ({ children }) => {
     } else {
       newCart = await getCartAccount({ sessionId })
     }
-    const items = await getCartList(newCart?.items || [])
+    const items = await getCartList(newCart.items || [])
     newCart.items = items
     setCartAccount(newCart)
-    return newCart
   }, [sessionId])
 
   const value = {
     removeCartItem,
+    changeCurrency,
     putCartProduct,
     applyDiscount,
     removeDiscount,
     deleteCart,
     clearCart,
     syncCart,
-    setCartItemQty,
     incrementCartItemQty,
     decrementCartItemQty,
     cartAccount,
     products,
     discounts,
-    shippingMethod,
-    setShippingMethod,
-    updateDeliveryWindow
   }
   return <CartContext.Provider value={value}>{children}</CartContext.Provider>
 }

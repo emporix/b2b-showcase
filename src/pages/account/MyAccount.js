@@ -1,63 +1,47 @@
 import React, { useCallback, useEffect, useState } from 'react'
 import AccountLayout from './AccountLayout'
 import { SavedCarts } from './common'
+import { useSelector } from 'react-redux'
 import { Navigate } from 'react-router-dom'
 import { CurrencyBeforeValue } from 'components/Utilities/common'
 import { getRecentOrders } from '../../services/orders.service'
 import { OrderList } from './OrdersList'
-import { useAuth } from 'context/auth-provider'
 
 const AccountPersonalInfo = () => {
-  const { user } = useAuth()
-  if (!user) {
+  const { user: currentUser } = useSelector((state) => state.auth)
+  if (!currentUser) {
     return <Navigate to="/login" />
   }
   return (
     <div className="account-personal-info-wrapper">
-      <div className="account-personal-info-caption">
+      <div className="account-personal-info-caption border-bottom-gray">
         <div className="account-personal-info flex">
           <div className="my-auto  flex w-full justify-between items-center">
             <span className="inline-block align-middle account-personal-caption">
               Personal Details
             </span>
-            {/* <span className="inline-block align-middle account-edit-btn">
+            <span className="inline-block align-middle account-edit-btn">
               Edit Profile&nbsp;&nbsp;
               <span className="profile-edit-btn-arrow">&gt;</span>
-            </span> */}
+            </span>
           </div>
         </div>
       </div>
       <div className="account-profile">
         <div className="mx-auto flex flex-col gap-8 items-center">
-        <div className="flex flex-row flex-1 w-full">
-            <img
-              className="personal-photo"
-              src="/photo.png"
-              alt="profile photography"
-            />
-            <div className="flex flex-col justify-start items-start pl-6">
-            <div className="text-center m-auto text-[20px]/[28px] font-semibold">
-                {user.username}
-              </div>
-              <span className="account-edit-btn cursor-pointer color-dodgerBlue">
-                Edit Profile
-              </span>
-            </div>
-          </div>
+          <img className="personal-photo" src="/photo.png" />
           <div className="profile-info flex gap-4">
-            <div className="profile-items gap-2 flex flex-col justify-items-start">
-              {/* <p>Name</p> */}
+            <div className="profile-items gap-2 flex flex-col justify-items-end">
+              <p>Name</p>
               <p>Company</p>
               <p>Phone</p>
               <p>Email</p>
             </div>
             <div className="profile-items-info gap-2 flex flex-col justify-items-start">
-              {/* <p className="font-bold">{user.username}</p> */}
-              <p>{user.company}</p>
-              <p>
-                {user.contactPhone ? user.contactPhone : '+1 (543) 234-76-43'}
-              </p>
-              <p>{user.contactEmail}</p>
+              <p className="font-bold">{currentUser.username}</p>
+              <p>{currentUser.company}</p>
+              <p>{currentUser.contactPhone}</p>
+              <p>{currentUser.contactEmail}</p>
             </div>
           </div>
         </div>
@@ -115,7 +99,7 @@ const PaymentInfoDetails = () => {
 const AccountSummary = () => {
   return (
     <div className="account-summary-wrapper flex flex-col gap-6">
-      <div className="account-summary-caption">
+      <div className="account-summary-caption border-bottom-gray">
         <div className="account-summary-info flex">
           <div className="my-auto  flex w-full justify-between items-center">
             <span className="inline-block align-middle account-summary-title">
@@ -132,14 +116,15 @@ const AccountSummary = () => {
 
 const PortalCaptionBar = ({ title, action_title }) => {
   return (
-    <div className="portal-caption" key={title}>
+    <div className="portal-caption border-bottom-gray mb-6" key={title}>
       <div className="portal-caption-content flex">
         <div className="my-auto  flex w-full justify-between items-center">
           <span className="inline-block align-middle portal-title">
             {title}
           </span>
-          <span className="text-[16px]/[24px] text-dodgerBlue font-medium">
-            {action_title}
+          <span className="inline-block align-middle portal-action-btn">
+            {action_title}&nbsp;&nbsp;
+            <span className="profile-edit-btn-arrow">&gt;</span>
           </span>
         </div>
       </div>
@@ -161,11 +146,7 @@ const RecentOrders = () => {
 
   return (
     <div className="account-recent-orders-wrapper portal-wrapper">
-      <PortalCaptionBar
-        className="text-[16px]/[24px] text-dodgerBlue font-medium"
-        title="Recent Orders"
-        action_title="View All"
-      />
+      <PortalCaptionBar title="Recent Orders" action_title="View All" />
       <OrderList orders={orders} />
     </div>
   )
@@ -174,12 +155,8 @@ const RecentOrders = () => {
 const RecentSavedCarts = () => {
   const actions = [{ title: 'View' }]
   return (
-    <div className="account-saved-carts-wrapper portal-wrapper border border-quartz rounded mt-8 p-6">
-      <PortalCaptionBar
-        className="text-[16px]/[24px] text-dodgerBlue font-medium"
-        title="Saved Carts"
-        action_title="View All"
-      />
+    <div className="account-saved-carts-wrapper portal-wrapper">
+      <PortalCaptionBar title="Saved Carts" action_title="View All" />
       <SavedCarts actions={actions} />
     </div>
   )
@@ -187,7 +164,7 @@ const RecentSavedCarts = () => {
 
 const AccountPersonalDetailsAndSummary = () => {
   return (
-    <div className="personal-and-summary-content-wrapper">
+    <div className="personal-and-summary-content-wrapper border-bottom-gray">
       <div className="personal-and-summary-content md:flex">
         <AccountPersonalInfo />
         <AccountSummary />
@@ -199,15 +176,20 @@ export const MyAccountContent = () => {
   return (
     <>
       <AccountPersonalDetailsAndSummary />
-      <RecentOrders />
-      <RecentSavedCarts />
+      <div className="mt-12">
+        <RecentOrders />
+      </div>
+      <div className="mt-12">
+        <RecentSavedCarts />
+      </div>
     </>
   )
 }
 const MyAccount = () => {
   return (
     <AccountLayout page="My Account">
-      <MyAccountContent />
+      {' '}
+      <MyAccountContent />{' '}
     </AccountLayout>
   )
 }

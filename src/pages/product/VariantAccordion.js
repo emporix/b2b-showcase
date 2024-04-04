@@ -1,7 +1,6 @@
 import { Grid } from '@mui/material'
 import React, { useCallback, useEffect, useState } from 'react'
-import { HiChevronDown } from "react-icons/hi";
-
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
 import {
   GridLayout,
   Item,
@@ -20,8 +19,6 @@ import { LargePrimaryButton } from '../../components/Utilities/button'
 import { useSites } from '../../context/sites-provider'
 import { useCart } from 'context/cart-provider'
 import { useCurrency } from 'context/currency-context'
-import { useAuth } from 'context/auth-provider'
-import { useLanguage } from 'context/language-provider';
 
 function VariantAttributes({ attributes }) {
   return (
@@ -45,7 +42,6 @@ function VariantAttributes({ attributes }) {
 }
 
 const VariantSummary = ({ variant, setQuantity, quantity, price }) => {
-  const { getLocalizedValue } = useLanguage()
   return (
     <Grid
       container
@@ -69,7 +65,7 @@ const VariantSummary = ({ variant, setQuantity, quantity, price }) => {
           <Grid container direction="column">
             <Grid item>
               <Typography>
-                <b>{getLocalizedValue(variant.name)}</b>
+                <b>{variant.name}</b>
               </Typography>
             </Grid>
             <Grid item>
@@ -87,9 +83,6 @@ const VariantSummary = ({ variant, setQuantity, quantity, price }) => {
             value={quantity}
             increase={() => setQuantity(quantity + 1)}
             decrease={() => setQuantity(quantity - 1)}
-            onChange={(value) => {
-              setQuantity(value)
-            }}
           ></Quantity>
         </Item>
       </Grid>
@@ -115,62 +108,61 @@ const VariantSummary = ({ variant, setQuantity, quantity, price }) => {
   )
 }
 
-export const PriceTierValues = ({ price, quantity }) => {
-  const { isLoggedIn } = useAuth()
-  const formattedPrice = useCallback(
-    (price, tierId) => {
-      return formatCurrency(
-        price.currency,
-        isLoggedIn
-          ? price.tierValues.find(
-              (tierWithValue) => tierWithValue.id === tierId
-            ).priceValue
-          : price.tierValues.find(
-              (tierWithValue) => tierWithValue.id === tierId
-            ).priceValue +
-              (price.tierValues.find(
-                (tierWithValue) => tierWithValue.id === tierId
-              ).priceValue *
-                price.tax.taxRate) /
-                100
-      )
-    },
-    [isLoggedIn]
-  )
-  return (
-    <Grid container direction={'row'} wrap={'nowrap'} flexWrap={'nowrap'}>
-      <Grid
-        xs={12}
-        item
-        container
-        direction={'column'}
-        wrap={'nowrap'}
-        flexWrap={'nowrap'}
-      >
-        <Grid item xs={6}>
-          <b>Qty</b>
-        </Grid>
-        {/*<Grid item xs={4}>*/}
-        {/*  <b>Discount</b>*/}
-        {/*</Grid>*/}
-        <Grid item xs={6}>
-          <b>Unit Price</b>
-        </Grid>
+export const PriceTierValues = ({ price, quantity }) => (
+  <Grid container direction={'row'} wrap={'nowrap'} flexWrap={'nowrap'}>
+    <Grid
+      xs={12}
+      item
+      container
+      direction={'column'}
+      wrap={'nowrap'}
+      flexWrap={'nowrap'}
+    >
+      <Grid item xs={6}>
+        <b>Qty</b>
       </Grid>
-      {price
-        ? price.priceModel.tierDefinition.tiers.map((tier, i) => (
+      {/*<Grid item xs={4}>*/}
+      {/*  <b>Discount</b>*/}
+      {/*</Grid>*/}
+      <Grid item xs={6}>
+        <b>Unit Price</b>
+      </Grid>
+    </Grid>
+    {price
+      ? price.priceModel.tierDefinition.tiers.map((tier, i) => (
+          <Grid
+            xs={12}
+            item
+            container
+            direction={'column'}
+            wrap={'nowrap'}
+            flexWrap={'nowrap'}
+          >
             <Grid
-              xs={12}
               item
-              key={tier.id}
-              container
-              direction={'column'}
-              wrap={'nowrap'}
-              flexWrap={'nowrap'}
+              xs={6}
+              sx={{
+                fontWeight:
+                  (tier.minQuantity &&
+                    price.priceModel.tierDefinition.tiers[i + 1] ===
+                      undefined &&
+                    quantity >= tier.minQuantity.quantity) ||
+                  (price.priceModel.tierDefinition.tiers[i + 1] !== undefined &&
+                    quantity >= tier.minQuantity.quantity &&
+                    quantity <
+                      price.priceModel.tierDefinition.tiers[i + 1].minQuantity
+                        .quantity)
+                    ? 'bold'
+                    : 'normal',
+              }}
             >
-              <Grid
-                item
-                xs={6}
+              <Typography>{tier.minQuantity.quantity}+</Typography>
+            </Grid>
+            {/*<Grid item xs={4}>*/}
+            {/*  CALCULATE ME!*/}
+            {/*</Grid>*/}
+            <Grid item xs={6}>
+              <Typography
                 sx={{
                   fontWeight:
                     (tier.minQuantity &&
@@ -187,35 +179,19 @@ export const PriceTierValues = ({ price, quantity }) => {
                       : 'normal',
                 }}
               >
-                <Typography>{tier.minQuantity.quantity}+</Typography>
-              </Grid>
-              <Grid item xs={6}>
-                <Typography
-                  sx={{
-                    fontWeight:
-                      (tier.minQuantity &&
-                        price.priceModel.tierDefinition.tiers[i + 1] ===
-                          undefined &&
-                        quantity >= tier.minQuantity.quantity) ||
-                      (price.priceModel.tierDefinition.tiers[i + 1] !==
-                        undefined &&
-                        quantity >= tier.minQuantity.quantity &&
-                        quantity <
-                          price.priceModel.tierDefinition.tiers[i + 1]
-                            .minQuantity.quantity)
-                        ? 'bold'
-                        : 'normal',
-                  }}
-                >
-                  {formattedPrice(price, tier.id)}
-                </Typography>
-              </Grid>
+                {formatCurrency(
+                  price.currency,
+                  price.tierValues.find(
+                    (tierWithValue) => tierWithValue.id === tier.id
+                  ).priceValue
+                )}
+              </Typography>
             </Grid>
-          ))
-        : 'No price model for this item'}
-    </Grid>
-  )
-}
+          </Grid>
+        ))
+      : 'No price model for this item'}
+  </Grid>
+)
 
 PriceTierValues.propTypes = {}
 
@@ -274,7 +250,6 @@ function PaymentSummary({ variant, price }) {
       <CartActionRow>
         <Item>
           <LargePrimaryButton
-            className="bg-yellow rounded text-eerieBlack"
             title={'Add to cart'}
             onClick={addVariantProductToCart}
           />
@@ -284,6 +259,32 @@ function PaymentSummary({ variant, price }) {
   ) : (
     <div> - </div>
   )
+}
+
+function PaymentSmallSummary({ variant, price }) {
+  const { putCartProduct } = useCart()
+
+  const addVariantProductToCart = useCallback(() => {
+    const variantToAdd = {
+      ...variant,
+      price: price,
+      quantity: price.quantity.quantity,
+    }
+    putCartProduct(variantToAdd)
+  }, [variant, price])
+
+  return(
+    <GridLayout className="gap-4 cart-action-panel">
+      <CartActionRow>
+        <Item>
+          <LargePrimaryButton
+            title={'Add to cart'}
+            onClick={addVariantProductToCart}
+          />
+        </Item>
+      </CartActionRow>
+    </GridLayout>
+    )
 }
 
 function VariantDetails({ price, variant, quantity }) {
@@ -351,8 +352,8 @@ export const VariantHeader = () => (
   </Grid>
 )
 
-export const VariantAccordion = ({ variant, expandedByDefault }) => {
-  const [expanded, setExpanded] = useState(expandedByDefault ? true : false)
+export const VariantAccordion = ({ variant }) => {
+  const [expanded, setExpanded] = useState(false)
   const [quantity, setQuantity] = useState(1)
   const [price, setPrice] = useState(null)
   const { activeCurrency } = useCurrency()
@@ -378,9 +379,8 @@ export const VariantAccordion = ({ variant, expandedByDefault }) => {
       sx={{ paddingBottom: '8px', borderBottom: '1px solid #DFE1E5' }}
     >
       <Grid item xs={1}>
-        <HiChevronDown
-            size={20}
-          className={ expanded && 'rotated' }
+        <ExpandMoreIcon
+          className={{ rotatable: true, rotate: expanded }}
           onClick={() => toggleExpand()}
         />
       </Grid>
@@ -402,3 +402,60 @@ export const VariantAccordion = ({ variant, expandedByDefault }) => {
     </Grid>
   )
 }
+
+export const VariantSmallSummary = ({ variant }) => {
+  const [expanded, setExpanded] = useState(false)
+  const [quantity, setQuantity] = useState(1)
+  const [price, setPrice] = useState(null)
+  const { activeCurrency } = useCurrency()
+  const toggleExpand = useCallback(() => {
+    setExpanded(!expanded)
+  }, [expanded])
+  const { currentSite } = useSites()
+  const { matchPriceForProductAndQuantity } = usePrices()
+
+  useEffect(() => {
+    ;(async () => {
+      const prices = await matchPriceForProductAndQuantity(variant.id, quantity)
+      setPrice(prices[0])
+    })()
+  }, [quantity, variant.id, currentSite, activeCurrency])
+
+  return (
+    <Grid
+      container
+      direction="row"
+      alignItems="center"
+      spacing={2}
+      sx={{ paddingBottom: '8px', borderBottom: '1px solid #DFE1E5' }}
+    >
+      <Grid item xs={11}>
+      <Grid
+      container
+      spacing={2}
+      direction="row"
+      alignItems="center"
+      justifyContent="space-around"
+    > 
+    </Grid>
+      </Grid>
+      <Grid container spacing={4}>
+      <Grid item xs={11}>
+        <Typography variant="h6">
+          <Item>
+          <Grid item xs={2} className='border border-black cart-quantity-panel'>
+            <Quantity
+              value={quantity}
+              increase={() => setQuantity(quantity + 1)}
+              decrease={() => setQuantity(quantity - 1)}
+            ></Quantity>
+          </Grid>
+        </Item>
+          <PaymentSmallSummary price={price} variant={variant} />
+        </Typography>
+      </Grid>
+    </Grid>
+    </Grid>
+  )
+}
+

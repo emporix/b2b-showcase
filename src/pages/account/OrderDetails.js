@@ -8,9 +8,7 @@ import TableRow from '@mui/material/TableRow'
 import {
   CurrencyBeforeValue,
   GridLayout,
-  formatDate,
 } from '../../components/Utilities/common'
-import OrderInfoStatus from './OrderInfoStatus'
 
 const ProductInfo = ({ product }) => {
   return (
@@ -43,24 +41,8 @@ const PriceWithInfo = ({ price, includeVat = false, caption }) => {
   )
 }
 
-const orderCheck = (order) => {
-  if(order?.mixins?.['65e5c169f4793329bcaf3eff']?.interactionsCheck === false || order?.mixins?.['65e5c169f4793329bcaf3eff']?.substanceCheck === false) {
-    let message = ""  
-    if(order?.mixins?.['65e5c169f4793329bcaf3eff']?.interactionsCheck === false) {
-      message += order?.mixins?.['65e5c169f4793329bcaf3eff']?.interactionsCheckMessage + " \n."
-    }
-    if(order?.mixins?.['65e5c169f4793329bcaf3eff']?.substanceCheck === false) {
-      message += order?.mixins?.['65e5c169f4793329bcaf3eff']?.substanceCheckMessage + " \n."
-    }
-    return message
-  }
-  return undefined
-}
-
-const OrderDetails = ({ order }) => {
+const OrderDetails = ({ entries }) => {
   return (
-  <>
-    {orderCheck(order) && (<OrderInfoStatus status={order.status} message={orderCheck(order)} ></OrderInfoStatus>)}
     <TableContainer>
       <Table sx={{ minWidth: 650 }}>
         <TableHead>
@@ -78,9 +60,6 @@ const OrderDetails = ({ order }) => {
               Subtotal
             </TableCell>
             <TableCell align="center" className="cart-head-item">
-              Exp. Delivery
-            </TableCell>
-            <TableCell align="center" className="cart-head-item">
               Discount
             </TableCell>
             <TableCell align="center" className="cart-head-item">
@@ -93,8 +72,8 @@ const OrderDetails = ({ order }) => {
           </TableRow>
         </TableHead>
         <TableBody>
-          {order.entries &&
-            order.entries.map((entry) => (
+          {entries &&
+            entries.map((entry) => (
               <TableRow
                 key={entry.id}
                 sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
@@ -106,7 +85,7 @@ const OrderDetails = ({ order }) => {
                   {entry.tax && entry.tax.lines[0] ? (
                     <PriceWithInfo
                       price={
-                        (entry.totalPrice - entry.totalDiscount.amount) /
+                        (entry.totalPrice - entry.tax.lines[0].amount) /
                         entry.effectiveQuantity
                       }
                     />
@@ -118,16 +97,11 @@ const OrderDetails = ({ order }) => {
                 <TableCell className="cart-row-item">
                   {entry.tax && entry.tax.lines[0] ? (
                     <PriceWithInfo
-                      price={entry.totalPrice - entry.totalDiscount.amount}
+                      price={entry.totalPrice - entry.tax.lines[0].amount}
                     />
                   ) : (
                     '-'
                   )}
-                </TableCell>
-                <TableCell className="cart-row-item">
-                  {order.deliveryWindow?.deliveryDate
-                    ? formatDate(order.deliveryWindow?.deliveryDate)
-                    : '-'}
                 </TableCell>
                 <TableCell className="cart-row-item">
                   <PriceWithInfo price={entry.totalDiscount.amount} />
@@ -135,35 +109,21 @@ const OrderDetails = ({ order }) => {
                 <TableCell className="cart-row-item">
                   {entry.tax && entry.tax.lines[0] ? (
                     <PriceWithInfo
-                    price={
-                      ((entry.totalPrice - entry.totalDiscount.amount) *
-                        entry?.tax?.lines[0]?.rate) /
-                      100
-                    }
-                      caption={`${entry?.tax?.lines[0]?.rate}%`}
+                      price={entry.tax.lines[0].amount}
+                      caption={`${entry.tax.lines[0].rate}%`}
                     />
                   ) : (
                     '-'
                   )}
                 </TableCell>
                 <TableCell className="cart-row-item">
-                  <PriceWithInfo
-                    price={
-                      entry.totalPrice -
-                      entry.totalDiscount.amount +
-                      (+(entry.totalPrice - entry.totalDiscount.amount) *
-                        entry?.tax?.lines[0]?.rate) /
-                        100
-                    }
-                    includeVat={true}
-                  />
+                  <PriceWithInfo price={entry.totalPrice} includeVat={true} />
                 </TableCell>
               </TableRow>
             ))}
         </TableBody>
       </Table>
     </TableContainer>
-  </>
   )
 }
 

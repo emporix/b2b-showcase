@@ -23,13 +23,6 @@ export const LanguageProvider = ({ children }) => {
     localStorage.setItem(CURRENT_LANGUAGE_KEY, lang)
   }
 
-  const getLocalizedValue = (value) => {
-    if(!value) return value
-    if(typeof value === 'string' || value instanceof String) return value
-    if(value[currentLanguage]) return value[currentLanguage]
-    return value['en']
-  }
-
   useEffect(() => {
     if (currentSite && sites.length > 0) {
       let currentSiteObject = sites.find((site) => site.code === currentSite)
@@ -52,7 +45,6 @@ export const LanguageProvider = ({ children }) => {
         languages,
         currentLanguage,
         setLanguage,
-        getLocalizedValue,
       }}
     >
       {children}

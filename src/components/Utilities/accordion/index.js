@@ -4,7 +4,6 @@ import './accordion.css'
 const AccordionContext = createContext()
 
 export const AccordionItem = ({ index, title, children }) => {
-
   const { activeItem, setActiveItem } = useContext(AccordionContext)
   return (
     <div className="accordiion-item-wrapper">

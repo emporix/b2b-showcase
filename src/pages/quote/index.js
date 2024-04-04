@@ -1,25 +1,23 @@
 import React, { useEffect } from 'react'
 import Layout from '../Layout'
+import { userSelector } from 'redux/slices/authReducer'
+import { useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import { loginUrl } from 'services/service.config'
 import QuotePage from './QuotePage'
-import { useAuth } from 'context/auth-provider'
-import { AddressProvider } from 'pages/checkout/AddressProvider'
 
 const QuoteCart = () => {
-  const { isLoggedIn } = useAuth()
+  const currentUser = useSelector(userSelector)
   const navigate = useNavigate()
 
   useEffect(() => {
-    if (isLoggedIn) return
+    if (currentUser) return
     navigate(loginUrl())
-  }, [isLoggedIn])
+  })
 
   return (
     <Layout title="My Request Cart">
-      <AddressProvider>
-        <QuotePage />
-      </AddressProvider>
+      <QuotePage />
     </Layout>
   )
 }

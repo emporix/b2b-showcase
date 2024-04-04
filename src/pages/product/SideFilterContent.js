@@ -184,7 +184,7 @@ const SideFilterContent = (props) => {
 
       <div className="mt-12 font-inter font-bold">
         <div
-          className="w-full h-12 bg-tinBlue text-white  flex items-center "
+          className="w-full h-12 bg-tinBlue text-black  flex items-center "
           onClick={() => {
             props.setFilterItemFunc(filterItems)
             props.toggleSidebar()
@@ -192,7 +192,7 @@ const SideFilterContent = (props) => {
         >
           <span className="text-center w-full">DONE </span>
         </div>
-        <div className="w-full h-12 bg-bgWhite text-white  flex items-center mt-6">
+        <div className="w-full h-12 bg-bgWhite text-black  flex items-center mt-6">
           <span className="text-center text-tinBlue w-full">CLEAR ALL </span>
         </div>
       </div>

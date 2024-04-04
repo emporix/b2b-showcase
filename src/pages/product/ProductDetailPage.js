@@ -2,9 +2,9 @@ import React, {
   createContext,
   useCallback,
   useContext,
-  useEffect,
   useMemo,
   useState,
+  useEffect
 } from 'react'
 import Typography from '@mui/material/Typography'
 import Breadcrumbs from '@mui/material/Breadcrumbs'
@@ -22,22 +22,52 @@ import Accordion, { AccordionItem } from '../../components/Utilities/accordion'
 import LayoutContext from '../context'
 import { productUrl } from '../../services/service.config'
 
-import { LargePrimaryButton } from '../../components/Utilities/button'
+import { HirmerButton } from '../../components/Utilities/button'
 import {
   CurrencyBeforeComponent,
   CurrencyBeforeValue,
 } from 'components/Utilities/common'
-import { ProductVariants } from './ProductVariants'
 import { PriceTierValues } from './VariantAccordion'
 import { useCart } from 'context/cart-provider'
 import { useAuth } from 'context/auth-provider'
 import { formatPrice } from 'helpers/price'
-import { useLanguage } from 'context/language-provider'
+import { getLanguageFromLocalStorage } from 'context/language-provider'
 import productService from '../../services/product/product.service'
 import priceService from '../../services/product/price.service'
-import { useNavigate } from 'react-router-dom'
-import { ProductConfiguration } from './ProductConfiguration'
-import { Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material'
+import { ProductVariantSelection } from './ProductVariantSelection'
+
+const getRelatedProducts = async (language, product) => {
+  let productIds = []
+  const relatedItems = product.relatedItems
+  if(!relatedItems ) return null
+
+  relatedItems.forEach((item) => {
+    productIds.push(item.refId)
+  })
+  const products = await productService.getProductsWithIds(productIds)
+  const prices = await priceService.getPriceWithProductIds(productIds)
+  
+  const prices_obj = {}
+  prices.forEach((p) => {
+    prices_obj[`p${p.itemId.id}`] = p
+  })
+  
+  let price_id
+  let result = []
+  for (let i = 0; i < products.length; i++) {
+    price_id = `p${products[i]['id']}`
+    if (prices_obj[price_id] !== undefined)
+      result.push({
+        id: products[i].id,
+        code: products[i].code,
+        name: prices_obj[price_id].itemId?.name[language] || "",
+        price: prices_obj[price_id].effectiveValue,
+        listprice: prices_obj[price_id].effectiveValue,
+        src: products[i].media[0].url
+      })
+  }
+  return result
+}
 
 const ProductContext = createContext()
 
@@ -52,10 +82,10 @@ const ProductDetailCategoryCaptionBar = ({ category }) => {
     categoryTree.push({ caption: category[c], link: lnk })
   }
   return (
-    <div className="product-detail-category-caption-bar">
+    <div className="product-detail-category-caption-bar flex justify-center">
       <Breadcrumbs
         className="lg:block hidden"
-        separator=">"
+        separator="/"
         aria-label="breadcrumb"
       >
         {categoryTree.map((row, index) => {
@@ -78,7 +108,9 @@ const ProductDetailCategoryCaptionBar = ({ category }) => {
               {index !== categoryTree.length - 1 ? (
                 row.caption
               ) : (
-                <Bold>{row.caption}</Bold>
+                <Bold>
+                  <span className="text-blue">{row.caption}</span>
+                </Bold>
               )}
             </Link>
           )
@@ -86,7 +118,7 @@ const ProductDetailCategoryCaptionBar = ({ category }) => {
       </Breadcrumbs>
       <Breadcrumbs
         className="lg:hidden md:block hidden"
-        separator=">"
+        separator="/"
         aria-label="breadcrumb"
       >
         {categoryTree.map((row, index) => {
@@ -107,7 +139,7 @@ const ProductDetailCategoryCaptionBar = ({ category }) => {
           )
         })}
       </Breadcrumbs>
-      <Breadcrumbs className="md:hidden" separator=">" aria-label="breadcrumb">
+      <Breadcrumbs className="md:hidden" separator="|" aria-label="breadcrumb">
         {categoryTree.map((row, index) => {
           return categoryTree.length - index > 1 &&
             categoryTree.length - index < 4 ? (
@@ -173,17 +205,16 @@ const ProductSkuAndReview = ({ product }) => {
             />
             ({product.count})
           </div>
-          <div className="lg:ml-4  product-all-reviews">Reviews</div>
+          <div className="lg:ml-4  product-all-reviews">Read All Reviews</div>
         </div>
       </div>
     </div>
   )
 }
 const ProductTitle = ({ name }) => {
-  const { getLocalizedValue } = useLanguage()
-  return <div className="mt-6 product-title">{getLocalizedValue(name)}</div>
+  return <div className="mt-6 product-title">{name}</div>
 }
-const ProductPriceAndAmount = ({ price, productCount, estimatedDelivery }) => {
+const ProductPriceAndAmount = ({ price, productCount, estimatedDelivery, product }) => {
   const { isLoggedIn } = useAuth()
 
   return (
@@ -209,11 +240,17 @@ const ProductPriceAndAmount = ({ price, productCount, estimatedDelivery }) => {
             </CurrencyBeforeComponent>
           </div>
         ) : (
-          <span className="desktop-sm text-xs  text-primaryBlue font-bold">
+          <span className="desktop-sm text-xs  text-brightRed font-bold">
             No Price
           </span>
         )}
       </div>
+      {product.productType === 'PARENT_VARIANT' && (
+        <>
+           <ProductVariantSelection product={product} />
+
+        </>
+      )}
 
       <div className="product-amount-wrapper flex mt-6 space-x-6 items-center">
         <span className="product-number">{productCount} in Stock</span>
@@ -229,84 +266,18 @@ const ProductBasicInfo = ({ product }) => {
   const price = useMemo(() => {
     return formatPrice(product, isLoggedIn)
   }, [isLoggedIn, product])
+
   return (
     <div className="product-basic-info-wrapper hidden lg:block">
       <ProductSkuAndReview product={product} />
       <ProductTitle name={product.name} />
-      {product.productType !== 'PARENT_VARIANT' && (
         <ProductPriceAndAmount
           price={price}
           productCount={product.product_count}
           estimatedCelivery={product.estimated_delivery}
+          product={product}
         />
-      )}
     </div>
-  )
-}
-
-const ProductBundleInfo = ({product}) => {
-
-  const { getLocalizedValue } = useLanguage()
-  const [bundledProducts, setBundledProducts] = useState([])
-
-  useEffect(() => {
-    ; (async () => {
-      const bundledProductsIds = product.bundledProducts.map(i => i.productId)
-      const products = await productService.getProductsWithIds(bundledProductsIds)
-      const prices = await priceService.getPriceWithProductIds(bundledProductsIds)
-      const res = products.map(p => {
-        const price = prices.filter(i => i.itemId.id === p.id)[0]
-        const amount = product.bundledProducts.filter(prod => prod.productId === p.id)[0]
-        return {
-          product : p,
-          price: price,
-          amount : amount.amount
-        }
-      })
-      setBundledProducts(res)
-    })()
-  }, [product])
-
-  return (
-    <>
-      <div className="product-match-caption w-full" style={{paddingBottom: 0}}>Bundled products</div>
-      <TableContainer component={Paper}>
-        <Table>
-          <TableHead>
-            <TableRow>
-              <TableCell>Image</TableCell>
-              <TableCell>Code</TableCell>
-              <TableCell>Product Name</TableCell>
-              <TableCell>Quantity In Bundle</TableCell>
-              <TableCell>Price item</TableCell>
-              <TableCell>Price total</TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {bundledProducts && bundledProducts.map((bundledProduct) => (
-              <TableRow
-                key={bundledProduct.product.code}
-                sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-              >
-                <TableCell component="th" scope="row">
-                  {bundledProduct.product.media && bundledProduct.product.media.length > 0 && (
-                    <img
-                      src={bundledProduct.product.media[0].url}
-                      className="w-fit h-8"
-                    />
-                  )}
-                </TableCell>
-                <TableCell>{bundledProduct.product.code}</TableCell>
-                <TableCell>{getLocalizedValue(bundledProduct.product.name)}</TableCell>
-                <TableCell>{bundledProduct.amount}</TableCell>
-                <TableCell><CurrencyBeforeValue value={bundledProduct.price.effectiveValue} currency={bundledProduct.price.currency} /></TableCell>
-                <TableCell><CurrencyBeforeValue value={bundledProduct.price.effectiveValue * bundledProduct.amount} currency={bundledProduct.price.currency} /></TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-      </TableContainer>
-    </>
   )
 }
 
@@ -319,6 +290,7 @@ const PrdouctAddToCart = () => {
     let newProduct = { ...product }
     newProduct.quantity = quantitiy
     putCartProduct(newProduct)
+    syncCart()
     action(true)
   }, [])
 
@@ -339,15 +311,12 @@ const PrdouctAddToCart = () => {
           value={quantity}
           increase={increaseQty}
           decrease={decreaseQty}
-          onChange={(value) => {
-            setQuantity(value)
-          }}
         />
       </div>
       <div className="">
-        <LargePrimaryButton
+        <HirmerButton
           disabled={!product.price}
-          className="product-add-to-cart-btn cta-button bg-yellow"
+          className="product-add-to-cart-btn"
           onClick={() =>
             HandleProductAddToCart1(product, setShowCart, quantity)
           }
@@ -446,6 +415,7 @@ const ProductContent = ({ product, brand, labels }) => {
             listPrice={listPrice}
             product_count={product.product_count}
             estimated_delivery={product.estimated_delivery}
+            product={product}
           />
         </div>
         <div className="product-info-wrapper">
@@ -497,10 +467,10 @@ const ProductDetailsTabContent = ({ product }) => {
   }
   const getAttributes = (items) => {
     let res = []
-    Object.keys(items).forEach((key) => {
+    Object.keys(items).map((key) => {
       let value = items[key]
       let caption = getFeatureName(key)
-      if (typeof value !== 'object') value = items[key]
+      if (typeof value !== 'object') value = value
       else if ('value' in value && 'uom' in value)
         value = value['value'] + ' ' + value['uom']
       else value = ''
@@ -508,19 +478,27 @@ const ProductDetailsTabContent = ({ product }) => {
     })
     return res
   }
+  
   return (
-    <div className="product-details-tab-content-wrapper">
-      <div className="grid grid-cols-1 gap-12">
-        {Object.keys(product.mixins ? product.mixins : []).map((key) => {
-          return (
-            <ProductInfoPortal
-              key={key}
-              caption={getFeatureName(key)}
-              items={getAttributes(product.mixins[key])}
-            />
-          )
-        })}
+    <div className='product-details-tab-content'>
+      <div className="product-details-tab-content-wrapper">
+        <div className="grid grid-cols-1 gap-12">
+          {Object.keys(product.mixins).filter(key => key !== 'hirmerAttributes').map((key) => {
+            return (
+              <ProductInfoPortal
+                key={key}
+                caption={getFeatureName(key)}
+                items={getAttributes(product.mixins[key])}
+                description={product.description}
+              />
+            )
+          })}
+        </div>
       </div>
+
+      <ProductCareInstructions product={product} />
+  
+
     </div>
   )
 }
@@ -555,6 +533,7 @@ const ProductDetailTabContent = ({ product }) => {
     paddingRight: '0px',
     paddingBottom: '8px',
   }
+
   return (
     <Box>
       <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
@@ -565,15 +544,11 @@ const ProductDetailTabContent = ({ product }) => {
           aria-label=""
         >
           <Tab sx={tabStyle} label="Details" {...a11yProps(0)} />
-          <Tab sx={tabStyle} label="Additional Information" {...a11yProps(1)} />
           <Tab sx={tabStyle} label="Reviews" {...a11yProps(2)} />
         </Tabs>
       </Box>
       <TabPanel value={tab} index={0}>
         <ProductDetailsTabContent product={product} />
-      </TabPanel>
-      <TabPanel value={tab} index={1}>
-        <div dangerouslySetInnerHTML={{ __html: product.description }} />
       </TabPanel>
       <TabPanel value={tab} index={2}>
         Reviews
@@ -581,28 +556,44 @@ const ProductDetailTabContent = ({ product }) => {
     </Box>
   )
 }
-const ProductInfoPortal = ({ caption, items }) => {
+const ProductInfoPortal = ({ description, caption, items }) => {
   return (
     <div className="information-portal-wrapper grid grid-cols-1 gap-4">
       <div className="information-caption">{caption}</div>
       <div className="information-content grid grid-cols-1 gap-[6px]">
-        {items.map((row, index) => (
-          <div key={index} className="grid grid-cols-2 gap-2">
-            <div className="information-properties pl-6 grid grid-cols-1">
-              <span key={index}>{row.property}</span>
-            </div>
-            <div className="information-values pl-6 grid grid-cols-1 ">
-              <span key={index}>{row.value}</span>
-            </div>
-          </div>
-        ))}
+      <div className="information-content-product" dangerouslySetInnerHTML={{ __html: description }} />
       </div>
     </div>
   )
 }
 
+const ProductCareInstructions =({product}) => {
+    return (
+      <>
+      {product.mixins.hirmerAttributes?.care_instructions && Array.isArray(product.mixins.hirmerAttributes.care_instructions) ? 
+      <div className="product-details-tab-content-care-wrapper">
+        <div className="information-portal-wrapper grid grid-cols-1 gap-4">
+          <div className="information-caption">Care Instructions</div>
+          <div className='product-details-tab-content-care-instruction'>
+            {
+            (product.mixins.hirmerAttributes?.care_instructions).map((instruction) => {
+                return (
+                  <>
+                    <img className='' src={require(`../../assets/${instruction.care_instructions_icon_image}`)}/>
+                    <span>{instruction.care_instructions_name}</span>
+                  </>
+                )
+              })}
+
+          </div>
+        </div>
+      </div> : null
+    }
+    </>
+    )
+}
+
 const ProductDetailInfo = ({ product }) => {
-  const { getLocalizedValue } = useLanguage()
   return (
     <div className="product-detail-page-info-wrapper lg:py-12 pb-12">
       <div className="product-detail-content">
@@ -614,9 +605,6 @@ const ProductDetailInfo = ({ product }) => {
             <AccordionItem index={0} title="Details">
               <ProductDetailsTabContent product={product} />
             </AccordionItem>
-            <AccordionItem index={1} title="Additional Information">
-              {getLocalizedValue(product.description)}
-            </AccordionItem>
             <AccordionItem index={2} title="Reviews">
               Reviews
             </AccordionItem>
@@ -627,135 +615,39 @@ const ProductDetailInfo = ({ product }) => {
   )
 }
 
-const products = [
-  {
-    stock: 'Low',
-    rating: 4,
-    count: 8,
-    src: '/products/hp_laser_printer.png',
-    code: 'TY2-B#M74A',
-    name: 'HP LaserJet 1*500-sheet Paper Feeder and Cabinet',
-    price: '341.89',
-    listPrice: '389.50',
-  },
-
-  {
-    stock: 'In',
-    rating: 4,
-    count: 8,
-    src: '/products/comfort_chair.png',
-    code: 'BB2-B3M987',
-    name: 'RP9 Retail Compact Stand Silver PC Multimedia stand',
-    price: '84.89',
-    listPrice: '94.10',
-  },
-  {
-    stock: 'In',
-    rating: 4,
-    count: 8,
-    src: '/products/pc_stand.png',
-    code: 'BB2-B3M987',
-    name: 'Zenith Plier stapler 548/E Silver',
-    price: '27.50',
-    listPrice: '34.99',
-  },
-  {
-    stock: 'Low',
-    rating: 4,
-    count: 8,
-    src: '/products/stapler.png',
-    code: 'TY2-B#M74A',
-    name: 'Comfort Ergo 2-Lever Operator Chairs',
-    price: '53.59',
-    listPrice: '59.99',
-  },
-  {
-    stock: 'Low',
-    rating: 4,
-    count: 8,
-    src: '/products/comfort_chair.png',
-    code: 'TY2-B#M74A',
-    name: 'Comfort Ergo 2-Lever Operator Chairs',
-    price: '53.59',
-    listPrice: '59.99',
-  },
-]
-
-const getRelatedProducts = async (language, product) => {
-  let productIds = []
-  const relatedItems = product.relatedItems
-  if (!relatedItems) return null
-
-  relatedItems.forEach((item) => {
-    productIds.push(item.refId)
-  })
-  const products = await productService.getProductsWithIds(productIds)
-  const prices = await priceService.getPriceWithProductIds(productIds)
-
-  const prices_obj = {}
-  prices.forEach((p) => {
-    prices_obj[`p${p.itemId.id}`] = p
-  })
-
-  let price_id
-  let result = []
-  for (let i = 0; i < products.length; i++) {
-    price_id = `p${products[i]['id']}`
-    if (prices_obj[price_id] !== undefined)
-      result.push({
-        id: products[i].id,
-        code: products[i].code,
-        name: prices_obj[price_id].itemId?.name[language] || '',
-        price: prices_obj[price_id].effectiveValue,
-        listprice: prices_obj[price_id].effectiveValue,
-        src: products[i].media[0].url,
-      })
-  }
-  return result
-}
-
-const ProductMatchItems = ({ productInput }) => {
-  const [products, setProducts] = useState([])
-  const { currentLanguage } = useLanguage()
-
-  const navigate = useNavigate()
-  const { userTenant } = useAuth()
+const ProductMatchItems = ({productInput}) => {
+  const [products, setProducts] = useState([]); 
+  const language = getLanguageFromLocalStorage()
 
   useEffect(() => {
-    getRelatedProducts(currentLanguage, productInput).then((result) => {
-      result ? setProducts(result.slice(0, 5)) : setProducts([])
+    getRelatedProducts(language, productInput).then(result => {
+        result ? setProducts(result.slice(0, 5)) : setProducts([])
     })
-  }, [currentLanguage, productInput])
+  },[language])
+  
   return (
-    <div className="product-match-items-wrapper grid grid-cols-1">
-      <div className="product-match-caption w-full">Related products</div>
-      {products.length > 0 ? (
+    <>
+      {products.length > 0 && 
+      <div className="product-match-items-wrapper grid grid-cols-1">
+        <div className="product-match-caption w-full p-0">Match it with</div>
         <div className="product-match-items-content w-full">
           <SliderComponent>
-            {products.map((item, index) => (
+            {products.map((item) => (
               <Product
-                key={index}
-                stock={item.stock}
-                rating={item.rating}
-                total_count={item.count}
+                id={item.id}
+                key={item.id}
                 src={item.src}
                 code={item.code}
                 name={item.name}
                 price={item.price}
                 listPrice={item.listPrice}
-                onClick={() => {
-                  navigate(`/${userTenant}/product/details/${item.id}`, {
-                    replace: true,
-                  })
-                }}
               />
             ))}
           </SliderComponent>
         </div>
-      ) : (
-        <div className="w-full text-center">No matchig products</div>
-      )}
-    </div>
+      </div>
+      }
+    </>
   )
 }
 
@@ -765,14 +657,9 @@ const ProductDetailPage = ({ product, brand, labels }) => {
       <div className="product-detail-page-content">
         <ProductDetailCategoryCaptionBar category={product.category} />
         <ProductContent product={product} brand={brand} labels={labels} />
-        {product.productType === 'PARENT_VARIANT' && (
-           product?.mixins?.b2bShowcase?.productConfiguration === false ? <ProductVariants product={product} /> : <ProductConfiguration product={product} />
-        )}
-        {product.productType === 'BUNDLE' && (
-          <ProductBundleInfo product={product} />
-        )}
+        
         <ProductDetailInfo product={product} />
-        <ProductMatchItems productInput={product} />
+        <ProductMatchItems productInput={product}/>
       </div>
     </div>
   )

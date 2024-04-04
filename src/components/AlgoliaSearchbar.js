@@ -106,14 +106,14 @@ const AlgoliaSearchbar = () => {
     <div>
       <form ref={searchBar} className="nosubmit">
         <input
-          className="nosubmit lg:w-[250px] xl:w-[360px] relative !bg-white"
+          className="nosubmit lg:w-[250px] xl:w-[360px] relative text-black "
           type="search"
           placeholder={fields.searchHelpLabel}
           onChange={handleSearch}
         />
       </form>
       {searchResults && searchResults.length > 0 && (
-        <div className="lg:w-[250px] xl:w-[360px] mt-0.5 bg-white rounded z-40 absolute shadow-md">
+        <div className="lg:w-[250px] xl:w-[360px] mt-0.5 bg-white rounded z-40 absolute shadow-md border-black">
           <div id="autocomplete"></div>
           {searchResults.map((hit) => (
             <ProductDisplay key={hit.objectID} hit={hit} />

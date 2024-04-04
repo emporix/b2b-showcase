@@ -18,7 +18,7 @@ import { useCart } from 'context/cart-provider'
 const CartProductInfo = ({ cart }) => {
   return (
     <div className="cart-product-info-wrapper flex gap-6">
-      <div className="">
+      <div className="w-[52px]">
         <CartProductImage
           className="table-cart-product-image"
           src={cart.product.src}
@@ -32,11 +32,10 @@ const CartProductInfo = ({ cart }) => {
 }
 
 const CartTable = ({ cartList, classname }) => {
-  const { removeCartItem, incrementCartItemQty, decrementCartItemQty, setCartItemQty } =
+  const { removeCartItem, incrementCartItemQty, decrementCartItemQty } =
     useCart()
   return (
     <TableContainer className={classname}>
-    <div className="shopping-cart_table-title">your products</div>
       <Table sx={{ minWidth: 650 }}>
         <TableHead>
           <TableRow className="!py-6">
@@ -75,7 +74,7 @@ const CartTable = ({ cartList, classname }) => {
               </TableCell>
               <TableCell className="cart-row-item">
                 <PriceExcludeVAT
-                  price={cartItem.product.price.effectiveAmount}
+                  price={cartItem.product.price.effectiveValue}
                 />
               </TableCell>
               <TableCell align="center">
@@ -84,7 +83,6 @@ const CartTable = ({ cartList, classname }) => {
                     value={cartItem.quantity}
                     increase={() => incrementCartItemQty(cartItem.id)}
                     decrease={() => decrementCartItemQty(cartItem.id)}
-                    onChange={(value) => setCartItemQty(cartItem.id, value)}
                   />
                 </div>
               </TableCell>
@@ -92,13 +90,13 @@ const CartTable = ({ cartList, classname }) => {
               <TableCell className="cart-row-item">
                 <PriceExcludeVAT
                   price={
-                    cartItem.itemPrice.amount
+                    cartItem.product.price.originalAmount * cartItem.quantity
                   }
                 />
               </TableCell>
 
               <TableCell className="cart-row-item">
-                <PriceExcludeVAT price={cartItem.totalDiscount?.amount} />
+                <PriceExcludeVAT price={0} />
               </TableCell>
 
               <TableCell className="cart-row-item">
@@ -112,7 +110,14 @@ const CartTable = ({ cartList, classname }) => {
 
               <TableCell className="cart-row-item">
                 <PriceExcludeVAT
-                  price={cartItem.itemTaxInfo[0].grossValue}
+                  price={
+                    Math.trunc(
+                      cartItem.product.price.originalAmount *
+                        cartItem.quantity *
+                        1.2 *
+                        100
+                    ) / 100
+                  }
                   caption="incl. VAT"
                 />
               </TableCell>

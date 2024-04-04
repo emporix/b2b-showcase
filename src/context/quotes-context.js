@@ -21,7 +21,7 @@ export const QuotesProvider = ({ children }) => {
   }, [userTenant])
 
   const quotesTotal = useMemo(() => {
-    return quotes.filter((quote) => quote.status.value === 'OPEN').length
+    return quotes.filter((quote) => quote.status === 'OPEN').length
   }, [quotes])
 
   useEffect(() => {
@@ -30,7 +30,7 @@ export const QuotesProvider = ({ children }) => {
     }
   }, [isLoggedIn])
   return (
-    <QuoteContext.Provider value={{ quotes, quotesTotal, setQuotes }}>
+    <QuoteContext.Provider value={{ quotes, quotesTotal }}>
       {children}
     </QuoteContext.Provider>
   )

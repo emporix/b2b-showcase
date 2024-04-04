@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react'
+import React from 'react'
 import TableContainer from '@mui/material/TableContainer'
 import Table from '@mui/material/Table'
 import TableHead from '@mui/material/TableHead'
@@ -8,19 +8,13 @@ import TableBody from '@mui/material/TableBody'
 import Status, { renderStatus } from './common'
 import {
   CurrencyAfterValue,
-  formatDate,
+  formatDateTime,
 } from '../../components/Utilities/common'
-import { Link, useNavigate } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import {
   myAccountMyOrdersInvoiceUrl,
   myAccountMyOrdersViewUrl,
-  createReturnUrl,
 } from '../../services/service.config'
-import { useReturns } from 'context/returns-provider'
-import ReturnInfoStatus from './ReturnInfoStatus'
-import axios from 'axios'
-import { ACCESS_TOKEN } from 'constants/localstorage'
-import './OrderList.css'
 
 const OrderListMobile = ({ orders }) => {
   return (
@@ -43,9 +37,6 @@ const OrderListMobile = ({ orders }) => {
                   Invoice
                 </Link>
               </div>
-              <div className="font-inter font-semibold text-[14px] underline ml-6">
-                <Link to={`${createReturnUrl()}${row.id}`}>Return</Link>
-              </div>
             </div>
           </div>
           <div className="pt-2 font-bold">{row.id}</div>
@@ -61,84 +52,38 @@ const OrderListMobile = ({ orders }) => {
 
 export const OrderList = (props) => {
   const { orders, invoiceAvailable } = props
-  const { returns } = useReturns()
-  const navigate = useNavigate()
 
-  const [showAlreadySubmittedError, setError] = useState(false)
-
-  const downloadInvoice = (order) => {
-    const invoiceUrl = order?.mixins?.invoice?.invoiceDocument.replace(
-      'mediaObject',
-      'customerMediaObject'
-    )
-    const token = localStorage.getItem(ACCESS_TOKEN)
-    axios({
-      url: invoiceUrl,
-      headers: {
-        Authorization: 'Bearer ' + token,
-      },
-      method: 'GET',
-      responseType: 'blob',
-    }).then((response) => {
-      const href = URL.createObjectURL(response.data)
-      const link = document.createElement('a')
-      link.href = href
-      link.setAttribute('download', 'invoice_' + order.id + '.pdf')
-      document.body.appendChild(link)
-      link.click()
-
-      document.body.removeChild(link)
-      URL.revokeObjectURL(href)
-    })
-  }
-
-  const handleCreateReturn = useCallback(
-    (id) => {
-      setError(false)
-      if (
-        returns.some((r) => {
-          return r.orders.some((order) => order.id === id)
-        })
-      ) {
-        setError(true)
-      } else {
-        navigate(`${createReturnUrl()}${id}`, { replace: true })
-      }
-    },
-    [returns]
-  )
   return (
-    <div>
-      {showAlreadySubmittedError && (
-        <ReturnInfoStatus status="INTERNAL_ALREADY_SUBMITTED" />
-      )}
+    <div className="md:mt-[60px]">
       <TableContainer className="desktop_only">
         <Table sx={{ minWidth: 650 }}>
           <TableHead>
             <TableRow className="!py-6">
-              <TableCell align="center" className="grid-column-title">
+              <TableCell
+                align="left"
+                className="font-inter !font-bold text-base"
+              >
                 Order Number
               </TableCell>
-              <TableCell align="center" className="grid-column-title">
+              <TableCell
+                align="left"
+                className="font-inter !font-bold text-base"
+              >
                 Status
               </TableCell>
-              <TableCell align="center" className="grid-column-title">
-                <div className="font-normal grid grid-cols-1 text-center">
-                  <div className="">
-                    Total with shipping cost
-                  </div>
-                  <div className="text-[12px]">
-                     incl. VAT
-                  </div>
-                </div>
+              <TableCell
+                align="left"
+                className="font-inter !font-bold text-base"
+              >
+                Total
               </TableCell>
-              <TableCell align="center" className="grid-column-title">
-                Exp. Delivery Date
-              </TableCell>
-              <TableCell align="center" className="grid-column-title">
+              <TableCell
+                align="left"
+                className="font-inter !font-bold text-base"
+              >
                 Created
               </TableCell>
-              <TableCell align="center" />
+              <TableCell align="left" />
             </TableRow>
           </TableHead>
           <TableBody>
@@ -154,46 +99,30 @@ export const OrderList = (props) => {
                 >
                   {row.id}
                 </TableCell>
-                <TableCell align="center" className="!py-6">
+                <TableCell align="left" className="!py-6">
                   {renderStatus(row.status)}
                 </TableCell>
-                <TableCell align="center" className="!py-6">
+                <TableCell align="left" className="!py-6">
                   <CurrencyAfterValue
-                    value={row.subTotalPrice + row.shipping.lines[0].amount + row.tax.lines.reduce((sum, el) => sum + el.amount, 0) }
+                    value={row.totalPrice}
                     currency={row.currency}
                   />
                 </TableCell>
-                <TableCell align="center" className="!py-6">
-                  {row.deliveryWindow?.deliveryDate ? formatDate(row.deliveryWindow?.deliveryDate) : '-'}
+                <TableCell align="left" className="!py-6">
+                  {formatDateTime(row.created)}
                 </TableCell>
-                <TableCell align="center" className="!py-6">
-                  {formatDate(row.created)}
-                </TableCell>
-                <TableCell align="center" className="!py-6">
+                <TableCell align="left" className="!py-6">
                   <div className="flex">
                     <div className="font-inter font-semibold text-[14px] underline">
                       <Link to={`${myAccountMyOrdersViewUrl()}${row.id}`}>
                         View
                       </Link>
                     </div>
-                    <div className="font-inter font-semibold text-[14px] underline ml-6">
-                      <span
-                        onClick={() => handleCreateReturn(row.id)}
-                        className="cursor-pointer"
-                      >
-                        Return
-                      </span>
-                    </div>
                     {invoiceAvailable && (
                       <div className="font-inter font-semibold text-[14px] underline ml-6">
-                        {row?.mixins?.invoice?.invoiceDocument && (
-                          <a
-                            onClick={() => downloadInvoice(row)}
-                            className="download-invoice-link"
-                          >
-                            Download invoice
-                          </a>
-                        )}
+                        <Link to={`${myAccountMyOrdersInvoiceUrl()}${row.id}`}>
+                          Invoice
+                        </Link>
                       </div>
                     )}
                   </div>

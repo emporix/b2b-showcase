@@ -3,23 +3,13 @@ import { GridLayout } from '../common'
 import { TextRegular1 } from '../typography'
 import './dropdown.css'
 
-const Dropdown = ({
-  options,
-  placeholder,
-  onChange,
-  defaultValue,
-  style,
-  className,
-  searchable
-}) => {
+const Dropdown = ({ options, placeholder, onChange, defaultValue }) => {
   return (
     <Select
       options={options}
-      searchable={searchable === undefined ? true : searchable}
+      searchable={true}
       values={defaultValue ? [defaultValue] : []}
       onChange={onChange}
-      style={style}
-      className={className}
       placeholder={placeholder !== undefined ? placeholder : 'Please select'}
       dropdownHandleRenderer={({ state }) => (
         <>
@@ -56,10 +46,9 @@ export const DropdownWithLabel = ({
   placeholder,
   onChange,
   defaultValue,
-  className,
 }) => {
   return (
-    <GridLayout className={`_dropdown_ ${className}`}>
+    <GridLayout className="_dropdown_">
       <TextRegular1>{label}</TextRegular1>
       <GridLayout className="mt-2">
         <Dropdown

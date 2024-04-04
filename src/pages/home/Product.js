@@ -7,6 +7,7 @@ import {
   CurrencyBeforeComponent,
   CurrencyBeforeValue,
 } from 'components/Utilities/common'
+import { userSelector } from 'redux/slices/authReducer'
 import 'react-animated-slider/build/horizontal.css'
 import './slider-animation.css'
 import './product.css'
@@ -212,17 +213,17 @@ const ProductSlider = ({ auth }) => {
   )
 }
 const Product = () => {
-  const { user } = useAuth()
+  const currentUser = useSelector(userSelector)
   return (
     <div className="home_product">
-      <ProductTitle auth={!!user} />
+      <ProductTitle auth={currentUser ? true : false} />
       {/* for mobile panel */}
       {/* for desktop panel */}
       <div className="desktop_only md:pt-9 max-w-screen-2xl mx-auto md:px-[5%] lg:px-[10%] w-full md:h-[456px] md:grid md:grid-cols-4 md:gap-x-6 text-black">
         {products.map((item, index) => (
           <EachProduct
             key={index}
-            auth={user}
+            auth={currentUser}
             stock={item.stock}
             rating={item.rating}
             total_count={item.count}

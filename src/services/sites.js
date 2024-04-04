@@ -6,11 +6,3 @@ export const fetchSites = async (tenant) => {
   })
   return data
 }
-
-export const fetchSite = async (tenant, siteCode) => {
-  const { data } = await api.get(`site/${tenant}/sites/${siteCode}`, {
-    headers: { 'X-Version': 'v2' },
-  })
-  return data
-}
-

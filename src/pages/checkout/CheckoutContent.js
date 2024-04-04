@@ -16,7 +16,6 @@ import {
   ProgressBarItem,
 } from '../../components/Utilities/progressbar'
 import ShippingMethod from '../../components/Checkout/shiping_method'
-import DeliveryWindow from '../../components/Checkout/DeliveryWindow'
 import PaymentMethodItem from '../../components/Checkout/PaymentMethodItem'
 import PaymentInvoiceItem from '../../components/Checkout/PaymentInvoiceItem'
 import {
@@ -38,39 +37,18 @@ import { useUserAddress } from './AddressProvider'
 import Address from './Address'
 import ProductContent from './ProductsContent'
 import { useCart } from 'context/cart-provider'
-import { usePayment } from './PaymentProvider'
-import PaymentSpreedly from 'components/Checkout/PaymentSpreedly'
-import { CartProductImageAndReadOnlyQuantity, CartProductInfo, } from 'components/Cart/cart'
-
 
 const ShippingContent = () => {
-  const { setShippingMethod } = useCart()
-
   const {
     locations,
     addresses,
     selectedAddress,
     setSelectedAddress,
     defaultAddress,
-    shippingMethods,
-    setSelectedDeliveryMethod,
   } = useUserAddress()
-
-  useEffect(() => {
-    setShippingMethod(null)
-  }, [])
- 
-  const onShippingChange = (value) => {
-    const selectedShippingMethod = shippingMethods.filter(
-      (method) => method.id === value
-    )[0]
-    setShippingMethod(selectedShippingMethod)
-    setSelectedDeliveryMethod(selectedShippingMethod)
-  }
-
   return (
     <>
-      <GridLayout className="gap-10 border rounded border-quartz p-6">
+      <GridLayout className="gap-6">
         <GridLayout className="gap-4">
           <DesktopMDContainer>
             <LayoutBetween className="items-center">
@@ -81,7 +59,7 @@ const ShippingContent = () => {
             </LayoutBetween>
           </DesktopMDContainer>
           <MobileMDContainer>
-          <GridLayout className="gap-6  border rounded border-quartz p-6">
+            <GridLayout className="gap-6">
               <Heading3>Shipping Details</Heading3>
               <TextRegular3>
                 <Underline>Ship to multiple addresses</Underline>
@@ -115,42 +93,39 @@ const ShippingContent = () => {
           </GridLayout>
         </GridLayout>
       </GridLayout>
-
-      <GridLayout className="gap-10 border rounded border-quartz p-6">
-        <GridLayout className="gap-6">
-          <Heading3>Shipping Method</Heading3>
-          <MobileMDContainer>
-            <TextRegular3>
-              <Underline>Ship to multiple addresses</Underline>
-            </TextRegular3>
-          </MobileMDContainer>
-          <RadioGroup>
-          {shippingMethods.map((method) => {
-            return (
-              <ShippingMethod
-                key={method.id}
-                radioKey={method.id}
-                shippingmode={method.id}
-                date="Monday, June 6 - Tuesday June 7"
-                price={
-                  method.fee === 0 ? (
-                    'Free'
-                  ) : (
-                    <CurrencyBeforeValue value={method.grossFee} />
-                  )
-                }
-                onClick={onShippingChange}
-              />
-            )
-          })}
+      <GridLayout className="gap-6">
+        <Heading3>Shipping Method</Heading3>
+        <MobileMDContainer>
+          <TextRegular3>
+            <Underline>Ship to multiple addresses</Underline>
+          </TextRegular3>
+        </MobileMDContainer>
+        <RadioGroup active="radio1">
+          <ShippingMethod
+            radioKey="radio1"
+            shippingmode="Standard Shipping"
+            date="Monday, June 6 - Tuesday June 7"
+            price="Free"
+          />
+          <ShippingMethod
+            radioKey="radio2"
+            shippingmode="Freight Carrier: LTL"
+            date="Friday , June 3"
+            price={<CurrencyBeforeValue value={'124.90'} />}
+          />
+          <ShippingMethod
+            radioKey="radio3"
+            shippingmode="Freight Carrier : FTL"
+            date="Friday , June 3"
+            price={<CurrencyBeforeValue value={'349.90'} />}
+          />
         </RadioGroup>
-        </GridLayout>  
       </GridLayout>
     </>
   )
 }
 
-const PaymentContent = ({cart}) => {
+const PaymentContent = () => {
   const {
     selectedAddress,
     addresses,
@@ -172,8 +147,14 @@ const PaymentContent = ({cart}) => {
       <GridLayout className="payment-method-wrapper gap-6">
         <TextBold1>Payment Methods</TextBold1>
         <RadioGroup active="radio1">
-          <GridLayout className="gap-4 border border-quartz rounded p-6">
-            <PaymentSpreedly props={{customerId : cart.customerId, grossValue : cart.subtotalAggregate.grossValue, currency: cart.subtotalAggregate.currency}} />
+          <GridLayout className="gap-4">
+            <PaymentInvoiceItem radioKey="radio1" />
+            <PaymentMethodItem radioKey="radio2" title="Trevipay" />
+            <PaymentMethodItem
+              radioKey="radio3"
+              title="Pre Payment (Bank Transfer)"
+            />
+            <PaymentMethodItem radioKey="radio4" title="Credit / Debit Card" />
           </GridLayout>
         </RadioGroup>
       </GridLayout>
@@ -220,21 +201,22 @@ const ShipmentAddressContent = () => {
       <div className="mb-3">
         <Heading4>Shipment</Heading4>
       </div>
+      <TextBold3>{products?.length} items</TextBold3>
+      <TextRegular1>Name Lastname</TextRegular1>
+
       <Address data={selectedAddress} />
     </GridLayout>
   )
 }
 const ShipmentDeliveryContent = () => {
-  const { selectedDeliveryWindow, selectedDeliveryMethod } = useUserAddress()
-
   return (
     <GridLayout className="gap-6 !h-18">
       <div>
         <div className="mb-6">
-          <TextBold3>Estimated Delivery:</TextBold3> {selectedDeliveryWindow && (<TextRegular>{selectedDeliveryWindow.deliveryDayLabel} {selectedDeliveryWindow.deliveryTimeLabel}</TextRegular>)}
+          <TextBold3>Estimated Delivery: 06.11.2022</TextBold3>
         </div>
 
-        <TextBold3>Delivery Method:</TextBold3> {selectedDeliveryMethod && (<TextRegular>{selectedDeliveryMethod.id}</TextRegular>)}
+        <TextRegular>Delivery Method: Priority</TextRegular>
       </div>
     </GridLayout>
   )
@@ -258,76 +240,92 @@ const ShipmentContent = () => {
   )
 }
 
-const ReviewOrderContent = (cart) => {
+const ReviewOrderContent = () => {
   const { billingAddress } = useUserAddress()
-  const { payment } = usePayment()
-  const { cartAccount } = useCart()
-
   return (
     <>
       <DesktopLGContainer>
-      <LayoutBetween className="billing-information">
-          <Container className="gap-8">
+        <LayoutBetween className="billing-information pb-12 border-grey-bottom">
+          <Container className="gap-12">
             <div className="property-wrapper">
               <TextBold3>Billing Information</TextBold3>
             </div>
             <Address data={billingAddress} />
           </Container>
+          <TextBold4>
+            <Underline>Edit</Underline>
+          </TextBold4>
         </LayoutBetween>
       </DesktopLGContainer>
 
       <MobileLGContainer>
-      <GridLayout className="billing-information gap-6">
-          <LayoutBetween className="gap-8">
+        <GridLayout className="billing-information gap-6 pb-12 border-grey-bottom">
+          <LayoutBetween className="gap-12">
             <div className="property-wrapper">
               <TextBold3>Billing Information</TextBold3>
             </div>
+            <TextBold4>
+              <Underline>Edit</Underline>
+            </TextBold4>
           </LayoutBetween>
           <Address data={billingAddress} />
         </GridLayout>
       </MobileLGContainer>
 
       <MobileLGContainer>
-      <GridLayout className="billing-information gap-6 ">
-          <LayoutBetween className="gap-8">
+        <GridLayout className="gap-6 pb-12 border-grey-bottom">
+          <LayoutBetween className="gap-12">
             <div className="property-wrapper">
               <TextBold3>Shipping Information</TextBold3>
             </div>
+            <TextBold4>
+              <Underline>Edit</Underline>
+            </TextBold4>
           </LayoutBetween>
           <ShipmentContent />
         </GridLayout>
       </MobileLGContainer>
 
       <DesktopLGContainer>
-        <LayoutBetween className="billing-information">
-          <Container className="gap-8">
+        <LayoutBetween className="pb-12 border-grey-bottom">
+          <Container className="gap-12">
             <div className="property-wrapper">
               <TextBold3>Shipping Information</TextBold3>
             </div>
             <ShipmentContent />
           </Container>
+          <TextBold4>
+            <Underline>Edit</Underline>
+          </TextBold4>
         </LayoutBetween>
       </DesktopLGContainer>
 
       <DesktopLGContainer>
-        <LayoutBetween className="billing-information">
-          <Container className="gap-8">
+        <LayoutBetween className=" pb-12 border-grey-bottom">
+          <Container className="gap-12">
             <div className="property-wrapper">
               <TextBold3>Payment Method</TextBold3>
             </div>
             <GridLayout>
-              <TextBold3>{payment && payment.displayName}</TextBold3>
+              <TextBold3>Invoice</TextBold3>
+              <TextRegular>PO Number: 970465640469</TextRegular>
             </GridLayout>
           </Container>
+          <TextBold4>
+            <Underline>Edit</Underline>
+          </TextBold4>
         </LayoutBetween>
       </DesktopLGContainer>
 
       <MobileLGContainer>
-        <GridLayout className="billing-information gap-2">
-          <LayoutBetween className="gap-8">
+        <GridLayout className="gap-2 pb-12 border-grey-bottom">
+          <LayoutBetween className="gap-12">
             <div className="property-wrapper">
               <TextBold3>Payment Method</TextBold3>
             </div>
+            <TextBold4>
+              <Underline>Edit</Underline>
+            </TextBold4>
           </LayoutBetween>
 
           <GridLayout>
@@ -338,63 +336,51 @@ const ReviewOrderContent = (cart) => {
       </MobileLGContainer>
 
       <DesktopLGContainer>
-        <LayoutBetween className="billing-information">
-          <Container className="gap-8">
+        <LayoutBetween className=" pb-12 border-grey-bottom">
+          <Container className="gap-12">
             <div className="property-wrapper">
               <TextBold3>Your Products</TextBold3>
             </div>
-            <GridLayout className="gap-4">
-              {cartAccount?.items.map((cartItem, idx) => (
-                <>
-                  <div className="cart-product-item p-2">
-                    <CartProductImageAndReadOnlyQuantity cartItem={cartItem} />
-                    <CartProductInfo key={cartItem.id + idx} cartItem={cartItem} />
-                  </div>
-                </> 
-              ))}
-            </GridLayout>
+            <ProductContent />
           </Container>
+          <TextBold4>
+            <Underline>Edit</Underline>
+          </TextBold4>
         </LayoutBetween>
       </DesktopLGContainer>
 
       <MobileLGContainer>
-        <GridLayout className="billing-information gap-6">
-          <LayoutBetween className="gap-8">
+        <GridLayout className="gap-6 pb-12 border-grey-bottom">
+          <LayoutBetween className="gap-12">
             <div className="property-wrapper">
               <TextBold3>Your Products</TextBold3>
             </div>
+            <TextBold4>
+              <Underline>Edit</Underline>
+            </TextBold4>
           </LayoutBetween>
-            <GridLayout className="gap-4">
-              {cartAccount?.items.map((cartItem, idx) => (
-                <>
-                  <div className="cart-product-item p-2">
-                    <CartProductImageAndReadOnlyQuantity cartItem={cartItem} />
-                    <CartProductInfo key={cartItem.id + idx} cartItem={cartItem} />
-                  </div>
-                </> 
-              ))}
-            </GridLayout>  
+          <ProductContent />
         </GridLayout>
       </MobileLGContainer>
     </>
   )
 }
 
-const CheckoutContent = ({ status, cart }) => {
+const CheckoutContent = ({ status }) => {
   return (
     <div className="checkout-content-wrapper">
-      <GridLayout className="gap-8">
+      <GridLayout className="gap-12">
         <ProgressBar active={status} className="">
-          <ProgressBarItem activeTab={status} status="shipping" title="Shipping" />
-          <ProgressBarItem activeTab={status} status="payment" title="Payment" />
-          <ProgressBarItem activeTab={status} status="review_order" title="Review Order" />
+          <ProgressBarItem status="shipping" title="Shipping" />
+          <ProgressBarItem status="payment" title="Payment" />
+          <ProgressBarItem status="review_order" title="Review Order" />
         </ProgressBar>
         {status === 'shipping' ? (
           <ShippingContent />
         ) : status === 'payment' ? (
-          <PaymentContent cart={cart} />
+          <PaymentContent />
         ) : (
-          <ReviewOrderContent cart={cart} />
+          <ReviewOrderContent />
         )}
       </GridLayout>
     </div>

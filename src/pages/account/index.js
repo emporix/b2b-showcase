@@ -1,8 +1,9 @@
-import React, { useEffect, useMemo } from 'react'
+import React from 'react'
 import AccountPage from './AccountPage'
-import { useNavigate } from 'react-router-dom'
+import { useSelector } from 'react-redux'
+import { Navigate } from 'react-router-dom'
 import Layout from '../Layout'
-import { useAuth } from 'context/auth-provider'
+import { loginUrl } from '../../services/service.config'
 
 const MobileAccountBar = ({ title }) => {
   return (
@@ -14,16 +15,11 @@ const MobileAccountBar = ({ title }) => {
   )
 }
 const Account = () => {
-  const { user, isLoggedIn } = useAuth()
-  const navigate = useNavigate()
-  useEffect(() => {
-    if (!isLoggedIn) {
-      navigate('/{tenant}', { replace: true })
-    }
-  }, [isLoggedIn])
-  const title = useMemo(() => {
-    return 'Welcome Back, ' + user?.username
-  }, [user?.username])
+  const { user: currentUser } = useSelector((state) => state.auth)
+  if (!currentUser) {
+    return <Navigate to={loginUrl} />
+  }
+  const title = 'Welcome Back, ' + currentUser.username
   return (
     <Layout title={title}>
       <MobileAccountBar title={title} />

@@ -46,13 +46,13 @@ const QuoteSummary = (props) => {
       <div className="pt-12 w-full flex gap-8 checkout-actions">
         <Link to={homeUrl()}>
           <LargePrimaryButton
-            className="md:block hidden w-auto bg-yellow rounded text-eerieBlack"
+            className="md:block hidden"
             title="BACK TO HOME PAGE"
           />
         </Link>
         <Link to={myAccountQuotes()}>
           <LargePrimaryButton
-            className="md:block hidden w-auto bg-yellow rounded text-eerieBlack"
+            className="md:block hidden"
             title="QUOTE OVERVIEW"
           />
         </Link>

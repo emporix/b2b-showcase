@@ -3,7 +3,6 @@ import AccountLayout from './AccountLayout'
 import { useSelector } from 'react-redux'
 import { Navigate } from 'react-router-dom'
 import { loginUrl } from '../../services/service.config'
-import { useAuth } from 'context/auth-provider'
 
 const CompanyInfoItem = ({ caption, content }) => {
   return (
@@ -58,13 +57,13 @@ const CompanyDetails = ({ value }) => {
   )
 }
 const AccountCompanyDetails = () => {
-  const { user } = useAuth()
-  if (!user) {
+  const { user: currentUser } = useSelector((state) => state.auth)
+  if (!currentUser) {
     return <Navigate to={loginUrl()} />
   }
   return (
     <AccountLayout page="Company Details">
-      <CompanyDetails value={user.company} />
+      <CompanyDetails value={currentUser.company} />
     </AccountLayout>
   )
 }

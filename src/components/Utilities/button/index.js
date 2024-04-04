@@ -11,7 +11,7 @@ export const LargePrimaryButton = ({
   return (
     <button
       disabled={disabled}
-      className={'large-primary-btn ' + (className ? className : '')}
+      className={'px-6 py-4 bg-blue text-white uppercase font-bold transition ease-in-out duration-300 hover:bg-blueHover w-full ' + (className ? className : '')}
       onClick={onClick}
     >
       {title}
@@ -19,15 +19,9 @@ export const LargePrimaryButton = ({
   )
 }
 
-export const MediumPrimaryButton = ({
-  title,
-  onClick,
-  className,
-  disabled,
-}) => {
+export const MediumPrimaryButton = ({ title, onClick, className }) => {
   return (
     <button
-      disabled={disabled}
       className={'medium-primary-btn ' + (className ? className : '')}
       onClick={onClick}
     >
@@ -77,5 +71,16 @@ export const BackButton = ({ link, title, className }) => {
         {title}
       </Link>
     </div>
+  )
+}
+
+export const HirmerButton = ({ title, onClick, className }) => {
+  return (
+    <button
+      className={'hirmer-btn ' + (className ? className : '')}
+      onClick={onClick}
+    >
+      {title}
+    </button>
   )
 }

@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react'
+import React, { useCallback } from 'react'
 import TableContainer from '@mui/material/TableContainer'
 import Table from '@mui/material/Table'
 import TableHead from '@mui/material/TableHead'
@@ -8,7 +8,7 @@ import TableBody from '@mui/material/TableBody'
 import Status from './common'
 import { formatDateTime } from '../../components/Utilities/common'
 import { useNavigate } from 'react-router-dom'
-import { renderStatus } from './AccountMyQuoteDetails'
+import QuoteStatus from './QuoteStatus'
 
 const LeftChevron = () => {
   return (
@@ -36,8 +36,8 @@ const QuotesListMobile = ({ data }) => {
             <Status
               width={108}
               height={24}
-              title={row.status.value}
-              color={row.status.value === 'SHIPPED' ? '#FFA800' : '#4BCB67'}
+              title={row.status}
+              color={row.status === 'SHIPPED' ? '#FFA800' : '#4BCB67'}
             />
           </div>
           <div className="pt-2 font-bold">{row.id}</div>
@@ -151,10 +151,8 @@ export const QuotesList = (props) => {
                 </TableCell>
                 <TableCell align="left" className="!py-6">
                   <div className="flex flex-row justify-center items-center">
-                    {renderStatus(row.status.value)}
-                    <div className="ml-2">
-                      <LeftChevron />
-                    </div>
+                    <QuoteStatus status={row.status} className="mr-2" />
+                    <LeftChevron />
                   </div>
                 </TableCell>
               </TableRow>
@@ -162,6 +160,7 @@ export const QuotesList = (props) => {
           </TableBody>
         </Table>
       </TableContainer>
+
       <div className="mobile_only">
         <QuotesListMobile data={data} />
       </div>

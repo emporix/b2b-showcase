@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useCallback, useContext, useEffect, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import {
   AiOutlineClose,
@@ -11,7 +11,8 @@ import { CgNotes } from 'react-icons/cg'
 import { useSelector } from 'react-redux'
 import Badge from '@mui/material/Badge'
 import AccountMenu from './accountmenu'
-import { HiOutlineUserCircle, HiChevronLeft, HiChevronRight } from 'react-icons/hi'
+import { HiOutlineUserCircle } from 'react-icons/hi'
+import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/solid'
 import LayoutContext from '../../pages/context'
 import { LargePrimaryButton } from '../Utilities/button'
 import { pageMenuSelector } from '../../redux/slices/pageReducer'
@@ -34,7 +35,7 @@ const Navbar = () => {
   const { userTenant: tenant } = useAuth()
   const { sites, onSiteChange, currentSite, currentSiteObject } = useSites()
   const { languages, currentLanguage, setLanguage } = useLanguage()
-  const { user } = useAuth()
+  const { user: currentUser } = useSelector((state) => state.auth)
   const { quotesTotal } = useQuotes()
   const [open, setOpen] = useState(false)
 
@@ -55,18 +56,18 @@ const Navbar = () => {
     return (
       <>
         <div className="pt-12 items-center ">
-          {user ? (
+          {currentUser ? (
             <div className="h-[75px] border-y w-full justify-between flex text-gray text-center items-center font-inter ">
               <div className="flex">
                 <HiOutlineUserCircle size={25} />
-                <div className="pl-2">{user.username}</div>
+                <div className="pl-2">{currentUser.username}</div>
               </div>
               <div>
                 <AiOutlineMail size={20} />
               </div>
             </div>
           ) : (
-            <div className="bg-tinBlue w-full h-12 text-sm  text-center items-center text-white">
+            <div className="bg-tinBlue w-full h-12 text-sm  text-center items-center text-black">
               <Link to={loginUrl()}>
                 <LargePrimaryButton className="" title="LOGIN | REGISTER" />
               </Link>
@@ -80,7 +81,7 @@ const Navbar = () => {
             ))}
           </ul>
         </div>
-        {user && (
+        {currentUser && (
           <div className="w-full h-[59px] border-y flex justify-between items-center mt-6 font-inter text-base">
             Site
             <select className="text-tinBlue appearance-none">
@@ -136,7 +137,7 @@ const Navbar = () => {
         onClick={() => parentMenuClicked(item.title, item.items)}
       >
         {item.title}
-        <HiChevronRight size={20}
+        <ChevronRightIcon
           className={item.items.length ? 'h-8 w-8' : 'hidden'}
         />
       </li>
@@ -164,7 +165,7 @@ const Navbar = () => {
             onClick={() => parentMenuClicked(item.title, item.items)}
           >
             {item.title}
-            <HiChevronRight size={20} className={'h-8 w-8'} />
+            <ChevronRightIcon className={'h-8 w-8'} />
           </li>
         )}
       </>
@@ -178,7 +179,7 @@ const Navbar = () => {
           className="w-full flex text-center items-center border-b pt-[50px] pb-6 text-4"
           onClick={() => setDisplaySubItems(false)}
         >
-          <HiChevronLeft size={20} className="h-8 w-8 pr-1" />
+          <ChevronLeftIcon className="h-8 w-8 pr-1" />
           Back
         </div>
         <div className="pt-6 text-left text-black text-xl">{title}</div>
@@ -215,6 +216,8 @@ const Navbar = () => {
     await onSiteChange(e.target.value)
     const site = sites.find((site) => site.code === e.target.value)
     await currencyChangeHandler(site.currency, site)
+    navigate(homeUrl())
+    navigate(0)
   }
 
   const [cartTotal, setCartTotal] = useState(0)
@@ -228,8 +231,7 @@ const Navbar = () => {
       cartAccount.subtotalAggregate &&
       cartAccount.subtotalAggregate.grossValue
     ) {
-      setCartTotalPrice(cartAccount.totalPrice.amount +
-          + cartAccount.totalPrice.amount * cartAccount?.taxAggregate.lines[0].rate / 100)
+      setCartTotalPrice(cartAccount.subtotalAggregate.grossValue)
     } else {
       setCartTotalPrice(0)
     }
@@ -239,37 +241,36 @@ const Navbar = () => {
   }, [cartAccount])
 
   return (
-    <header className="header">
+    <header className="header bg-lightGray">
       {/* Dektop language and currency selection */}
-      <div className="desktop_only_flex font-inter text-sm text-white">
-        <div className='flex items-center'>
-          <span className='world-icon'></span>
-          {fields.siteLabel}:
-          <select
-            className="bg-eerieBlack w-38 mr-[22px]"
-            onChange={handleSiteChange}
-            value={currentSite}
-          >
+      <div className="desktop_only_flex font-inter text-sm text-black">
+        <div className='flex mr-40'>
             {sites
               .filter((s) => s.active)
               .sort((a, b) => a.code.localeCompare(b.code))
-              .map((site) => {
+              .map((site, i, row) => {
                 return (
-                  <option key={site.code} value={site.code}>
-                    {site.name}
-                  </option>
+                  <div>
+                     <button className="font-bold" key={site.code} value={site.code} onClick={handleSiteChange}>
+                      {site.name}
+                    </button>
+
+                    {i + 1 !== row.length ? (
+                      <span className='ml-3 mr-3'>|</span>
+                    ) : ''}
+                  </div>
                 )
               })}
-          </select>
         </div>
-        <div>
+        {currentSite === 'HGG' ? (
+          <div>
           {fields.languageLabel}:
           <select
-            className="bg-eerieBlack"
+            className=""
             onChange={(event) => setLanguage(event.target.value)}
             value={currentLanguage}
           >
-            {languages
+            {languages 
               .sort((a, b) => a.localeCompare(b))
               .map((language) => {
                 return (
@@ -280,6 +281,8 @@ const Navbar = () => {
               })}
           </select>
         </div>
+        ) : ''}
+        
         <div className="ml-[22px]">
           {fields.currencyLabel}:
           <select
@@ -287,7 +290,7 @@ const Navbar = () => {
             onChange={(e) =>
               currencyChangeHandler(e.target.value, currentSiteObject)
             }
-            className="bg-eerieBlack"
+            className=""
           >
             {currencyList.map((currency) => {
               return (
@@ -301,8 +304,8 @@ const Navbar = () => {
       </div>
 
       {/* Dektop navigation selection */}
-      <div className="desktop_only_flex font-inter font-normal text-sm text-white">
-        {!user ? (
+      <div className="desktop_only_flex font-inter font-normal text-sm text-black">
+        {!currentUser ? (
           <ul className="flex">
             <li className="px-4 flex">
               {cartTotal !== 0 ? (
@@ -312,7 +315,7 @@ const Navbar = () => {
               ) : (
                 <AiOutlineShoppingCart size={20} onClick={handleOpenCart} />
               )}
-              <div className="pl-3 text-white flex">
+              <div className="pl-3 text-black flex">
                 <CurrencyBeforeValue value={cartTotalPrice} />
               </div>
             </li>
@@ -361,7 +364,7 @@ const Navbar = () => {
                 <AiOutlineShoppingCart size={20} />
               )}
 
-              <div className="pl-[17.5px] text-white flex">
+              <div className="pl-[17.5px] text-black flex">
                 <CurrencyBeforeValue
                   currency={cartCurrency}
                   value={cartTotalPrice}
@@ -370,14 +373,14 @@ const Navbar = () => {
             </li>
             |
             <li className="px-4 flex">
-              <AccountMenu name={user.username} />
+              <AccountMenu name={currentUser.username} />
             </li>
           </ul>
         )}
       </div>
 
       {/* mobile menu selection */}
-      <div className="mobile_only_flex pl-[30.25px]  text-white cursor-pointer">
+      <div className="mobile_only_flex pl-[30.25px]  text-black cursor-pointer">
         {!open ? <AiOutlineMenu size={27.5} onClick={handleNavOpen} /> : null}
         {/* absolut mobile navigation */}
         <div
@@ -405,7 +408,7 @@ const Navbar = () => {
         </div>
       </div>
 
-      <div className="mobile_only_flex text-white">
+      <div className="mobile_only_flex text-black">
         <Link to={homeUrl()} className="flex">
           <img src="/atom.png"></img>
           <p className="font-medium text-xl px-3 pt-1">
@@ -414,7 +417,7 @@ const Navbar = () => {
         </Link>
       </div>
 
-      <div className="mobile_only text-white pr-[30px]">
+      <div className="mobile_only text-black pr-[30px]">
         <AiOutlineSearch size={20} />
       </div>
     </header>

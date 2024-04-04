@@ -1,10 +1,8 @@
 import getSymbolFromCurrency from 'currency-symbol-map'
 import React, { createContext, useContext, useEffect, useState } from 'react'
 import currencyService from 'services/currency.service'
-import cartService from 'services/cart.service'
 import { useAppContext } from './app-context'
 import { useSites } from './sites-provider'
-import { useCart } from './cart-provider'
 
 const CurrencyContext = createContext({})
 
@@ -12,8 +10,7 @@ export const useCurrency = () => useContext(CurrencyContext)
 
 const CurrencyProvider = ({ children }) => {
   const { updateContext, context } = useAppContext()
-  const { currentSite, sites } = useSites()
-  const { cartAccount, syncCart } = useCart()
+  const { currentSite } = useSites()
   const [currencyList, setCurrencyList] = useState([
     {
       code: 'EUR',
@@ -36,12 +33,8 @@ const CurrencyProvider = ({ children }) => {
     })
     setCurrencyList(currencyListWithSymbol)
 
-    const siteCurrency = sites.find((site) => site.code === currentSite)?.currency
     if (currencyListWithSymbol.length > 0) {
-      const defaultSiteCurrency = currencyListWithSymbol.find((cur) => {
-          return cur.code === siteCurrency
-        })
-      const activeCurrency = defaultSiteCurrency ||
+      const activeCurrency =
         currencyListWithSymbol.find((cur) => {
           return cur.code === context.currency
         }) || currencyListWithSymbol[0]
@@ -52,7 +45,6 @@ const CurrencyProvider = ({ children }) => {
   }
 
   const updateCurrency = async (value, site) => {
-    
     setActiveCurrency({
       code: value,
       symbol: getSymbolFromCurrency(value),
@@ -63,8 +55,6 @@ const CurrencyProvider = ({ children }) => {
       siteCode: site.code,
       targetLocation: site.homeBase.address.country,
     })
-    const cart = await syncCart()
-    cartService.changeCurrency(value, cart.id)
   }
 
   useEffect(() => {
