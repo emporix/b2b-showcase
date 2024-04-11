@@ -2,7 +2,7 @@ import Layout from '../Layout'
 import { useLanguage } from '../../context/language-provider'
 import { useNavigate } from 'react-router-dom'
 import { CMSFilterType } from '../../services/content/filteredPage.service'
-import Content from '../home/Content'
+import MainContent from '../home/MainContent'
 
 const ContentPage = () => {
   const { currentLanguage } = useLanguage()
@@ -23,7 +23,7 @@ const ContentPage = () => {
             Zurück zur Übersicht
           </button>
         )}
-        <Content page={route} type={CMSFilterType.ROUTE} />
+        <MainContent page={route} type={CMSFilterType.ROUTE} />
       </div>
     </Layout>
   )
