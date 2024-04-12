@@ -20,7 +20,7 @@ import SliderComponent from '../../components/Utilities/slider'
 import Accordion, { AccordionItem } from '../../components/Utilities/accordion'
 
 import LayoutContext from '../context'
-import { productUrl } from '../../services/service.config'
+import { productSchemaApi, productUrl } from '../../services/service.config'
 
 import { LargePrimaryButton } from '../../components/Utilities/button'
 import {
@@ -49,8 +49,12 @@ import {
 import Content from 'pages/home/Content'
 import { CMSFilterType } from 'services/content/filteredPage.service'
 import { useTranslation } from 'react-i18next';
+import { ACCESS_TOKEN } from '../../constants/localstorage'
+import ApiRequest from '../../services'
+import i18next from 'i18next';
 
 const ProductContext = createContext()
+export const i18nProductCustomAttributesNS = "productCustomAttributes"
 
 const Bold = ({ children }) => {
   return <div className="font-bold">{children}</div>
@@ -546,6 +550,38 @@ const ProductDetailsTabContent = ({ product }) => {
     }
     return res
   }
+  const ensureAttributeNameTranslationIsPresent = async (lang) => {
+    if (i18next.hasResourceBundle(lang, i18nProductCustomAttributesNS)) {
+      return;
+    }
+
+    const headers = {
+      'X-Version': 'v2',
+      Authorization: `Bearer ${localStorage.getItem(ACCESS_TOKEN)}`,
+      'Accept-Language': lang,
+    }
+    const res = await ApiRequest(productSchemaApi(), 'get', {}, headers, {})
+    if (res.status !== 200) {
+      return;
+    }
+
+    const data = res.data[0]
+    console.log(JSON.stringify(data, null, 2))
+
+    //reflect https://api.emporix.io/schema/n11showcase/schemas to i18next resource
+    const ressource = {}
+    ressource[data.id] = data.name[lang]
+    data.attributes.forEach((a)=>{
+      ressource[a.key] = a.name[lang]
+    });
+    i18next.addResourceBundle(lang,i18nProductCustomAttributesNS, ressource,false, true)
+    i18next.changeLanguage(lang)
+  }
+
+  useEffect(()=>{
+    ensureAttributeNameTranslationIsPresent(currentLanguage)
+  },[currentLanguage])
+
   const getAttributes = (items) => {
     let res = []
     Object.keys(items).forEach((key) => {
@@ -639,7 +675,7 @@ const ProductDetailTabContent = ({ product }) => {
   )
 }
 const ProductInfoPortal = ({ caption, items }) => {
-  const { t } = useTranslation();
+  const { t } = useTranslation(i18nProductCustomAttributesNS)
 
   return (
     <div className="information-portal-wrapper grid grid-cols-1 gap-4">

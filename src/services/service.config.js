@@ -9,6 +9,7 @@ export const serviceTokenApi = () => `${API_URL}/oauth/token`
 export const categoryApi = () =>
   `${API_URL}/category/${getTenant()}/category-trees`
 export const productApi = () => `${API_URL}/product/${getTenant()}/products`
+export const productSchemaApi = () => `${API_URL}/schema/${getTenant()}/schemas`
 export const retrievResourceApi = (categoryId) =>
   `${API_URL}/category/${getTenant()}/categories/${categoryId}/assignments`
 export const availabilityApi = () =>
