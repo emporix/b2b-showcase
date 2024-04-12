@@ -566,8 +566,7 @@ const ProductDetailsTabContent = ({ product }) => {
       return;
     }
 
-    const data = res.data[0]
-    console.log(JSON.stringify(data, null, 2))
+    const data = res.data[0]    
 
     //reflect https://api.emporix.io/schema/n11showcase/schemas to i18next resource
     const resource = {}
