@@ -55,6 +55,7 @@ import i18next from 'i18next';
 
 const ProductContext = createContext()
 export const i18nProductCustomAttributesNS = "productCustomAttributes"
+export const i18nPCADescriptionSuffix = "_desc"
 
 const Bold = ({ children }) => {
   return <div className="font-bold">{children}</div>
@@ -569,12 +570,13 @@ const ProductDetailsTabContent = ({ product }) => {
     console.log(JSON.stringify(data, null, 2))
 
     //reflect https://api.emporix.io/schema/n11showcase/schemas to i18next resource
-    const ressource = {}
-    ressource[data.id] = data.name[lang]
+    const resource = {}
+    resource[data.id] = data.name[lang]
     data.attributes.forEach((a)=>{
-      ressource[a.key] = a.name[lang]
+      resource[a.key] = a.name[lang]
+      resource[a.key + i18nPCADescriptionSuffix] = a.description[lang]
     });
-    i18next.addResourceBundle(lang,i18nProductCustomAttributesNS, ressource,false, true)
+    i18next.addResourceBundle(lang,i18nProductCustomAttributesNS, resource,false, true)
     i18next.changeLanguage(lang)
   }
 
@@ -677,14 +679,18 @@ const ProductDetailTabContent = ({ product }) => {
 const ProductInfoPortal = ({ caption, items }) => {
   const { t } = useTranslation(i18nProductCustomAttributesNS)
 
+
+
   return (
     <div className="information-portal-wrapper grid grid-cols-1 gap-4">
       <div className="information-caption">{t(caption)}</div>
       <div className="information-content grid grid-cols-1 gap-[6px]">
         {items.map((row, index) => (
           <div key={index} className="grid grid-cols-2 gap-2">
-            <div className="information-properties pl-6 grid grid-cols-1 text-lg">
-              <span key={index}>{t(row.property)}</span>
+            <div className="information-properties pl-6 grid grid-cols-1 text-lg last tooltipped">
+              <span
+                className="tooltip rounded-b-lg bg-aliceBlue p-1 -mr-2 standard_box_shadow">{t(row.property + i18nPCADescriptionSuffix)}</span>
+              <span key={index} className="tail">{t(row.property)}</span>
             </div>
             <div className="information-values pl-6 grid grid-cols-1 text-lg font-light">
               <span key={index}>{row.value}</span>
