@@ -129,7 +129,7 @@ const ProductListItems = ({products, auth, displayType}) => {
                         <div key={i} className="w-1/3 rounded-xl bg-aliceBlue hover:scale-[1.01] transition-all duration-150 ease-in" style={productListBoxShadow}>
                             <EachProduct
                                 key={item.id}
-                                available={stockLevel}
+                                available={available}
                                 rating={4}
                                 productCount={8}
                                 item={item}
@@ -145,7 +145,7 @@ const ProductListItems = ({products, auth, displayType}) => {
                         >
                             <EachProduct
                                 key={item.id}
-                                available={stockLevel}
+                                available={available}
                                 rating={4}
                                 productCount={8}
                                 item={item}
@@ -161,7 +161,7 @@ const ProductListItems = ({products, auth, displayType}) => {
                         >
                             <EachProduct
                                 key={item.id}
-                                available={stockLevel}
+                                available={available}
                                 rating={4}
                                 productCount={8}
                                 item={item}
@@ -204,7 +204,7 @@ const ProductListItems = ({products, auth, displayType}) => {
                         <div key={i} className="w-1/2 h-fit lg:h-full lg:hover:scale-[1.01] lg:transition-all lg:duration-150 lg:ease-in standard_box_shadow rounded-xl bg-aliceBlue">
                             <EachProduct
                                 key={item.id}
-                                available={stockLevel}
+                                available={available}
                                 rating={4}
                                 productCount={8}
                                 item={item}
@@ -220,7 +220,7 @@ const ProductListItems = ({products, auth, displayType}) => {
                         >
                             <EachProduct
                                 key={item.id}
-                                available={stockLevel}
+                                available={available}
                                 rating={4}
                                 productCount={8}
                                 item={item}
@@ -263,7 +263,7 @@ const ProductListItems = ({products, auth, displayType}) => {
                 <div key={i} className="w-full my-6 items-center hover:scale-[1.01] transition-all duration-150 ease-in">
                     <EachProductRow
                         key={item.id}
-                        available={stockLevel}
+                        available={available}
                         item={item}
                         rating={4}
                         productCount={8}
