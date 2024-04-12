@@ -2,7 +2,6 @@ import { fetchGraphqlApi } from 'graphql/utils/fetch-graphql-api'
 
 const NavigationQuery = `query NavigationQuery {
     cmsNavigation {
-        id
         parentIds
         label
         caasDocumentId
@@ -11,7 +10,6 @@ const NavigationQuery = `query NavigationQuery {
   }`
   const LocalizedNavigationQuery = `query NavigationQuery($language: Language) {
     cmsNavigation(language: $language) {
-        id
         parentIds
         label
         caasDocumentId
