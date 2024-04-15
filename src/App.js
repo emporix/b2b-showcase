@@ -60,28 +60,7 @@ import { initReactI18next } from "react-i18next";
 i18n
   .use(initReactI18next)
   .init({
-    resources: {
-      en: {
-        translation: {
-          "custom_product_attributes_n11": "Wine Details",
-          "grape_n11showcase": "Grape",
-          "country_n11showcase": "Country of origin",
-          "region_n11showcase": "Wine growing region",
-          "winery_n11showcase": "Winery",
-          "vintage_n11showcase": "Vintage",
-        }
-      },
-      de: {
-        translation: {
-          "custom_product_attributes_n11": "Weindetails",
-          "grape_n11showcase": "Rebsorte",
-          "country_n11showcase": "Herkunftsland",
-          "region_n11showcase": "Weinbaugebiet",
-          "winery_n11showcase": "Weingut",
-          "vintage_n11showcase": "Jahrgang",
-        }
-      }
-    },
+    resources: {},
     lng: "de",
     fallbackLng: "de",
     interpolation: {
