@@ -19,6 +19,8 @@ const ProductListViewSettingBar = ({
                                        changeDisplayType,
                                        productListCount,
                                        productListCountsPerPage,
+                                       productSortingTypes,
+                                       changeSortingTypeIndex,
                                        changePerPageCount,
                                        displayType,
                                    }) => {
@@ -45,17 +47,15 @@ const ProductListViewSettingBar = ({
                         {/* <li className="product-result-caption hidden lg:block">
               Products found: {productListCount}
             </li> */}
-                        {/* <li className="product-result-caption  lg:hidden">
+              {/* <li className="product-result-caption  lg:hidden">
               {productListCount} Products
             </li> */}
             <li className="sort-by">
               <div className="products-filter-name">
                 Sort:&nbsp;
-                <select className="products-filter-value">
-                  <option value="">Price (High to Low)</option>
-                  <option value="">Price (Low to High)</option>
-                  <option value="">Name (A-Z)</option>
-                  <option value="">Name (Z-A)</option>
+                <select className="products-filter-value" onChange={changeSortingTypeIndex}>
+                  {productSortingTypes.map((type, i) =>
+                    <option key={i} value={i}>{type.name}</option>)}
                 </select>
               </div>
               <div className="md:hidden  flex">
@@ -396,6 +396,8 @@ const ProductListContent = () => {
         productListCountsPerPage,
         productsPerPage,
         setProductsPerPage,
+        sortingTypes,
+        setSortingTypeIndex
     } = useProductList()
 
     const productsWithoutVariants = useMemo(() => {
@@ -413,6 +415,11 @@ const ProductListContent = () => {
         setProductsPerPage(event.target.value)
     }
 
+    const changeSortingType = (event) => {
+      setPageNumber(1)
+      setSortingTypeIndex(event.target.value)
+    }
+
     return (
         <>
             <ProductListViewSettingBar
@@ -421,6 +428,8 @@ const ProductListContent = () => {
                 changeDisplayType={changeDisplayType}
                 productListCount={productsWithoutVariants.length}
                 productListCountsPerPage={productListCountsPerPage}
+                changeSortingTypeIndex={changeSortingType}
+                productSortingTypes={sortingTypes}
             />
             {isProductsLoading ? (
                 <LoadingCircleProgress1/>
