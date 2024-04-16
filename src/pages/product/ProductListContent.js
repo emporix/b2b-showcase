@@ -397,7 +397,8 @@ const ProductListContent = () => {
         productsPerPage,
         setProductsPerPage,
         sortingTypes,
-        setSortingTypeIndex
+        setSortingTypeIndex,
+        total
     } = useProductList()
 
     const productsWithoutVariants = useMemo(() => {
@@ -446,7 +447,7 @@ const ProductListContent = () => {
                     <ProductListPagination
                         changePageNumber={changePageNumber}
                         countPerPage={productsPerPage}
-                        productListCount={productsWithoutVariants.length}
+                        productListCount={total+1}
                         pageNumber={pageNumber}
                     />
                 </>
