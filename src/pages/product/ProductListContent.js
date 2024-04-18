@@ -19,6 +19,8 @@ const ProductListViewSettingBar = ({
                                        changeDisplayType,
                                        productListCount,
                                        productListCountsPerPage,
+                                       productSortingTypes,
+                                       changeSortingTypeIndex,
                                        changePerPageCount,
                                        displayType,
                                    }) => {
@@ -45,17 +47,15 @@ const ProductListViewSettingBar = ({
                         {/* <li className="product-result-caption hidden lg:block">
               Products found: {productListCount}
             </li> */}
-                        {/* <li className="product-result-caption  lg:hidden">
+              {/* <li className="product-result-caption  lg:hidden">
               {productListCount} Products
             </li> */}
             <li className="sort-by">
               <div className="products-filter-name">
                 Sort:&nbsp;
-                <select className="products-filter-value">
-                  <option value="">Price (High to Low)</option>
-                  <option value="">Price (Low to High)</option>
-                  <option value="">Name (A-Z)</option>
-                  <option value="">Name (Z-A)</option>
+                <select className="products-filter-value" onChange={changeSortingTypeIndex}>
+                  {productSortingTypes.map((type, i) =>
+                    <option key={i} value={i}>{type.name}</option>)}
                 </select>
               </div>
               <div className="md:hidden  flex">
@@ -129,7 +129,7 @@ const ProductListItems = ({products, auth, displayType}) => {
                         <div key={i} className="w-1/3 rounded-xl bg-aliceBlue hover:scale-[1.01] transition-all duration-150 ease-in" style={productListBoxShadow}>
                             <EachProduct
                                 key={item.id}
-                                available={stockLevel}
+                                available={available}
                                 rating={4}
                                 productCount={8}
                                 item={item}
@@ -145,7 +145,7 @@ const ProductListItems = ({products, auth, displayType}) => {
                         >
                             <EachProduct
                                 key={item.id}
-                                available={stockLevel}
+                                available={available}
                                 rating={4}
                                 productCount={8}
                                 item={item}
@@ -161,7 +161,7 @@ const ProductListItems = ({products, auth, displayType}) => {
                         >
                             <EachProduct
                                 key={item.id}
-                                available={stockLevel}
+                                available={available}
                                 rating={4}
                                 productCount={8}
                                 item={item}
@@ -204,7 +204,7 @@ const ProductListItems = ({products, auth, displayType}) => {
                         <div key={i} className="w-1/2 h-fit lg:h-full lg:hover:scale-[1.01] lg:transition-all lg:duration-150 lg:ease-in standard_box_shadow rounded-xl bg-aliceBlue">
                             <EachProduct
                                 key={item.id}
-                                available={stockLevel}
+                                available={available}
                                 rating={4}
                                 productCount={8}
                                 item={item}
@@ -220,7 +220,7 @@ const ProductListItems = ({products, auth, displayType}) => {
                         >
                             <EachProduct
                                 key={item.id}
-                                available={stockLevel}
+                                available={available}
                                 rating={4}
                                 productCount={8}
                                 item={item}
@@ -263,7 +263,7 @@ const ProductListItems = ({products, auth, displayType}) => {
                 <div key={i} className="w-full my-6 items-center hover:scale-[1.01] transition-all duration-150 ease-in">
                     <EachProductRow
                         key={item.id}
-                        available={stockLevel}
+                        available={available}
                         item={item}
                         rating={4}
                         productCount={8}
@@ -396,6 +396,9 @@ const ProductListContent = () => {
         productListCountsPerPage,
         productsPerPage,
         setProductsPerPage,
+        sortingTypes,
+        setSortingTypeIndex,
+        total
     } = useProductList()
 
     const productsWithoutVariants = useMemo(() => {
@@ -413,6 +416,11 @@ const ProductListContent = () => {
         setProductsPerPage(event.target.value)
     }
 
+    const changeSortingType = (event) => {
+      setPageNumber(1)
+      setSortingTypeIndex(event.target.value)
+    }
+
     return (
         <>
             <ProductListViewSettingBar
@@ -421,6 +429,8 @@ const ProductListContent = () => {
                 changeDisplayType={changeDisplayType}
                 productListCount={productsWithoutVariants.length}
                 productListCountsPerPage={productListCountsPerPage}
+                changeSortingTypeIndex={changeSortingType}
+                productSortingTypes={sortingTypes}
             />
             {isProductsLoading ? (
                 <LoadingCircleProgress1/>
@@ -437,7 +447,7 @@ const ProductListContent = () => {
                     <ProductListPagination
                         changePageNumber={changePageNumber}
                         countPerPage={productsPerPage}
-                        productListCount={productsWithoutVariants.length}
+                        productListCount={total+1}
                         pageNumber={pageNumber}
                     />
                 </>

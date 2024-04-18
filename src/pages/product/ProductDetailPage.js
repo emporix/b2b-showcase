@@ -20,7 +20,7 @@ import SliderComponent from '../../components/Utilities/slider'
 import Accordion, { AccordionItem } from '../../components/Utilities/accordion'
 
 import LayoutContext from '../context'
-import { productSchemaApi, productUrl } from '../../services/service.config'
+import { homeUrl, productSchemaApi, productUrl } from '../../services/service.config'
 
 import { LargePrimaryButton } from '../../components/Utilities/button'
 import {
@@ -61,7 +61,7 @@ const Bold = ({ children }) => {
   return <div className="font-bold">{children}</div>
 }
 const ProductDetailCategoryCaptionBar = ({ category }) => {
-  const categoryTree = [{ caption: 'Home', link: productUrl() }]
+  const categoryTree = [{ caption: 'Home', link: homeUrl() }]
   let lnk = productUrl()
   for (let c in category) {
     lnk = `${lnk}/${category[c].toLowerCase().replaceAll(' ', '_')}`
