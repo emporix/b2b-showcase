@@ -405,7 +405,6 @@ const CartGoProcurementSystem = () => {
 }
 
 export const getShippingCost = (shippingMethod) => {
-  // return shippingMethod != null ? shippingMethod?.fee : 0
   return shippingMethod != null ? shippingMethod?.grossFee : 0
 }
 
