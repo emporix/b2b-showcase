@@ -5,13 +5,11 @@ const Winery = ({ props }) => {
     props?.props?.data?.cmsFilteredPage?.page?.children[0]?.children[0]?.data
       ?.st_text[0]?.content[0]?.content
 
-  console.log(text)
-
-  if (text === undefined) return
+  if (!text) {return}
   return (
     <div className="winery product-details-tab-content-wrapper text-lg font-light">
       <div className={'winery__content'}>
-        {text.length ? <div className="winery__text">{text}</div> : ''}
+        <div className="winery__text">{text}</div>
       </div>
     </div>
   )
