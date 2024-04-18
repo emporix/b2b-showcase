@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react'
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
 import Login from './pages/Login'
 import Signup from './pages/Signup'
@@ -53,6 +53,8 @@ import AccountManageUsers from 'pages/account/AccountManageUsers'
 import ResetPassword from 'pages/ResetPassword'
 import Auth0Callback from 'pages/Auth0Callback'
 import StoreFinder from 'pages/storefinder'
+import ContentOverview from './pages/content/ContentOverview'
+import ContentPage from './pages/content/ContentPage'
 
 import i18n from "i18next";
 import { initReactI18next } from "react-i18next";
@@ -79,11 +81,7 @@ function App() {
   return (
     <Router>
       <Routes>
-        <Route
-            path="auth0"
-            exact
-            element={<Auth0Callback />}
-          />
+        <Route path="auth0" exact element={<Auth0Callback />} />
         <Route path="/:tenant">
           <Route index exact element={<Home />} />
 
@@ -113,9 +111,17 @@ function App() {
             element={<CreateReturn />}
           />
           <Route path="checkout" exact element={<Checkout />} />
-          <Route path="saved-carts/:approvalId/checkout" exact element={<ApprovalCheckout />} />
+          <Route
+            path="saved-carts/:approvalId/checkout"
+            exact
+            element={<ApprovalCheckout />}
+          />
           <Route path="approval-request" exact element={<ApprovalRequest />} />
-          <Route path="approval-order-created" exact element={<ApprovalOrderCreated />} />
+          <Route
+            path="approval-order-created"
+            exact
+            element={<ApprovalOrderCreated />}
+          />
 
           <Route path="payment-callback" exact element={<PaymentCallback />} />
           <Route
@@ -215,6 +221,10 @@ function App() {
           <Route path="quick_order" element={<QuickOrder />} />
           <Route path="aboutus" element={<AboutUs />} />
           <Route path="storefinder" element={<StoreFinder />} />
+          <Route path="Content" element={<ContentOverview />} />
+          <Route path="Inhalt" element={<ContentOverview />} />
+          <Route path="Content/:contentName" element={<ContentPage />} />
+          <Route path="Inhalt/:contentName" element={<ContentPage />} />
           <Route path="*" element={<NoPage />} />
         </Route>
         <Route path="*" element={<Home />} />

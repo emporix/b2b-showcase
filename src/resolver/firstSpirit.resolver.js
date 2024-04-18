@@ -1,14 +1,15 @@
-import CMS_Footer from "components/Cms/footer";
-import Pt_Headline from "components/Cms/pt_headline";
-import Teaser from "components/Cms/teaser";
-import Text_Banner from "components/Cms/text_banner";
+import CMS_Footer from 'components/Cms/footer'
+import Pt_Headline from 'components/Cms/pt_headline'
+import Teaser from 'components/Cms/teaser'
+import Text_Banner from 'components/Cms/text_banner'
+import Winery from '../components/Cms/winery'
 
 const firstSpiritComponentMap = {
-    pt_headline: Pt_Headline,
-    teaser: Teaser,
-    text_banner: Text_Banner,
-    footer: CMS_Footer
-};
+  pt_headline: Pt_Headline,
+  teaser: Teaser,
+  text_banner: Text_Banner,
+  footer: CMS_Footer,
+}
 
 export const normalizeFsStructure = (content) => {
     if (typeof (content?.props?.fsType) === "string") {
@@ -24,7 +25,7 @@ export const normalizeFsStructure = (content) => {
 export const normalizeFooterStructure = (content) => {
     return {
         footer: [
-            { 
+            {
                 headline: content[1],
                 items: content[0],
             },
@@ -69,17 +70,23 @@ const FsGenericComponent = (props) => {
         const Component = firstSpiritComponentMap[componentLayout];
         // Prevent undefined components to be rendered
         if (Component === undefined) return
-        
+
         return (
             <Component props={normalizeFooterStructure(componentData)}/>
         )
-    } else {
+    } else if(componentLayout === "productpage"){
+        return (
+            <Winery props={props}/>
+        )
+    }
+
+    else {
         return (
             <div>
                 <Text_Banner></Text_Banner>
                 {componentData.map((entry, idx) => {
-                    let key = ""
-   
+                    let key
+
                     if(entry?.template?.uid) {
                         key = entry?.template?.uid
                     } else if(entry?.name) {
@@ -90,12 +97,12 @@ const FsGenericComponent = (props) => {
                         key = "text_banner"
                     }
                     const Component = firstSpiritComponentMap[key];
-    
+
                     // Prevent undefined components to be rendered
                     if (Component === undefined) return
-    
+
                     return (
-                        <div><Component props={entry}/></div>
+                        <div key={idx}><Component props={entry}/></div>
                     );
                 })}
             </div>

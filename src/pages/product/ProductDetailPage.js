@@ -592,7 +592,7 @@ const ProductDetailsTabContent = ({ product }) => {
       else if (Array.isArray(value) && currentLanguage === "de") value = value[0].value
       else if (typeof value === "string") value = items[key]
       else value = ''
-      
+
       res.push({ property: key, value: value })
     })
     return res
@@ -666,6 +666,7 @@ const ProductDetailTabContent = ({ product }) => {
           dangerouslySetInnerHTML={{ __html: product.description }}
           className="product-details-tab-content-wrapper text-lg font-light"
         />
+        <Content type={CMSFilterType.PRODUCT} page={product.id}/>
       </TabPanel>
       <TabPanel value={tab} index={2}>
         <div className="product-details-tab-content-wrapper font-light">
@@ -729,7 +730,6 @@ const ProductDetailInfo = ({ product }) => {
           </Accordion>
         </div>
         <div className="desktop-lg mt-4">
-          <Content type={CMSFilterType.PRODUCT} page={product.id} />
         </div>
       </div>
     </div>
