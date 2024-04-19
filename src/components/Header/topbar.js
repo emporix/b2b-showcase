@@ -53,7 +53,6 @@ const MegaNav = ({ showMegaMenuContent, setShowMegaMenuContent }) => {
         >
           <Link to={!item.items.length ? addTenantToUrl(item.url) : homeUrl}>
             <div>
-              {' '}
               {item.contentfulFieldName
                 ? fields[item.contentfulFieldName]
                 : item.title}
@@ -70,7 +69,6 @@ const MegaNav = ({ showMegaMenuContent, setShowMegaMenuContent }) => {
       <button className="mega_menu_dropbtn">
         <Link to="https://mach11.zendesk.com/hc/de-de" target="_blank">
           <div>
-            {' '}
             Help Center
           </div>
         </Link>
