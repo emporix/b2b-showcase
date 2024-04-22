@@ -42,7 +42,6 @@ const getProductData = async (productIds, pageNumber, itemsPerPage, sortProp, so
   }
   const collator = new Intl.Collator([getLanguageFromLocalStorage()], {numeric: true});
   products.sort((a,b)=> collator.compare(a[sortProp], b[sortProp]) * sortDir)
-  console.log(JSON.stringify(products[0],null,2));
   return products.slice(
     itemsPerPage * (pageNumber - 1),
     itemsPerPage * pageNumber
