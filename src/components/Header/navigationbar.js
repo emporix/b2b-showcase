@@ -242,7 +242,7 @@ const Navbar = () => {
             cartAccount.totalPrice &&
             cartAccount.totalPrice.amount
         ) {
-            setCartTotalPrice(cartAccount.totalPrice.amount)
+            setCartTotalPrice(cartAccount.subTotalPrice.amount)
         } else {
             setCartTotalPrice(0)
         }

@@ -1,9 +1,15 @@
-import { fetchGraphqlApi } from "graphql/utils/fetch-graphql-api";
-
+import { fetchGraphqlApi } from 'graphql/utils/fetch-graphql-api'
 
 const NavigationQuery = `query NavigationQuery {
     cmsNavigation {
-        id
+        parentIds
+        label
+        caasDocumentId
+        seoRoute
+      }
+  }`
+  const LocalizedNavigationQuery = `query NavigationQuery($language: Language) {
+    cmsNavigation(language: $language) {
         parentIds
         label
         caasDocumentId
@@ -11,7 +17,10 @@ const NavigationQuery = `query NavigationQuery {
       }
   }`
 
+  export const getLocalizedCmsNavigation = async (language) => {
+    return await fetchGraphqlApi(LocalizedNavigationQuery,{language})
+  }
+
   export const getCmsNavigation = async () => {
-    const data = await fetchGraphqlApi(NavigationQuery)
-    return data;
-}
+    return await fetchGraphqlApi(NavigationQuery)
+  }

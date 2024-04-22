@@ -1,4 +1,4 @@
-import { fetchGraphqlApi } from "graphql/utils/fetch-graphql-api";
+import {fetchGraphqlApi} from 'graphql/utils/fetch-graphql-api'
 
 const FilteredPageQuery = `query FilteredPageQuery($cmsFilteredPageId: String!, $type: CMSFilterType!, $language: Language) {
   cmsFilteredPage(id: $cmsFilteredPageId, type: $type, language: $language) {
@@ -11,7 +11,9 @@ export const CMSFilterType = {
     PRODUCT: 'PRODUCT',
     CATEGORY: 'CATEGORY',
     NAME: 'NAME',
-    TEMPLATE_UID: 'TEMPLATE_UID'
+    TEMPLATE_UID: 'TEMPLATE_UID',
+    ROUTE: 'ROUTE',
+    IDENTIFIER: 'IDENTIFIER'
 }
 
 // Until the routing strategy is implemented, we need manual mapping between the FS Urls and our FE routes

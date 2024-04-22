@@ -20,18 +20,14 @@ import { useSites } from './sites-provider'
 import priceService from '../services/product/price.service'
 import productService from '../services/product/product.service'
 import { useCurrency } from './currency-context'
-import { useLanguage } from './language-provider'
+import { getLanguageFromLocalStorage, useLanguage } from './language-provider'
 export const ProductListContext = createContext({})
 
 export const useProductList = () => useContext(ProductListContext)
 
-const getProductData = async (productIds, pageNumber, itemsPerPage) => {
-  const ids = productIds.slice(
-    itemsPerPage * (pageNumber - 1),
-    itemsPerPage * pageNumber
-  )
-  const products = await productService.getProductsWithIds(ids)
-  const prices = await priceService.getPriceWithProductIds(ids)
+const getProductData = async (productIds, pageNumber, itemsPerPage, sortProp, sortDir) => {
+  const products = await productService.getProductsWithIds(productIds)
+  const prices = await priceService.getPriceWithProductIds(productIds)
   const prices_obj = {}
   prices.forEach((p) => {
     prices_obj[`p${p.itemId.id}`] = p
@@ -39,10 +35,18 @@ const getProductData = async (productIds, pageNumber, itemsPerPage) => {
   let price_id
   for (let i = 0; i < products.length; i++) {
     price_id = `p${products[i]['id']}`
-    if (prices_obj[price_id] !== undefined)
+    if (prices_obj[price_id] !== undefined) {
       products[i]['price'] = prices_obj[price_id]
+      products[i]['priceTotalValue'] = prices_obj[price_id].totalValue
+    }
   }
-  return products
+  const collator = new Intl.Collator([getLanguageFromLocalStorage()], {numeric: true});
+  products.sort((a,b)=> collator.compare(a[sortProp], b[sortProp]) * sortDir)
+  console.log(JSON.stringify(products[0],null,2));
+  return products.slice(
+    itemsPerPage * (pageNumber - 1),
+    itemsPerPage * pageNumber
+  )
 }
 
 const ProductListProvider = ({ children, id }) => {
@@ -58,6 +62,9 @@ const ProductListProvider = ({ children, id }) => {
   const [productsPerPage, setProductsPerPage] = useState(
     productListCountsPerPage[0]
   )
+  const sortingTypes =
+    [{name:"Price (High to Low)", prop:"priceTotalValue", dir:-1},{name:"Price (Low to High)", prop:"priceTotalValue", dir:1},{name:"Name (A-Z)", prop:"name", dir:1},{name:"Name (Z-A)", prop:"name", dir:-1}]
+  const [sortingTypeIndex, setSortingTypeIndex] = useState(0);
 
   const { currentSite } = useSites()
   const { activeCurrency } = useCurrency()
@@ -99,7 +106,9 @@ const ProductListProvider = ({ children, id }) => {
         const newProducts = await getProductData(
           productIds,
           pageNumber,
-          productsPerPage
+          productsPerPage,
+          sortingTypes[sortingTypeIndex].prop,
+          sortingTypes[sortingTypeIndex].dir
         )
         setProducts(newProducts)
       } catch (e) {
@@ -115,6 +124,7 @@ const ProductListProvider = ({ children, id }) => {
     currentSite,
     activeCurrency,
     currentLanguage,
+    sortingTypeIndex
   ])
 
   return (
@@ -131,6 +141,9 @@ const ProductListProvider = ({ children, id }) => {
         pageNumber,
         setPageNumber,
         productListCountsPerPage,
+        sortingTypes,
+        sortingTypeIndex,
+        setSortingTypeIndex
       }}
     >
       {children}

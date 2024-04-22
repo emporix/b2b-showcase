@@ -48,7 +48,7 @@ const EachProductRow = ({ item, type, available, rating, productCount }) => {
   return (
     <div className="standard_box_shadow flex h-full font-inter rounded-xl bg-aliceBlue p-4 gap-4">
       <div className="flex w-1/4 flex-col justify-between">
-        <img src={imageSrc} alt='' className=" aspect-square h-fit rounded-xl" />
+        <img src={imageSrc} alt='' className=" aspect-square h-fit rounded-xl cursor-pointer" onClick={handleProductDetail}/>
       </div>
       <div className="flex flex-col w-1/2">
         <div
@@ -58,7 +58,7 @@ const EachProductRow = ({ item, type, available, rating, productCount }) => {
         </div>
         <div className='flex flex-col gap-2'>
 
-          <div className="mt-4 h-fit text-left w-full text-2xl text-eerieBlack font-light">
+          <div className="mt-4 h-fit text-left w-full text-2xl text-eerieBlack font-light cursor-pointer" onClick={handleProductDetail}>
             {getLocalizedValue(item.name)}
           </div>
           <div className="text-xs font-bold text-gray">{item.code}</div>
@@ -67,7 +67,7 @@ const EachProductRow = ({ item, type, available, rating, productCount }) => {
           <ReactStars size={16} value={rating} color2={'#FBB13C'} />(
           {productCount})
         </div>
-        <div className="text-sm mt-4 text-eerieBlack text-base">
+        <div className="text-sm mt-4 text-eerieBlack text-base cursor-pointer" onClick={handleProductDetail}>
           <span>{trimmedDescription}</span>
         </div>
       </div>

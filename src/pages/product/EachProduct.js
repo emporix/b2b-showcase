@@ -34,11 +34,11 @@ const EachProduct = ({ item, available, rating, productCount }) => {
             <div className="w-full h-5 justify-between hidden lg:flex">
                 {item.productType !== 'PARENT_VARIANT' && (
                     <div
-                        className={
-                            'text-limeGreen font-inter font-medium float-right lg:float-none'
+                        className={available ? "text-limeGreen" :
+                            "text-red-500" + " font-inter font-medium float-right lg:float-none"
                         }
                     >
-                        {available > 0 ? 'In Stock' : 'Out Of Stock'}
+                        {available ? 'In Stock' : 'Out Of Stock'}
                     </div>
                 )}
                 <div className="flex float-right lg:float-none">
@@ -58,7 +58,7 @@ const EachProduct = ({ item, available, rating, productCount }) => {
                         'text-limeGreen font-inter font-medium float-right lg:float-none'
                     }
                 >
-                    {available > 0 ? 'In Stock' : 'Out Of Stock'}
+                    {available ? 'In Stock' : 'Out Of Stock'}
                 </div>
             </div>
             <div className="items-center mx-auto ">

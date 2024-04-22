@@ -4,6 +4,9 @@ import {LoadingCircleProgress1} from '../../components/Utilities/progress'
 import {getProductCategoryDetail} from '../../services/product/category.service'
 import {useProductList} from 'context/product-list-context'
 import {Checkbox} from '@mui/material'
+import { useNavigate } from 'react-router'
+import { TENANT } from '../../constants/localstorage'
+import category from '../home/Category'
 
 const SelectedFilter = ({title, val}) => {
     return (
@@ -27,51 +30,35 @@ const SelectionField = ({title, total}) => {
     )
 }
 
-const Category = ({item}) => {
-    const [clicked, setClicked] = useState(false)
-    const contentEl = useRef()
-    const {title, items} = item
-    const handleToggle = () => {
-        setClicked((prev) => !prev)
-    }
+const Category = ({ item, activeSubCategory, activeCategory}) => {
+  const {title, items, key, url} = item
+  const navigate = useNavigate();
 
-    if (item.items.length === 0) return
+  if (item.items.length === 0) return
 
     return (
-        <li className={`cat_accordion_item ${clicked ? 'active' : ''}`}>
-            <button className="category_pan" onClick={handleToggle}>
-                <span className="category_pan_title">{title}</span>
-                {/* {clicked ? (
-            <HiChevronDown size={20} className="h-4" />
-        ) : (
-            <HiChevronUp size={20} className="h-4" />
-        )} */}
-            </button>
-            <div
-                ref={contentEl}
-                // className="content_wrapper"
-                // style={
-                //   clicked
-                //     ? { height: contentEl.current.scrollHeight }
-                //     : { height: '0px' }
-                // }
-            >
+        <li>
+          <span className="category_pan_title">{title}</span>
+            <div>
                 <div className="content content-center justify-center">
-                    <div className="w-[90%] text-eerieBlack text-[14px]/[22px] font-normal flex items-center border-b-[1px] border-spacing-3 border-eerieBlack">
-                        <Checkbox defaultChecked sx={{
+                    <div className="w-[90%] text-eerieBlack text-[14px]/[22px] font-normal flex items-center border-b-[1px] border-spacing-3 border-eerieBlack cursor-pointer"
+                         onClick={()=>{navigate(`/${localStorage.getItem(TENANT)}/${url}`)}}>
+                        <Checkbox defaultChecked={(key === activeSubCategory || !activeSubCategory) && !activeCategory}
+                            sx={{
                             color: "#cccccc",
                             '&.Mui-checked': {
                                 color: "#E03F58",
                             },
                             '& .MuiSvgIcon-root': {fontSize: 18}
                         }} style={{fill: 'white'}}/>
-                        <div>Select All</div>
+                        <div>Alle L&auml;nder</div>
                     </div>
                     {items.map((item, index) => (
                         <div className="flex">
-                            <div className="flex">
+                            <div className="flex"
+                                 onClick={()=>{navigate(`/${localStorage.getItem(TENANT)}/${item.url}`)}}>
                                 <Checkbox
-                                    defaultChecked
+                                  defaultChecked={(item.key === activeCategory || !activeCategory) && (key === activeSubCategory || !activeSubCategory)}
                                     sx={{
                                         color: "#cccccc",
                                         '&.Mui-checked': {
@@ -80,11 +67,10 @@ const Category = ({item}) => {
                                         '& .MuiSvgIcon-root': {fontSize: 18}
                                     }}
                                 />
-                                <SelectionField
-                                    key={index}
-                                    title={item.title}
-                                    total={item.total}
-                                />
+                                <div className="category_pan_field">
+                                  <label className='category_pan_field_title cursor-pointer' title={item.title.toLowerCase()}> {item.title.toLowerCase()}</label>
+                                  <div className="text-manatee pl-3 cursor-pointer">{item.total}</div>
+                                </div>
                             </div>
                         </div>
                     ))}
@@ -93,6 +79,9 @@ const Category = ({item}) => {
         </li>
     )
 }
+
+
+
 
 const FilterListPanel = ({filterItems, handleSideFilterContent}) => {
     return (
@@ -126,6 +115,7 @@ const CategoryPanel = () => {
     const [isLoading, setIsLoading] = useState(false)
     const [categoryList, setCategoryList] = useState([])
     const {maincategory, subcategory, category} = useParams()
+    const navigate = useNavigate();
     const {setProductIds} = useProductList()
     const getCategory = async (
         categoryTree,
@@ -151,14 +141,14 @@ const CategoryPanel = () => {
         }
     }, [JSON.stringify(categoryTree), maincategory, subcategory, category])
 
-    return (
+  return (
         <>
             {isLoading ? (
                 <LoadingCircleProgress1/>
             ) : (
-                <ul className="category_accordion">
+                <ul>
                     {categoryList.map((item, index) => (
-                        <Category key={index} item={item}/>
+                      <Category key={index} item={item} activeSubCategory={subcategory} activeCategory={category}/>
                     ))}
                 </ul>
             )}
