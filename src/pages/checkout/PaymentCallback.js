@@ -1,12 +1,8 @@
 import React from 'react'
-import CheckoutPage from './CheckoutPage'
 import Layout from '../Layout'
 import { useNavigate } from 'react-router-dom'
 import { loginUrl } from 'services/service.config'
-import { AddressProvider } from './AddressProvider'
 import { useAuth } from 'context/auth-provider'
-import { PaymentProvider } from './PaymentProvider'
-import { Container, GridLayout } from 'components/Utilities/common'
 
 const PaymentCallback = () => {
   const title = `Payment`

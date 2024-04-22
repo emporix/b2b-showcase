@@ -16,35 +16,32 @@ import {
   ProgressBarItem,
 } from '../../components/Utilities/progressbar'
 import ShippingMethod from '../../components/Checkout/shiping_method'
-import DeliveryWindow from '../../components/Checkout/DeliveryWindow'
-import PaymentMethodItem from '../../components/Checkout/PaymentMethodItem'
-import PaymentInvoiceItem from '../../components/Checkout/PaymentInvoiceItem'
 import {
   Heading3,
   Heading4,
   TextBold1,
   TextBold3,
-  TextBold4,
   TextRegular,
-  TextRegular1,
   TextRegular3,
   Underline,
 } from '../../components/Utilities/typography'
+import { USER } from 'constants/localstorage'
 import { DropdownWithLabel } from '../../components/Utilities/dropdown'
 import { RadioGroup } from '../../components/Utilities/radio'
 import './checkout.css'
 import Checkbox from '../../components/Utilities/checkbox'
 import { useUserAddress } from './AddressProvider'
 import Address from './Address'
-import ProductContent from './ProductsContent'
 import { useCart } from 'context/cart-provider'
 import { usePayment } from './PaymentProvider'
 import PaymentSpreedly from 'components/Checkout/PaymentSpreedly'
 import { CartProductImageAndReadOnlyQuantity, CartProductInfo, } from 'components/Cart/cart'
-
+import GuestShippingContent from './GuestShippingContent'
+import { GuestPaymentContent } from './GuestPaymentContent'
 
 const ShippingContent = () => {
   const { setShippingMethod } = useCart()
+  const user = JSON.parse(localStorage.getItem(USER))
 
   const {
     locations,
@@ -69,7 +66,8 @@ const ShippingContent = () => {
   }
 
   return (
-    <>
+  user ? 
+    (<>
       <GridLayout className="gap-10 border rounded border-quartz p-6">
         <GridLayout className="gap-4">
           <DesktopMDContainer>
@@ -107,7 +105,7 @@ const ShippingContent = () => {
           />
           {addresses.length === 0 && (
             <GridLayout className="text-xs text-red-600 text-center">
-              Must have at least one address to finalise your order
+              Please check shipping address for your Company / User
             </GridLayout>
           )}
           <GridLayout className="location-info">
@@ -147,18 +145,19 @@ const ShippingContent = () => {
         </GridLayout>  
       </GridLayout>
     </>
+    ) : <GuestShippingContent/>
   )
 }
 
 const PaymentContent = ({cart}) => {
   const {
     selectedAddress,
-    addresses,
-    locations,
+    billingAddresses,
+    billingLocations,
     billingAddress,
     setBillingAddress,
   } = useUserAddress()
-
+  const user = JSON.parse(localStorage.getItem(USER))
   const [isCustomAddressEnabled, setIsCustomAddressEnabled] = useState(true)
 
   useEffect(() => {
@@ -177,7 +176,7 @@ const PaymentContent = ({cart}) => {
           </GridLayout>
         </RadioGroup>
       </GridLayout>
-      <GridLayout className="billing-details-wrapper gap-6">
+      {user && <GridLayout className="billing-details-wrapper gap-6">
         <TextBold1>Billing Details</TextBold1>
         <Checkbox
           value={isCustomAddressEnabled}
@@ -191,12 +190,12 @@ const PaymentContent = ({cart}) => {
             <div className="address-dropdown-wrapper">
               <DropdownWithLabel
                 label="Address"
-                options={locations}
+                options={billingLocations}
                 placeholder="Please select delivery address"
                 defaultValue={billingAddress}
                 onChange={(e) => {
                   const addressId = e[0].value
-                  const address = addresses.find(
+                  const address = billingAddresses.find(
                     (address) => address.id === addressId
                   )
                   setBillingAddress(address)
@@ -207,7 +206,7 @@ const PaymentContent = ({cart}) => {
             <Address data={billingAddress} />
           </GridLayout>
         )}
-      </GridLayout>
+      </GridLayout>}
     </>
   )
 }
@@ -380,7 +379,7 @@ const ReviewOrderContent = (cart) => {
   )
 }
 
-const CheckoutContent = ({ status, cart }) => {
+const CheckoutContent = ({ status, cart, user }) => {
   return (
     <div className="checkout-content-wrapper">
       <GridLayout className="gap-8">
@@ -392,7 +391,7 @@ const CheckoutContent = ({ status, cart }) => {
         {status === 'shipping' ? (
           <ShippingContent />
         ) : status === 'payment' ? (
-          <PaymentContent cart={cart} />
+          user ? <PaymentContent cart={cart}/> : <GuestPaymentContent cart={cart}/>
         ) : (
           <ReviewOrderContent cart={cart} />
         )}

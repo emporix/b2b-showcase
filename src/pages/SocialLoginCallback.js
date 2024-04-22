@@ -3,13 +3,13 @@ import { useAuth } from 'context/auth-provider'
 import React, { useEffect } from 'react'
 import { useSearchParams } from 'react-router-dom'
 import { api } from 'services/axios'
-import { auth0TokenExchange } from 'services/service.config'
+import { socialLoginTokenExchange } from 'services/service.config'
 import { SAAS_TOKEN, CUSTOMER_TOKEN, CUSTOMER_TOKEN_EXPIRES_IN, TENANT, ACCESS_TOKEN } from 'constants/localstorage'
 
 import Layout from './Layout'
 import { loginBasedOnCustomerToken } from 'services/user/auth.service'
 
-const Auth0Callback = () => {
+const SocialLoginCallback = () => {
   const title = `Social Login Authorization`
   const [searchParams] = useSearchParams();
   const { syncAuth } = useAuth()
@@ -30,7 +30,7 @@ const Auth0Callback = () => {
       anonymous_token: accessToken
     }
     try {
-      const res = await api.post(`${auth0TokenExchange()}`, null, { headers, params })
+      const res = await api.post(`${socialLoginTokenExchange()}`, null, { headers, params })
       const tenant = localStorage.getItem(TENANT)
       insertLocalStorageValue(ANONYMOUS_TOKEN, res.data['access_token'])
       insertLocalStorageValue(ACCESS_TOKEN, res.data['access_token'])
@@ -71,4 +71,4 @@ const Auth0Callback = () => {
     </Layout>
   )
 }
-export default Auth0Callback
+export default SocialLoginCallback

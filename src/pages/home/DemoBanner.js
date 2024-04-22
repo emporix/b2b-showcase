@@ -20,7 +20,7 @@ const DemoBanner = () => {
     })()
   }, [currentLanguage])
 
-  if (userTenant !== 'powerzonecxp' || !url || !isLoggedIn) {
+  if ((userTenant !== 'powerzonecxp' && userTenant !== 'oedemo')|| !url || !isLoggedIn) {
     return null
   }
   // return null

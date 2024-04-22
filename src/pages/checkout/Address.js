@@ -6,7 +6,7 @@ import homePin from '../../assets/home_pin.svg'
 
 const Address = ({ data }) => {
   return (
-<div
+    <div
       className="address-grid"
       sx={{
         gridTemplateColumns: '50px 1fr !important',
@@ -15,8 +15,7 @@ const Address = ({ data }) => {
       <img className="home-pin" src={homePin} alt="homePin" />
       <>
         <TextRegular1>
-          {data.streetAppending} {data.street}
-          {data.streetNumber}
+          {data.streetAppending} {data.street} {data.streetNumber}
           {/* </TextRegular1> */}
           {/* <TextRegular1> */}
           <br />

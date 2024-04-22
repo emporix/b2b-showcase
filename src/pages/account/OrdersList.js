@@ -109,11 +109,14 @@ export const OrderList = (props) => {
     [returns]
   )
 
-  const getShippingCost = (row) => {
-    if(row && row.shipping && row.shipping.lines && row.shipping.lines.length > 0 && row.shipping.lines[0].amount) {
-      return row.shipping.lines[0].amount
-    }
-    return 0
+  const getPriceWithoutShipping = (row) => {
+    return row?.totalPrice - row?.shipping.total.amount
+  }
+
+  const getTaxValue = (row) => {
+    const taxRate = row?.tax.lines.reduce((sum, el) => sum + el.rate, 0)
+    const taxValue = (getPriceWithoutShipping(row) * (taxRate / 100)).toFixed(2)
+    return Number(taxValue)
   }
 
   return (
@@ -168,7 +171,7 @@ export const OrderList = (props) => {
                 </TableCell>
                 <TableCell align="center" className="!py-6">
                   <CurrencyAfterValue
-                    value={row.subTotalPrice + getShippingCost(row) + row.tax.lines.reduce((sum, el) => sum + el.amount, 0) }
+                    value={row.totalPrice + getTaxValue(row)}
                     currency={row.currency}
                   />
                 </TableCell>

@@ -167,6 +167,7 @@ const CreateReturnPage = () => {
         <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
           <div>
             <TextInput
+              id="reason-input"
               label="Reason"
               value={reason}
               placeholder="Please put reason"
@@ -174,6 +175,7 @@ const CreateReturnPage = () => {
               className="w-full"
             />
             <TextInput
+              id="comment-input"
               label="Comment"
               value={comment}
               placeholder="Please put comment"

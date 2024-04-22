@@ -7,8 +7,9 @@ import {
   GridLayout,
   LayoutBetween,
 } from 'components/Utilities/common'
+import { USER } from 'constants/localstorage'
 import Quantity from 'components/Utilities/quantity/quantity'
-import { cartUrl, checkoutUrl, quoteUrl } from 'services/service.config'
+import { cartUrl, checkoutUrl, guestCheckoutUrl, quoteUrl } from 'services/service.config'
 import { useCart } from 'context/cart-provider'
 import { border } from '@mui/system'
 import { PROCUREMENT_SYSTEM_URL } from 'constants/localstorage'
@@ -305,7 +306,7 @@ export const CartSubTotalExcludeVat = ({ value, currency }) => {
   return (
     <>
       <span className="font-semibold">Subtotal without VAT</span>
-      <span className="font-semibold">
+      <span id="subtotal-without-vat" className="font-semibold">
         <CurrencyBeforeValue
           value={Math.trunc(value * 100) / 100}
           currency={currency}
@@ -326,7 +327,7 @@ export const CartSubTotalIncludeVat = ({ grossValue, currency }) => {
 }
 
 export const CartVat = ({ value, taxPercentage, currency, taxValue }) => {
-  const effectiveTaxValue = taxValue ? taxValue : (value * (taxPercentage / 100)).toFixed(2)
+  const effectiveTaxValue = (value * (taxPercentage / 100)).toFixed(2)
   return (
     <>
       <span>
@@ -355,7 +356,7 @@ export const CartTotalPrice = ({ totalValue, currency }) => {
   return (
     <>
       <span className="font-bold ">Total Price</span>
-      <span className="font-bold">
+      <span id="cart-total-price" className="font-bold">
         <CurrencyBeforeValue value={totalValue} currency={currency} />
       </span>
     </>
@@ -371,6 +372,16 @@ const CartRequestQuote = () => {
     </Link>
   )
 }
+const CartGoGuestCheckout = () => {
+    return (
+      <Link to={guestCheckoutUrl()} className="w-full">
+        <button className="cart-go-cart-btn py-[12px] px-[14px] bg-transparent rounded text-eerieBlack border border-gray80">
+          CONTINUE AS A GUEST
+        </button>
+      </Link>
+    )
+  }
+
 const CartGoCheckout = () => {
   return (
     <Link to={checkoutUrl()} className="w-full">
@@ -380,6 +391,7 @@ const CartGoCheckout = () => {
     </Link>
   )
 }
+
 const CartGoCart = () => {
   return (
     <Link to={cartUrl()} className="w-full">
@@ -399,18 +411,28 @@ const CartGoProcurementSystem = () => {
   )
 }
 
-export const getShippingCost = (shippingMethod) => {
-  return shippingMethod != null ? shippingMethod?.grossFee : 0
+export const getShippingCost = (shippingMethod, cartAccount) => {
+  return (shippingMethod != null && !hasFreeShipping(cartAccount)) ? shippingMethod?.grossFee : 0
 }
 
-export const getTotalPrice = (cartAccount, shippingCost) => {
-  return cartAccount?.subtotalAggregate ? cartAccount.subtotalAggregate.grossValue + 
-  + shippingCost : 0
+export const getTotalPrice = (value, taxPercentage, shippingCost) => {
+  const price = getSubtotalWithVat(value, taxPercentage)
+  return !isNaN(price) ? (Number(price) + shippingCost) : 0
+}
+
+export const getSubtotalWithVat = (value, taxPercentage) => {
+  const taxValue = value * (taxPercentage / 100)
+  return (value + taxValue).toFixed(2)
+}
+
+export const hasFreeShipping = (cartAccount) => {
+  return cartAccount?.discounts?.some(discount => discount.discountType === "FREE_SHIPPING")
 }
 
 export const CartActionPanel = ({ action, showShipping }) => {
   const { cartAccount, shippingMethod } = useCart()
-  const shippingCost = showShipping !== false ? getShippingCost(shippingMethod) : 0
+  const user = JSON.parse(localStorage.getItem(USER))
+  const shippingCost = showShipping !== false ? getShippingCost(shippingMethod, cartAccount) : 0
   return (
     <div className="cart-action-panel">
       <GridLayout className="gap-4">
@@ -431,7 +453,7 @@ export const CartActionPanel = ({ action, showShipping }) => {
               <span className="font-semibold text-green-600">
                 Discount amount
               </span>
-              <span className="font-semibold text-green-600">
+              <span id="discount-value" className="font-semibold text-green-600">
                 <CurrencyBeforeValue
                   value={
                     Math.trunc(cartAccount.totalDiscount.amount * 100) / 100
@@ -449,7 +471,7 @@ export const CartActionPanel = ({ action, showShipping }) => {
               cartAccount?.taxAggregate &&
               cartAccount?.taxAggregate.lines.length > 0 && (
                 <CartVat
-                  value={cartAccount?.subtotalAggregate?.netValue}
+                  value={cartAccount?.totalPrice?.amount}
                   taxPercentage={cartAccount?.taxAggregate.lines[0].rate}
                   currency={cartAccount?.currency}
                   taxValue={cartAccount?.subtotalAggregate?.taxValue}
@@ -460,7 +482,7 @@ export const CartActionPanel = ({ action, showShipping }) => {
             {cartAccount?.subtotalAggregate &&
               cartAccount?.subtotalAggregate.grossValue && (
                 <CartSubTotalIncludeVat
-                  grossValue={getTotalPrice(cartAccount, 0)}
+                  grossValue={getSubtotalWithVat(cartAccount?.totalPrice?.amount, cartAccount?.taxAggregate?.lines[0].rate)}
                   currency={cartAccount.currency}
                 />
               )}
@@ -470,7 +492,7 @@ export const CartActionPanel = ({ action, showShipping }) => {
         {showShipping !== false && (
         <CartActionRow>
           <LayoutBetween>
-            <CartShipingCost currency={cartAccount.currency} shippingCost={getShippingCost(shippingMethod)}/>
+            <CartShipingCost currency={cartAccount.currency} shippingCost={getShippingCost(shippingMethod, cartAccount)}/>
           </LayoutBetween>
         </CartActionRow>
         )}
@@ -479,7 +501,7 @@ export const CartActionPanel = ({ action, showShipping }) => {
           <div className="cart-total-price-wrapper">
             <LayoutBetween>
               <CartTotalPrice
-                totalValue={getTotalPrice(cartAccount, shippingCost)}
+                totalValue={getTotalPrice(cartAccount?.totalPrice?.amount, cartAccount?.taxAggregate?.lines[0].rate, shippingCost)}
                 currency={cartAccount.currency}
               />
             </LayoutBetween>
@@ -490,6 +512,7 @@ export const CartActionPanel = ({ action, showShipping }) => {
             
             <>
                 <CartGoCheckout />
+                {!user && <CartGoGuestCheckout />}
                 <CartGoCart />
                 <CartRequestQuote />
             </>

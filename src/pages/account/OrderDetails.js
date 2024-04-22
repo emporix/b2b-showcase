@@ -34,7 +34,7 @@ const ProductInfo = ({ product }) => {
 const PriceWithInfo = ({ price, includeVat = false, caption }) => {
   return (
     <div className="font-normal grid grid-cols-1 text-center">
-      <div className="">{price && <CurrencyBeforeValue value={price} />}</div>
+      <div id="price" className="">{price && <CurrencyBeforeValue value={price} />}</div>
       <div className="text-[12px] text-tinBlue">
         {caption ? caption : includeVat ? 'incl. VAT' : 'ex. VAT'}
       </div>

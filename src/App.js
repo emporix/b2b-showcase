@@ -52,7 +52,7 @@ import ApprovalCheckout from 'pages/approval'
 import ApprovalOrderCreated from 'pages/approval/ApprovalOrderCreated'
 import AccountManageUsers from 'pages/account/AccountManageUsers'
 import ResetPassword from 'pages/ResetPassword'
-import Auth0Callback from 'pages/Auth0Callback'
+import SocialLoginCallback from 'pages/SocialLoginCallback'
 
 function App() {
   const dispatch = useDispatch()
@@ -68,7 +68,12 @@ function App() {
         <Route
             path="auth0"
             exact
-            element={<Auth0Callback />}
+            element={<SocialLoginCallback />}
+          />
+          <Route
+            path="ory"
+            exact
+            element={<SocialLoginCallback />}
           />
         <Route path="/:tenant">
           <Route index exact element={<Home />} />

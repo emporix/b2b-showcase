@@ -1,7 +1,8 @@
-import React, { useState } from 'react'
-import { Navigate, Link, useNavigate } from 'react-router-dom'
+import React, { useState, useEffect } from 'react'
+import { Navigate, Link, useNavigate, useSearchParams } from 'react-router-dom'
 import { login } from '../services/user/auth.service'
 import Snackbar from '@mui/material/Snackbar'
+import { guestCheckoutUrl } from 'services/service.config'
 import MuiAlert from '@mui/material/Alert'
 import CircularProgress from '@mui/material/CircularProgress'
 import {
@@ -17,20 +18,29 @@ import { TENANT } from '../constants/localstorage'
 import { Logo } from '../components/Logo'
 import './login.css'
 
-
 const AUTH0_DOMAIN = process.env.REACT_APP_AUTH0_DOMAIN
 const AUTH0_CLIENT_ID = process.env.REACT_APP_AUTH0_CLIENT_ID
 
+const ORY_DOMAIN = process.env.REACT_APP_ORY_DOMAIN
+const ORY_CLIENT_ID = process.env.REACT_APP_ORY_CLIENT_ID
+
 const Login = () => {
-  const { syncAuth } = useAuth()
+  const { syncAuth, isLoggedIn } = useAuth()
   const [loading, setLoading] = useState(false)
   const [userEmail, setUserEmail] = useState('')
   const [openNotification, setOpenNotification] = useState(false)
+  const [isFromCheckout, setIsFromCheckout] = useState(false)
   const [password, setPassword] = useState('')
   const [emailMessage, setEmailMessage] = useState('')
-  const { isLoggedIn } = useAuth()
   const [message, setMessage] = useState()
+  const [searchParams] = useSearchParams()
   const navigate = useNavigate()
+
+  useEffect(() => {
+    if (searchParams.get('process') === 'checkout') {
+      setIsFromCheckout(true)
+    }
+  }, [])
 
   function isValidEmail(email) {
     return /\S+@\S+\.\S+/.test(email)
@@ -52,6 +62,14 @@ const Login = () => {
       setEmailMessage(null)
     }
     setUserEmail(e.target.value)
+  }
+  function dec2hex(dec) {
+    return ('0' + dec.toString(16)).substr(-2)
+  }
+  function generateState() {
+    var array = new Uint32Array(56 / 2)
+    window.crypto.getRandomValues(array)
+    return Array.from(array, dec2hex).join('')
   }
   const onChangePassword = (e) => {
     const password = e.target.value
@@ -106,7 +124,7 @@ const Login = () => {
         </Container>
         <GridLayout className="w-full bg-white p-12 rounded">
           <GridLayout className="text-center">
-          <Heading2 className="text-eerieBlack text-[24px]/[32px] font-semibold capitalize">
+            <Heading2 className="text-eerieBlack text-[24px]/[32px] font-semibold capitalize">
               Log in to your account
             </Heading2>
             <Heading4 className="text-manatee text-[16px]/[24px] font-normal pt-3">
@@ -114,7 +132,7 @@ const Login = () => {
             </Heading4>
           </GridLayout>
           <form onSubmit={handleLogin} className="display: block m-0">
-          <Box className="!pt-8 text-black text-base">
+            <Box className="!pt-8 text-black text-base">
               <label className="pb-2 text-[14px]/[22px]">E-mail</label>
               <br />
               <input
@@ -129,7 +147,7 @@ const Login = () => {
               {emailMessage && <h6 style={{ color: 'red' }}>{emailMessage}</h6>}
             </Box>
             <Box className="!pt-6 w-full text-black text-base">
-            <label className="pb-2 text-[14px]/[22px]">Password</label>
+              <label className="pb-2 text-[14px]/[22px]">Password</label>
               <br />
               <input
                 id="password-input"
@@ -142,8 +160,8 @@ const Login = () => {
               />
             </Box>
             <LayoutBetween className="pt-6 text-black text-base">
-            <div className="flex items-center">
-                <input type="checkbox" className='w-[18px] h-[18px]' />
+              <div className="flex items-center">
+                <input type="checkbox" className="w-[18px] h-[18px]" />
                 <label className="pl-2 text-[14px]/[22px]">Remember me</label>
               </div>
               <a className="text-[16px]/[24px] text-dodgerBlue cursor-pointer">
@@ -159,30 +177,67 @@ const Login = () => {
               </button>
             </Box>
           </form>
+          {isFromCheckout && (
+            <GridLayout className="pt-6 w-full  items-center text-center text-base">
+            <Box className="w-full !pt-8">
+              <button
+              onClick={() => navigate(guestCheckoutUrl())}
+                className="w-full social-login-btn h-12"
+              >
+              <span className="guest-login-btn-label">Continue as a Guest</span>
+              </button>
+            </Box>
+            </GridLayout>
+          )}
+          {AUTH0_DOMAIN && (
+            <GridLayout className="pt-6 w-full  items-center text-center text-base">
+              <Box className="w-full !pt-8">
+                <button
+                  className="w-full h-12 social-login-btn"
+                  onClick={() => {
+                    window.location.href = `${AUTH0_DOMAIN}/authorize?response_type=code&scope=profile email openid offline_access&client_id=${AUTH0_CLIENT_ID}&redirect_uri=${window.location.origin}/auth0`
+                  }}
+                >
+                  <img
+                    src="https://cdn.auth0.com/styleguide/components/1.0.8/media/logos/img/badge.png"
+                    width="32"
+                  />
+                  <span className="social-login-btn-label">Social Login</span>
+                </button>
+              </Box>
+            </GridLayout>
+          )}
 
-       {AUTH0_DOMAIN ? (
-                    <GridLayout className="pt-6 w-full  items-center text-center text-base">
-                    <Box className="w-full !pt-8">
-                    <button
-                        className="w-full h-12 social-login-btn"
-                        onClick={() => {window.location.href=`${AUTH0_DOMAIN}/authorize?response_type=code&scope=profile email openid offline_access&client_id=${AUTH0_CLIENT_ID}&redirect_uri=${window.location.origin}/auth0`}}
-                      >
-                        <img src="https://cdn.auth0.com/styleguide/components/1.0.8/media/logos/img/badge.png" width="32"/>
-                        <span className='social-login-btn-label'>Social Login</span> 
-                      </button>
-                  
-                    </Box>
-                  </GridLayout>
-       ) : (<></>)}
+          {ORY_DOMAIN && (
+            <GridLayout className="pt-6 w-full  items-center text-center text-base">
+              <Box className="w-full !pt-8">
+                <button
+                  className="w-full h-12 social-login-btn"
+                  onClick={() => {
+                    window.location.href = `${ORY_DOMAIN}/oauth2/auth?response_type=code&scope=openid%20offline_access%20email%20profile&client_id=${ORY_CLIENT_ID}&state=${generateState()}&redirect_uri=${
+                      window.location.origin
+                    }/ory`
+                  }}
+                >
+                  <img
+                    src="https://www.ory.sh/docs/img/logos/logo-docs-dark-2023-02-15.svg"
+                    width="32"
+                  />
+                  <span className="social-login-btn-label">
+                    Ory Social Login
+                  </span>
+                </button>
+              </Box>
+            </GridLayout>
+          )}
 
-          
           <GridLayout className="pt-6 w-full  items-center text-center text-base">
             <Box className="mx-auto">
-            <span className="text-[146x]/[24px] text-eerieBlack">
+              <span className="text-[146x]/[24px] text-eerieBlack">
                 Don't have an account?
               </span>
               <Link to={signupUrl()}>
-              <span className="pl-2 font-semibold hover:cursor-pointer text-[146x]/[24px] font-medium text-dodgerBlue hover:text-yellow">
+                <span className="pl-2 font-semibold hover:cursor-pointer text-[146x]/[24px] font-medium text-dodgerBlue hover:text-yellow">
                   Sign Up
                 </span>
               </Link>

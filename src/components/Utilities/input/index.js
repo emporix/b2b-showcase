@@ -2,12 +2,13 @@ import { GridLayout } from '../common'
 import { TextRegular1 } from '../typography'
 import './input.css'
 
-export const TextInput = ({ label, value, placeholder, action, className }) => {
+export const TextInput = ({ label, value, placeholder, action, className, id }) => {
   return (
     <GridLayout className="">
       <TextRegular1 className="text-left">{label}</TextRegular1>
       <GridLayout className="mt-2">
         <input
+          id={id}
           value={value}
           onChange={(e) => {
             if (action !== undefined) action(e.target.value)

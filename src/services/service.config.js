@@ -77,6 +77,7 @@ export const myAccountMyOrdersInvoiceUrl = () =>
   export const createReturnUrl = () =>
   `/${getTenant()}/create-return/`
 export const checkoutUrl = () => `/${getTenant()}/checkout`
+export const guestCheckoutUrl = () => `/${getTenant()}/checkout?guest-checkout=true`
 export const quoteUrl = () => `/${getTenant()}/quote`
 export const quoteIdUrl = (id) => `/${getTenant()}/my-account/my-quotes/${id}`
 export const cartUrl = () => `/${getTenant()}/cart`
@@ -100,4 +101,4 @@ export const approvalOrderCreatedPage = () => `/${getTenant()}/approval-order-cr
 export const approvalCheckoutPage = (approvalId) => `/${getTenant()}/saved-carts/${approvalId}/checkout`
 export const savedCartsPage = () => `/${getTenant()}/my-account/saved-carts`
 
-export const auth0TokenExchange = () => `/customer/${getTenant()}/socialLogin`
+export const socialLoginTokenExchange = () => `/customer/${getTenant()}/socialLogin`

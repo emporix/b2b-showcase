@@ -14,6 +14,7 @@ import CartProvider from 'context/cart-provider'
 import CurrencyProvider from 'context/currency-context'
 import ProductListProvider from 'context/product-list-context'
 
+
 const root = ReactDOM.createRoot(document.getElementById('root'))
 root.render(
     <Provider store={Store}>

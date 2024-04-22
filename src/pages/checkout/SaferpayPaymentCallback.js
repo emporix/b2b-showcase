@@ -1,12 +1,8 @@
 import React, { useEffect, useState } from 'react'
-import CheckoutPage from './CheckoutPage'
 import Layout from '../Layout'
 import { useNavigate, useSearchParams } from 'react-router-dom'
 import { authorizePayment, initializePayment, loginUrl } from 'services/service.config'
-import { AddressProvider } from './AddressProvider'
 import { useAuth } from 'context/auth-provider'
-import { PaymentProvider } from './PaymentProvider'
-import { Container, GridLayout } from 'components/Utilities/common'
 import { ACCESS_TOKEN } from 'constants/localstorage'
 import { api } from 'services/axios'
 

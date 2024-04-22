@@ -24,7 +24,7 @@ const ProductListViewSettingBar = ({
         <div className="gap-2">
           <ul className="setting gap-6 flex justify-between h-[24px] font-inter text-base font-normal">
           <li className="per-page hidden xl:block">
-              <div className="products-filter-name">
+              <div id="products-per-page" className="products-filter-name">
                 Products Per Page: &nbsp;
                 <select
                   className="products-filter-value"
@@ -273,7 +273,7 @@ const ProductListItems = ({ products, auth, displayType }) => {
   }
   return (
     <>
-      <div className={displayType ? 'hidden lg:block' : ''}>{itemArr}</div>
+      <div id="products-array" className={displayType ? 'hidden lg:block' : ''}>{itemArr}</div>
       <div className="lg:hidden">{ItemArrOnMobile}</div>
     </>
   )

@@ -9,7 +9,7 @@ import { addTenantToUrl, homeUrl } from '../../services/service.config'
 import AlgoliaSearchbar from '../AlgoliaSearchbar'
 import { useContentful } from '../../context/contentful-provider'
 import {Logo} from "../Logo";
-
+import { APPLICATION_ID } from '../../constants/localstorage'
 
 const MegaNav = ({ showMegaMenuContent, setShowMegaMenuContent }) => {
   const [subMenuItems, setSubMenuItems] = useState([])
@@ -151,7 +151,10 @@ const TopNav = ({ title }) => {
               className="hidden lg:flex"
               onMouseOver={() => setShowMegaMenuContent(false)}
             >
-              <AlgoliaSearchbar />
+              <>
+                {localStorage.getItem(APPLICATION_ID) && (<AlgoliaSearchbar />)
+                }
+              </>
             </div>
           </div>
         </div>

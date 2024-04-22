@@ -1,7 +1,7 @@
 import CartActionBar from '../cart/CartActionBar'
 import CartTable from '../cart/CartTable'
 import CartMobileContent from '../cart/CartMobileContent'
-import React, { useState, useEffect, useCallback, useContext } from 'react'
+import React, { useState, useEffect, useCallback } from 'react'
 import { createQuoteCall } from '../../services/quotes'
 import { TENANT } from '../../constants/localstorage'
 import { LargePrimaryButton } from '../../components/Utilities/button'
@@ -21,22 +21,28 @@ import Address from 'pages/checkout/Address'
 import { getShippingMethods } from 'services/shipping.service'
 import { getCompanyAddresses } from 'services/legal-entities.service'
 import { useNavigate } from 'react-router-dom'
-import { quoteIdUrl } from 'services/service.config'
 import cartService from 'services/cart.service'
 import { calculateTax } from 'services/product/tax.service'
+import { useUserAddress } from 'pages/checkout/AddressProvider'
+import { getBillingAddressesForQuotes, getShippingAddressesForQuotes, mapAddressToLocations } from 'services/addresses.service'
 
 const QuotePage = () => {
   const [quoteId, setQuoteId] = useState()
   const { cartAccount, syncCart } = useCart()
   const [shippingMethods, setShippingMethods] = useState([])
   const [addresses, setAddresses] = useState([])
+  const [billingAddreses, setBillingAddresses] = useState([])
   const [selectedShippingAddress, setSelectedShippingAddress] = useState(null)
   const [selectedBillingAddress, setSelectedBillingAddress] = useState(null)
   const [selectedShippingId, setSelectedShippingId] = useState(null)
   const [locations, setLocations] = useState([])
+  const [billingLocations, setBillingLocations] = useState([])
   const [cartValue, setCartValue] = useState(null)
   const [isDifferentBilling, setIsDifferentBilling] = useState(false)
   const navigate = useNavigate()
+  const {
+    setSelectedAddress
+  } = useUserAddress()
 
   const createQuote = async () => {
     const tenant = localStorage.getItem(TENANT)
@@ -63,7 +69,7 @@ const QuotePage = () => {
 
   useEffect(() => {
     fetchShippingMethods(cartAccount, selectedShippingAddress)
-    fetchCompanyAddresses(cartAccount.company)
+    fetchCompanyAddresses()
   }, [selectedShippingAddress, cartValue])
 
   useEffect(() => {
@@ -101,22 +107,18 @@ const QuotePage = () => {
     setShippingMethods(filteredMethods)
   }, [])
 
-  const fetchCompanyAddresses = useCallback(async (company) => {
-    const addresses = await getCompanyAddresses(company)
+  const fetchCompanyAddresses = useCallback(async () => {
+    const addresses = await getShippingAddressesForQuotes()
     setAddresses(addresses)
-    const locations = addresses.map((address) => {
-      return {
-        label: [
-          address.contactDetails.addressLine1,
-          address.contactDetails.addressLine2,
-          address.contactDetails.city,
-          address.contactDetails.postcode,
-        ].join(' '),
-        value: address.id,
-      }
-    })
+    const locations = addresses.map((address) => mapAddressToLocations(address))
     setLocations(locations)
+
+    const billingAddresses = await getBillingAddressesForQuotes()
+    setBillingAddresses(billingAddresses)
+    const billingLocations = billingAddresses.map((address) => mapAddressToLocations(address))
+    setBillingLocations(billingLocations)
   }, [])
+
   const onShippingChange = (value) => {
     setSelectedShippingId(value)
   }
@@ -149,6 +151,7 @@ const QuotePage = () => {
                           setSelectedBillingAddress(address)
                         }
                         setSelectedShippingAddress(address)
+                        setSelectedAddress(address)
                       }
                     }}
                   />
@@ -193,12 +196,12 @@ const QuotePage = () => {
                     <div className="address-dropdown-wrapper">
                       <DropdownWithLabel
                         label="Address"
-                        options={locations}
+                        options={billingLocations}
                         placeholder="Please select delivery address"
-                        defaultValue={locations[0]}
+                        defaultValue={selectedBillingAddress}
                         onChange={(e) => {
                           const addressId = e[0].value
-                          const address = addresses.find(
+                          const address = billingAddreses.find(
                             (address) => address.id === addressId
                           )
                           setSelectedBillingAddress(address)

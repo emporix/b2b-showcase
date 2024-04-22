@@ -67,12 +67,14 @@ const InvalidTenant = () => {
         </Heading4>
         <Center className="gap-3 w-1/3 m-auto">
           <TextInput
+            id="tenant-name-input"
             label="Tenant Name"
             value={tenant}
             placeholder="Please put tenant name"
             action={setTenant}
           />
           <TextInput
+            id="client-id-input"
             label="Client ID"
             value={clientId}
             placeholder="Please put client id"

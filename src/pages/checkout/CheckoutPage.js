@@ -1,4 +1,5 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react'
+import { USER } from 'constants/localstorage'
 import { CartActionPanel } from '../../components/Cart/cart'
 import { LargePrimaryButton } from '../../components/Utilities/button'
 import {
@@ -12,7 +13,7 @@ import CheckoutContent from './CheckoutContent'
 import CheckoutSummary from './CheckoutSummary'
 import { useUserAddress } from './AddressProvider'
 import { useCart } from 'context/cart-provider'
-import { Button, Chip, Grid } from '@mui/material'
+import { Button, Chip, Grid, Snackbar, SnackbarContent } from '@mui/material'
 import { TextInput } from '../../components/Utilities/input'
 import CartService from '../../services/cart.service'
 import { usePayment } from './PaymentProvider'
@@ -22,11 +23,13 @@ import FilledButton from 'components/Utilities/FilledButton'
 import { api } from 'services/axios'
 import { approvalApprovers, approvalConfirmationPage, approvalPermitted, authorizePayment } from 'services/service.config'
 import { ACCESS_TOKEN } from 'constants/localstorage'
-import Dropdown, { DropdownWithLabel } from 'components/Utilities/dropdown'
-import { TextBold1, TextBold3, TextBold4, TextRegular1 } from 'components/Utilities/typography'
+import Dropdown from 'components/Utilities/dropdown'
+import { TextBold4 } from 'components/Utilities/typography'
 import approvalService from 'services/approval.service'
 import { useNavigate } from 'react-router-dom'
 import Dialog from 'components/Utilities/Dialog'
+import { useLanguage } from 'context/language-provider'
+import { isAddressFilled } from 'components/addresses/AddressesForm'
 
 const PaymentAction = ({ action, disabled }) => {
   return (
@@ -35,6 +38,7 @@ const PaymentAction = ({ action, disabled }) => {
         <LargePrimaryButton
           className="md:block hidden cta-button bg-yellow"
           title="REVIEW ORDER"
+          disabled={disabled}
           onClick={action}
         />
       </DesktopMDContainer>
@@ -71,14 +75,14 @@ const ReviewOrderAction = ({ action }) => {
 const ApprovalNeededAction = ({ approvers }) => {
 
   const navigate = useNavigate()
-  const { selectedAddress, billingAddress, addresses } = useUserAddress()
-  const { cartAccount, syncCart, shippingMethod, cart } = useCart()
-  const { getPaymentMethods, payment, deferredPayment, setDeferredPayment } = usePayment()
+  const { selectedAddress, billingAddress } = useUserAddress()
+  const { cartAccount, syncCart, shippingMethod } = useCart()
+  const { getPaymentMethods } = usePayment()
 
-  const [ selectedApprover, setSelectedApprover] = useState(null) 
-  const [ comment, setComment] = useState(null) 
-  
-  const [ showDialog, setShowDialog] = useState(null)  
+  const [selectedApprover, setSelectedApprover] = useState(null)
+  const [comment, setComment] = useState(null)
+
+  const [showDialog, setShowDialog] = useState(null)
   const approversOptions = approvers.map(approver => ({
     label: approver.firstName + ' ' + approver.lastName,
     value: approver.userId
@@ -95,14 +99,14 @@ const ApprovalNeededAction = ({ approvers }) => {
     const approval = await approvalService.triggerApproval(cartAccount.id, [
       selectedAddress,
       billingAddress,
-    ], shipping, getPaymentMethods(), { userId : selectedApprover}, comment )
-    
+    ], shipping, getPaymentMethods(), { userId: selectedApprover }, comment)
+
     setShowDialog(false)
     await syncCart()
     navigate(approvalConfirmationPage())
   }
 
-  const handleCancelApproval = () =>{
+  const handleCancelApproval = () => {
     setShowDialog(false)
   }
 
@@ -193,12 +197,15 @@ const Coupon = () => {
   const [showInfo, setShowInfo] = useState(false)
   const [selectedOption, setSelectedOption] = useState(null)
   const [couponsLimitPerCart, setCouponsLimitPerCart] = useState(5);
+  const [showErrorMsg, setShowErrorMsg] = useState(false)
 
 
   const redeemCode = useCallback(async () => {
     try {
       await applyDiscount(code)
+      setShowErrorMsg(false)
     } catch (e) {
+      setShowErrorMsg(true)
       console.error(e)
     } finally {
       setCode(() => '')
@@ -229,11 +236,10 @@ const Coupon = () => {
   const Card = (props) => {
     return (
       <div
-        className={`${
-          selectedOption && props.id === selectedOption.id
-            ? 'border-blue-500'
-            : 'border-lightGray'
-        }  border-[1px]  p-2 flex flex-col w-48 cursor-pointer`}
+        className={`${selectedOption && props.id === selectedOption.id
+          ? 'border-blue-500'
+          : 'border-lightGray'
+          }  border-[1px]  p-2 flex flex-col w-48 cursor-pointer`}
         onClick={() => setSelectedOption(() => props)}
       >
         <div className="font-bold">{props.name}</div>
@@ -259,7 +265,7 @@ const Coupon = () => {
   }
 
   useEffect(() => {
-    ;(async () => {
+    ; (async () => {
       const points = await CartService.getRewardPointsForLoggedUser()
       setRewardPoints(points)
     })()
@@ -278,11 +284,13 @@ const Coupon = () => {
     <Grid container spacing={2} sx={{ marginBottom: '1rem' }}>
       <Grid item xs={12} className={couponsLimitPerCart === discounts?.length && 'hidden'}>
         <TextInput
+          id="coupon-input"
           label="Coupon"
           value={code}
           placeholder="Put coupon code here"
           action={setCode}
         />
+        {showErrorMsg && (<h6 style={{ color: "red" }}>Invalid coupon</h6>)}
         <div className="flex justify-between">
           <Button title="Apply Coupon" onClick={redeemCode}>
             Apply
@@ -335,7 +343,7 @@ const Coupon = () => {
                       setShowDialog(false)
                     }}
                   >
-                   OK
+                    OK
                   </button>
                 </div>
               </div>
@@ -395,12 +403,16 @@ const CheckoutPage = () => {
   const [status, setStatus] = useState('shipping')
   const [final, setFinal] = useState(false)
   const [order, setOrder] = useState(null)
-  const [paymentProps, setPaymentProps] = useState(null) 
+  const [paymentProps, setPaymentProps] = useState(null)
   const { selectedAddress, billingAddress, addresses } = useUserAddress()
   const { cartAccount, syncCart, shippingMethod, cart } = useCart()
   const { getPaymentMethods, payment, deferredPayment, setDeferredPayment } = usePayment()
-  const [ approvalNeeded, setApprovalNeeded] = useState(false)  
-  const [ approvers, setApprovers] = useState([])  
+  const [approvalNeeded, setApprovalNeeded] = useState(false)
+  const [approvers, setApprovers] = useState([])
+  const { currentLanguage } = useLanguage()
+  const user = JSON.parse(localStorage.getItem(USER))
+  const [errorToastOpened, setErrorToastOpened] = useState(false);
+  const [errorToastMessage, setErrorToastMessage] = useState(null);
 
   const subtotalWithoutVat = useMemo(() => {
     let subTotal =
@@ -419,23 +431,41 @@ const CheckoutPage = () => {
   const handleReview = () => {
     setStatus('review_order')
   }
+  function getShippingMethodName() {
+    if (shippingMethod.name instanceof String) {
+      return shippingMethod.name
+    } else {
+      return shippingMethod.name[currentLanguage]
+    }
+  }
   const handleViewOrder = async () => {
     const shipping = {
       zoneId: shippingMethod.zoneId,
       methodId: shippingMethod.id,
-      methodName: shippingMethod.name,
+      methodName: getShippingMethodName(),
       shippingTaxCode: shippingMethod.shippingTaxCode,
       amount: shippingMethod.fee
     }
-    const order = await checkoutService.triggerCheckout(cartAccount.id, [
-      selectedAddress,
-      billingAddress,
-    ], shipping, getPaymentMethods() )
+    let order;
+    try {
+      order = await checkoutService.triggerCheckout(
+        cartAccount.id,
+        [selectedAddress, billingAddress],
+        shipping,
+        getPaymentMethods()
+      )
+    } catch (err) {
+      console.log("ER", err)
+      setErrorToastOpened(true)
+      setErrorToastMessage(err.response.data.message)
+      return
+    }
+
     setOrder(order)
     setFinal(order.orderId)
     setPaymentProps({
-      customerId : cartAccount.customerId, 
-      grossValue : cartAccount.subtotalAggregate.grossValue, 
+      customerId: cartAccount.customerId,
+      grossValue: cartAccount.subtotalAggregate.grossValue,
       currency: cartAccount.subtotalAggregate.currency,
       orderId: order.orderId,
       deferred: true
@@ -448,12 +478,12 @@ const CheckoutPage = () => {
       Authorization: `Bearer ${accessToken}`
     }
     const body = {
-      order : {
-        id : order.orderId
+      order: {
+        id: order.orderId
       },
       paymentModeId: payment.customAttributes.modeId,
       creditCardToken: payment.customAttributes.token,
-      browserInfo: payment.customAttributes.browserInfo 
+      browserInfo: payment.customAttributes.browserInfo
     }
     const res = await api.post(`${authorizePayment()}`, body, { headers })
     order.paymentDetails = {
@@ -462,30 +492,41 @@ const CheckoutPage = () => {
       externalPaymentRedirectURL: res.data.externalPaymentRedirectURL
 
     }
-    setDeferredPayment(false)   
+    setDeferredPayment(false)
   }
 
   useEffect(() => {
     ;
-    (async() => {
-     const body = {
-       resourceId : cartAccount.id,
-       resourceType: 'CART',
-       action: 'CHECKOUT'
-     }
-     const headers = {
-       Authorization: `Bearer ${localStorage.getItem(ACCESS_TOKEN)}`
-     }
-     const res = await api.post(`${approvalPermitted()}`, body, { headers })
-     setApprovalNeeded(!res.data.permitted)
-     
-     if(!res.permitted) {
-      const approversResponse = await api.post(`${approvalApprovers()}`, body, { headers })
-      setApprovers(approversResponse.data)
-     }
+    (async () => {
+      if (!user) {
+        setApprovalNeeded(false)
+        return
+      }
+      const body = {
+        resourceId: cartAccount.id,
+        resourceType: 'CART',
+        action: 'CHECKOUT'
+      }
+      const headers = {
+        Authorization: `Bearer ${localStorage.getItem(ACCESS_TOKEN)}`
+      }
+      const res = await api.post(`${approvalPermitted()}`, body, { headers })
+      setApprovalNeeded(!res.data.permitted)
+
+      if (!res.data.permitted) {
+        const approversResponse = await api.post(`${approvalApprovers()}`, body, { headers })
+        setApprovers(approversResponse.data)
+      }
 
     })()
-   }, [cartAccount])
+  }, [cartAccount])
+
+  const toastStyles = {
+    root: {
+      background: 'white',
+      color: 'red'
+    }
+  };
 
   return (
     <div className="checkout-page-wrapper ">
@@ -493,7 +534,7 @@ const CheckoutPage = () => {
         <div className="gap-12 lg:flex grid grid-cols-1">
           {final === false ? (
             <>
-              <CheckoutContent status={status} cart={cartAccount} />
+              <CheckoutContent status={status} cart={cartAccount} user={user} />
               <div className="checkout-action-panel-wrapper">
                 <GridLayout className="gap-6">
                   <CartActionPanel
@@ -507,7 +548,7 @@ const CheckoutPage = () => {
                         <LargePrimaryButton
                           className="md:block hidden cta-button bg-yellow"
                           title="GO TO PAYMENT"
-                          disabled={addresses.length === 0 || shippingMethod == null}
+                          disabled={user ? (addresses.length === 0 || shippingMethod == null) : shippingMethod == null}
                           onClick={handlePayment}
                         />
                       </DesktopMDContainer>
@@ -527,7 +568,7 @@ const CheckoutPage = () => {
                       <Coupon />
                       <PaymentAction
                         action={handleReview}
-                        disabled={addresses.length === 0}
+                        disabled={user ? addresses?.length === 0 : !isAddressFilled(billingAddress)}
                       />
                     </>
                   ) : (
@@ -548,12 +589,12 @@ const CheckoutPage = () => {
               </div>
             </>
           ) : (
-            deferredPayment ? 
+            deferredPayment ?
               (
-                <div className='deferredPaymentBox'> 
+                <div className='deferredPaymentBox'>
                   <RadioGroup active="radio1">
                     <GridLayout className="gap-4 border border-quartz rounded p-12 col-12">
-                      <PaymentSpreedly  props={paymentProps} />
+                      <PaymentSpreedly props={paymentProps} />
                     </GridLayout>
                   </RadioGroup>
                   {!payment.requiresInitialization && (<FilledButton
@@ -569,6 +610,22 @@ const CheckoutPage = () => {
           )}
         </div>
       </div>
+      <Snackbar
+        anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
+        open={errorToastOpened}
+        autoHideDuration={600000}
+        onClose={() => setErrorToastOpened(false)}
+        style={{
+          backgroundColor: 'white',
+          color: 'red'
+        }}
+      >
+        <SnackbarContent style={{
+          backgroundColor: 'white', color: 'red'
+        }}
+          message={errorToastMessage}
+        />
+      </Snackbar>
     </div>
   )
 }

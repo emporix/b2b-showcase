@@ -14,6 +14,8 @@ import { useAuth } from 'context/auth-provider'
 import { createAddress } from 'services/user/adresses'
 import { LargePrimaryButton } from 'components/Utilities/button'
 import { useCurrency } from 'context/currency-context'
+import { INITIAL_ADDRESS } from 'components/addresses/AddressesForm'
+import { isValidEmail } from 'services/addresses.service'
 
 const Input = ({ label, value, action, className, placeholder }) => {
   return (
@@ -175,26 +177,8 @@ const Signup = (props) => {
   const [company, setCompany] = useState('')
   const [registrationId, setRegistrationId] = useState('')
   const [phoneNumber, setPhoneNumber] = useState('')
-  const [shippingAddress, setShippingAddress] = useState({
-    contactName: '',
-    street: '',
-    streetNumber: '',
-    streetAppendix: '',
-    zipCode: '',
-    country: '',
-    state: '',
-    city: '',
-  })
-  const [billingAddress, setBillingAddress] = useState({
-    contactName: '',
-    street: '',
-    streetNumber: '',
-    streetAppendix: '',
-    zipCode: '',
-    country: '',
-    state: '',
-    city: '',
-  })
+  const [shippingAddress, setShippingAddress] = useState(INITIAL_ADDRESS)
+  const [billingAddress, setBillingAddress] = useState(INITIAL_ADDRESS)
   const { activeCurrency } = useCurrency()
 
   const isAddressValid = useMemo(() => {
@@ -203,9 +187,6 @@ const Signup = (props) => {
 
   const { syncAuth } = useAuth()
 
-  function isValidEmail(email) {
-    return /\S+@\S+\.\S+/.test(email)
-  }
   const [isSignedUp, setIsSignedUp] = useState(false)
   const navigate = useNavigate()
   const handleClose = (event, reason) => {

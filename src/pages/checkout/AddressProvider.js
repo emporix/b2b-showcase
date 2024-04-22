@@ -4,6 +4,7 @@ import { useCart } from 'context/cart-provider'
 import { getShippingMethods } from 'services/shipping.service'
 import { getActualDeliveryWindows } from 'services/shipping.service'
 import { calculateTax } from 'services/product/tax.service'
+import { mapAddressToLocations, getShippingAddressesForCheckout, getBillingAddressesForCheckout } from 'services/addresses.service'
 
 
 const AddressContext = createContext({})
@@ -11,12 +12,14 @@ export const useUserAddress = () => useContext(AddressContext)
 
 export const AddressProvider = ({ children }) => {
   const [addresses, setAddresses] = useState([])
+  const [billingAddresses, setBillingAddresses] = useState([])
   const [selectedAddress, setSelectedAddressState] = useState(null)
   const [selectedDeliveryWindow, setSelectedDeliveryWindow] = useState(null)
   const [selectedDeliveryMethod, setSelectedDeliveryMethod] = useState(null)
   const [defaultAddress, setDefaultAddress] = useState(null)
   const [billingAddress, setBillingAddressState] = useState(null)
   const [locations, setLocations] = useState([])
+  const [billingLocations, setBillingLocations] = useState([])
   const [shippingMethods, setShippingMethods] = useState([])
   const [deliveryWindows, setDeliveryWindows] = useState([])
   const { cartAccount } = useCart()
@@ -42,31 +45,27 @@ export const AddressProvider = ({ children }) => {
     if (!user) {
       return
     }
-    const addresses = JSON.parse(user).addresses
+    initAddresses()
+  }, [])
+
+  const initAddresses = useCallback(async () => {
+    const addresses = await getShippingAddressesForCheckout()
     setAddresses(addresses)
-    const locations = JSON.parse(user).addresses.map((address) => {
-      return {
-        label: `${address.street} ${address.streetNumber ?? ""},${address.city} ${address.zipCode}`,
-        value: address.id,
-      }
-    })
+    const locations = addresses.map((address) => mapAddressToLocations(address))
+    const billingAddresses = await getBillingAddressesForCheckout()
+    setBillingAddresses(billingAddresses)
+    const billingLocations = billingAddresses.map((address) => mapAddressToLocations(address))
     const defaultAddress = addresses.find((address) => address.isDefault)
     if (defaultAddress) {
-      setDefaultAddress({
-        label: `${defaultAddress.street} ${defaultAddress?.streetNumber ?? ""},${defaultAddress.city} ${defaultAddress.zipCode}`,
-        value: defaultAddress.id,
-      })
-      setSelectedAddress({
-        label: `${defaultAddress.street} ${defaultAddress?.streetNumber ?? ""},${defaultAddress.city} ${defaultAddress.zipCode}`,
-        value: defaultAddress.id,
-      })
+      setDefaultAddress(mapAddressToLocations(defaultAddress))
+      setSelectedAddress(mapAddressToLocations(defaultAddress))
       setBillingAddress(defaultAddress)
       fetchShippingMethods(cartAccount, defaultAddress)
       fetchDeliveryWindows(defaultAddress.zipCode, defaultAddress.country)
     }
     setLocations(locations)
+    setBillingLocations(billingLocations)
   }, [])
-
   
 
   const fetchShippingMethods = useCallback(async (cart, address) => {
@@ -78,14 +77,14 @@ export const AddressProvider = ({ children }) => {
       .filter(
         (method) =>
           method.maxOrderValue === undefined ||
-          method.maxOrderValue.amount >= cart.totalPrice.amount
+          method.maxOrderValue.amount >= cart.totalPrice?.amount
       )
       .filter((method) => method.shippingTaxCode != null)
       .map((method) => ({
         ...method,
         fee: method.fees
           .filter(
-            (feeEl) => feeEl.minOrderValue.amount <= cart.totalPrice.amount
+            (feeEl) => feeEl.minOrderValue.amount <= cart.totalPrice?.amount
           )
           .sort((a, b) => a.cost.amount - b.cost.amount)[0]?.cost?.amount,
       }))
@@ -110,6 +109,8 @@ export const AddressProvider = ({ children }) => {
         selectedAddress,
         setSelectedAddress,
         billingAddress,
+        billingLocations,
+        billingAddresses,
         setBillingAddress,
         defaultAddress,
         locations,

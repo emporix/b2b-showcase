@@ -23,10 +23,7 @@ const CheckoutService = () => {
       currency: 'EUR',
       addresses: addresses,
       shipping: shipping,
-      customer: {
-        ...user,
-        email: user.contactEmail,
-      },
+      customer: getCustomerForCheckout(user, addresses),
     }
     const { data } = await ApiRequest(
       triggerCheckoutApi(),
@@ -36,6 +33,25 @@ const CheckoutService = () => {
       params
     )
     return data
+  }
+
+  const getCustomerForCheckout = (user, addresses) => {
+    if (user) {
+      return {
+        ...user,
+        email: user.contactEmail,
+      }
+    } else {
+      const customerData = addresses.find(
+        (address) => address.type === 'SHIPPING'
+      )
+      return {
+        email: customerData.contactEmail,
+        firstName: customerData.firstName,
+        lastName: customerData.lastName,
+        guest: true,
+      }
+    }
   }
 
   const triggerCheckoutAsApprover = async (cartId, addresses, shipping, paymentMethods, requestorCustomer) => {

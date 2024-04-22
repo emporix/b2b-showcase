@@ -10,6 +10,7 @@ import {
   getActualDeliveryWindows,
   fetchFilteredShippingMethods,
 } from 'services/shipping.service'
+import { getShippingAddressesForCheckout, mapAddressToLocations } from 'services/addresses.service'
 const ApprovalAddressContext = createContext({})
 export const useApprovalAddress = () => useContext(ApprovalAddressContext)
 
@@ -36,7 +37,7 @@ export const ApprovalAddressProvider = (props) => {
   }
 
   useEffect(() => {
-    if (!approval) {
+    if (!approval || !selectedAddress) {
       return
     }
     setBillingAddress(selectedAddress)
@@ -55,14 +56,13 @@ export const ApprovalAddressProvider = (props) => {
     if (!user || !approval) {
       return
     }
-    const addresses = JSON.parse(user).addresses
+    initAddresses()
+  }, [approval])
+
+  const initAddresses = useCallback(async () => {
+    const addresses = await getShippingAddressesForCheckout()
     setAddresses(addresses)
-    const locations = JSON.parse(user).addresses.map((address) => {
-      return {
-        label: `${address.street} ${address.streetNumber},${address.city} ${address.zipCode}`,
-        value: address.id,
-      }
-    })
+    const locations = addresses.map((address) => mapAddressToLocations(address))
     const shipping = approval.details.addresses.find(
       (element) => element.type === 'SHIPPING'
     )
@@ -71,7 +71,7 @@ export const ApprovalAddressProvider = (props) => {
     )
 
     setDefaultAddress({
-      label: `${shipping.street} ${shipping.streetNumber},${shipping.city} ${shipping.zipCode}`,
+      label: `${shipping.street} ${shipping.streetNumber ?? ''},${shipping.city} ${shipping.zipCode}`,
       value: shipping.id,
     })
     setSelectedAddress({
@@ -86,7 +86,7 @@ export const ApprovalAddressProvider = (props) => {
     setBillingAddress(billing ? billing : shipping)
     fetchShippingMethods(approval)
     setLocations(locations)
-  }, [approval])
+  },[approval])
 
   const fetchShippingMethods = useCallback(async (approval) => {
     const shippingAddress = approval.details.addresses.find(
