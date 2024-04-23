@@ -6,6 +6,7 @@ import { useLanguage } from 'context/language-provider';
 const StoreFinderTable = () => {
     const [ dealers, setDealers ] = useState([])
     const { currentLanguage } = useLanguage()
+
     const getData = async (currentLang) => {
         const dealerData = await getDealers(currentLang)
         setDealers(dealerData.data.dealers)
@@ -23,10 +24,18 @@ const StoreFinderTable = () => {
                         if (store.name) {
                             return (
                                 <div className='storefinderTable__table__item flex flex-col rounded-xl standard_box_shadow bg-aliceBlue' key={store.id}>
-                                    <img src='/img/wineDealerBackground.png'
-                                         alt="Store Image"
-                                         style={{borderRadius: '5px'}}/>
-                                    <div className='flex flex-col'>
+                                    {store.imageUrl ?
+                                      <img src={store.imageUrl + "?impolicy=small"}
+                                           alt="Store Image"
+                                           className="aspect-square object-cover"
+                                           style={{ borderRadius: '5px' }} />
+                                      :
+                                      <img src="/img/wineDealerBackground.png"
+                                           alt="Store Image"
+                                           className="aspect-square object-cover"
+                                           style={{ borderRadius: '5px' }} />
+                                    }
+                                    <div className="flex flex-col">
                                         <div className='text-left w-full text-2xl text-eerieBlack font-light'>
                                             {store.name}
                                         </div>

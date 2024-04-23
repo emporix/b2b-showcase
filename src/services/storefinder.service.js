@@ -13,6 +13,7 @@ const DealerQuery = `query DealerQuery($language: Language) {
     phoneNumber
     email
     website
+    imageUrl
   }
 }
 `
