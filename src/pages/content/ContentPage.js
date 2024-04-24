@@ -23,7 +23,7 @@ const ContentPage = () => {
             Zurück zur Übersicht
           </button>
         )}
-        <MainContent page={route} type={CMSFilterType.ROUTE} />
+        <MainContent page={route}/>
       </div>
     </Layout>
   )

@@ -8,6 +8,10 @@ export const initialState = {
       items: [],
     },
     {
+      title: 'Inhalt',
+      items: [],
+    },
+    {
       title: 'Storefinder',
       items: [],
       url: 'storefinder'
@@ -32,6 +36,10 @@ const pageSlice = createSlice({
     setTenantList: (state, action) => {
       state.tenantList[action.payload.tenant] = action.payload.tenant
     },
+    setNavigation: (state, action)=> {
+      state.menu[1]['items'] = action.payload;
+      state.menu[1]['title'] = action.payload[0].title;
+    }
   },
 })
 
@@ -39,10 +47,14 @@ const pageSlice = createSlice({
 export default pageSlice.reducer
 
 // The Page Actions.
-export const { setShopItems, setTenantList } = pageSlice.actions
+export const { setShopItems, setTenantList,setNavigation } = pageSlice.actions
 
 export const putShopItems = (items) => async (dispatch) => {
   dispatch(setShopItems(items))
+}
+
+export const putCmsNavigation = (navigation) => async (dispatch) => {
+  dispatch(setNavigation(navigation))
 }
 
 // The Page Selector
