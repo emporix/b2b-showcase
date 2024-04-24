@@ -66,11 +66,15 @@ i18n
       en: {
         page: {
           "content": "Content",
+          "contentPath": "/n11showcase/Content",
+          "back_to_overview": "Back to Overview"
         }
       },
       de: {
         page: {
           "content": "Inhalt",
+          "contentPath": "/n11showcase/Inhalt",
+          "back_to_overview": "Zurück zur Übersicht"
         }
       }
     },
