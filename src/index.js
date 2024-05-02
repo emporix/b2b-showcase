@@ -21,18 +21,9 @@ import MUIThemeContextProvider from 'context/mui-context'
 const client = getClient()
 
 if (localStorage.getItem(TENANT) === '' || !localStorage.getItem(CLIENT_ID)) {
-  if (
-    process.env.REACT_APP_EMPORIX_STOREFRONT_TENANT_NAME &&
-    process.env.REACT_APP_EMPORIX_STOREFRONT_CLIENT_ID
-  ) {
-    localStorage.setItem(
-      TENANT,
-      process.env.REACT_APP_EMPORIX_STOREFRONT_TENANT_NAME
-    )
-    localStorage.setItem(
-      CLIENT_ID,
-      process.env.REACT_APP_EMPORIX_STOREFRONT_CLIENT_ID
-    )
+  if (process.env.REACT_APP_EMPORIX_STOREFRONT_TENANT_NAME && process.env.REACT_APP_EMPORIX_STOREFRONT_CLIENT_ID) {
+    localStorage.setItem(TENANT, process.env.REACT_APP_EMPORIX_STOREFRONT_TENANT_NAME)
+    localStorage.setItem(CLIENT_ID, process.env.REACT_APP_EMPORIX_STOREFRONT_CLIENT_ID)
   }
 }
 
