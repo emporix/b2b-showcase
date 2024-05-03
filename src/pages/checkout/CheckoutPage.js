@@ -477,7 +477,7 @@ const CheckoutPage = () => {
      const res = await api.post(`${approvalPermitted()}`, body, { headers })
      setApprovalNeeded(!res.data.permitted)
      
-     if(!res.permitted) {
+     if(!res.data.permitted) {
       const approversResponse = await api.post(`${approvalApprovers()}`, body, { headers })
       setApprovers(approversResponse.data)
      }
