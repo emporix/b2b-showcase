@@ -293,7 +293,7 @@ const ProductListPagination = ({
                                    productListCount,
                                    pageNumber,
                                }) => {
-    let totalPage = Math.round(productListCount / countPerPage)
+    let totalPage = Math.ceil(productListCount / countPerPage)
     let previousPageitems = []
     let next_page_items = []
 
@@ -359,7 +359,7 @@ const ProductListPagination = ({
                         </li>
                     )}
                     <li
-                        className="cursor-pointer"
+                        className={pageNumber < totalPage ? "cursor-pointer" : ""}
                         onClick={() => {
                             if (pageNumber < totalPage) {
                                 changePageNumber(pageNumber + 1)
@@ -387,6 +387,7 @@ const ProductListPagination = ({
 const ProductListContent = () => {
     const {user} = useAuth()
     const [displayType, SetDisplayType] = useState(true)
+    const {productIds} = useProductList();
 
     const {
         isProductsLoading,
@@ -400,6 +401,10 @@ const ProductListContent = () => {
         setSortingTypeIndex,
         total
     } = useProductList()
+
+    useEffect(()=>{
+      setPageNumber(1)
+    }, [productIds])
 
     const productsWithoutVariants = useMemo(() => {
         return products.filter((p) => p.productType !== 'VARIANT')
