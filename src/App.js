@@ -62,7 +62,22 @@ import { initReactI18next } from "react-i18next";
 i18n
   .use(initReactI18next)
   .init({
-    resources: {},
+    resources: {
+      en: {
+        page: {
+          "content": "Content",
+          "contentPath": "/n11showcase/Content",
+          "back_to_overview": "Back to Overview"
+        }
+      },
+      de: {
+        page: {
+          "content": "Inhalt",
+          "contentPath": "/n11showcase/Inhalt",
+          "back_to_overview": "Zurück zur Übersicht"
+        }
+      }
+    },
     lng: "de",
     fallbackLng: "de",
     interpolation: {

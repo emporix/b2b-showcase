@@ -2,13 +2,13 @@ import React, {useContext, useEffect, useState} from 'react'
 import {Link, useNavigate} from 'react-router-dom'
 import {AiOutlineClose, AiOutlineMail, AiOutlineMenu, AiOutlineSearch, AiOutlineShoppingCart,} from 'react-icons/ai'
 import {CgNotes} from 'react-icons/cg'
-import {useSelector} from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import Badge from '@mui/material/Badge'
 import AccountMenu from './accountmenu'
 import {HiChevronLeft, HiChevronRight, HiOutlineUserCircle} from 'react-icons/hi'
 import LayoutContext from '../../pages/context'
 import {LargePrimaryButton} from '../Utilities/button'
-import {pageMenuSelector} from '../../redux/slices/pageReducer'
+import { pageMenuSelector, putCmsNavigation } from '../../redux/slices/pageReducer'
 import {addTenantToUrl, homeUrl, loginUrl,} from '../../services/service.config'
 
 import {CurrencyBeforeValue} from 'components/Utilities/common'
@@ -19,7 +19,8 @@ import {useQuotes} from 'context/quotes-context'
 import {useContentful} from '../../context/contentful-provider'
 import {useCart} from 'context/cart-provider'
 import {useCurrency} from 'context/currency-context'
-import { getCmsNavigation } from 'services/content/navigation.service'
+import { getLocalizedCmsNavigation } from 'services/content/navigation.service'
+import { useTranslation } from 'react-i18next'
 
 const Navbar = () => {
     const {userTenant: tenant} = useAuth()
@@ -38,20 +39,31 @@ const Navbar = () => {
     const navigate = useNavigate()
     const {currencyList, activeCurrency, updateCurrency} = useCurrency()
     const {cartAccount} = useCart()
+    const dispatch = useDispatch()
+    const {t} = useTranslation("page")
     const currencyChangeHandler = async (value, site) => {
         updateCurrency(value, site)
     }
+    const cmsNavigationData = async () => {
+      const result = await getLocalizedCmsNavigation(currentLanguage);
+      const cmsNavigation = result.data?.cmsNavigation;
+      if (!cmsNavigation) {
+        return
+      }
 
-    const [cmsNavigation, setCmsNavigation] = useState([])
-	const cmsNavigationData = async () => {
-        //we don't use the navigation implementation for now
+      let contentEntries = cmsNavigation
+        .filter(i=>i.seoRoute?.startsWith('/Inhalt') || i.seoRoute?.startsWith('/Content'))
+        .filter(i=>!i.label.toLowerCase().startsWith("inhalt") && !i.label.toLowerCase().startsWith("content"))
+        .map((i)=>{
+          return {title:i.label, url:i.seoRoute.startsWith("/") ? i.seoRoute.substring(1) : i.seoRoute, key:i.caasDocumentId}
+        })
 
-		//const nav = await getCmsNavigation()
-		//setCmsNavigation(nav))
-	};
-	useEffect(() => {
-		cmsNavigationData();
-	}, [])
+      dispatch(putCmsNavigation([{title:t("content"), key:"content", url:"inhalt", items: contentEntries}]))
+    }
+
+    useEffect(() => {
+      cmsNavigationData();
+    }, [currentLanguage])
 
     const ParentBoard = () => {
         return (
@@ -151,7 +163,7 @@ const Navbar = () => {
                 (item.title)
               }
                 <HiChevronRight size={18}
-                                className={item.items.length ? 'h-8 w-8' : 'hidden'}
+                                className={item.items?.length ? 'h-8 w-8' : 'hidden'}
                 />
             </li>
         )
@@ -161,7 +173,7 @@ const Navbar = () => {
         const item = props.item
         return (
             <>
-                {!item.items.length ? (
+                {!item.items?.length ? (
                     <Link to={addTenantToUrl(item.url)}>
                         <li
                             key={item.title}
