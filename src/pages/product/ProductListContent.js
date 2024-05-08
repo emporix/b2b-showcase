@@ -1,6 +1,6 @@
 import {CgMenuGridR} from 'react-icons/cg'
 import {BiMenu} from 'react-icons/bi'
-import React, {useMemo, useState} from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 import {useSelector} from 'react-redux'
 import {IconContext} from 'react-icons'
 import {HiChevronDown, HiOutlineArrowLeft, HiOutlineArrowRight} from 'react-icons/hi'
