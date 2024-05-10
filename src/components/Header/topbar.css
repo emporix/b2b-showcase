@@ -63,7 +63,6 @@
   clear: both;
 }
 
-
 input[type='search'] {
   background: transparent;
   margin: 0;
@@ -126,7 +125,6 @@ input.nosubmit {
 
 .mega_menu_dropbtn:last-of-type {
   @apply !pr-0;
-
 }
 
 .mega_content_bg {
@@ -150,12 +148,9 @@ input::-webkit-search-cancel-button {
 }
 
 .world-icon {
-  display: inline-block;
-  width: 1rem;
-  height: 1rem;
   background: transparent url('../../assets/world.svg') no-repeat center;
-  color: white;
-  margin-right: 10px;
-  position: relative;
-  bottom: 0;
+
+  & + span {
+    margin-left: 1rem;
+  }
 }
