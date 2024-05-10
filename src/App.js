@@ -67,14 +67,18 @@ i18n
         page: {
           "content": "Content",
           "contentPath": "/n11showcase/Content",
-          "back_to_overview": "Back to Overview"
+          "back_to_overview": "Back to Overview",
+          "show_all" : "Show all",
+          "all_countries": "All Countries"
         }
       },
       de: {
         page: {
           "content": "Inhalt",
           "contentPath": "/n11showcase/Inhalt",
-          "back_to_overview": "Zurück zur Übersicht"
+          "back_to_overview": "Zurück zur Übersicht",
+          "show_all": "Zeige alle",
+          "all_countries": "Alle Länder"
         }
       }
     },

@@ -7,6 +7,7 @@ import {Checkbox} from '@mui/material'
 import { useNavigate } from 'react-router'
 import { TENANT } from '../../constants/localstorage'
 import category from '../home/Category'
+import { useTranslation } from 'react-i18next'
 
 const SelectedFilter = ({title, val}) => {
     return (
@@ -33,6 +34,7 @@ const SelectionField = ({title, total}) => {
 const Category = ({ item, activeSubCategory, activeCategory}) => {
   const {title, items, key, url} = item
   const navigate = useNavigate();
+  const {t} = useTranslation("page")
 
   if (item.items.length === 0) return
 
@@ -51,7 +53,7 @@ const Category = ({ item, activeSubCategory, activeCategory}) => {
                             },
                             '& .MuiSvgIcon-root': {fontSize: 18}
                         }} style={{fill: 'white'}}/>
-                        <div>Alle L&auml;nder</div>
+                        <div>{t("all_countries")}</div>
                     </div>
                     {items.map((item, index) => (
                         <div className="flex">
@@ -84,6 +86,9 @@ const Category = ({ item, activeSubCategory, activeCategory}) => {
 
 
 const FilterListPanel = ({filterItems, handleSideFilterContent}) => {
+
+  const {t} = useTranslation("page")
+
     return (
         <div>
             <div className="flex justify-between flex-col xl:flex-row">
@@ -97,7 +102,7 @@ const FilterListPanel = ({filterItems, handleSideFilterContent}) => {
                 </div>
                 <div>
                     <a className="font-inter font-semibold font-[14px] text-manatee text-right">
-                        Clear Filters
+                      {t("show_all")}
                     </a>
                 </div>
             </div>
