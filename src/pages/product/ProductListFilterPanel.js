@@ -1,5 +1,5 @@
 import React, {useEffect, useRef, useState} from 'react'
-import {useParams} from 'react-router-dom'
+import { Link, useParams } from 'react-router-dom'
 import {LoadingCircleProgress1} from '../../components/Utilities/progress'
 import {getProductCategoryDetail} from '../../services/product/category.service'
 import {useProductList} from 'context/product-list-context'
@@ -8,6 +8,8 @@ import { useNavigate } from 'react-router'
 import { TENANT } from '../../constants/localstorage'
 import category from '../home/Category'
 import { useTranslation } from 'react-i18next'
+
+const getTenant = () => localStorage.getItem(TENANT)
 
 const SelectedFilter = ({title, val}) => {
     return (
@@ -161,15 +163,17 @@ const CategoryPanel = () => {
     )
 }
 
-const ProductListFilterPanel = ({handleSideFilterContent, filterItems}) => {
+const ProductListFilterPanel = () => {
+    const {t} = useTranslation("page")
     return (
+      <div className="flex justify-between flex-col xl:flex-row">
+                <CategoryPanel />
         <div>
-            <FilterListPanel
-                filterItems={filterItems}
-                handleSideFilterContent={handleSideFilterContent}
-            />
-            <CategoryPanel/>
+          <Link to={`/${getTenant()}/product/wein`} className="font-inter font-semibold font-[14px] text-manatee text-right">
+            {t("show_all")}
+          </Link>
         </div>
+      </div>
     )
 }
 
