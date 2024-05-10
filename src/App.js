@@ -67,14 +67,24 @@ i18n
         page: {
           "content": "Content",
           "contentPath": "/n11showcase/Content",
-          "back_to_overview": "Back to Overview"
+          "back_to_overview": "Back to Overview",
+          "categories" : "Categories",
+          "all_wines" : "All Wines",
+          "white_wine" : "White Wine",
+          "red_wine" : "Red Wine",
+          "rose_wine" : "Rosé Wine"
         }
       },
       de: {
         page: {
           "content": "Inhalt",
           "contentPath": "/n11showcase/Inhalt",
-          "back_to_overview": "Zurück zur Übersicht"
+          "back_to_overview": "Zurück zur Übersicht",
+          "all_wines" : "Alle Weine",
+          "categories" : "Kategorien",
+          "white_wine" : "Weißwein",
+          "red_wine" : "Rotwein",
+          "rose_wine" : "Rosé"
         }
       }
     },
