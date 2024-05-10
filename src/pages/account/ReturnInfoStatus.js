@@ -62,7 +62,6 @@ const ReturnInfoStatus = ({ status, className }) => {
         height: '48px',
         fontSize: '16px',
         fontStyle: 'normal',
-        fontFamily: 'inter',
         borderRadius: '5px',
         borderWidth: '0.5px',
         borderColor: textColor,
