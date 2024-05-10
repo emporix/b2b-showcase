@@ -134,6 +134,7 @@ const ProductListProvider = ({ children, id }) => {
         total: totalProducts,
         isProductsLoading,
         products,
+        productIds,
         setProductIds,
         productsPerPage,
         setProductsPerPage,

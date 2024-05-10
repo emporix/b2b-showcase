@@ -1,29 +1,29 @@
 import Layout from '../Layout'
 import { useLanguage } from '../../context/language-provider'
-import { useNavigate } from 'react-router-dom'
+import { Link, useNavigate, useParams } from 'react-router-dom'
 import { CMSFilterType } from '../../services/content/filteredPage.service'
 import MainContent from '../home/MainContent'
+import React, { useEffect, useState } from 'react'
+import { useTranslation } from 'react-i18next'
+import ProductListBanner from '../product/ProductListBanner'
 
 const ContentPage = () => {
-  const { currentLanguage } = useLanguage()
   const navigate = useNavigate()
+  const param = useParams()
+  const {t} = useTranslation("page")
 
-  let route = window.location.pathname
-  route = route.substring('/n11showcase'.length)
+  const [route, setRoute] = useState(window.location.pathname.substring('/n11showcase'.length));
 
+  useEffect(()=>{
+    setRoute(`/${ t("content")}/${ param.contentName}/`)
+  }, [param])
   return (
     <Layout>
-      <div>
-        {currentLanguage === 'en' ? (
-          <button onClick={() => navigate('/n11showcase/Content')}>
-            Back to Overview
+      <div className="px-4 md:px-24 pb-12">
+        <button onClick={() => navigate(t('contentPath'))}>
+            {t("back_to_overview")}
           </button>
-        ) : (
-          <button onClick={() => navigate('/n11showcase/Inhalt')}>
-            Zurück zur Übersicht
-          </button>
-        )}
-        <MainContent page={route} type={CMSFilterType.ROUTE} />
+        <MainContent page={route}/>
       </div>
     </Layout>
   )

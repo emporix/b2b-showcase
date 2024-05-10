@@ -41,17 +41,17 @@ const MegaNav = ({ showMegaMenuContent, setShowMegaMenuContent }) => {
           key={index}
           className="mega_menu_dropbtn"
           onMouseOver={() => {
-            item.items.length !== 0
+            item.items?.length
             ? overMenuItem(item.items)
             : hideMegaMenuContent()
           }}
           onClick={() => {
-            item.items.length !== 0
+            item.items?.length
             ? overMenuItem(item.items)
             : hideMegaMenuContent()
           }}
         >
-          <Link to={!item.items.length ? addTenantToUrl(item.url) : homeUrl}>
+          <Link to={!item.items?.length ? addTenantToUrl(item.url) : homeUrl}>
             <div>
               {item.contentfulFieldName
                 ? fields[item.contentfulFieldName]
@@ -60,7 +60,7 @@ const MegaNav = ({ showMegaMenuContent, setShowMegaMenuContent }) => {
           </Link>
 
 			<HiChevronDown size={20}
-            className={item.items.length ? 'ml-2 mt-1 h-5 w-5' : 'hidden'}
+            className={item.items?.length ? 'ml-2 mt-1 h-5 w-5' : 'hidden'}
             aria-hidden="true"
           />
         </button>
