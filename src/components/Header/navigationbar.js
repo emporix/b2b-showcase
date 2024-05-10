@@ -274,71 +274,55 @@ const Navbar = () => {
     <header className="header">
       {/* Dektop language and currency selection */}
       <div className="desktop_only_flex font-inter text-sm text-white items-center">
-        <div className="flex items-center">
-          <span className="world-icon"></span>
-          <span className="hidden lg:inline">{fields.siteLabel}:</span>
-          <select
-            className="bg-primary w-38 mr-[22px]"
-            onChange={handleSiteChange}
-            value={currentSite}
-          >
-            {sites
-              .filter((s) => s.active)
-              .sort((a, b) => a.code.localeCompare(b.code))
-              .map((site) => {
-                return (
-                  <option key={site.code} value={site.code}>
-                    {site.name}
-                  </option>
-                )
-              })}
-          </select>
-        </div>
-        <div>
-          <span className="hidden lg:inline">{fields.languageLabel}:</span>
-          <select
-            className="bg-primary"
-            onChange={(event) => setLanguage(event.target.value)}
-            value={currentLanguage}
-          >
-            {languages
-              .sort((a, b) => a.localeCompare(b))
-              .map((language) => {
-                return (
-                  <option key={language} value={language}>
-                    {language}
-                  </option>
-                )
-              })}
-          </select>
-        </div>
-        <div className="ml-[22px]">
-          <span className="hidden lg:inline">{fields.currencyLabel}: </span>
-          <select
-            id="currency-select"
-            value={activeCurrency.code !== undefined ? activeCurrency.code : ''}
-            onChange={(e) =>
-              currencyChangeHandler(e.target.value, currentSiteObject)
-            }
-            className="bg-primary"
-          >
-            {currencyList.map((currency) => {
-              return (
-                <option key={currency.code} value={currency.code}>
-                  {currency.symbol}
-                </option>
-              )
-            })}
-          </select>
-        </div>
-        <NavDropdown
-          name="Test"
-          list={[
-            { text: 'de', value: 'de' },
-            { text: 'en', value: 'en' },
-          ]}
-          currentValue={'de'}
-        />
+        <ul className="flex items-center">
+          <li className="mr-4">
+            <NavDropdown
+              id="currency-select"
+              name={fields.siteLabel}
+              list={sites
+                .filter((s) => s.active)
+                .sort((a, b) => a.code.localeCompare(b.code))
+                .map((item) => ({
+                  text: item.name,
+                  value: item.code,
+                }))}
+              onChangeHandler={handleSiteChange}
+              currentValue={currentSiteObject.name}
+            >
+              <span className="world-icon inline-block relative h-4 w-4 text-white"></span>
+            </NavDropdown>
+          </li>
+          <li className="mr-4">
+            <NavDropdown
+              id="currency-select"
+              name={fields.languageLabel}
+              list={languages
+                .sort((a, b) => a.localeCompare(b))
+                .map((item) => ({
+                  text: item,
+                  value: item,
+                }))}
+              onChangeHandler={(e) => setLanguage(e.target.value)}
+              currentValue={currentLanguage}
+            />
+          </li>
+          <li className="mr-4">
+            <NavDropdown
+              id="currency-select"
+              name={fields.currencyLabel}
+              list={currencyList.map((item) => ({
+                text: item.symbol,
+                value: item.code,
+              }))}
+              onChangeHandler={(e) =>
+                currencyChangeHandler(e.target.value, currentSiteObject)
+              }
+              currentValue={
+                activeCurrency.symbol !== undefined ? activeCurrency.symbol : ''
+              }
+            />
+          </li>
+        </ul>
       </div>
 
       {/* Dektop navigation selection */}
@@ -371,7 +355,7 @@ const Navbar = () => {
           </ul>
         ) : (
           <ul className="flex">
-            <li className="pl-4">
+            <li className="px-4">
               <AiOutlineMail size={20} />
             </li>
             |

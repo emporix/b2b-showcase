@@ -2,13 +2,21 @@ import { useRef, useState, useEffect } from 'react'
 import { HiChevronDown } from 'react-icons/hi'
 
 export default function NavDropdown({
+  id,
   name,
   list = [],
   currentValue,
-  onSelect = () => {},
+  onChangeHandler = () => {},
+  children,
 }) {
   const [isOpen, setIsOpen] = useState(false)
   const selectRef = useRef()
+
+  const handleClick = (event, selected) => {
+    console.log('click ', selected)
+    setIsOpen(false)
+    onChangeHandler(event)
+  }
 
   const handleClickOutside = (event) => {
     selectRef.current &&
@@ -22,23 +30,24 @@ export default function NavDropdown({
   }, [selectRef])
 
   return (
-    <div ref={selectRef} className="flex relative text-left">
+    <div ref={selectRef} className="relative max-w-fit inline-block text-left">
       <button
-        className="flex flex-row"
+        className="flex flex-row items-center"
         onClick={() => setIsOpen((prev) => !prev)}
       >
-        <span className="pl-2">{name}: </span>
+        {children}
+        <span className="hidden lg:inline pl-2">{name}: </span>
         <span className="pl-2">{currentValue}</span>
         <HiChevronDown
           size={20}
-          className="-mr-1 ml-2 h-5 w-5"
+          className="-mr-1 ml-1 h-5 w-5"
           aria-hidden="true"
         />
       </button>
       <div
-        className={`absolute top-5 right-0 ${
+        className={`${
           isOpen ? 'opacity-100' : 'invisible opacity-0'
-        }`}
+        } absolute min-w-full origin-top-right right-0 min-w-24 rounded-md shadow-lg bg-white ring-black ring-opacity-5 focus:outline-none transition-opacity duration-600`}
       >
         <div className="py-1">
           {list &&
@@ -46,6 +55,7 @@ export default function NavDropdown({
               <button
                 key={item.value}
                 value={item.value}
+                onClick={(e) => handleClick(e, item.value)}
                 className="text-black hover:text-darkGray bg-white block w-full text-left px-4 py-2 text-sm"
               >
                 {item.text}
