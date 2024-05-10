@@ -4,11 +4,13 @@ import { getLocalizedCmsNavigation } from '../../services/content/navigation.ser
 import { useEffect, useState } from 'react'
 import { useLanguage } from '../../context/language-provider'
 import { useNavigate } from 'react-router-dom'
+import { useTranslation } from 'react-i18next'
 
 const ContentOverview = () => {
   const [content, setContent] = useState([])
   let { currentLanguage } = useLanguage()
   const navigate = useNavigate()
+  const {t} = useTranslation("page")
   const getData = async () => {
     let data = await getLocalizedCmsNavigation(currentLanguage)
     data = data.data.cmsNavigation.filter((item) => {
@@ -28,7 +30,7 @@ const ContentOverview = () => {
   }, [currentLanguage])
 
   return (
-    <Layout>
+    <Layout title={t("content")}>
       <div>
         {content.map((item, index) => (
           <div key={index}>
