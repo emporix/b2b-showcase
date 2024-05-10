@@ -44,26 +44,26 @@ export default function NavDropdown({
           />
         </span>
       </button>
-      <div
-        className={`${
-          isOpen ? 'opacity-100' : 'invisible opacity-0'
-        } absolute mt-1 min-w-full origin-top-right right-0 min-w-24 rounded-md shadow-lg bg-white ring-black ring-opacity-5 focus:outline-none transition-opacity duration-600`}
-      >
-        <div className="py-1">
-          {list && list?.length
-            ? list.map((item) => (
-                <button
-                  key={item.value}
-                  value={item.value}
-                  onClick={(e) => handleClick(e, item.value)}
-                  className="text-black hover:text-darkGray bg-white block w-full text-left px-4 py-2 text-sm"
-                >
-                  {item.text}
-                </button>
-              ))
-            : null}
+      {list && list?.length > 0 ? (
+        <div
+          className={`${
+            isOpen ? 'opacity-100' : 'invisible opacity-0'
+          } absolute mt-1 min-w-full origin-top-right right-0 min-w-24 rounded-md shadow-lg bg-white ring-black ring-opacity-5 focus:outline-none transition-opacity duration-600`}
+        >
+          <div className="py-1">
+            {list.map((item) => (
+              <button
+                key={item.value}
+                value={item.value}
+                onClick={(e) => handleClick(e, item.value)}
+                className="text-black hover:text-darkGray bg-white block w-full text-left px-4 py-2 text-sm"
+              >
+                {item.text}
+              </button>
+            ))}
+          </div>
         </div>
-      </div>
+      ) : null}
     </div>
   )
 }

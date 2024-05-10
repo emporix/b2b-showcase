@@ -189,9 +189,7 @@ const AddressesEdit = () => {
               />
             </div>
             <div className="col-span-1 flex flex-col">
-              <label htmlFor="" className="mb-1">
-                Country:
-              </label>
+              <label className="mb-1">Country:</label>
               <Dropdown
                 options={countries}
                 defaultValue={{
