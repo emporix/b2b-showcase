@@ -2,7 +2,6 @@ import { useRef, useState, useEffect } from 'react'
 import { HiChevronDown } from 'react-icons/hi'
 
 export default function NavDropdown({
-  id,
   name,
   list = [],
   currentValue,
@@ -36,13 +35,15 @@ export default function NavDropdown({
         onClick={() => setIsOpen((prev) => !prev)}
       >
         {children}
-        <span className="hidden lg:inline pl-2">{name}: </span>
-        <span className="pl-2">{currentValue}</span>
-        <HiChevronDown
-          size={20}
-          className="-mr-1 ml-1 h-5 w-5"
-          aria-hidden="true"
-        />
+        <span className="flex flex-row items-center">
+          <span className="hidden lg:inline-block pl-2">{name}: </span>
+          <span className="inline-block pl-2">{currentValue}</span>
+          <HiChevronDown
+            size={20}
+            className="-mr-1 ml-1 h-5 w-5"
+            aria-hidden="true"
+          />
+        </span>
       </button>
       <div
         className={`${

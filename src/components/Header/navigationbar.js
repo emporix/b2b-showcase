@@ -316,7 +316,6 @@ const Navbar = () => {
         <ul className="flex items-center">
           <li className="mr-4">
             <NavDropdown
-              id="currency-select"
               name={fields.siteLabel}
               list={sites
                 .filter((s) => s.active)
@@ -328,12 +327,11 @@ const Navbar = () => {
               onChangeHandler={handleSiteChange}
               currentValue={currentSiteObject.name}
             >
-              <span className="world-icon inline-block relative h-4 w-4 text-white"></span>
+              <span className="world-icon absolute h-4 w-4 text-white"></span>
             </NavDropdown>
           </li>
           <li className="mr-4">
             <NavDropdown
-              id="currency-select"
               name={fields.languageLabel}
               list={languages
                 .sort((a, b) => a.localeCompare(b))
@@ -347,7 +345,6 @@ const Navbar = () => {
           </li>
           <li className="mr-4">
             <NavDropdown
-              id="currency-select"
               name={fields.currencyLabel}
               list={currencyList.map((item) => ({
                 text: item.symbol,

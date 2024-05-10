@@ -149,4 +149,8 @@ input::-webkit-search-cancel-button {
 
 .world-icon {
   background: transparent url('../../assets/world.svg') no-repeat center;
+
+  & + span {
+    margin-left: 1rem;
+  }
 }
