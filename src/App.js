@@ -69,7 +69,7 @@ i18n
           "contentPath": "/n11showcase/Content",
           "back_to_overview": "Back to Overview",
           "show_all" : "Show all",
-          "all_countries": "All Countries"
+          "all_countries": "All Countries",
           "categories" : "Categories",
           "all_wines" : "All Wines",
           "white_wine" : "White Wine",
@@ -83,7 +83,7 @@ i18n
           "contentPath": "/n11showcase/Inhalt",
           "back_to_overview": "Zurück zur Übersicht",
           "show_all": "Zeige alle",
-          "all_countries": "Alle Länder"
+          "all_countries": "Alle Länder",
           "all_wines" : "Alle Weine",
           "categories" : "Kategorien",
           "white_wine" : "Weißwein",
