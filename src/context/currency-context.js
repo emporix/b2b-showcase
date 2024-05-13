@@ -36,15 +36,19 @@ const CurrencyProvider = ({ children }) => {
     })
     setCurrencyList(currencyListWithSymbol)
 
-    const siteCurrency = sites.find((site) => site.code === currentSite)?.currency
+    const siteCurrency = sites.find(
+      (site) => site.code === currentSite
+    )?.currency
     if (currencyListWithSymbol.length > 0) {
       const defaultSiteCurrency = currencyListWithSymbol.find((cur) => {
-          return cur.code === siteCurrency
-        })
-      const activeCurrency = defaultSiteCurrency ||
+        return cur.code === siteCurrency
+      })
+      const activeCurrency =
+        defaultSiteCurrency ||
         currencyListWithSymbol.find((cur) => {
           return cur.code === context.currency
-        }) || currencyListWithSymbol[0]
+        }) ||
+        currencyListWithSymbol[0]
       setActiveCurrency(activeCurrency)
     } else {
       throw new Error('currency list is empty')
@@ -52,7 +56,6 @@ const CurrencyProvider = ({ children }) => {
   }
 
   const updateCurrency = async (value, site) => {
-    
     setActiveCurrency({
       code: value,
       symbol: getSymbolFromCurrency(value),

@@ -1,33 +1,34 @@
 .teaser {
-    @apply py-8 md:py-24;
-    display: flex;
-    align-items: center;
-    justify-content: center;   
+  @apply py-8 md:py-24;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .teaser__content {
-    @apply w-11/12 md:w-3/4 rounded-3xl p-8 md:p-12;
-    /* box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px, rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px; */
-    /* box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px; */
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    background: rgba(255, 255, 255, 0.95);
+  @apply w-11/12 md:w-3/4 rounded-3xl p-8 md:p-12;
+  /* box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px, rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px; */
+  /* box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px; */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255, 255, 255, 0.95);
 }
 
-.teaser__headline, .teaser__text {
-    font-family: "Inter", sans-serif;
+.teaser__headline,
+.teaser__text {
+  /* font-family: "Inter", sans-serif; */
 }
 
 .teaser__headline {
-    @apply text-2xl md:text-[36px] leading-[42px] pb-7 md:pb-10 w-full md:w-3/4;
-    font-weight: 600;
-    color: #BA113C;
-    text-align: center;
+  @apply text-2xl md:text-[36px] leading-[42px] pb-7 md:pb-10 w-full md:w-3/4;
+  font-weight: 600;
+  color: #ba113c;
+  text-align: center;
 }
 
 .teaser__text {
-    @apply text-lg;
-    color: #333;
+  @apply text-lg;
+  color: #333;
 }

@@ -2,6 +2,7 @@ import React, {useEffect, useRef, useState} from 'react'
 import { Link, useParams } from 'react-router-dom'
 import {LoadingCircleProgress1} from '../../components/Utilities/progress'
 import {getProductCategoryDetail} from '../../services/product/category.service'
+import ProductListContent from './ProductListContent'
 import {useProductList} from 'context/product-list-context'
 import {Checkbox} from '@mui/material'
 import { useNavigate } from 'react-router'
@@ -37,6 +38,7 @@ const Category = ({ item, activeSubCategory, activeCategory}) => {
   const {title, items, key, url} = item
   const navigate = useNavigate();
   const {t} = useTranslation("page")
+  const {setPageNumber} =  useProductList();
 
   if (item.items.length === 0) return
 
