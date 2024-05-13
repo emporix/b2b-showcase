@@ -70,6 +70,11 @@ i18n
           "back_to_overview": "Back to Overview",
           "show_all" : "Show all",
           "all_countries": "All Countries"
+          "categories" : "Categories",
+          "all_wines" : "All Wines",
+          "white_wine" : "White Wine",
+          "red_wine" : "Red Wine",
+          "rose_wine" : "Rosé Wine"
         }
       },
       de: {
@@ -79,6 +84,11 @@ i18n
           "back_to_overview": "Zurück zur Übersicht",
           "show_all": "Zeige alle",
           "all_countries": "Alle Länder"
+          "all_wines" : "Alle Weine",
+          "categories" : "Kategorien",
+          "white_wine" : "Weißwein",
+          "red_wine" : "Rotwein",
+          "rose_wine" : "Rosé"
         }
       }
     },
