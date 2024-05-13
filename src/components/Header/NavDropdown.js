@@ -12,7 +12,6 @@ export default function NavDropdown({
   const selectRef = useRef()
 
   const handleClick = (event, selected) => {
-    console.log('click ', selected)
     setIsOpen(false)
     onChangeHandler(event)
   }
@@ -45,14 +44,14 @@ export default function NavDropdown({
           />
         </span>
       </button>
-      <div
-        className={`${
-          isOpen ? 'opacity-100' : 'invisible opacity-0'
-        } absolute mt-1 min-w-full origin-top-right right-0 min-w-24 rounded-md shadow-lg bg-white ring-black ring-opacity-5 focus:outline-none transition-opacity duration-600`}
-      >
-        <div className="py-1">
-          {list &&
-            list.map((item) => (
+      {list && list?.length > 0 ? (
+        <div
+          className={`${
+            isOpen ? 'opacity-100' : 'invisible opacity-0'
+          } absolute mt-1 min-w-full origin-top-right right-0 min-w-24 rounded-md shadow-lg bg-white ring-black ring-opacity-5 focus:outline-none transition-opacity duration-600`}
+        >
+          <div className="py-1">
+            {list.map((item) => (
               <button
                 key={item.value}
                 value={item.value}
@@ -62,8 +61,9 @@ export default function NavDropdown({
                 {item.text}
               </button>
             ))}
+          </div>
         </div>
-      </div>
+      ) : null}
     </div>
   )
 }

@@ -139,10 +139,7 @@ const Navbar = () => {
           </ul>
         </div>
         {user && (
-          <div
-            // className="w-full h-[59px] border-y flex justify-between items-center mt-6 font-inter text-base">
-            className=" flex justify-between py-6 border-b last:border-b-0 text-xl"
-          >
+          <div className=" flex justify-between py-6 border-b last:border-b-0 text-xl">
             Site
             <select className="text-tinBlue appearance-none">
               {sites
@@ -158,10 +155,7 @@ const Navbar = () => {
             </select>
           </div>
         )}
-        <div
-          // className="w-full h-[59px] border-y flex justify-between items-center mt-6 font-inter text-base">
-          className=" flex justify-between py-6 border-b last:border-b-0 text-xl"
-        >
+        <div className=" flex justify-between py-6 border-b last:border-b-0 text-xl">
           Language
           <select className="text-tinBlue appearance-none">
             <option value="Engish">English</option>
@@ -169,10 +163,7 @@ const Navbar = () => {
             <option value="French">French</option>
           </select>
         </div>
-        <div
-          // className="w-full h-[59px] border-y flex justify-between items-center">
-          className=" flex justify-between py-6 border-b last:border-b-0 text-xl"
-        >
+        <div className=" flex justify-between py-6 border-b last:border-b-0 text-xl">
           Currency
           <select
             value={activeCurrency.code !== undefined ? activeCurrency.code : ''}
@@ -441,7 +432,7 @@ const Navbar = () => {
       <div className="flex md:hidden items-center justify-between w-full pl-4 pr-8 py-2 bg-aliceBlue">
         <div className="mobile_only_flex w-2/5 sm:w-1/3">
           <Link to={homeUrl()} className="flex">
-            <img src="/img/n11logo.png" />
+            <img src="/img/n11logo.png" alt="logo" />
           </Link>
         </div>
 
