@@ -1,16 +1,20 @@
 import React from 'react'
 import JsonFormatter from 'react-json-formatter'
-
-// for very simple lists only (glossary maybe)
+import { Text } from './text'
 
 export const SimpleList = (props) => {
+  const listEntries = props.props.data.st_elements;
+  if (!listEntries || !listEntries.length) {
+    return;
+  }
   return (
     <div>
-      <p className="mt-3 mr-6 ml-6 text-md text-left w-full text-eerieBlack font-light">
-        <JsonFormatter json={props.props} />
-      </p>
       <ul>
-        <li>Item</li>
+        <li>
+          {listEntries.map((entry, idx) => {
+            return <Text props={entry} key={idx} />
+          })}
+        </li>
       </ul>
     </div>
   )
