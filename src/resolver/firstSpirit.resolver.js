@@ -12,6 +12,8 @@ import { TextBanner } from 'components/Cms/textBanner'
 import CMS_List from 'components/Cms/cms_list'
 import CMS_Footer from 'components/Cms/footer'
 import Winery from '../components/Cms/winery'
+import JsonFormatter from 'react-json-formatter'
+import React from 'react'
 
 const firstSpiritComponentMap = {
   // TODO still needed? check with first spirit data
@@ -68,11 +70,10 @@ export const normalizeFooterStructure = (content) => {
 }
 
 const FsGenericComponent = (props) => {
+
   const componentLayout = props?.props?.data?.cmsFilteredPage?.page?.layout
 
-  let componentData =
-    [...Object.values(props?.props?.data?.cmsFilteredPage?.page?.data ?? {})] ??
-    []
+  let componentData = [...Object.values(props?.props?.data?.cmsFilteredPage?.page?.data ?? {})];
 
   const children =
     props?.props?.data?.cmsFilteredPage?.page?.children[0]?.children
@@ -80,45 +81,35 @@ const FsGenericComponent = (props) => {
     componentData = [...componentData, ...children]
   }
 
-  // TODO improve to switch case
-  if (componentLayout === 'footer') {
-    // FOOTER
-    const Component = firstSpiritComponentMap[componentLayout]
-    // Prevent undefined components to be rendered
-    if (Component === undefined) return
+  switch (componentLayout) {
+    case "footer":
+      const Component = firstSpiritComponentMap[componentLayout]
+      return Component && <Component props={normalizeFooterStructure(componentData)} />;
+    case "productpage":
+       return <Winery props={props.props} />
+    case "homepage":
+    default:
+      return componentData.map((entry, idx) => {
+         //yes there can be null in the array
+        if (!entry) return;
 
-    return <Component props={normalizeFooterStructure(componentData)} />
-  } else if (componentLayout === 'productpage') {
-    // PDP
-    return <Winery props={props} />
-  } else {
-    // CONTENT PAGE
-    return componentData.map((entry, idx) => {
-      let key
+        const componentTypeKey = entry?.sectionType || entry?.name || entry?.template?.uid || "text_banner"
+        const Component = firstSpiritComponentMap[componentTypeKey]
 
-      if (entry?.template?.uid) {
-        key = entry?.template?.uid
-      } else if (entry?.sectionType) {
-        key = entry?.sectionType
-      } else if (entry?.name) {
-        key = entry?.name
-      } else {
-        key = 'text_banner'
-      }
-      const Component = firstSpiritComponentMap[key]
+        if (!Component) return;
+        if (!entry.displayed) return;
 
-      // Prevent undefined components to be rendered
-      if (Component === undefined) return
-
-      return (
-        <div key={idx}>
-          <p>
-            Component {idx}: {entry.name}, {entry.sectionType}
-          </p>
-          <Component props={entry} />
-        </div>
-      )
-    })
+        return(
+          <div key={idx}>
+            <hr />
+            <p>
+              Component {idx}: {componentTypeKey}
+            </p>
+            <Component props={entry} />
+            <hr />
+          </div>)
+      })
+      return null
   }
 }
 

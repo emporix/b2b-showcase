@@ -6,7 +6,7 @@ import './teaser.css'
 
 export const Teaser = (props) => {
   const { productId } = useParams()
-  const content = props.props.data
+  const content = props.props?.data
   const headline = content?.st_headline
   const text = content?.st_text
   const image = content?.st_picture?.resolutions.ORIGINAL
