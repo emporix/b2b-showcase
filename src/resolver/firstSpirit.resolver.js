@@ -5,15 +5,16 @@ import { Teaser } from 'components/Cms/teaser'
 import { SimpleList } from 'components/Cms/simpleList'
 import { TextPicture } from 'components/Cms/textPicture'
 import { ProductTeaser } from 'components/Cms/productTeaser'
-import { Accordion } from 'components/Cms/accordion'
 import { ProductCarousel } from 'components/Cms/productCarousel'
 import { Slider } from 'components/Cms/slider'
 import { TextBanner } from 'components/Cms/textBanner'
+import { CMS_Accordion } from '../components/Cms/accordion'
 import CMS_List from 'components/Cms/cms_list'
 import CMS_Footer from 'components/Cms/footer'
 import Winery from '../components/Cms/winery'
 import JsonFormatter from 'react-json-formatter'
 import React from 'react'
+
 
 const firstSpiritComponentMap = {
   // TODO still needed? check with first spirit data
@@ -25,7 +26,7 @@ const firstSpiritComponentMap = {
   text_picture: TextPicture,
   teaser: Teaser,
   product_teaser: ProductTeaser,
-  accordion: Accordion,
+  accordion: CMS_Accordion,
   product_carousel: ProductCarousel,
   slider: Slider,
   simple_text_list_faq: SimpleList,
@@ -69,7 +70,7 @@ export const normalizeFooterStructure = (content) => {
   }
 }
 
-const FsGenericComponent = (props) => {
+const  FsGenericComponent = (props) => {
 
   const componentLayout = props?.props?.data?.cmsFilteredPage?.page?.layout
 
@@ -89,28 +90,32 @@ const FsGenericComponent = (props) => {
        return <Winery props={props.props} />
     case "homepage":
     default:
-      return componentData.map((entry, idx) => {
-         //yes there can be null in the array
-        if (!entry) return;
-
-        const componentTypeKey = entry?.sectionType || entry?.name || entry?.template?.uid || "text_banner"
-        const Component = firstSpiritComponentMap[componentTypeKey]
-
-        if (!Component) return;
-        if (!entry.displayed) return;
-
-        return(
-          <div key={idx}>
-            <hr />
-            <p>
-              Component {idx}: {componentTypeKey}
-            </p>
-            <Component props={entry} />
-            <hr />
-          </div>)
-      })
-      return null
+      return <FsGenericComponentList componentData={componentData}/>
   }
 }
 
 export default FsGenericComponent
+
+export const FsGenericComponentList = (props) => {
+  const { componentData } = props;
+
+  return componentData.map((entry, idx) => {
+
+      if (!entry) {return}
+
+      const componentTypeKey = entry?.sectionType || entry?.name || entry?.template?.uid || "text_banner"
+      const Component = firstSpiritComponentMap[componentTypeKey]
+
+      if (!Component) return;
+
+      return(
+        <div key={idx}>
+          <hr />
+          <p>
+            Component {idx}: {componentTypeKey}
+          </p>
+          <Component props={entry}/>
+          <hr />
+        </div>)
+    })
+}
