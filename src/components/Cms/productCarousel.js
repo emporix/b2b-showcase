@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react'
 import productService from '../../services/product/product.service'
-import { ProductMini } from '../Product/productMini'
 import Slider from 'react-slick'
 import "./productCarousel.css"
 
@@ -39,9 +38,6 @@ export const ProductCarousel = (props) => {
         return <img className="rounded-xl" src={p.media[0]?.url} />
       })}
     </Slider>
-    {/*<div className="flex justify-center items-center">*/}
-
-    {/*</div>*/}
   </>
 }
 

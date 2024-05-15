@@ -12,9 +12,7 @@ import { CMS_Accordion } from '../components/Cms/accordion'
 import CMS_List from 'components/Cms/cms_list'
 import CMS_Footer from 'components/Cms/footer'
 import Winery from '../components/Cms/winery'
-import JsonFormatter from 'react-json-formatter'
 import React from 'react'
-import { Picture } from '../components/Cms/picture'
 
 
 const firstSpiritComponentMap = {
@@ -109,14 +107,6 @@ export const FsGenericComponentList = (props) => {
 
       if (!Component) return;
 
-      return(
-        <div key={idx}>
-          <hr />
-          <p>
-            Component {idx}: {componentTypeKey}
-          </p>
-          <Component props={entry}/>
-          <hr />
-        </div>)
+      return <Component props={entry} key={idx}/>
     })
 }
