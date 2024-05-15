@@ -1,5 +1,5 @@
 import React, {useEffect, useRef, useState} from 'react'
-import {useParams} from 'react-router-dom'
+import { Link, useParams } from 'react-router-dom'
 import {LoadingCircleProgress1} from '../../components/Utilities/progress'
 import {getProductCategoryDetail} from '../../services/product/category.service'
 import ProductListContent from './ProductListContent'
@@ -8,6 +8,9 @@ import {Checkbox} from '@mui/material'
 import { useNavigate } from 'react-router'
 import { TENANT } from '../../constants/localstorage'
 import category from '../home/Category'
+import { useTranslation } from 'react-i18next'
+
+const getTenant = () => localStorage.getItem(TENANT)
 
 const SelectedFilter = ({title, val}) => {
     return (
@@ -34,6 +37,7 @@ const SelectionField = ({title, total}) => {
 const Category = ({ item, activeSubCategory, activeCategory}) => {
   const {title, items, key, url} = item
   const navigate = useNavigate();
+  const {t} = useTranslation("page")
   const {setPageNumber} =  useProductList();
 
   if (item.items.length === 0) return
@@ -53,7 +57,7 @@ const Category = ({ item, activeSubCategory, activeCategory}) => {
                             },
                             '& .MuiSvgIcon-root': {fontSize: 18}
                         }} style={{fill: 'white'}}/>
-                        <div>Alle L&auml;nder</div>
+                        <div>{t("all_countries")}</div>
                     </div>
                     {items.map((item, index) => (
                         <div className="flex">
@@ -86,6 +90,9 @@ const Category = ({ item, activeSubCategory, activeCategory}) => {
 
 
 const FilterListPanel = ({filterItems, handleSideFilterContent}) => {
+
+  const {t} = useTranslation("page")
+
     return (
         <div>
             <div className="flex justify-between flex-col xl:flex-row">
@@ -99,7 +106,7 @@ const FilterListPanel = ({filterItems, handleSideFilterContent}) => {
                 </div>
                 <div>
                     <a className="font-inter font-semibold font-[14px] text-manatee text-right">
-                        Clear Filters
+                      {t("show_all")}
                     </a>
                 </div>
             </div>
@@ -158,15 +165,17 @@ const CategoryPanel = () => {
     )
 }
 
-const ProductListFilterPanel = ({handleSideFilterContent, filterItems}) => {
+const ProductListFilterPanel = () => {
+    const {t} = useTranslation("page")
     return (
+      <div className="flex justify-between flex-col xl:flex-row">
+                <CategoryPanel />
         <div>
-            <FilterListPanel
-                filterItems={filterItems}
-                handleSideFilterContent={handleSideFilterContent}
-            />
-            <CategoryPanel/>
+          <Link to={`/${getTenant()}/product/wein`} className="font-inter font-semibold font-[14px] text-manatee text-right">
+            {t("show_all")}
+          </Link>
         </div>
+      </div>
     )
 }
 

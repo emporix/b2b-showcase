@@ -1,6 +1,7 @@
 import React from 'react'
 import {Link} from 'react-router-dom'
 import {addTenantToUrl} from '../../services/service.config'
+import { useTranslation } from 'react-i18next'
 
 const EachCategory = (props) => {
     return (
@@ -19,31 +20,32 @@ const EachCategory = (props) => {
 }
 
 const Category = () => {
+    const {t} = useTranslation("page")
     return (
         <div className="home_category">
             <div className=" desktop_only teaser__headline mx-auto">
-                Kategorien
+              {t("categories")}
             </div>
             <div className="home_cat_content">
-                <Link to={addTenantToUrl(`product/wein/rot`)}>
+                <Link to={addTenantToUrl(`product/wein/rotwein`)} >
                     <EachCategory
                         src="/category/red-wine-category-image.png"
-                        title="Rotwein"
-                        content="Tellus ornare at consequat ipsum,non lobortis"
+                        title=  {t("red_wine")}
+                        content="in vino rosso veritas"
                     />
                 </Link>
-                <Link to={addTenantToUrl(`product/wein/weiss`)}>
+                <Link preventScrollReset={false} to={addTenantToUrl(`product/wein/weißwein`)}>
                     <EachCategory
                         src="/category/white-wine-category-image.png"
-                        title="Weißwein"
-                        content="Tellus ornare at consequat ipsum,non lobortis"
+                        title=  {t("white_wine")}
+                        content="in vino blanco veritas"
                     />
                 </Link>
-                <Link to={addTenantToUrl(`product/wein/rose`)}>
+                <Link to={addTenantToUrl(`product/wein/roséwein`)}>
                     <EachCategory
                         src="/category/white-wine-category-image.png"
-                        title="Roséwein"
-                        content="Tellus ornare at consequat ipsum,non lobortis"
+                        title=  {t("rose_wine")}
+                        content="in rosé vino veritas"
                     />
                 </Link>
             </div>

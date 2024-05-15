@@ -8,7 +8,7 @@ import { useProductList } from 'context/product-list-context'
 import { useParams } from 'react-router-dom'
 import { LoadingCircleProgress1 } from 'components/Utilities/progress'
 
-const ProductList = ({ handleSideFilterContent, filterItems }) => {
+const ProductList = () => {
 
   const {category: categoryTree} = useProductList()
   const [isLoading, setIsLoading] = useState(true)
@@ -43,10 +43,7 @@ const ProductList = ({ handleSideFilterContent, filterItems }) => {
     <>
       <div className="flex gap-4 xl:gap-12">
         <div className="flex-auto lg:w-[23%] hidden lg:block bg-aliceBlue p-4 rounded-xl" style={productListBoxShadow} >
-          <ProductListFilterPanel
-            handleSideFilterContent={handleSideFilterContent}
-            filterItems={filterItems}
-            />
+          <ProductListFilterPanel/>
         </div>
         <div className="flex-auto lg:w-[77%] w-full gap-y-4 xl:gap-y-12">
           <ProductListContent />

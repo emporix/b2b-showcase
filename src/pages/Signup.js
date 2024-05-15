@@ -432,6 +432,7 @@ const Signup = (props) => {
               )}
             </Box>
             <Box className="!pt-6 w-full text-black text-base">
+              <label className="pb-2">Phone Number</label>
               <PhoneField
                 value={phoneNumber}
                 onChange={(value) => setPhoneNumber(value)}
