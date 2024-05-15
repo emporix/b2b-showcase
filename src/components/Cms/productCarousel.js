@@ -1,12 +1,47 @@
-import React from 'react'
-import JsonFormatter from 'react-json-formatter'
+import React, { useEffect, useState } from 'react'
+import productService from '../../services/product/product.service'
+import { ProductMini } from '../Product/productMini'
+import Slider from 'react-slick'
+import "./productCarousel.css"
 
-// for very simple lists only (glossary maybe)
 
 export const ProductCarousel = (props) => {
-  return (
-    <p className="mt-3 mr-6 ml-6 text-md text-left w-full text-eerieBlack font-light">
-      <JsonFormatter json={props.props} />
-    </p>
-  )
+  const [products, setProducts] = useState([]);
+  const productIds = props.props?.data?.st_elements?.map((st_element)=>{return st_element.data.st_product?.value[0]?.identifier})
+
+  const settings = {
+    centerMode: true,
+    infinite: true,
+    centerPadding: "60px",
+    slidesToShow: 3,
+    speed: 250,
+    variableWidth: true
+  };
+
+  const fetchProducts = async ()=> {
+    setProducts(await productService.getProductsWithIds(productIds));
+  }
+
+  useEffect(()=> {
+    fetchProducts();
+  },[]);
+
+  if (!productIds || !productIds.length) {
+    return;
+  }
+
+  return <>
+    <Slider {...settings}>
+      {products.map((p) => {
+        return <img className="rounded-xl" src={p.media[0]?.url} />
+      })}
+      {products.length <= 3 && products.map((p) => {
+        return <img className="rounded-xl" src={p.media[0]?.url} />
+      })}
+    </Slider>
+    {/*<div className="flex justify-center items-center">*/}
+
+    {/*</div>*/}
+  </>
 }
+

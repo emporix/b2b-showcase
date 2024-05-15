@@ -6,7 +6,7 @@ import { SimpleList } from 'components/Cms/simpleList'
 import { TextPicture } from 'components/Cms/textPicture'
 import { ProductTeaser } from 'components/Cms/productTeaser'
 import { ProductCarousel } from 'components/Cms/productCarousel'
-import { Slider } from 'components/Cms/slider'
+import { TeaserSlider } from 'components/Cms/teaserSlider'
 import { TextBanner } from 'components/Cms/textBanner'
 import { CMS_Accordion } from '../components/Cms/accordion'
 import CMS_List from 'components/Cms/cms_list'
@@ -14,6 +14,7 @@ import CMS_Footer from 'components/Cms/footer'
 import Winery from '../components/Cms/winery'
 import JsonFormatter from 'react-json-formatter'
 import React from 'react'
+import { Picture } from '../components/Cms/picture'
 
 
 const firstSpiritComponentMap = {
@@ -28,9 +29,9 @@ const firstSpiritComponentMap = {
   product_teaser: ProductTeaser,
   accordion: CMS_Accordion,
   product_carousel: ProductCarousel,
-  slider: Slider,
+  slider: TeaserSlider,
   simple_text_list_faq: SimpleList,
-  text_banner: TextBanner,
+  text_banner: TextBanner
 }
 
 export const normalizeFsStructure = (content) => {

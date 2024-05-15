@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react'
-import './productTeaser.css'
 import productService from '../../services/product/product.service'
 import { ProductMini } from '../Product/productMini'
 
