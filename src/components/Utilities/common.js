@@ -15,6 +15,19 @@ export const LayoutBetween = ({ children, className }) => {
   )
 }
 
+export const LayoutFlexStart = ({ children, className }) => {
+  return (
+    <div
+      className={
+        'flex flex-row justify-start items-center ' +
+        (className ? className : '')
+      }
+    >
+      {children}
+    </div>
+  )
+}
+
 export const GridLayout = ({ children, className }) => {
   return (
     <div

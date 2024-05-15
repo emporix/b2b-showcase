@@ -1,11 +1,10 @@
 .quantity-input {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: fit-content;
+  @apply flex justify-center items-center;
+
+  width: fit-content;
+  margin: 0 auto;
   /* padding-bottom: 8px !important;
   border-bottom: 1px solid #d7dade; */
-  @apply items-center;
 }
 
 .quantity-input_modifier,
@@ -20,8 +19,7 @@
 }
 
 .quantity-input_screen {
-  @apply bg-aliceBlue;
-  width: 1.5rem;
+  @apply bg-aliceBlue w-8;
   padding: 0.25rem 0;
   text-align: center;
   border: 0;

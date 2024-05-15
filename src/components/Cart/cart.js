@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useContext } from 'react'
 import './cart.css'
 import '../index.css'
 import { Link } from 'react-router-dom'
@@ -6,17 +6,18 @@ import {
   CurrencyBeforeValue,
   GridLayout,
   LayoutBetween,
+  LayoutFlexStart,
 } from 'components/Utilities/common'
 import Quantity from 'components/Utilities/quantity/quantity'
 import { cartUrl, checkoutUrl, quoteUrl } from 'services/service.config'
 import { useCart } from 'context/cart-provider'
-import { border } from '@mui/system'
 import { PROCUREMENT_SYSTEM_URL } from 'constants/localstorage'
 import { useLanguage } from 'context/language-provider'
 import { useSelector } from 'react-redux'
 import { availabilityDataSelector } from 'redux/slices/availabilityReducer'
 
-const Test = () => {}
+import LayoutContext from '../../pages/context'
+import { HiOutlineArrowCircleLeft, HiOutlineXCircle } from 'react-icons/hi'
 
 const CartProductContent = ({ children }) => {
   return <div className="cart-product-content">{children}</div>
@@ -299,7 +300,7 @@ const CartProductWrapper = ({ cartItem }) => {
         className="cart-product-wrapper-btn"
         onClick={() => removeCartItem(cartItem)}
       >
-        &#10006;
+        <HiOutlineXCircle size="2rem" />
       </div>
 
       <CartProductItem cartItem={cartItem} />
@@ -527,14 +528,22 @@ export const CartActionPanel = ({ action, showShipping }) => {
 
 const Cart = () => {
   const { cartAccount } = useCart()
+  const { setShowCart } = useContext(LayoutContext)
+
   return (
     <>
-      <LayoutBetween>
-        <span className="cart-caption-font">My Cart</span>
-        <span className="cart-caption-font">
+      <LayoutFlexStart className={'test'}>
+        <span
+          className="inline-block cursor-pointer text-darkGray hover:text-black"
+          onClick={() => setShowCart(false)}
+        >
+          <HiOutlineArrowCircleLeft size="2rem" />
+        </span>
+        <span className="cart-caption-font ml-4"> My Cart</span>
+        <span className="cart-caption-font ml-auto">
           {cartAccount?.items.length || 0} items
         </span>
-      </LayoutBetween>
+      </LayoutFlexStart>
       <CartProductContent>
         <GridLayout className="gap-4">
           {cartAccount?.items.map((cartItem, idx) => (

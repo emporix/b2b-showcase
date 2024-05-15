@@ -33,18 +33,7 @@
 }
 
 .cart-product-wrapper-btn {
-  @apply top-4 right-4;
-  position: absolute;
-  cursor: pointer;
-  width: 20px;
-  height: 20px;
-  background-color: #fe6964;
-  color: white;
-  border-radius: 50%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  user-select: none;
+  @apply absolute top-4 right-4 cursor-pointer text-lightRed hover:text-primary;
 }
 
 .cart-page-content .MuiTableCell-head {
