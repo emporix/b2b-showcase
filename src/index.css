@@ -158,6 +158,13 @@ code {
   cursor: pointer;
 }
 
+.cta-primary {
+  @apply cursor-pointer rounded-xl bg-primary hover:bg-highlight;
+  @apply text-aliceBlue text-lg font-semibold whitespace-nowrap uppercase;
+  @apply px-10 p-4;
+  @apply transition-all duration-150 ease-in;
+}
+
 .cta-button {
   cursor: pointer;
   border-radius: 0.75rem !important;

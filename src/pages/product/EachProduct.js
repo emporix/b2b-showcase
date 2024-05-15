@@ -1,12 +1,7 @@
 import React, { useCallback, useMemo } from 'react'
 import ReactStars from 'react-stars'
 import { useNavigate } from 'react-router-dom'
-import {
-  CurrencyBeforeComponent,
-  CurrencyBeforeValue,
-} from 'components/Utilities/common'
-import { LargePrimaryButton } from '../../components/Utilities/button'
-import { trimImage } from '../../helpers/images'
+import { CurrencyBeforeValue } from 'components/Utilities/common'
 import { useAuth } from 'context/auth-provider'
 import { formatPrice } from 'helpers/price'
 import { useLanguage } from 'context/language-provider'
@@ -34,40 +29,24 @@ const EachProduct = ({ item, available, rating, productCount }) => {
 
   return (
     <div
-      className="p-4 bg-aliceBlue standard_box_shadow rounded-xl h-full flex flex-col gap-4 justify-between cursor-pointer"
+      className="p-4 bg-aliceBlue standard_box_shadow rounded-xl h-full flex flex-col gap-4  cursor-pointer"
       onClick={() => handleProductDetail(item)}
     >
       <div className="flex flex-col gap-4">
-        <div className="w-full h-5 justify-between hidden lg:flex">
+        <div className="w-full flex flex-col-reverse justify-start items-end md:flex-row md:items-end">
           {item.productType !== 'PARENT_VARIANT' && (
-            <div
-              className={
-                available
-                  ? 'text-limeGreen'
-                  : 'text-red-500 font-medium float-right lg:float-none'
-              }
-            >
+            <div className={available ? 'text-limeGreen' : 'text-red-500'}>
               {available ? 'In Stock' : 'Out Of Stock'}
             </div>
           )}
-          <div className="flex float-right lg:float-none">
+          <div className="flex ml-auto">
             <ReactStars size={16} value={rating} color2={'#FBB13C'} />(
             {productCount})
           </div>
         </div>
+      </div>
 
-        <div className=" block float-right lg:hidden">
-          <div className=" flex float-right">
-            <ReactStars size={16} value={rating} color2={'#FBB13C'} />(
-            {productCount})
-          </div>
-          <br />
-          <div
-            className={'text-limeGreen font-medium float-right lg:float-none'}
-          >
-            {available ? 'In Stock' : 'Out Of Stock'}
-          </div>
-        </div>
+      <div className="flex flex-col gap-4">
         <div className="items-center mx-auto ">
           <img src={imageSrc} alt="" className="w-full h-fit rounded-xl" />
         </div>
@@ -75,12 +54,13 @@ const EachProduct = ({ item, available, rating, productCount }) => {
           {getLocalizedValue(item.name)}
         </div>
       </div>
+
       {item.productType !== 'PARENT_VARIANT' && (
         <div
           className={
             isLoggedIn
-              ? 'flex flex-col w-full gap-4'
-              : 'flex flex-col w-full gap-4 text-left font-bold'
+              ? 'flex flex-col w-full gap-2 mt-auto'
+              : 'flex flex-col w-full gap-2 mt-auto text-left font-bold'
           }
         >
           {isLoggedIn ? (
@@ -91,7 +71,7 @@ const EachProduct = ({ item, available, rating, productCount }) => {
                     {isLoggedIn ? 'Your negotiated price' : 'List Price'}
                   </span>
                 ) : (
-                  <span className="text-xs text-primaryBlue font-bold">
+                  <span className="text-lg text-primaryBlue font-bold">
                     No Price
                   </span>
                 )}
@@ -103,7 +83,7 @@ const EachProduct = ({ item, available, rating, productCount }) => {
                       <div className="flex flex-col">
                         <CurrencyBeforeValue value={price} />
                         <span className="text-xs font-normal text-manatee">
-                          (Excl. VAT)
+                          ({isLoggedIn ? 'Excl. VAT' : 'Incl. VAT'})
                         </span>
                       </div>
                     </div>
@@ -130,13 +110,13 @@ const EachProduct = ({ item, available, rating, productCount }) => {
         </div>
       )}
       {item.productType === 'PARENT_VARIANT' && (
-        <div>
-          <LargePrimaryButton
-            className="cta-button bg-primary"
-            sx={{ backgroundColor: '#FAC420 !important' }}
-            title={'VIEW VARIANTS'}
-            onClick={handleProductDetail}
-          />
+        <div className="mt-auto">
+          <button
+            className="cta-primary w-full"
+            onClick={() => handleProductDetail(item)}
+          >
+            view variants
+          </button>
         </div>
       )}
     </div>

@@ -1,9 +1,14 @@
 import React from 'react'
 import './quantity.css'
 
-const Quantity = ({ value, increase = () => {}, decrease = () => {}, onChange = (value) => {} }) => {
+const Quantity = ({
+  value,
+  increase = () => {},
+  decrease = () => {},
+  onChange = (value) => {},
+}) => {
   return (
-    <div className="quantity-input rounded-xl border border-gray" sx={{ width: '84px' }}>
+    <div className="quantity-input rounded-xl border border-gray mx-1">
       <button
         id="quantity-decrease"
         className="quantity-input_modifier quantity-input__modifier--left"
@@ -19,14 +24,18 @@ const Quantity = ({ value, increase = () => {}, decrease = () => {}, onChange = 
           <path d="M10 0.908417V2.47092H0V0.908417H10Z" fill="#818385" />
         </svg>
       </button>
-      <input className="quantity-input_screen" value={value} onChange={(ev) => {
-        window.console.log(ev.target.value)
-        if(!ev.target.value) {
-          onChange(1)
-        } else if(!isNaN(ev.target.value)) {
-          onChange(parseInt(ev.target.value))
-        }
-      }} />
+      <input
+        className="quantity-input_screen"
+        value={value}
+        onChange={(ev) => {
+          window.console.log(ev.target.value)
+          if (!ev.target.value) {
+            onChange(1)
+          } else if (!isNaN(ev.target.value)) {
+            onChange(parseInt(ev.target.value))
+          }
+        }}
+      />
       <button
         id="quantity-increase"
         className="quantity-input_modifier quantity-input__modifier--right"
