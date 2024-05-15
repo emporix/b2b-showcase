@@ -16,7 +16,6 @@ import payments from '../../assets/payments.svg'
 import manageUsers from '../../assets/manage-users.svg'
 
 const AccountMenu = ({ page, className }) => {
-  
   const itemsKey = [
     'My Account',
     'Personal Details',
@@ -75,8 +74,8 @@ const AccountMenu = ({ page, className }) => {
     'my-quotes': myQuotes,
     'replenishment-orders': replenishmentOrders,
     'saved-carts': savedCarts,
-    'addresses' : locations,
-    'my-subscriptions' : myOrders,
+    addresses: locations,
+    'my-subscriptions': myOrders,
     returns: returns,
     discounts: discounts,
     locations: locations,
@@ -84,7 +83,7 @@ const AccountMenu = ({ page, className }) => {
   }
 
   const requiredScopes = {
-    'Manage Users': 'customer.customer_read_own'
+    'Manage Users': 'customer.customer_read_own',
   }
 
   const hasRequiredScopes = (value) => {
@@ -100,15 +99,53 @@ const AccountMenu = ({ page, className }) => {
 
   return (
     <ul className={className}>
-      {itemsKey.map((value, index) =>
-        hasRequiredScopes(value) &&
-         (value !== '' ? (
-          index === 0 ? (
-            page === 'Index' ? (
+      {itemsKey.map(
+        (value, index) =>
+          hasRequiredScopes(value) &&
+          (value !== '' ? (
+            index === 0 ? (
+              page === 'Index' ? (
+                <Link to={addTenantToUrl(`my-account/${items_link[index]}`)}>
+                  <li
+                    key={index}
+                    className="index-item-active first-item flex items-center"
+                  >
+                    <img
+                      src={itemsIcons[items_link[index]]}
+                      className="mr-4"
+                      alt={items_link[index]}
+                    />
+                    {itemsNames[index]}
+                  </li>
+                </Link>
+              ) : (
+                <Link to={addTenantToUrl(`my-account/${items_link[index]}`)}>
+                  <li
+                    key={index}
+                    className={
+                      value === page
+                        ? 'item-active first-item flex items-center'
+                        : 'first-item flex items-center'
+                    }
+                  >
+                    <img
+                      src={itemsIcons[items_link[index]]}
+                      className="mr-4"
+                      alt={items_link[index]}
+                    />
+                    {itemsNames[index]}
+                  </li>
+                </Link>
+              )
+            ) : (
               <Link to={addTenantToUrl(`my-account/${items_link[index]}`)}>
                 <li
                   key={index}
-                  className="index-item-active first-item flex items-center"
+                  className={
+                    value === page
+                      ? 'item-active item flex items-center'
+                      : 'item flex items-center'
+                  }
                 >
                   <img
                     src={itemsIcons[items_link[index]]}
@@ -116,46 +153,12 @@ const AccountMenu = ({ page, className }) => {
                     alt={items_link[index]}
                   />
                   {itemsNames[index]}
-                  </li>
-                </Link>
-            ) : (
-              <Link to={addTenantToUrl(`my-account/${items_link[index]}`)}>
-                <li
-                  key={index}
-                  className={
-                    value === page
-                    ? 'item-active first-item flex items-center'
-                    : 'first-item flex items-center'
-                }
-              >
-                <img
-                  src={itemsIcons[items_link[index]]}
-                  className="mr-4"
-                  alt={items_link[index]}
-                />
-                  {itemsNames[index]}
-                  </li>
+                </li>
               </Link>
             )
           ) : (
-            <Link to={addTenantToUrl(`my-account/${items_link[index]}`)}>
-              <li
-                key={index}
-                className={value === page ? 'item-active item flex items-center' : 'item flex items-center'}
-              >
-                <img
-                  src={itemsIcons[items_link[index]]}
-                  className="mr-4"
-                  alt={items_link[index]}
-                />
-                {itemsNames[index]}
-                </li>
-            </Link>
-          )
-        ) : (
-          <li key={index} className="item" />
-        )
-      )
+            <li key={index} className="item" />
+          ))
       )}
     </ul>
   )

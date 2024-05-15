@@ -1,7 +1,6 @@
 import React, { useCallback, useMemo } from 'react'
 import ReactStars from 'react-stars'
 import { useNavigate } from 'react-router-dom'
-import { TENANT } from '../../constants/localstorage'
 import {
   CurrencyBeforeComponent,
   CurrencyBeforeValue,
@@ -15,22 +14,28 @@ import { useLanguage } from 'context/language-provider'
 const EachProduct = ({ item, available, rating, productCount }) => {
   const { isLoggedIn, userTenant } = useAuth()
   const { getLocalizedValue } = useLanguage()
+
   const imageSrc = useMemo(() => {
     return item.media[0] === undefined ? '' : item.media[0]['url']
   }, [item])
 
   const price = useMemo(() => {
     return formatPrice(item, isLoggedIn)
-  }, [item.price, isLoggedIn])
+  }, [item, isLoggedIn])
 
   const navigate = useNavigate()
-  const handleProductDetail = useCallback(() => {
-    navigate(`/${userTenant}/product/details/${item.id}`)
-  }, [userTenant, item.id])
+
+  const handleProductDetail = useCallback(
+    (item) => {
+      navigate(`/${userTenant}/product/details/${item.id}`)
+    },
+    [userTenant, navigate]
+  )
+
   return (
     <div
-      className="font-inter p-4 h-full flex flex-col gap-4 justify-between cursor-pointer"
-      onClick={handleProductDetail}
+      className="p-4 bg-aliceBlue standard_box_shadow rounded-xl h-full flex flex-col gap-4 justify-between cursor-pointer"
+      onClick={() => handleProductDetail(item)}
     >
       <div className="flex flex-col gap-4">
         <div className="w-full h-5 justify-between hidden lg:flex">
@@ -39,8 +44,7 @@ const EachProduct = ({ item, available, rating, productCount }) => {
               className={
                 available
                   ? 'text-limeGreen'
-                  : 'text-red-500' +
-                    ' font-inter font-medium float-right lg:float-none'
+                  : 'text-red-500 font-medium float-right lg:float-none'
               }
             >
               {available ? 'In Stock' : 'Out Of Stock'}
@@ -59,9 +63,7 @@ const EachProduct = ({ item, available, rating, productCount }) => {
           </div>
           <br />
           <div
-            className={
-              'text-limeGreen font-inter font-medium float-right lg:float-none'
-            }
+            className={'text-limeGreen font-medium float-right lg:float-none'}
           >
             {available ? 'In Stock' : 'Out Of Stock'}
           </div>
@@ -83,9 +85,11 @@ const EachProduct = ({ item, available, rating, productCount }) => {
         >
           {isLoggedIn ? (
             <>
-              <div className="text-xl flex items-center gap-2">
+              <div className="text-xl flex items-center">
                 {price !== null ? (
-                  <>{isLoggedIn ? 'Your negotiated price' : 'List Price'}</>
+                  <span className="text-sm text-darkGray">
+                    {isLoggedIn ? 'Your negotiated price' : 'List Price'}
+                  </span>
                 ) : (
                   <span className="text-xs text-primaryBlue font-bold">
                     No Price

@@ -72,14 +72,14 @@ const ProductListViewSettingBar = ({
                   ))}
                 </select>
               </div>
-              <div className="md:hidden  flex">
+              {/* <div className="md:hidden  flex">
                 <div className="font-bold">Sort:</div>
                 <HiChevronDown
                   size={20}
                   className="ml-1 mt-0 h-6 w-6 font-normal"
                   aria-hidden="true"
                 />
-              </div>
+              </div> */}
             </li>
             <li className="view-type">
               <div className="gap-4 flex p-1">
@@ -87,21 +87,21 @@ const ProductListViewSettingBar = ({
                 <div
                   id="grid-view"
                   className="cursor-pointer hover:text-yellow"
-                  onClick={() => changeDisplayType(true)}
+                  onClick={() => changeDisplayType('grid')}
                 >
                   <HiViewGrid
                     size={20}
-                    color={displayType ? '#FAC420' : 'black'}
+                    color={displayType === 'grid' ? '#FAC420' : 'black'}
                   />
                 </div>
                 <div
                   id="list-view"
                   className="cursor-pointer"
-                  onClick={() => changeDisplayType(false)}
+                  onClick={() => changeDisplayType('list')}
                 >
                   <HiViewList
                     size={20}
-                    color={displayType ? 'black' : '#FAC420'}
+                    color={displayType === 'list' ? '#FAC420' : 'black'}
                   />
                 </div>
               </div>
@@ -116,196 +116,37 @@ const ProductListViewSettingBar = ({
 
 const ProductListItems = ({ products, auth, displayType }) => {
   const availability = useSelector(availabilityDataSelector)
-  let itemArr = []
-  let subItemArr = []
-  let ItemArrOnMobile = []
-  let available, stockLevel
 
-  if (displayType) {
-    products.forEach((item, i) => {
-      available = availability['k' + item.id]?.available
-      stockLevel = availability['k' + item.id]?.stockLevel
-      switch ((i + 1) % 3) {
-        case 1:
-          subItemArr.push(
-            <div
-              key={i}
-              className="w-1/3 rounded-xl bg-aliceBlue hover:scale-[1.01] transition-all duration-150 ease-in"
-              style={productListBoxShadow}
-            >
-              <EachProduct
-                key={item.id}
-                available={available}
-                rating={4}
-                productCount={8}
-                item={item}
-              />
-            </div>
-          )
-          break
-        case 2:
-          subItemArr.push(
-            <div
-              key={i}
-              className="w-1/3 rounded-xl bg-aliceBlue hover:scale-[1.01] transition-all duration-150 ease-in"
-              style={productListBoxShadow}
-            >
-              <EachProduct
-                key={item.id}
-                available={available}
-                rating={4}
-                productCount={8}
-                item={item}
-              />
-            </div>
-          )
-          break
-        default:
-          subItemArr.push(
-            <div
-              key={i}
-              className="w-1/3 rounded-xl bg-aliceBlue hover:scale-[1.01] transition-all duration-150 ease-in"
-              style={productListBoxShadow}
-            >
-              <EachProduct
-                key={item.id}
-                available={available}
-                rating={4}
-                productCount={8}
-                item={item}
-              />
-            </div>
-          )
-          itemArr.push(
-            <div
-              key={'row' + i.toString()}
-              className="list-row flex gap-x-4 xl:gap-x-12"
-            >
-              {subItemArr}
-            </div>
-          )
-          // if (i !== products.length - 1)
-          //   itemArr.push(
-          //     <div
-          //       key={i}
-          //       className="lg:my-12 my-6 split-line h-0 border-b border-bgWhite border-solid"
-          //     ></div>
-          //   )
-          subItemArr = []
-          break
-      }
-    })
+  const gridSys =
+    displayType === 'grid'
+      ? 'grid-cols-1 sm:grid-cols-2 xl:grid-cols-3'
+      : 'grid-cols-1'
 
-    if (subItemArr.length) {
-      itemArr.push(
-        <div key="" className="list-row flex lg:my-12 my-6">
-          {subItemArr}
-        </div>
-      )
-      subItemArr = []
-    }
-
-    products.forEach((item, i) => {
-      switch ((i + 1) % 2) {
-        case 1:
-          subItemArr.push(
-            <div
-              key={i}
-              className="w-1/2 h-fit lg:h-full lg:hover:scale-[1.01] lg:transition-all lg:duration-150 lg:ease-in standard_box_shadow rounded-xl bg-aliceBlue"
-            >
-              <EachProduct
-                key={item.id}
-                available={available}
-                rating={4}
-                productCount={8}
-                item={item}
-              />
-            </div>
-          )
-          break
-        default:
-          subItemArr.push(
-            <div
-              key={i}
-              className="w-1/2 border-l border-bgWhite border-solid hover:scale-[1.01] transition-all duration-150 ease-in  standard_box_shadow rounded-xl bg-aliceBlue"
-            >
-              <EachProduct
-                key={item.id}
-                available={available}
-                rating={4}
-                productCount={8}
-                item={item}
-              />
-            </div>
-          )
-          ItemArrOnMobile.push(
-            <div
-              key={'rowMobile' + i.toString()}
-              className="list-row flex lg:my-12 my-4 gap-4"
-            >
-              {subItemArr}
-            </div>
-          )
-          // if (i !== products.length - 1)
-          //   ItemArrOnMobile.push(
-          //     <div
-          //       key={i}
-          //       className="lg:my-12 my-6 split-line h-0 border-b border-bgWhite border-solid"
-          //     ></div>
-          //   )
-          subItemArr = []
-          break
-      }
-    })
-
-    if (subItemArr.length) {
-      ItemArrOnMobile.push(
-        <div key="mobile" className="list-row flex lg:my-12 my-6">
-          {subItemArr}
-        </div>
-      )
-      subItemArr = []
-    }
-  } else {
-    products.forEach((item, i) => {
-      available = availability['k' + item.id]?.available
-      stockLevel = availability['k' + item.id]?.stockLevel
-      itemArr.push(
-        <div
-          key={i}
-          className="w-full my-6 items-center hover:scale-[1.01] transition-all duration-150 ease-in"
-        >
-          <EachProductRow
-            key={item.id}
-            available={available}
-            item={item}
-            rating={4}
-            productCount={8}
-          />
-        </div>
-      )
-      // if (i !== products.length - 1)
-      //   itemArr.push(
-      //     <div
-      //       key={'line' + i.toString()}
-      //       className="lg:my-12 my-6 split-line h-0 border-b border-bgWhite border-solid"
-      //     ></div>
-      //   )
-    })
-  }
   return (
-    <>
-      <div
-        className={
-          displayType
-            ? 'hidden lg:flex lg:flex-col gap-y-4 xl:gap-y-12 mb-4 xl:mb-12'
-            : ''
-        }
-      >
-        {itemArr}
-      </div>
-      <div className="lg:hidden">{ItemArrOnMobile}</div>
-    </>
+    <div
+      className={`grid gap-4 md:gap-8 auto-cols-max ${gridSys} mb-4 xl:mb-12`}
+    >
+      {products.map((item) => {
+        const available = availability['k' + item.id]?.available
+        return (
+          <div
+            key={item.id}
+            className="hover:scale-[1.01] transition-all duration-150 ease-in"
+          >
+            {React.createElement(
+              displayType === 'grid' ? EachProduct : EachProductRow,
+              {
+                key: item.id,
+                available: available,
+                item: item,
+                rating: 4,
+                productCount: 8,
+              }
+            )}
+          </div>
+        )
+      })}
+    </div>
   )
 }
 
@@ -318,6 +159,8 @@ const ProductListPagination = ({
   let totalPage = Math.ceil(productListCount / countPerPage)
   let previousPageitems = []
   let next_page_items = []
+
+  console.log('totalPage: ', totalPage, productListCount, countPerPage)
 
   if (totalPage < pageNumber) pageNumber = 1
 
@@ -401,10 +244,10 @@ const ProductListPagination = ({
 
 const ProductListContent = () => {
   const { user } = useAuth()
-  const [displayType, SetDisplayType] = useState(true)
-  const { productIds } = useProductList()
+  const [displayType, setDisplayType] = useState('grid')
 
   const {
+    productIds,
     isProductsLoading,
     products,
     setPageNumber,
@@ -417,16 +260,12 @@ const ProductListContent = () => {
     total,
   } = useProductList()
 
-  useEffect(() => {
-    setPageNumber(1)
-  }, [productIds])
-
   const productsWithoutVariants = useMemo(() => {
     return products.filter((p) => p.productType !== 'VARIANT')
   }, [products])
 
   const changeDisplayType = (status) => {
-    SetDisplayType(status)
+    setDisplayType(status)
   }
   const changePageNumber = (number) => {
     setPageNumber(number)
@@ -440,6 +279,10 @@ const ProductListContent = () => {
     setPageNumber(1)
     setSortingTypeIndex(event.target.value)
   }
+
+  useEffect(() => {
+    setPageNumber(1)
+  }, [productIds, setPageNumber])
 
   return (
     <>
@@ -467,7 +310,7 @@ const ProductListContent = () => {
           <ProductListPagination
             changePageNumber={changePageNumber}
             countPerPage={productsPerPage}
-            productListCount={total + 1}
+            productListCount={total}
             pageNumber={pageNumber}
           />
         </>

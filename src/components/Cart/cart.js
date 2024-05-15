@@ -370,7 +370,7 @@ export const CartTotalPrice = ({ totalValue, currency }) => {
 const CartRequestQuote = () => {
   return (
     <Link to={quoteUrl()} className="w-full">
-      <button className="cart-request-quote-btn py-[12px] px-[14px] bg-transparent rounded text-eerieBlack border border-gray80">
+      <button className="cart-request-quote-btn py-[12px] px-[14px] bg-transparent rounded text-eerieBlack border border-gray80 hover:text-highlight hover:border-highlight">
         REQUEST QUOTE
       </button>
     </Link>
@@ -379,7 +379,7 @@ const CartRequestQuote = () => {
 const CartGoCheckout = () => {
   return (
     <Link to={checkoutUrl()} className="w-full">
-      <button className="cart-go-checkout-btn py-[12px] px-[14px] bg-primary rounded-xl !text-aliceBlue !text-lg">
+      <button className="cart-go-checkout-btn py-[12px] px-[14px] bg-primary hover:bg-highlight rounded-xl !text-aliceBlue !text-lg">
         GO TO CHECKOUT
       </button>
     </Link>
@@ -388,7 +388,7 @@ const CartGoCheckout = () => {
 const CartGoCart = () => {
   return (
     <Link to={cartUrl()} className="w-full">
-      <button className="cart-go-cart-btn py-[12px] px-[14px] bg-transparent rounded text-eerieBlack border border-gray80">
+      <button className="cart-go-cart-btn py-[12px] px-[14px] bg-transparent rounded text-eerieBlack  border border-gray80 hover:text-highlight hover:border-highlight">
         GO TO CART
       </button>
     </Link>
