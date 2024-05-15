@@ -1,7 +1,6 @@
 import React from 'react'
 import { addTenantToUrl } from '../../services/service.config'
 import { Link } from 'react-router-dom'
-import JsonFormatter from 'react-json-formatter'
 // for very simple lists only (glossary maybe)
 
 export const ProductMini = (props) => {

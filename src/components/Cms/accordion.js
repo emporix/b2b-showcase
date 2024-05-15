@@ -1,5 +1,4 @@
 import React from 'react'
-import JsonFormatter from 'react-json-formatter'
 import { FsGenericComponentList } from '../../resolver/firstSpirit.resolver'
 import Accordion, { AccordionItem } from '../Utilities/accordion'
 

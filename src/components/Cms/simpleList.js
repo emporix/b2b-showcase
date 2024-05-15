@@ -1,5 +1,4 @@
 import React from 'react'
-import JsonFormatter from 'react-json-formatter'
 import { Text } from './text'
 
 export const SimpleList = (props) => {

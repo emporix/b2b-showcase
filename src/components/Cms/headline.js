@@ -1,5 +1,4 @@
 import React from 'react'
-import JsonFormatter from 'react-json-formatter'
 
 export const Headline = (props) => {
   switch (props.props.data.st_headlineLevel) {

@@ -2,7 +2,8 @@ import React, { useEffect, useState } from 'react'
 import productService from '../../services/product/product.service'
 import Slider from 'react-slick'
 import "./productCarousel.css"
-
+import { addTenantToUrl } from '../../services/service.config'
+import { Link } from 'react-router-dom'
 
 export const ProductCarousel = (props) => {
   const [products, setProducts] = useState([]);
@@ -32,10 +33,10 @@ export const ProductCarousel = (props) => {
   return <>
     <Slider {...settings}>
       {products.map((p) => {
-        return <img className="rounded-xl" src={p.media[0]?.url} />
+        return  <Link to={addTenantToUrl(`product/details/${p.id}`)}><img className="rounded-xl" src={p.media[0]?.url} /></Link>
       })}
       {products.length <= 3 && products.map((p) => {
-        return <img className="rounded-xl" src={p.media[0]?.url} />
+        return <Link to={addTenantToUrl(`product/details/${p.id}`)}><img className="rounded-xl" src={p.media[0]?.url} /></Link>
       })}
     </Slider>
   </>

@@ -26,7 +26,6 @@ export const Teaser = (props) => {
       }
     >
       <div
-        // className="teaser__content">
         className={
           'teaser__content ' +
           (!productId ? 'hp_teaser_box_shadow' : 'standard_box_shadow')
