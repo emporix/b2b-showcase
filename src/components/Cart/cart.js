@@ -314,7 +314,7 @@ export const CartSubTotalExcludeVat = ({ value, currency }) => {
   return (
     <>
       <span className="font-semibold">Subtotal without VAT</span>
-      <span className="font-semibold">
+      <span className="font-semibold whitespace-nowrap">
         <CurrencyBeforeValue value={value} currency={currency} />
       </span>
     </>
@@ -324,7 +324,7 @@ export const CartSubTotalIncludeVat = ({ grossValue, currency }) => {
   return (
     <>
       <span className="font-semibold">Subtotal with VAT</span>
-      <span className="font-semibold">
+      <span className="font-semibold whitespace-nowrap">
         <CurrencyBeforeValue value={grossValue} currency={currency} />
       </span>
     </>
@@ -341,7 +341,7 @@ export const CartVat = ({ value, taxPercentage, currency, taxValue }) => {
         VAT {taxPercentage}% of{' '}
         <CurrencyBeforeValue value={value} currency={currency} />
       </span>
-      <span>
+      <span className="whitespace-nowrap">
         <CurrencyBeforeValue value={effectiveTaxValue} currency={currency} />
       </span>
     </>
@@ -360,7 +360,7 @@ export const CartTotalPrice = ({ totalValue, currency }) => {
   return (
     <>
       <span className="font-bold ">Total Price</span>
-      <span className="font-bold">
+      <span className="font-bold  whitespace-nowrap">
         <CurrencyBeforeValue value={totalValue} currency={currency} />
       </span>
     </>
