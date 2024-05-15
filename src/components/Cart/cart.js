@@ -456,7 +456,7 @@ export const CartActionPanel = ({ action, showShipping }) => {
           cartAccount?.taxAggregate.lines.length > 0 &&
           cartAccount?.taxAggregate.lines.map((taxItem) => {
             return (
-              <CartActionRow>
+              <CartActionRow key={cartAccount.subtotalAggregate.netValue}>
                 <LayoutBetween>
                   <CartVat
                     value={cartAccount?.subtotalAggregate?.netValue}
