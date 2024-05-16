@@ -8,6 +8,7 @@ import { useCart } from 'context/cart-provider'
 import { formatPrice } from 'helpers/price'
 import { useNavigate } from 'react-router-dom'
 import { useLanguage } from 'context/language-provider'
+import { useTranslation } from 'react-i18next'
 
 const EachProductRow = ({ item, type, available, rating, productCount }) => {
   const { getLocalizedValue } = useLanguage()
@@ -15,6 +16,8 @@ const EachProductRow = ({ item, type, available, rating, productCount }) => {
   const navigate = useNavigate()
   const { isLoggedIn, userTenant } = useAuth()
   const [quantity, setQuantity] = useState(1)
+
+  const { t } = useTranslation('page')
 
   const imageSrc = useMemo(() => {
     return item.media[0] === undefined ? '' : item.media[0]['url']
@@ -75,18 +78,18 @@ const EachProductRow = ({ item, type, available, rating, productCount }) => {
               available > 0 ? 'text-limeGreen' : 'text-red-500'
             } font-medium float-right lg:float-none`}
           >
-            {available > 0 ? 'In Stock' : 'Out Of Stock'}
+            {available > 0 ? t('in_stock') : t('out_stock')}
           </div>
           <div className="flex flex-col justify-end ml-auto">
             {item.productType !== 'PARENT_VARIANT' && (
               <>
                 <div className="text-gray text-sm text-end">
-                  {isLoggedIn ? 'Your negotiated price ' : 'List Price'}
+                  {isLoggedIn ? t('negotiated') : t('public')}
                 </div>
                 <div className="text-[20px] leading-[24px] text-end font-bold ml-1 whitespace-nowrap">
                   {renderPrice(price)} <br />
                   <span className="text-[12px] font-normal text-gray">
-                    ({isLoggedIn ? 'Excl. VAT' : 'Incl. VAT'})
+                    ({isLoggedIn ? t('excl_vat') : t('incl_vat')})
                   </span>
                 </div>
               </>
@@ -141,7 +144,7 @@ const EachProductRow = ({ item, type, available, rating, productCount }) => {
                   className="cta-primary w-full md:w-auto"
                   onClick={() => handleAddToCart(item, quantity)}
                 >
-                  add to cart
+                  {t('add_cart')}
                 </button>
                 {/* <div
                 className="cursor-pointer cta-button bg-lightGray flex items-center justify-center px-5 py-2 w-fit hover:!bg-gray transition-all duration-150 ease-in"
@@ -156,7 +159,7 @@ const EachProductRow = ({ item, type, available, rating, productCount }) => {
                   className="cta-primary w-full"
                   onClick={() => handleProductDetail(item)}
                 >
-                  view variants
+                  {t('view_var')}
                 </button>
               </div>
             )}

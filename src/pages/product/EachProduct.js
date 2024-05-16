@@ -5,10 +5,13 @@ import { CurrencyBeforeValue } from 'components/Utilities/common'
 import { useAuth } from 'context/auth-provider'
 import { formatPrice } from 'helpers/price'
 import { useLanguage } from 'context/language-provider'
+import { useTranslation } from 'react-i18next'
 
 const EachProduct = ({ item, available, rating, productCount }) => {
   const { isLoggedIn, userTenant } = useAuth()
   const { getLocalizedValue } = useLanguage()
+
+  const { t } = useTranslation('page')
 
   const imageSrc = useMemo(() => {
     return item.media[0] === undefined ? '' : item.media[0]['url']
@@ -36,7 +39,7 @@ const EachProduct = ({ item, available, rating, productCount }) => {
         <div className="w-full flex flex-col-reverse justify-start items-end md:flex-row md:items-end">
           {item.productType !== 'PARENT_VARIANT' && (
             <div className={available ? 'text-limeGreen' : 'text-red-500'}>
-              {available ? 'In Stock' : 'Out Of Stock'}
+              {available ? t('in_stock') : t('out_stock')}
             </div>
           )}
           <div className="flex ml-auto">
@@ -68,11 +71,11 @@ const EachProduct = ({ item, available, rating, productCount }) => {
               <div className="text-xl flex items-center">
                 {price !== null ? (
                   <span className="text-sm text-darkGray">
-                    {isLoggedIn ? 'Your negotiated price' : 'List Price'}
+                    {isLoggedIn ? t('negotiated') : t('public')}
                   </span>
                 ) : (
                   <span className="text-lg text-primaryBlue font-bold">
-                    No Price
+                    {t('no_price')}
                   </span>
                 )}
               </div>
@@ -83,7 +86,7 @@ const EachProduct = ({ item, available, rating, productCount }) => {
                       <div className="flex flex-col">
                         <CurrencyBeforeValue value={price} />
                         <span className="text-xs font-normal text-manatee">
-                          ({isLoggedIn ? 'Excl. VAT' : 'Incl. VAT'})
+                          ({isLoggedIn ? t('excl_vat') : t('incl_vat')})
                         </span>
                       </div>
                     </div>
@@ -97,12 +100,12 @@ const EachProduct = ({ item, available, rating, productCount }) => {
                 <>
                   <CurrencyBeforeValue value={price} />
                   <span className="text-sm font-normal text-manatee">
-                    (Incl. VAT)
+                    {t('incl_vat')}
                   </span>
                 </>
               ) : (
                 <span className="text-xs  text-primaryBlue font-bold">
-                  No Price
+                  {t('no_price')}
                 </span>
               )}
             </div>
@@ -115,7 +118,7 @@ const EachProduct = ({ item, available, rating, productCount }) => {
             className="cta-primary w-full"
             onClick={() => handleProductDetail(item)}
           >
-            view variants
+            {t('view_var')}
           </button>
         </div>
       )}
