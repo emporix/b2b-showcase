@@ -1,32 +1,15 @@
 import React, { useContext, useEffect, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
-import {
-  AiOutlineClose,
-  AiOutlineMail,
-  AiOutlineMenu,
-  AiOutlineSearch,
-  AiOutlineShoppingCart,
-} from 'react-icons/ai'
+import { AiOutlineClose, AiOutlineMail, AiOutlineMenu, AiOutlineSearch, AiOutlineShoppingCart } from 'react-icons/ai'
 import { CgNotes } from 'react-icons/cg'
 import { useDispatch, useSelector } from 'react-redux'
 import Badge from '@mui/material/Badge'
 import AccountMenu from './accountmenu'
-import {
-  HiChevronLeft,
-  HiChevronRight,
-  HiOutlineUserCircle,
-} from 'react-icons/hi'
+import { HiChevronLeft, HiChevronRight, HiOutlineUserCircle } from 'react-icons/hi'
 import LayoutContext from '../../pages/context'
 import { LargePrimaryButton } from '../Utilities/button'
-import {
-  pageMenuSelector,
-  putCmsNavigation,
-} from '../../redux/slices/pageReducer'
-import {
-  addTenantToUrl,
-  homeUrl,
-  loginUrl,
-} from '../../services/service.config'
+import { pageMenuSelector, putCmsNavigation } from '../../redux/slices/pageReducer'
+import { addTenantToUrl, homeUrl, loginUrl } from '../../services/service.config'
 
 import { CurrencyBeforeValue } from 'components/Utilities/common'
 import { useSites } from 'context/sites-provider'
@@ -70,22 +53,12 @@ const Navbar = () => {
     }
 
     let contentEntries = cmsNavigation
-      .filter(
-        (i) =>
-          i.seoRoute?.startsWith('/Inhalt') ||
-          i.seoRoute?.startsWith('/Content')
-      )
-      .filter(
-        (i) =>
-          !i.label.toLowerCase().startsWith('inhalt') &&
-          !i.label.toLowerCase().startsWith('content')
-      )
+      .filter((i) => i.seoRoute?.startsWith('/Inhalt') || i.seoRoute?.startsWith('/Content'))
+      .filter((i) => !i.label.toLowerCase().startsWith('inhalt') && !i.label.toLowerCase().startsWith('content'))
       .map((i) => {
         return {
           title: i.label,
-          url: i.seoRoute.startsWith('/')
-            ? i.seoRoute.substring(1)
-            : i.seoRoute,
+          url: i.seoRoute.startsWith('/') ? i.seoRoute.substring(1) : i.seoRoute,
           key: i.caasDocumentId,
         }
       })
@@ -123,10 +96,7 @@ const Navbar = () => {
           ) : (
             <div className="w-full h-12 text-sm text-center items-center text-white">
               <Link to={loginUrl()}>
-                <LargePrimaryButton
-                  className="!bg-primary"
-                  title="Login | Register"
-                />
+                <LargePrimaryButton className="!bg-primary" title="Login | Register" />
               </Link>
             </div>
           )}
@@ -167,9 +137,7 @@ const Navbar = () => {
           Currency
           <select
             value={activeCurrency.code !== undefined ? activeCurrency.code : ''}
-            onChange={(e) =>
-              currencyChangeHandler(e.target.value, currentSiteObject)
-            }
+            onChange={(e) => currencyChangeHandler(e.target.value, currentSiteObject)}
             className="text-tinBlue appearance-none"
           >
             {currencyList.map((currency) => {
@@ -193,13 +161,8 @@ const Navbar = () => {
         className=" flex justify-between py-6 border-b text-xl"
         onClick={() => parentMenuClicked(item.title, item.items)}
       >
-        {item.contentfulFieldName
-          ? fields[item.contentfulFieldName]
-          : item.title}
-        <HiChevronRight
-          size={18}
-          className={item.items?.length ? 'h-8 w-8' : 'hidden'}
-        />
+        {item.contentfulFieldName ? fields[item.contentfulFieldName] : item.title}
+        <HiChevronRight size={18} className={item.items?.length ? 'h-8 w-8' : 'hidden'} />
       </li>
     )
   }
@@ -242,9 +205,7 @@ const Navbar = () => {
           <HiChevronLeft size={20} className="h-12 w-8 pr-1" />
           Back
         </div>
-        <div className=" flex justify-between py-6 border-b text-xl">
-          {title}
-        </div>
+        <div className=" flex justify-between py-6 border-b text-xl">{title}</div>
         <div className=" flex justify-between py-6 text-xl px-12">
           <ul>
             {subMenuItems.map((item, index) => (
@@ -286,11 +247,7 @@ const Navbar = () => {
   const { fields } = useContentful()
   useEffect(() => {
     setCartTotal(cartAccount.items.length || 0)
-    if (
-      cartAccount &&
-      cartAccount.totalPrice &&
-      cartAccount.totalPrice.amount
-    ) {
+    if (cartAccount && cartAccount.totalPrice && cartAccount.totalPrice.amount) {
       setCartTotalPrice(cartAccount.subTotalPrice.amount)
     } else {
       setCartTotalPrice(0)
@@ -341,12 +298,8 @@ const Navbar = () => {
                 text: item.symbol,
                 value: item.code,
               }))}
-              onChangeHandler={(e) =>
-                currencyChangeHandler(e.target.value, currentSiteObject)
-              }
-              currentValue={
-                activeCurrency.code !== undefined ? activeCurrency.code : ''
-              }
+              onChangeHandler={(e) => currencyChangeHandler(e.target.value, currentSiteObject)}
+              currentValue={activeCurrency.code !== undefined ? activeCurrency.code : ''}
             />
           </li>
         </ul>
@@ -389,18 +342,10 @@ const Navbar = () => {
             <li className="px-4 pt-[2px]">
               {quotesTotal !== 0 ? (
                 <Badge badgeContent={quotesTotal} color="error">
-                  <CgNotes
-                    size={16}
-                    className="cursor-pointer"
-                    onClick={handleOpenQuotes}
-                  />
+                  <CgNotes size={16} className="cursor-pointer" onClick={handleOpenQuotes} />
                 </Badge>
               ) : (
-                <CgNotes
-                  size={16}
-                  className="cursor-pointer"
-                  onClick={handleOpenQuotes}
-                />
+                <CgNotes size={16} className="cursor-pointer" onClick={handleOpenQuotes} />
               )}
             </li>
             |
@@ -414,10 +359,7 @@ const Navbar = () => {
               )}
 
               <div className="pl-[17.5px] text-white flex">
-                <CurrencyBeforeValue
-                  currency={cartCurrency}
-                  value={cartTotalPrice}
-                />
+                <CurrencyBeforeValue currency={cartCurrency} value={cartTotalPrice} />
               </div>
             </li>
             |
@@ -454,15 +396,9 @@ const Navbar = () => {
                 <div className="flex">
                   <Link to={loginUrl()} className="flex">
                     <img src="/img/n11logo.png" className="" alt=""></img>
-                    {/* <div className="px-4 text-[25px] font-medium items-center">
-                                        <span>{fields.companyNameLabel}</span>
-                                    </div> */}
                   </Link>
                 </div>
-                <div
-                  className="flex text-center items-center"
-                  onClick={handleNavOpen}
-                >
+                <div className="flex text-center items-center" onClick={handleNavOpen}>
                   <span className="pr-4">Close</span>
                   <span className="text-xl">&#10006;</span>
                   {/* <AiOutlineClose size={25}/> */}
