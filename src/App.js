@@ -84,6 +84,7 @@ i18n.use(initReactI18next).init({
         add_cart: 'add to cart',
         view_var: 'view variants',
         no_price: 'No Price',
+        more_dtls: 'More Details',
       },
     },
     de: {
@@ -109,6 +110,7 @@ i18n.use(initReactI18next).init({
         add_cart: 'in den Warenkorb',
         view_var: 'mehr optionen',
         no_price: 'kein Preis',
+        more_dtls: 'Weitere Info',
       },
     },
   },

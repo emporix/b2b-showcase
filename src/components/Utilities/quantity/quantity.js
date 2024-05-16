@@ -3,12 +3,17 @@ import './quantity.css'
 
 const Quantity = ({
   value,
+  center = false,
   increase = () => {},
   decrease = () => {},
   onChange = (value) => {},
 }) => {
   return (
-    <div className="quantity-input rounded-xl border border-gray mx-1">
+    <div
+      className={`quantity-input rounded-xl border border-gray ${
+        center ? 'mx-auto md:mx-1' : 'mx-1'
+      }`}
+    >
       <button
         id="quantity-decrease"
         className="quantity-input_modifier quantity-input__modifier--left"

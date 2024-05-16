@@ -9,6 +9,7 @@ import { formatPrice } from 'helpers/price'
 import { useNavigate } from 'react-router-dom'
 import { useLanguage } from 'context/language-provider'
 import { useTranslation } from 'react-i18next'
+import { HiChevronDoubleRight } from 'react-icons/hi'
 
 const EachProductRow = ({ item, type, available, rating, productCount }) => {
   const { getLocalizedValue } = useLanguage()
@@ -65,7 +66,7 @@ const EachProductRow = ({ item, type, available, rating, productCount }) => {
         className="cursor-pointer flex flex-col justify-between"
         onClick={() => handleProductDetail(item)}
       >
-        <img src={imageSrc} alt="" className="aspect-square h-fit rounded-xl" />
+        <img src={imageSrc} alt="" className="aspect-square rounded-xl" />
       </div>
 
       <div className="flex flex-col gap-4">
@@ -124,7 +125,15 @@ const EachProductRow = ({ item, type, available, rating, productCount }) => {
           <div className="flex w-full flex-col gap-4 items-cente md:items-end justify-end">
             {item.productType !== 'PARENT_VARIANT' ? (
               <>
+                <button
+                  className="mx-auto md:mx-0 cursor-pointer text-darkGray flex items-center justify-center px-5 py-2 w-fit hover:text-primary transition-all duration-150 ease-in uppercase"
+                  onClick={() => handleProductDetail(item)}
+                >
+                  {t('more_dtls')}
+                  <HiChevronDoubleRight />
+                </button>
                 <Quantity
+                  center
                   value={quantity}
                   increase={() => {
                     setQuantity((prev) => {
@@ -141,17 +150,11 @@ const EachProductRow = ({ item, type, available, rating, productCount }) => {
                   }}
                 />
                 <button
-                  className="cta-primary w-full md:w-auto"
+                  className="cta-primary w-full text-sm md:w-auto"
                   onClick={() => handleAddToCart(item, quantity)}
                 >
                   {t('add_cart')}
                 </button>
-                {/* <div
-                className="cursor-pointer cta-button bg-lightGray flex items-center justify-center px-5 py-2 w-fit hover:!bg-gray transition-all duration-150 ease-in"
-                onClick={handleProductDetail}
-              >
-                <span className="text-aliceBlue">MORE DETAILS</span>
-              </div> */}
               </>
             ) : (
               <div>

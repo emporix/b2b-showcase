@@ -20,7 +20,11 @@ import SliderComponent from '../../components/Utilities/slider'
 import Accordion, { AccordionItem } from '../../components/Utilities/accordion'
 
 import LayoutContext from '../context'
-import { homeUrl, productSchemaApi, productUrl } from '../../services/service.config'
+import {
+  homeUrl,
+  productSchemaApi,
+  productUrl,
+} from '../../services/service.config'
 
 import { LargePrimaryButton } from '../../components/Utilities/button'
 import {
@@ -48,14 +52,14 @@ import {
 } from '@mui/material'
 import Content from 'pages/home/Content'
 import { CMSFilterType } from 'services/content/filteredPage.service'
-import { useTranslation } from 'react-i18next';
+import { useTranslation } from 'react-i18next'
 import { ACCESS_TOKEN } from '../../constants/localstorage'
 import ApiRequest from '../../services'
-import i18next from 'i18next';
+import i18next from 'i18next'
 
 const ProductContext = createContext()
-export const i18nProductCustomAttributesNS = "productCustomAttributes"
-export const i18nPCADescriptionSuffix = "_desc"
+export const i18nProductCustomAttributesNS = 'productCustomAttributes'
+export const i18nPCADescriptionSuffix = '_desc'
 
 const Bold = ({ children }) => {
   return <div className="font-bold">{children}</div>
@@ -396,6 +400,7 @@ const ProductAddToCart = () => {
           onChange={(value) => {
             setQuantity(value)
           }}
+          left
         />
       </div>
       <div className="">
@@ -553,7 +558,7 @@ const ProductDetailsTabContent = ({ product }) => {
   }
   const ensureAttributeNameTranslationIsPresent = async (lang) => {
     if (i18next.hasResourceBundle(lang, i18nProductCustomAttributesNS)) {
-      return;
+      return
     }
 
     const headers = {
@@ -563,34 +568,42 @@ const ProductDetailsTabContent = ({ product }) => {
     }
     const res = await ApiRequest(productSchemaApi(), 'get', {}, headers, {})
     if (res.status !== 200) {
-      return;
+      return
     }
 
-    const data = res.data[0]    
+    const data = res.data[0]
 
     //reflect https://api.emporix.io/schema/n11showcase/schemas to i18next resource
     const resource = {}
     resource[data.id] = data.name[lang]
-    data.attributes.forEach((a)=>{
+    data.attributes.forEach((a) => {
       resource[a.key] = a.name[lang]
       resource[a.key + i18nPCADescriptionSuffix] = a.description[lang]
-    });
-    i18next.addResourceBundle(lang,i18nProductCustomAttributesNS, resource,false, true)
+    })
+    i18next.addResourceBundle(
+      lang,
+      i18nProductCustomAttributesNS,
+      resource,
+      false,
+      true
+    )
     i18next.changeLanguage(lang)
   }
 
-  useEffect(()=>{
+  useEffect(() => {
     ensureAttributeNameTranslationIsPresent(currentLanguage)
-  },[currentLanguage])
+  }, [currentLanguage])
 
   const getAttributes = (items) => {
     let res = []
     Object.keys(items).forEach((key) => {
       let value = items[key]
 
-      if (Array.isArray(value) && currentLanguage === "en") value = value[1].value
-      else if (Array.isArray(value) && currentLanguage === "de") value = value[0].value
-      else if (typeof value === "string") value = items[key]
+      if (Array.isArray(value) && currentLanguage === 'en')
+        value = value[1].value
+      else if (Array.isArray(value) && currentLanguage === 'de')
+        value = value[0].value
+      else if (typeof value === 'string') value = items[key]
       else value = ''
 
       res.push({ property: key, value: value })
@@ -666,7 +679,7 @@ const ProductDetailTabContent = ({ product }) => {
           dangerouslySetInnerHTML={{ __html: product.description }}
           className="product-details-tab-content-wrapper text-lg font-light"
         />
-        <Content type={CMSFilterType.PRODUCT} page={product.id}/>
+        <Content type={CMSFilterType.PRODUCT} page={product.id} />
       </TabPanel>
       <TabPanel value={tab} index={2}>
         <div className="product-details-tab-content-wrapper font-light">
@@ -679,8 +692,6 @@ const ProductDetailTabContent = ({ product }) => {
 const ProductInfoPortal = ({ caption, items }) => {
   const { t } = useTranslation(i18nProductCustomAttributesNS)
 
-
-
   return (
     <div className="information-portal-wrapper grid grid-cols-1 gap-4">
       <div className="information-caption">{t(caption)}</div>
@@ -688,9 +699,12 @@ const ProductInfoPortal = ({ caption, items }) => {
         {items.map((row, index) => (
           <div key={index} className="grid grid-cols-2 gap-2">
             <div className="information-properties pl-6 grid grid-cols-1 text-lg last tooltipped">
-              <span
-                className="tooltip rounded-b-lg bg-aliceBlue p-1 -mr-2 standard_box_shadow">{t(row.property + i18nPCADescriptionSuffix)}</span>
-              <span key={index} className="tail">{t(row.property)}</span>
+              <span className="tooltip rounded-b-lg bg-aliceBlue p-1 -mr-2 standard_box_shadow">
+                {t(row.property + i18nPCADescriptionSuffix)}
+              </span>
+              <span key={index} className="tail">
+                {t(row.property)}
+              </span>
             </div>
             <div className="information-values pl-6 grid grid-cols-1 text-lg font-light">
               <span key={index}>{row.value}</span>
@@ -729,8 +743,7 @@ const ProductDetailInfo = ({ product }) => {
             </AccordionItem>
           </Accordion>
         </div>
-        <div className="desktop-lg mt-4">
-        </div>
+        <div className="desktop-lg mt-4"></div>
       </div>
     </div>
   )
