@@ -318,7 +318,6 @@ const Navbar = () => {
               onChangeHandler={handleSiteChange}
               currentValue={currentSiteObject.code}
             >
-              {console.log('active: ', currentSiteObject)}
               <span className="world-icon absolute h-4 w-4 text-white"> </span>
             </NavDropdown>
           </li>

@@ -51,7 +51,6 @@ const ProductListViewSettingBar = ({
                 onChangeHandler={changePerPageCount}
                 currentValue={productsPerPage}
               />
-              {console.log(productsPerPage, productListCountsPerPage)}
             </li>
             {/* <li className="product-result-caption hidden lg:block">
               Products found: {productListCount}
@@ -70,7 +69,6 @@ const ProductListViewSettingBar = ({
                 onChangeHandler={changeSortingTypeIndex}
                 currentValue={sortingTypeIndex}
               />
-              {console.log(sortingTypeIndex, productSortingTypes)}
             </li>
             <li className="view-type">
               <div className="gap-2 md:gap-4 flex p-1">

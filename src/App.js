@@ -56,48 +56,46 @@ import StoreFinder from 'pages/storefinder'
 import ContentOverview from './pages/content/ContentOverview'
 import ContentPage from './pages/content/ContentPage'
 
-import i18n from "i18next";
-import { initReactI18next } from "react-i18next";
+import i18n from 'i18next'
+import { initReactI18next } from 'react-i18next'
 
-i18n
-  .use(initReactI18next)
-  .init({
-    resources: {
-      en: {
-        page: {
-          "content": "Content",
-          "contentPath": "/n11showcase/Content",
-          "back_to_overview": "Back to Overview",
-          "show_all" : "Show all",
-          "all_countries": "All Countries",
-          "categories" : "Categories",
-          "all_wines" : "All Wines",
-          "white_wine" : "White Wine",
-          "red_wine" : "Red Wine",
-          "rose_wine" : "Rosé Wine"
-        }
+i18n.use(initReactI18next).init({
+  resources: {
+    en: {
+      page: {
+        content: 'Content',
+        contentPath: '/n11showcase/Content',
+        back_to_overview: 'Back to Overview',
+        show_all: 'Show all',
+        all_countries: 'All Countries',
+        categories: 'Categories',
+        all_wines: 'All Wines',
+        white_wine: 'White Wine',
+        red_wine: 'Red Wine',
+        rose_wine: 'Rosé Wine',
       },
-      de: {
-        page: {
-          "content": "Inhalt",
-          "contentPath": "/n11showcase/Inhalt",
-          "back_to_overview": "Zurück zur Übersicht",
-          "show_all": "Zeige alle",
-          "all_countries": "Alle Länder",
-          "all_wines" : "Alle Weine",
-          "categories" : "Kategorien",
-          "white_wine" : "Weißwein",
-          "red_wine" : "Rotwein",
-          "rose_wine" : "Rosé"
-        }
-      }
     },
-    lng: "de",
-    fallbackLng: "de",
-    interpolation: {
-      escapeValue: false
-    }
-  });
+    de: {
+      page: {
+        content: 'Inhalt',
+        contentPath: '/n11showcase/Inhalt',
+        back_to_overview: 'Zurück zur Übersicht',
+        show_all: 'Zeige alle',
+        all_countries: 'Alle Länder',
+        all_wines: 'Alle Weine',
+        categories: 'Kategorien',
+        white_wine: 'Weißwein',
+        red_wine: 'Rotwein',
+        rose_wine: 'Rosé',
+      },
+    },
+  },
+  lng: 'de',
+  fallbackLng: 'de',
+  interpolation: {
+    escapeValue: false,
+  },
+})
 
 function App() {
   const dispatch = useDispatch()
