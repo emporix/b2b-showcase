@@ -65,7 +65,7 @@ export default function NavDropdown({
         <div
           className={`${
             isOpen ? 'opacity-100' : 'invisible opacity-0'
-          } absolute mt-1 min-w-full origin-top-right right-0 rounded-md shadow-lg bg-white ring-black ring-opacity-5 focus:outline-none transition-opacity duration-600 z-50`}
+          } absolute mt-1 min-w-full origin-top-right right-0 rounded-md shadow-lg bg-white ring-black ring-opacity-5 focus:outline-none transition-opacity duration-600 z-20`}
         >
           <div className="py-1">
             {list.map((item) => (

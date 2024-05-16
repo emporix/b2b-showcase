@@ -1,14 +1,13 @@
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Link, useParams } from 'react-router-dom'
 import { LoadingCircleProgress1 } from '../../components/Utilities/progress'
 import { getProductCategoryDetail } from '../../services/product/category.service'
-import ProductListContent from './ProductListContent'
 import { useProductList } from 'context/product-list-context'
 import { Checkbox } from '@mui/material'
 import { useNavigate } from 'react-router'
 import { TENANT } from '../../constants/localstorage'
-import category from '../home/Category'
 import { useTranslation } from 'react-i18next'
+import { MdFilterListOff } from 'react-icons/md'
 
 const getTenant = () => localStorage.getItem(TENANT)
 
@@ -38,15 +37,14 @@ const SelectionField = ({ title, total }) => {
 }
 
 const Category = ({ item, activeSubCategory, activeCategory }) => {
-  const { title, items, key, url } = item
+  const { categoryId, title, items, key, url } = item
   const navigate = useNavigate()
   const { t } = useTranslation('page')
-  const { setPageNumber } = useProductList()
 
   if (item.items.length === 0) return
 
   return (
-    <li>
+    <li key={categoryId}>
       <span className="category_pan_title">{title}</span>
       <div>
         <div className="content content-center justify-center">
@@ -72,8 +70,8 @@ const Category = ({ item, activeSubCategory, activeCategory }) => {
             />
             <div>{t('all_countries')}</div>
           </div>
-          {items.map((item, index) => (
-            <div className="flex">
+          {items.map((item) => (
+            <div className="flex" key={item.categoryId}>
               <div
                 className="flex"
                 onClick={() => {
@@ -149,31 +147,31 @@ const CategoryPanel = () => {
   const [isLoading, setIsLoading] = useState(false)
   const [categoryList, setCategoryList] = useState([])
   const { maincategory, subcategory, category } = useParams()
-  const navigate = useNavigate()
   const { setProductIds } = useProductList()
-  const getCategory = async (
-    categoryTree,
-    maincategory,
-    subcategory,
-    category
-  ) => {
-    setIsLoading(true)
-    const { categories, productIds } = await getProductCategoryDetail(
-      maincategory,
-      subcategory,
-      category,
-      categoryTree
-    )
-    setProductIds(productIds)
-    setCategoryList(categories)
-    setIsLoading(false)
-  }
 
   useEffect(() => {
+    const getCategory = async (
+      categoryTree,
+      maincategory,
+      subcategory,
+      category
+    ) => {
+      setIsLoading(true)
+      const { categories, productIds } = await getProductCategoryDetail(
+        maincategory,
+        subcategory,
+        category,
+        categoryTree
+      )
+      setProductIds(productIds)
+      setCategoryList(categories)
+      setIsLoading(false)
+    }
+
     if (categoryTree && categoryTree.length > 0 && maincategory) {
       getCategory(categoryTree, maincategory, subcategory, category)
     }
-  }, [JSON.stringify(categoryTree), maincategory, subcategory, category])
+  }, [categoryTree, maincategory, subcategory, category, setProductIds])
 
   return (
     <>
@@ -181,9 +179,9 @@ const CategoryPanel = () => {
         <LoadingCircleProgress1 />
       ) : (
         <ul>
-          {categoryList.map((item, index) => (
+          {categoryList.map((item) => (
             <Category
-              key={index}
+              key={item.categoryId}
               item={item}
               activeSubCategory={subcategory}
               activeCategory={category}
@@ -198,16 +196,17 @@ const CategoryPanel = () => {
 const ProductListFilterPanel = () => {
   const { t } = useTranslation('page')
   return (
-    <div className="flex justify-between flex-col xl:flex-row">
-      <CategoryPanel />
-      <div>
+    <div className="relative">
+      <div className="w-full text-right">
         <Link
           to={`/${getTenant()}/product/wein`}
-          className="font-inter font-semibold font-[14px] text-manatee text-right"
+          className="inline-flex font-sm text-manatee hover:text-primary flex-row justify-end items-center gap-2"
         >
+          <MdFilterListOff size={16} />
           {t('show_all')}
         </Link>
       </div>
+      <CategoryPanel />
     </div>
   )
 }

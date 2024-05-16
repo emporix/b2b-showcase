@@ -534,7 +534,7 @@ const Cart = () => {
     <>
       <LayoutFlexStart className={'test'}>
         <span
-          className="inline-block cursor-pointer text-darkGray hover:text-black"
+          className="inline-block cursor-pointer text-darkGray hover:text-primary"
           onClick={() => setShowCart(false)}
         >
           <HiOutlineArrowCircleLeft size="2rem" />

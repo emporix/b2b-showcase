@@ -178,7 +178,7 @@ const ProductListPagination = ({
       <div className="text-center items-center flex">
         <ul className="select-none gap-6 mx-auto items-center flex text-[18px] leading-[26px] font-inter text-gray">
           <li
-            lassName={pageNumber === 1 ? '' : 'cursor-pointer'}
+            className={pageNumber === 1 ? '' : 'cursor-pointer'}
             onClick={() => {
               if (pageNumber > 1) changePageNumber(pageNumber - 1)
             }}

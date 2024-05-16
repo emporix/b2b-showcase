@@ -91,7 +91,7 @@ i18n.use(initReactI18next).init({
         content: 'Inhalt',
         contentPath: '/n11showcase/Inhalt',
         back_to_overview: 'Zurück zur Übersicht',
-        show_all: 'Zeige alle',
+        show_all: 'Alle anzeigen',
         all_countries: 'Alle Länder',
         all_wines: 'Alle Weine',
         categories: 'Kategorien',
