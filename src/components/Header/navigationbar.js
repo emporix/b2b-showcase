@@ -38,7 +38,7 @@ import { useCart } from 'context/cart-provider'
 import { useCurrency } from 'context/currency-context'
 import { getLocalizedCmsNavigation } from 'services/content/navigation.service'
 import { useTranslation } from 'react-i18next'
-import NavDropdown from './NavDropdown'
+import NavDropdown from '../Utilities/dropdown/NavDropdown'
 
 const Navbar = () => {
   const { userTenant: tenant } = useAuth()
@@ -316,9 +316,10 @@ const Navbar = () => {
                   value: item.code,
                 }))}
               onChangeHandler={handleSiteChange}
-              currentValue={currentSiteObject.name}
+              currentValue={currentSiteObject.code}
             >
-              <span className="world-icon absolute h-4 w-4 text-white"></span>
+              {console.log('active: ', currentSiteObject)}
+              <span className="world-icon absolute h-4 w-4 text-white"> </span>
             </NavDropdown>
           </li>
           <li className="mr-4">
@@ -345,7 +346,7 @@ const Navbar = () => {
                 currencyChangeHandler(e.target.value, currentSiteObject)
               }
               currentValue={
-                activeCurrency.symbol !== undefined ? activeCurrency.symbol : ''
+                activeCurrency.code !== undefined ? activeCurrency.code : ''
               }
             />
           </li>

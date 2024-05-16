@@ -15,6 +15,7 @@ import {
   HiViewList,
   HiViewGrid,
 } from 'react-icons/hi'
+import NavDropdown from 'components/Utilities/dropdown/NavDropdown'
 
 const productListBoxShadow = {
   boxShadow: 'rgba(100, 100, 111, 0.2) 0px 7px 29px 0px',
@@ -23,34 +24,34 @@ const productListBoxShadow = {
 const ProductListViewSettingBar = ({
   changeDisplayType,
   productListCount,
+  productsPerPage,
   productListCountsPerPage,
   productSortingTypes,
+  sortingTypeIndex,
   changeSortingTypeIndex,
   changePerPageCount,
   displayType,
 }) => {
   return (
     <div
-      className="view-setting-wrapper h-fit px-4 py-2 bg-aliceBlue rounded-xl mb-4"
+      className="view-setting-wrapper h-fit px-0 md:px-4 py-2 bg-aliceBlue rounded-xl mb-4"
       style={productListBoxShadow}
     >
       <div className="view-setting-bar">
         <div>
-          <ul className="setting gap-6 flex justify-between font-inter text-base font-normal">
-            <li className="per-page hidden xl:block">
-              <div className="products-filter-name">
-                Products Per Page: &nbsp;
-                <select
-                  className="products-filter-value"
-                  onChange={changePerPageCount}
-                >
-                  {productListCountsPerPage.map((cnt) => (
-                    <option key={cnt} value={cnt}>
-                      {cnt}
-                    </option>
-                  ))}
-                </select>
-              </div>
+          <ul className="setting gap-2 flex justify-between font-inter text-base font-normal">
+            <li className="per-page">
+              <NavDropdown
+                name="Products"
+                small
+                list={productListCountsPerPage.map((cnt) => ({
+                  text: cnt + ' per page',
+                  value: cnt,
+                }))}
+                onChangeHandler={changePerPageCount}
+                currentValue={productsPerPage}
+              />
+              {console.log(productsPerPage, productListCountsPerPage)}
             </li>
             {/* <li className="product-result-caption hidden lg:block">
               Products found: {productListCount}
@@ -59,30 +60,20 @@ const ProductListViewSettingBar = ({
               {productListCount} Products
             </li> */}
             <li className="sort-by">
-              <div className="products-filter-name">
-                Sort:&nbsp;
-                <select
-                  className="products-filter-value"
-                  onChange={changeSortingTypeIndex}
-                >
-                  {productSortingTypes.map((type, i) => (
-                    <option key={i} value={i}>
-                      {type.name}
-                    </option>
-                  ))}
-                </select>
-              </div>
-              {/* <div className="md:hidden  flex">
-                <div className="font-bold">Sort:</div>
-                <HiChevronDown
-                  size={20}
-                  className="ml-1 mt-0 h-6 w-6 font-normal"
-                  aria-hidden="true"
-                />
-              </div> */}
+              <NavDropdown
+                name="Sort"
+                small
+                list={productSortingTypes.map((type, idx) => ({
+                  text: type.name,
+                  value: idx,
+                }))}
+                onChangeHandler={changeSortingTypeIndex}
+                currentValue={sortingTypeIndex}
+              />
+              {console.log(sortingTypeIndex, productSortingTypes)}
             </li>
             <li className="view-type">
-              <div className="gap-4 flex p-1">
+              <div className="gap-2 md:gap-4 flex p-1">
                 <div className="lg:block products-filter-name">View:</div>
                 <div
                   id="grid-view"
@@ -159,8 +150,6 @@ const ProductListPagination = ({
   let totalPage = Math.ceil(productListCount / countPerPage)
   let previousPageitems = []
   let next_page_items = []
-
-  console.log('totalPage: ', totalPage, productListCount, countPerPage)
 
   if (totalPage < pageNumber) pageNumber = 1
 
@@ -256,6 +245,7 @@ const ProductListContent = () => {
     productsPerPage,
     setProductsPerPage,
     sortingTypes,
+    sortingTypeIndex,
     setSortingTypeIndex,
     total,
   } = useProductList()
@@ -272,12 +262,12 @@ const ProductListContent = () => {
   }
   const changePerPageCount = (event) => {
     setPageNumber(1)
-    setProductsPerPage(event.target.value)
+    setProductsPerPage(parseInt(event.target.value))
   }
 
   const changeSortingType = (event) => {
     setPageNumber(1)
-    setSortingTypeIndex(event.target.value)
+    setSortingTypeIndex(parseInt(event.target.value))
   }
 
   useEffect(() => {
@@ -293,7 +283,9 @@ const ProductListContent = () => {
         productListCount={productsWithoutVariants.length}
         productListCountsPerPage={productListCountsPerPage}
         changeSortingTypeIndex={changeSortingType}
+        sortingTypeIndex={sortingTypeIndex}
         productSortingTypes={sortingTypes}
+        productsPerPage={productsPerPage}
       />
       {isProductsLoading ? (
         <LoadingCircleProgress1 />
