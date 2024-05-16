@@ -1,22 +1,22 @@
 import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
 import Navbar from './navigationbar'
-import { HiChevronDown } from "react-icons/hi";
+import { HiChevronDown } from 'react-icons/hi'
 import { useSelector } from 'react-redux'
 import { pageMenuSelector } from '../../redux/slices/pageReducer'
 import './topbar.css'
 import { addTenantToUrl, homeUrl } from '../../services/service.config'
 import AlgoliaSearchbar from '../AlgoliaSearchbar'
 import { useContentful } from '../../context/contentful-provider'
-import {Logo} from "../Logo";
-
+import { Logo } from '../Logo'
 
 const MegaNav = ({ showMegaMenuContent, setShowMegaMenuContent }) => {
   const [subMenuItems, setSubMenuItems] = useState([])
-  const [showMegaMenuRightContent, setShowMegaMenuRightContent] =
-    useState(false)
+  const [showMegaMenuRightContent, setShowMegaMenuRightContent] = useState(false)
   const [subMenuMegaContent, setSubMenuMegaContent] = useState([])
+
   const onShowMegaMenu = () => setShowMegaMenuContent(true)
+
   const overMenuItem = (items) => {
     setSubMenuItems(items)
     if (!showMegaMenuContent) {
@@ -30,101 +30,75 @@ const MegaNav = ({ showMegaMenuContent, setShowMegaMenuContent }) => {
 
   const { fields } = useContentful()
 
-  const bgGradient = {
-    backgroundImage: "radial-gradient(73% 147%, #EADFDF 59%, #ECE2DF 100%), radial-gradient(91% 146%, rgba(255,255,255,0.50) 47%, rgba(0,0,0,0.50) 100%)",
-    backgroundBlendMode: "screen"
-  }
+  const LinkItem = ({ item, main }) => (
+    <li key={item.key} className={`mega_content_${main ? 'category_li font-bold text-xl' : 'sub_cat_li font-normal'}`}>
+      <Link replace to={addTenantToUrl(item.url)}>
+        {item.title}
+      </Link>
+    </li>
+  )
+
   return (
     <div id="topbar-buttons" className="dropdown flex text-base">
-      {menuList.map((item, index) => (
+      {menuList.map((item) => (
         <button
-          key={index}
+          key={item.title}
           className="mega_menu_dropbtn"
           onMouseOver={() => {
-            item.items?.length
-            ? overMenuItem(item.items)
-            : hideMegaMenuContent()
+            item.items?.length ? overMenuItem(item.items) : hideMegaMenuContent()
           }}
           onClick={() => {
-            item.items?.length
-            ? overMenuItem(item.items)
-            : hideMegaMenuContent()
+            item.items?.length ? overMenuItem(item.items) : hideMegaMenuContent()
           }}
         >
           <Link to={!item.items?.length ? addTenantToUrl(item.url) : homeUrl}>
-            <div>
-              {item.contentfulFieldName
-                ? fields[item.contentfulFieldName]
-                : item.title}
+            <div className="whitespace-nowrap">
+              {item.contentfulFieldName ? fields[item.contentfulFieldName] : item.title}
             </div>
           </Link>
 
-			<HiChevronDown size={20}
-            className={item.items?.length ? 'ml-2 mt-1 h-5 w-5' : 'hidden'}
-            aria-hidden="true"
-          />
+          <HiChevronDown size={20} className={item.items?.length ? 'ml-2 mt-1 h-5 w-5' : 'hidden'} aria-hidden="true" />
         </button>
       ))}
 
-      <button className="mega_menu_dropbtn">
+      <button key="zendesk" className="mega_menu_dropbtn">
         <Link to="https://mach11.zendesk.com/hc/de-de" target="_blank">
-          <div>
-            Help Center
-          </div>
+          <div className="whitespace-nowrap">Help Center</div>
         </Link>
       </button>
 
       {showMegaMenuContent ? (
         <div
-          className="header-mega_dropdown-content py-12 px-24"
+          className="header-mega_dropdown-content main_bg_gradient py-12 px-24"
           onMouseEnter={onShowMegaMenu}
           onClick={() => setShowMegaMenuContent(false)}
-          style={bgGradient}
         >
           <div className="row w-full h-full flex">
             <div className="w-[24%] h-fit text-[16px] text-eerieBlack">
-                <ul className="text-base font-bold md:flex gap-16 justify-between">
-                  {subMenuItems.map((item, index) => ( 
-                    <div> 
-                      <Link replace key={index} to={addTenantToUrl(item.url)}>
-                        <li
-                          className="mega_content_category_li text-xl"
-                        >
-                          {item.title}
-                        </li>
-                      </Link>
-                      {item.items.map((subItem, subIndex) => (  
-                        <Link replace key={index} to={addTenantToUrl(subItem.url)}>
-                          <li className="mega_content_category_li font-normal">
-                            {subItem.title}
-                          </li>
-                        </Link>
-                      ))}
-                    </div>
+              {subMenuItems.map((item) => (
+                <ul key={item.title}>
+                  <LinkItem item={item} main />
+                  {item.items.map((subItem) => (
+                    <LinkItem item={subItem} key={subItem.title} />
                   ))}
                 </ul>
+              ))}
             </div>
+            {/* TODO: no use case, remove below? */}
             <div
               className="h-fit w-[76%] grid grid-cols-4 overflow-y-auto gap-4 pl-[24px]"
               onMouseOver={() => setShowMegaMenuRightContent(true)}
             >
               {showMegaMenuRightContent
                 ? subMenuMegaContent.map((item) => (
-                    <div key={item.categoryId}>
+                    <div key={item.title}>
                       <ul className=" text-black text-base">
                         <Link to={addTenantToUrl(item.url)}>
-                          <li className="mega_content_sub_cat_li font-bold">
-                            {item.title}
-                          </li>
+                          <li className="mega_content_sub_cat_li font-bold">{item.title}</li>
                         </Link>
                         {item.items.map((eachItem) => (
-                          <Link
-                            key={eachItem.categoryId}
-                            to={addTenantToUrl(eachItem.url)}
-                          >
-                            <li className="mega_content_sub_cat_li">
-                              {eachItem.title}
-                            </li>
+                          <Link key={eachItem.title} to={addTenantToUrl(eachItem.url)}>
+                            <li className="mega_content_sub_cat_li">{eachItem.title}</li>
                           </Link>
                         ))}
                       </ul>
@@ -163,23 +137,17 @@ const TopNav = ({ title }) => {
           <div className="flex justify-between w-full h-10">
             <Logo onMouseOver={() => setShowMegaMenuContent(false)} />
 
-            <MegaNav
-              showMegaMenuContent={showMegaMenuContent}
-              setShowMegaMenuContent={setShowMegaMenuContent}
-            />
+            <MegaNav showMegaMenuContent={showMegaMenuContent} setShowMegaMenuContent={setShowMegaMenuContent} />
 
-            <div
-              className="hidden lg:flex"
-              onMouseOver={() => setShowMegaMenuContent(false)}
-            >
+            <div className="hidden lg:flex" onMouseOver={() => setShowMegaMenuContent(false)}>
               <AlgoliaSearchbar />
             </div>
           </div>
         </div>
       </div>
       {nav_title_condition && (
-        <div className=" text-center xl:text-left mt-20 xs:mt-28 md:mt-4 px-4 w-full sm:mx-auto sm:w-3/4 md:w-full xl:px-24 top-44 text-eerieBlack font-inter font-semibold text-[32px]/[32px]">
-        {title}
+        <div className="text-center xl:text-left mt-20 xs:mt-28 md:mt-4 px-4 w-full sm:mx-auto sm:w-3/4 md:w-full xl:px-24 top-44 text-eerieBlack font-semibold text-[32px]/[32px]">
+          {title}
         </div>
       )}
     </div>
