@@ -237,7 +237,7 @@ input[type='checkbox'] {
 }
 
 .tooltip {
-  @apply invisible absolute;
+  @apply hidden xs:invisible absolute;
 }
 
 .tooltipped:hover .tooltip {

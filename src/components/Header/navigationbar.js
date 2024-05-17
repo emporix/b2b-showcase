@@ -25,7 +25,7 @@ import NavDropdown from '../Utilities/dropdown/NavDropdown'
 
 const Navbar = () => {
   const { userTenant: tenant } = useAuth()
-  const { sites, onSiteChange, currentSite, currentSiteObject } = useSites()
+  const { sites, onSiteChange, currentSiteObject } = useSites()
   const { languages, currentLanguage, setLanguage } = useLanguage()
   const { user } = useAuth()
   const { quotesTotal } = useQuotes()
@@ -233,7 +233,7 @@ const Navbar = () => {
   }
   // create a function for toggle mobile nav
   const handleNavOpen = () => {
-    setOpen(!open)
+    setOpen((current) => !current)
   }
   const handleSiteChange = async (e) => {
     await onSiteChange(e.target.value)
@@ -379,18 +379,21 @@ const Navbar = () => {
         </div>
 
         <div className="w-1/2 flex justify-end gap-8">
+          {/* TODO: Link to Search Screen? */}
           <div className="mobile_only">
             <AiOutlineSearch size={20} />
           </div>
-          <div className="mobile_only_flex cursor-pointer">
-            {!open ? <AiOutlineMenu size={20} onClick={handleNavOpen} /> : null}
+          <div className="mobile_only_flex">
+            {!open ? (
+              <button onClick={handleNavOpen}>
+                <AiOutlineMenu size={20} />
+              </button>
+            ) : null}
             {/* absolut mobile navigation */}
             <div
-              className={
-                !open
-                  ? 'hidden'
-                  : ' text-black absolute top-0 left-0 w-full  h-screen bg-white p-4 text-center font-medium overflow-y-auto'
-              }
+              className={`text-black fixed inset-0 bg-white p-4 text-center font-medium overflow-y-auto transform-all opacity-0 -translate-y-full duration-500 ease-out ${
+                open ? 'translate-y-0 opacity-100' : ''
+              }`}
             >
               <div className="h-10 justify-between flex">
                 <div className="flex">
@@ -398,11 +401,9 @@ const Navbar = () => {
                     <img src="/img/n11logo.png" className="" alt=""></img>
                   </Link>
                 </div>
-                <div className="flex text-center items-center" onClick={handleNavOpen}>
-                  <span className="pr-4">Close</span>
-                  <span className="text-xl">&#10006;</span>
-                  {/* <AiOutlineClose size={25}/> */}
-                </div>
+                <button className="flex text-center items-center pr-4" onClick={handleNavOpen}>
+                  <AiOutlineClose size={25} />
+                </button>
               </div>
               {!displaySubItems ? <ParentBoard /> : <SubBoard />}
             </div>
