@@ -2,11 +2,11 @@ import React from 'react'
 import { useParams } from 'react-router-dom'
 import './teaser.css'
 
-// for content like teasers or simple content with with title, text and image (manufacturer, manufacturer process)
+// for text content with title, text and image (manufacturer, manufacturer process)
 
-export const Teaser = (props) => {
+export const AdditionalText = (props) => {
   const { productId } = useParams()
-  const content = props.props?.data
+  const content = props.data
   const headline = content?.st_headline
   const text = content?.st_text
   const image = content?.st_picture?.resolutions.ORIGINAL
@@ -26,6 +26,7 @@ export const Teaser = (props) => {
       }
     >
       <div
+        // className="teaser__content">
         className={
           'teaser__content ' +
           (!productId ? 'hp_teaser_box_shadow' : 'standard_box_shadow')

@@ -9,6 +9,8 @@ const socialMediaComponentMap = {
   youtube: AiFillYoutube,
 }
 
+// specifically for footer
+
 const CMS_DESKTOP_FOOTER = (props) => {
   return (
     <div className="desktop_only bg-aliceBlue">
