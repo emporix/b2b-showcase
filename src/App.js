@@ -74,7 +74,9 @@ i18n
           "all_wines" : "All Wines",
           "white_wine" : "White Wine",
           "red_wine" : "Red Wine",
-          "rose_wine" : "Rosé Wine"
+          "rose_wine" : "Rosé Wine",
+          "in_stock" : "in stock",
+          "out_of_stock" : "out of stock",
         }
       },
       de: {
@@ -88,7 +90,9 @@ i18n
           "categories" : "Kategorien",
           "white_wine" : "Weißwein",
           "red_wine" : "Rotwein",
-          "rose_wine" : "Rosé"
+          "rose_wine" : "Rosé",
+          "in_stock" : "auf Lager",
+          "out_of_stock" : "nicht verfügbar",
         }
       }
     },

@@ -10,6 +10,7 @@ import {useProductList} from 'context/product-list-context'
 import EachProduct from './EachProduct'
 import EachProductRow from './EachProductRow'
 import {useAuth} from 'context/auth-provider'
+import JsonFormatter from 'react-json-formatter'
 
 const productListBoxShadow = {
     boxShadow: "rgba(100, 100, 111, 0.2) 0px 7px 29px 0px"
@@ -117,12 +118,11 @@ const ProductListItems = ({products, auth, displayType}) => {
     let itemArr = []
     let subItemArr = []
     let ItemArrOnMobile = []
-    let available, stockLevel
+    let available
 
     if (displayType) {
         products.forEach((item, i) => {
             available = availability['k' + item.id]?.available
-            stockLevel = availability['k' + item.id]?.stockLevel
             switch ((i + 1) % 3) {
                 case 1:
                     subItemArr.push(
@@ -131,7 +131,6 @@ const ProductListItems = ({products, auth, displayType}) => {
                                 key={item.id}
                                 available={available}
                                 rating={4}
-                                productCount={8}
                                 item={item}
                             />
                         </div>
@@ -147,7 +146,6 @@ const ProductListItems = ({products, auth, displayType}) => {
                                 key={item.id}
                                 available={available}
                                 rating={4}
-                                productCount={8}
                                 item={item}
                             />
                         </div>
@@ -163,7 +161,6 @@ const ProductListItems = ({products, auth, displayType}) => {
                                 key={item.id}
                                 available={available}
                                 rating={4}
-                                productCount={8}
                                 item={item}
                             />
                         </div>
@@ -258,7 +255,6 @@ const ProductListItems = ({products, auth, displayType}) => {
     } else {
         products.forEach((item, i) => {
             available = availability['k' + item.id]?.available
-            stockLevel = availability['k' + item.id]?.stockLevel
             itemArr.push(
                 <div key={i} className="w-full my-6 items-center hover:scale-[1.01] transition-all duration-150 ease-in">
                     <EachProductRow

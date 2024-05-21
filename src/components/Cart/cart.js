@@ -11,6 +11,7 @@ import { PROCUREMENT_SYSTEM_URL } from 'constants/localstorage'
 import { useLanguage } from 'context/language-provider'
 import { useSelector } from 'react-redux'
 import { availabilityDataSelector } from 'redux/slices/availabilityReducer'
+import { useTranslation } from 'react-i18next'
 
 const CartProductContent = ({children}) => {
     return <div className="cart-product-content">{children}</div>
@@ -58,9 +59,9 @@ export const PriceExcludeVAT1 = ({price, caption}) => {
 export const CartMobileItem = ({ cartItem }) => {
   const { incrementCartItemQty, decrementCartItemQty, setCartItemQty } = useCart()
   const { getLocalizedValue } = useLanguage()
+  const {t} = useTranslation("page")
   const availability = useSelector(availabilityDataSelector)
-
-  const inStock = availability["k" + cartItem.id].stockLevel
+  const available = availability["k" + cartItem.id].available
 
   return (
     <GridLayout className="gap-4">
@@ -138,12 +139,12 @@ export const CartMobileItem = ({ cartItem }) => {
         <span
               className={
                   ' text-brightGreen font-inter font-bold cart-product-stock w-[80px] ' +
-                  (inStock
+                  (available
                       ? 'text-limeGreen'
                       : 'text-primaryBlue')
               }
           >
-            {inStock} Stock
+            {available ? t("in_stock") : t("out_of_stock")}
           </span>
         <span className="">Est. delivery time: 3 days</span>
       </div>
@@ -205,9 +206,10 @@ export const CartProductImageAndReadOnlyQuantity = ({ cartItem }) => {
 }
 
 export const CartProductBasicInfo = ({ cart }) => {
+  const {t} = useTranslation("page")
   const { getLocalizedValue } = useLanguage()
   const availability = useSelector(availabilityDataSelector)
-  const inStock = availability["k" + cart.product.id].stockLevel
+  const available = availability["k" + cart.product.id].available
 
   return (
     <div className="cart-product-basic-info">
@@ -221,12 +223,12 @@ export const CartProductBasicInfo = ({ cart }) => {
           <span
               className={
                   ' text-brightGreen font-inter font-bold cart-product-stock ' +
-                  (inStock
+                  (available
                       ? 'text-limeGreen'
                       : 'text-primaryBlue')
               }
           >
-            {inStock} Stock
+            {available ? t("in_stock") : t("out_of_stock")}
           </span>
           {/* <span className="cart-product-lead-time">Lead Time: 1 week</span> */}
         </div>

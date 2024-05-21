@@ -52,6 +52,8 @@ import { useTranslation } from 'react-i18next';
 import { ACCESS_TOKEN } from '../../constants/localstorage'
 import ApiRequest from '../../services'
 import i18next from 'i18next';
+import { useSelector } from 'react-redux'
+import { availabilityDataSelector } from '../../redux/slices/availabilityReducer'
 
 const ProductContext = createContext()
 export const i18nProductCustomAttributesNS = "productCustomAttributes"
@@ -210,7 +212,8 @@ const ProductTitle = ({ name }) => {
     </div>
   )
 }
-const ProductPriceAndAmount = ({ price, productCount, estimatedDelivery }) => {
+const ProductPriceAndAmount = ({ price, available, estimatedDelivery }) => {
+  const {t} = useTranslation("page")
   const { isLoggedIn } = useAuth()
 
   return (
@@ -243,7 +246,7 @@ const ProductPriceAndAmount = ({ price, productCount, estimatedDelivery }) => {
       </div>
 
       <div className="product-amount-wrapper flex mt-6 space-x-6 items-center">
-        <span className="product-number">{productCount} in Stock</span>
+        <span className="product-number">{available ? t("in_stock") : t("out_of_stock")}</span>
         <span className="delivery-date">
           Estimated Delivery {estimatedDelivery}
         </span>
@@ -252,6 +255,8 @@ const ProductPriceAndAmount = ({ price, productCount, estimatedDelivery }) => {
   )
 }
 const ProductBasicInfo = ({ product }) => {
+  const availability = useSelector(availabilityDataSelector)
+  const available = availability['k' +product.id]?.available
   const { isLoggedIn } = useAuth()
   const price = useMemo(() => {
     return formatPrice(product, isLoggedIn)
@@ -262,8 +267,8 @@ const ProductBasicInfo = ({ product }) => {
       <ProductTitle name={product.name} />
       {product.productType !== 'PARENT_VARIANT' && (
         <ProductPriceAndAmount
+          available={available}
           price={price}
-          productCount={product.product_count}
           estimatedCelivery={product.estimated_delivery}
         />
       )}
