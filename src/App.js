@@ -85,6 +85,14 @@ i18n.use(initReactI18next).init({
         view_var: 'view variants',
         no_price: 'No Price',
         more_dtls: 'More Details',
+        login: 'Login',
+        register: 'Register',
+        signup: 'Sign Up',
+        signout: 'Sign Out',
+        back: 'Back',
+        site: 'Site',
+        language: 'Language',
+        currency: 'Currency',
       },
     },
     de: {
@@ -111,6 +119,14 @@ i18n.use(initReactI18next).init({
         view_var: 'mehr optionen',
         no_price: 'kein Preis',
         more_dtls: 'Weitere Info',
+        login: 'Anmelden',
+        register: 'Registrieren',
+        signup: 'Konto erstellen',
+        signout: 'Abmelden',
+        back: 'Zurück',
+        site: 'Land',
+        language: 'Sprache',
+        currency: 'Währung',
       },
     },
   },
@@ -137,49 +153,22 @@ function App() {
           <Route index exact element={<Home />} />
 
           <Route path="product/:maincategory" exact element={<ProductList />} />
-          <Route
-            path="product/:maincategory/:subcategory/"
-            exact
-            element={<ProductList />}
-          />
-          <Route
-            path="product/:maincategory/:subcategory/:category"
-            exact
-            element={<ProductList />}
-          />
-          <Route
-            path="product/details/:productId"
-            element={<ProductDetails />}
-          />
+          <Route path="product/:maincategory/:subcategory/" exact element={<ProductList />} />
+          <Route path="product/:maincategory/:subcategory/:category" exact element={<ProductList />} />
+          <Route path="product/details/:productId" element={<ProductDetails />} />
           <Route path="login" exact element={<Login />} />
           <Route path="reset-password" exact element={<ResetPassword />} />
           <Route path="signup" exact element={<Signup />} />
           <Route path="brand" exact element={<Brand />} />
           <Route path="cart" exact element={<Cart />} />
-          <Route
-            path="create-return/:orderId"
-            exact
-            element={<CreateReturn />}
-          />
+          <Route path="create-return/:orderId" exact element={<CreateReturn />} />
           <Route path="checkout" exact element={<Checkout />} />
-          <Route
-            path="saved-carts/:approvalId/checkout"
-            exact
-            element={<ApprovalCheckout />}
-          />
+          <Route path="saved-carts/:approvalId/checkout" exact element={<ApprovalCheckout />} />
           <Route path="approval-request" exact element={<ApprovalRequest />} />
-          <Route
-            path="approval-order-created"
-            exact
-            element={<ApprovalOrderCreated />}
-          />
+          <Route path="approval-order-created" exact element={<ApprovalOrderCreated />} />
 
           <Route path="payment-callback" exact element={<PaymentCallback />} />
-          <Route
-            path="saferpay-callback"
-            exact
-            element={<SaferpayPaymentCallback />}
-          />
+          <Route path="saferpay-callback" exact element={<SaferpayPaymentCallback />} />
           <Route path="quote" exact element={<QuoteCart />} />
           <Route
             path="my-account"
@@ -193,80 +182,32 @@ function App() {
           >
             <Route index element={<AccountHome />} />
             <Route path="account-summary" element={<MyAccount />} />
-            <Route
-              path="personal-details"
-              element={<AccountPersonalDetails />}
-            />
+            <Route path="personal-details" element={<AccountPersonalDetails />} />
             <Route path="manage-users" element={<AccountManageUsers />} />
             <Route path="addresses" element={<Addresses />} />
             <Route path="addresses/:addressId" element={<AddressEdit />} />
             <Route path="addresses/new" element={<AddressEdit />} />
             <Route path="company-details" element={<AccountCompanyDetails />} />
             <Route path="my-orders" exact element={<AccountMyOrders />} />
-            <Route
-              path="my-subscriptions"
-              exact
-              element={<AccountMySubscriptions />}
-            />
+            <Route path="my-subscriptions" exact element={<AccountMySubscriptions />} />
             <Route path="my-quotes" exact element={<AccountMyQuotes />} />
             <Route path="discounts" exact element={<MyDiscounts />} />
 
-            <Route
-              path="my-quotes/:quoteId"
-              element={<AccountMyQuoteDetails />}
-            />
-            <Route
-              path="my-orders/view/:orderId"
-              exact
-              element={<AccountMyOrdersView />}
-            />
-            <Route
-              path="my-orders/invoice/:orderId"
-              exact
-              element={<AccountMyOrdersInvoice />}
-            />
+            <Route path="my-quotes/:quoteId" element={<AccountMyQuoteDetails />} />
+            <Route path="my-orders/view/:orderId" exact element={<AccountMyOrdersView />} />
+            <Route path="my-orders/invoice/:orderId" exact element={<AccountMyOrdersInvoice />} />
             <Route path="returns" exact element={<AccountReturns />} />
-            <Route
-              path="returns/:returnId"
-              exact
-              element={<AccountReturnDetails />}
-            />
-            <Route
-              path="replenishment-orders"
-              exact
-              element={<AccountReplenishmentOrders />}
-            />
-            <Route
-              path="replenishment-orders/add"
-              exact
-              element={<AccountReplenishmentAddOrders />}
-            />
-            <Route
-              path="replenishment-orders/edit"
-              exact
-              element={<AccountReplenishmentEditOrders />}
-            />
+            <Route path="returns/:returnId" exact element={<AccountReturnDetails />} />
+            <Route path="replenishment-orders" exact element={<AccountReplenishmentOrders />} />
+            <Route path="replenishment-orders/add" exact element={<AccountReplenishmentAddOrders />} />
+            <Route path="replenishment-orders/edit" exact element={<AccountReplenishmentEditOrders />} />
             <Route path="saved-carts" element={<AccountSavedCarts />} />
-            <Route
-              path="saved-carts/:approvalId"
-              element={<AccountMyOrdersDetails />}
-            />
+            <Route path="saved-carts/:approvalId" element={<AccountMyOrdersDetails />} />
             <Route path="locations" exact element={<AccountLocations />} />
-            <Route
-              path="my-subscriptions/:action/:orderId/:productId"
-              exact
-              element={<SubscriptionDetails />}
-            />
-            <Route
-              path="locations/add"
-              exact
-              element={<AccountAddLocations />}
-            />
+            <Route path="my-subscriptions/:action/:orderId/:productId" exact element={<SubscriptionDetails />} />
+            <Route path="locations/add" exact element={<AccountAddLocations />} />
             <Route path="payments" exact element={<AccountPayments />} />
-            <Route
-              path="payments/edit_card_details"
-              element={<AccountPaymentsEditCardDetails />}
-            />
+            <Route path="payments/edit_card_details" element={<AccountPaymentsEditCardDetails />} />
             <Route path="reviews" element={<AccountReviews />} />
           </Route>
           <Route path="quick_order" element={<QuickOrder />} />
