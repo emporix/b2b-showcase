@@ -124,7 +124,7 @@ const TopNav = ({ title }) => {
           ? 'desktop_only_flex w-full md:h-36 absolute z-10'
           : title === ''
           ? 'desktop_only_flex h-36'
-          : 'w-full z-10'
+          : 'w-full z-10 mb-20 md:mb-0'
       }
     >
       <div className="desktop_only_flex px-4 pt-[76px] pb-8 w-full xl:px-24">

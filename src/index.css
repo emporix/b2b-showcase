@@ -44,10 +44,6 @@ code {
   height: 100dvh;
 }
 
-.home_service {
-  @apply bg-white w-full grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 py-14 px-4  md:px-6 xl:px-36 gap-y-12 md:gap-14 lg:gap-x-4 xl:gap-12;
-}
-
 .home_product {
   @apply bg-white w-full h-[704px] md:h-[746px]  text-black;
 }

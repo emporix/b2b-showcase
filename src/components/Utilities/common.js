@@ -4,38 +4,15 @@ import getSymbolFromCurrency from 'currency-symbol-map'
 import { useCurrency } from 'context/currency-context'
 
 export const LayoutBetween = ({ children, className }) => {
-  return (
-    <div
-      className={
-        'layout-between flex justify-between ' + (className ? className : '')
-      }
-    >
-      {children}
-    </div>
-  )
+  return <div className={'layout-between flex justify-between ' + (className ? className : '')}>{children}</div>
 }
 
 export const LayoutFlexStart = ({ children, className }) => {
-  return (
-    <div
-      className={
-        'flex flex-row justify-start items-center ' +
-        (className ? className : '')
-      }
-    >
-      {children}
-    </div>
-  )
+  return <div className={'flex flex-row justify-start items-center ' + (className ? className : '')}>{children}</div>
 }
 
 export const GridLayout = ({ children, className }) => {
-  return (
-    <div
-      className={'grid-layout grid grid-cols-1 ' + (className ? className : '')}
-    >
-      {children}
-    </div>
-  )
+  return <div className={'grid-layout grid grid-cols-1 ' + (className ? className : '')}>{children}</div>
 }
 
 export const Item = ({ children, className }) => {
@@ -50,9 +27,7 @@ export const Right = ({ children, className }) => {
 }
 
 export const Container = ({ children, className }) => {
-  return (
-    <div className={'flex ' + (className ? className : '')}>{children}</div>
-  )
+  return <div className={'flex ' + (className ? className : '')}>{children}</div>
 }
 export const MobileMDContainer = ({ children }) => {
   return <div className="md:hidden">{children}</div>
@@ -78,20 +53,20 @@ export const DesktopXLContainer = ({ children }) => {
 export const CurrencyBeforeValue = ({ value, currency }) => {
   const { activeCurrency } = useCurrency()
   return (
-    <>
+    <span className="whitespace-nowrap">
       {currency ? getSymbolFromCurrency(currency) : activeCurrency.symbol}{' '}
       {Number(value) ? Number(value).toFixed(2) : value}
-    </>
+    </span>
   )
 }
 
 export const CurrencyAfterValue = ({ value, currency }) => {
   const { activeCurrency } = useCurrency()
   return (
-    <>
+    <span className="whitespace-nowrap">
       {Number(value) ? Number(value).toFixed(2) : value}{' '}
       {currency ? getSymbolFromCurrency(currency) : activeCurrency.symbol}
-    </>
+    </span>
   )
 }
 

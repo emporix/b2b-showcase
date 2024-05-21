@@ -7,7 +7,6 @@ import Badge from '@mui/material/Badge'
 import AccountMenu from './accountmenu'
 import { HiChevronLeft, HiChevronRight, HiOutlineUserCircle, HiOutlineLogout } from 'react-icons/hi'
 import LayoutContext from '../../pages/context'
-import { LargePrimaryButton } from '../Utilities/button'
 import { pageMenuSelector, putCmsNavigation } from '../../redux/slices/pageReducer'
 import { addTenantToUrl, homeUrl, loginUrl } from '../../services/service.config'
 
@@ -173,7 +172,6 @@ const Navbar = () => {
         <div className="flex justify-between py-6 border-b last:border-b-0 text-xl">
           {t('language')}
           <select className="text-tinBlue appearance-none" onChange={(e) => setLanguage(e.target.value)}>
-            {console.log(languages)}
             {languages
               .sort((a, b) => a.localeCompare(b))
               .map((item) => (
@@ -211,7 +209,6 @@ const Navbar = () => {
         className="flex justify-between py-6 border-b text-xl cursor-pointer"
         onClick={() => parentMenuClicked(item.title, item.items, item.url)}
       >
-        {console.log(item)}
         {item.contentfulFieldName ? fields[item.contentfulFieldName] : item.title}
         <HiChevronRight size={18} className={item.items?.length ? 'h-8 w-8' : 'hidden'} />
       </li>
@@ -276,8 +273,6 @@ const Navbar = () => {
     } else {
       navigate(`/${tenant}/${url}`)
     }
-
-    console.log(title, items)
   }
   const handleOpenCart = () => {
     setShowCart(true)
