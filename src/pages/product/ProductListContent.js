@@ -128,6 +128,7 @@ const ProductListItems = ({ products, auth, displayType }) => {
                 rating={4}
                 productCount={8}
                 item={item}
+                stockLevel={17}
               />
             </div>
           )
@@ -144,6 +145,7 @@ const ProductListItems = ({ products, auth, displayType }) => {
                 rating={4}
                 productCount={8}
                 item={item}
+                stockLevel={17}
               />
             </div>
           )
@@ -160,6 +162,7 @@ const ProductListItems = ({ products, auth, displayType }) => {
                 rating={4}
                 productCount={8}
                 item={item}
+                stockLevel={17}
               />
             </div>
           )
@@ -203,6 +206,7 @@ const ProductListItems = ({ products, auth, displayType }) => {
                 rating={4}
                 productCount={8}
                 item={item}
+                stockLevel={17}
               />
             </div>
           )
@@ -219,6 +223,7 @@ const ProductListItems = ({ products, auth, displayType }) => {
                 rating={4}
                 productCount={8}
                 item={item}
+                stockLevel={17}
               />
             </div>
           )

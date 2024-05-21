@@ -140,8 +140,8 @@ export const CartMobileItem = ({ cartItem }) => {
             (cartItem.product.stock === 'Low'
               ? 'text-emporixGold'
               : cartItem.product.stock === 'In'
-              ? 'text-brightGreen '
-              : 'text-primaryBlue')
+                ? 'text-brightGreen '
+                : 'text-primaryBlue')
           }
         >
           {cartItem.product.stock} Stock
@@ -162,9 +162,9 @@ export const CartMobileItem = ({ cartItem }) => {
             price={
               Math.trunc(
                 cartItem.quantity *
-                  cartItem.product.price.originalAmount *
-                  1.2 *
-                  100
+                cartItem.product.price.originalAmount *
+                1.2 *
+                100
               ) / 100
             }
             caption="incl. VAT"
@@ -207,6 +207,11 @@ export const CartProductImageAndReadOnlyQuantity = ({ cartItem }) => {
 
 export const CartProductBasicInfo = ({ cart }) => {
   const { getLocalizedValue } = useLanguage()
+  const { cartAccount } = useCart()
+  const availabilities = cartAccount?.mixins?.generalAttributes?.availabilities || {}
+  const stockLevel = availabilities[cart?.product?.id]?.stockLevel
+
+
   return (
     <div className="cart-product-basic-info">
       <GridLayout className="gap-2">
@@ -222,16 +227,21 @@ export const CartProductBasicInfo = ({ cart }) => {
               (cart.product.stock === 'Low'
                 ? 'text-emporixGold'
                 : cart.product.stock === 'In'
-                ? 'text-brightGreen '
-                : 'text-primaryBlue')
+                  ? 'text-brightGreen '
+                  : 'text-primaryBlue')
             }
           >
-            {cart.product.stock} Stock
+            {stockLevel === 0 ? (
+              <span style={{color: 'red'}}>Out of Stock</span>
+            ) : (
+              <span style={{color: 'green'}}>Stock level : {stockLevel} </span>
+            )}
+
           </span>
           {/* <span className="cart-product-lead-time">Lead Time: 1 week</span> */}
         </div>
-      </GridLayout>
-    </div>
+      </GridLayout >
+    </div >
   )
 }
 export const CartProductPriceExcludeVat = ({ price, currency }) => {
@@ -343,7 +353,7 @@ export const CartVat = ({ value, taxPercentage, currency, taxValue }) => {
     </>
   )
 }
-export const CartShipingCost = ({shippingCost, currency}) => {
+export const CartShipingCost = ({ shippingCost, currency }) => {
   return (
     <>
       <span>Shipping Costs</span>
@@ -373,16 +383,23 @@ const CartRequestQuote = () => {
   )
 }
 const CartGoGuestCheckout = () => {
-    return (
-      <Link to={guestCheckoutUrl()} className="w-full">
-        <button className="cart-go-cart-btn py-[12px] px-[14px] bg-transparent rounded text-eerieBlack border border-gray80">
-          CONTINUE AS A GUEST
-        </button>
-      </Link>
-    )
-  }
+  return (
+    <Link to={guestCheckoutUrl()} className="w-full">
+      <button className="cart-go-cart-btn py-[12px] px-[14px] bg-transparent rounded text-eerieBlack border border-gray80">
+        CONTINUE AS A GUEST
+      </button>
+    </Link>
+  )
+}
 
-const CartGoCheckout = () => {
+const CartGoCheckout = ({ disabled }) => {
+  if (disabled)
+    return (
+      <button disabled={true} className="cart-go-checkout-btn py-[12px] px-[14px] bg-white rounded text-eerieBlack" style={{ cursor: 'not-allowed' }}>
+        GO TO CHECKOUT
+      </button>
+    )
+
   return (
     <Link to={checkoutUrl()} className="w-full">
       <button className="cart-go-checkout-btn py-[12px] px-[14px] bg-yellow rounded text-eerieBlack">
@@ -433,6 +450,18 @@ export const CartActionPanel = ({ action, showShipping }) => {
   const { cartAccount, shippingMethod } = useCart()
   const user = JSON.parse(localStorage.getItem(USER))
   const shippingCost = showShipping !== false ? getShippingCost(shippingMethod, cartAccount) : 0
+
+
+  const areAllProductsAvailable = () => {
+    const availabilities = cartAccount?.mixins?.generalAttributes?.availabilities || {}
+    const itemsWith0StockLevel = cartAccount.items.map(item => item.product.id).filter(productId => {
+      return availabilities && availabilities[productId]?.stockLevel < 1
+    }
+    )
+    window.console.log("Cart", itemsWith0StockLevel)
+    return itemsWith0StockLevel.length === 0
+  }
+
   return (
     <div className="cart-action-panel">
       <GridLayout className="gap-4">
@@ -490,11 +519,11 @@ export const CartActionPanel = ({ action, showShipping }) => {
         </CartActionRow>
 
         {showShipping !== false && (
-        <CartActionRow>
-          <LayoutBetween>
-            <CartShipingCost currency={cartAccount.currency} shippingCost={getShippingCost(shippingMethod, cartAccount)}/>
-          </LayoutBetween>
-        </CartActionRow>
+          <CartActionRow>
+            <LayoutBetween>
+              <CartShipingCost currency={cartAccount.currency} shippingCost={getShippingCost(shippingMethod, cartAccount)} />
+            </LayoutBetween>
+          </CartActionRow>
         )}
 
         <CartActionRow>
@@ -509,21 +538,21 @@ export const CartActionPanel = ({ action, showShipping }) => {
         </CartActionRow>
 
         {(action === undefined || action === true) && !localStorage.getItem(PROCUREMENT_SYSTEM_URL) ? (
-            
-            <>
-                <CartGoCheckout />
-                {!user && <CartGoGuestCheckout />}
-                <CartGoCart />
-                <CartRequestQuote />
-            </>
+
+          <>
+            <CartGoCheckout disabled={!areAllProductsAvailable()} />
+            {!user && <CartGoGuestCheckout />}
+            <CartGoCart />
+            <CartRequestQuote />
+          </>
         ) : (
           <></>
         )}
         {(action === undefined || action === true) && localStorage.getItem(PROCUREMENT_SYSTEM_URL) ? (
-            
-            <>
-                <CartGoProcurementSystem/>
-            </>
+
+          <>
+            <CartGoProcurementSystem />
+          </>
         ) : (
           <></>
         )}
@@ -548,7 +577,7 @@ const Cart = () => {
           ))}
         </GridLayout>
       </CartProductContent>
-      {<CartActionPanel showShipping={false}/>}
+      {<CartActionPanel showShipping={false} />}
     </>
   )
 }

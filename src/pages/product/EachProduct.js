@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useMemo } from 'react'
+import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import ReactStars from 'react-stars'
 import { useNavigate } from 'react-router-dom'
 import { TENANT } from '../../constants/localstorage'
@@ -11,6 +11,7 @@ import { trimImage } from '../../helpers/images'
 import { useAuth } from 'context/auth-provider'
 import { formatPrice } from 'helpers/price'
 import { useLanguage } from 'context/language-provider'
+import { api } from 'services/axios'
 
 const EachProduct = ({ item, available, rating, productCount }) => {
   const { isLoggedIn, userTenant } = useAuth()
@@ -18,6 +19,7 @@ const EachProduct = ({ item, available, rating, productCount }) => {
   const imageSrc = useMemo(() => {
     return item.media[0] === undefined ? '' : item.media[0]['url']
   }, [item])
+
 
   const price = useMemo(() => {
     return formatPrice(item, isLoggedIn)
@@ -27,17 +29,41 @@ const EachProduct = ({ item, available, rating, productCount }) => {
   const handleProductDetail = useCallback(() => {
     navigate(`/${userTenant}/product/details/${item.id}`)
   }, [userTenant, item.id])
+
+  const [stockLevel, setStockLevel] = useState(null)
+
+  useEffect(() => {
+    (async () => {
+      const sessionContextRes = await api.get(`session-context/${localStorage.getItem('tenant')}/me/context/`,)
+      const res = await api.post(`https://us-central1-develop-297605.cloudfunctions.net/getStockLevel`, {
+        productId: item.id,
+        warehouseId: sessionContextRes?.data?.context?.warehouse
+      })
+      setStockLevel(res.data)
+    })()
+  }, [])
+
+
   return (
     <div className="p-4" onClick={handleProductDetail}>
       <div className="w-full h-5  justify-between hidden lg:flex">
         {item.productType !== 'PARENT_VARIANT' && (
-          <div
-            className={
-              'text-limeGreen font-inter text-[14px]/[20px] font-medium float-right lg:float-none'
-            }
-          >
-            {available ? 'In Stock' : 'Out Of Stock'}
-          </div>
+          <>
+            <div
+              className={
+                'text-limeGreen font-inter text-[14px]/[20px] font-medium float-right lg:float-none'
+              }
+            >
+              {stockLevel && (
+                <>
+                  <div className={'text-black'}>
+                    Warehouse: {stockLevel.warehouseId}
+                  </div>
+                  Stock level: {stockLevel.stockLevel}
+                </>
+              )}
+            </div>
+          </>
         )}
         <div className="flex h-5 float-right lg:float-none">
           <ReactStars size={16} value={rating} color2={'#FBB13C'} />(
@@ -64,7 +90,7 @@ const EachProduct = ({ item, available, rating, productCount }) => {
         <img src={trimImage(`${imageSrc}`)} className="mx-auto h-full" />
       </div>
       <div className="mt-2 lg:mt-9 w-full font-inter">
-          <div className="text-left text-[14px]/[20px] font-normal leading-xs text-manatee">
+        <div className="text-left text-[14px]/[20px] font-normal leading-xs text-manatee">
           {item.code}
         </div>
         <div className="mt-2 text-left max-w-[240px] min-h-[60px] lg:h-12 text-[16px]/[24px] text-eerieBlack font-medium">
@@ -100,11 +126,11 @@ const EachProduct = ({ item, available, rating, productCount }) => {
                   <>
                     {/* <img src="/products/pencil.png" className="w-4 h-4 mt-1" /> */}
                     <div className="text-[22px]/[22px] lg:text-xl leading-[24px] font-bold ml-1">
-                        <div className='flex flex-col'>
-                          <CurrencyBeforeValue value={price} />
-                          <span className="text-xs font-normal text-manatee">
-                            (Excl. VAT)
-                          </span>
+                      <div className='flex flex-col'>
+                        <CurrencyBeforeValue value={price} />
+                        <span className="text-xs font-normal text-manatee">
+                          (Excl. VAT)
+                        </span>
                       </div>
                     </div>
                   </>
@@ -116,7 +142,7 @@ const EachProduct = ({ item, available, rating, productCount }) => {
               {price !== null ? (
                 <>
                   <CurrencyBeforeValue value={price} />
-                    <span className="text-xs font-normal text-manatee">
+                  <span className="text-xs font-normal text-manatee">
                     (Incl. VAT)
                   </span>
                 </>
@@ -133,7 +159,7 @@ const EachProduct = ({ item, available, rating, productCount }) => {
         <div>
           <LargePrimaryButton
             className="cta-button bg-yellow"
-            sx={{backgroundColor: '#FAC420 !important'}}
+            sx={{ backgroundColor: '#FAC420 !important' }}
             title={'VIEW VARIANTS'}
             onClick={handleProductDetail}
           />
