@@ -32,6 +32,7 @@
     "react-dropdown-select": "^4.9.0",
     "react-i18next": "^14.0.5",
     "react-icons": "^4.4.0",
+    "react-json-formatter": "^0.4.0",
     "react-phone-input-material-ui": "^2.17.4",
     "react-redux": "^8.0.2",
     "react-router-dom": "^6.3.0",

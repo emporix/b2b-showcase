@@ -1,8 +1,7 @@
 import React from 'react'
 
 const Winery = ({ props }) => {
-  const text =
-    props?.props?.data?.cmsFilteredPage?.page?.children[0]?.children[0]?.data
+  const text = props?.data?.cmsFilteredPage?.page?.children[0]?.children[0]?.data
       ?.st_text[0]?.content[0]?.content
 
   if (!text) {return}
