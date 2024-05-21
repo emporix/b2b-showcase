@@ -67,7 +67,7 @@ const MegaNav = ({ showMegaMenuContent, setShowMegaMenuContent }) => {
       ))}
 
       <button className="mega_menu_dropbtn">
-        <Link to="https://mach11.zendesk.com/hc/de-de" target="_blank">
+        <Link to={addTenantToUrl("helpcenter")}>
           <div>
             Help Center
           </div>

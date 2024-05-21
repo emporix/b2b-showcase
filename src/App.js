@@ -58,6 +58,7 @@ import ContentPage from './pages/content/ContentPage'
 
 import i18n from "i18next";
 import { initReactI18next } from "react-i18next";
+import HelpCenter from './pages/helpcenter'
 
 i18n
   .use(initReactI18next)
@@ -249,6 +250,7 @@ function App() {
           </Route>
           <Route path="quick_order" element={<QuickOrder />} />
           <Route path="aboutus" element={<AboutUs />} />
+          <Route path="helpcenter" element={<HelpCenter />} />
           <Route path="storefinder" element={<StoreFinder />} />
           <Route path="Content" element={<ContentOverview />} />
           <Route path="Inhalt" element={<ContentOverview />} />
