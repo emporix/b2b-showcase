@@ -248,7 +248,7 @@
 }
 
 .product-add-to-cart-btn {
-  @apply bg-primaryBlue text-[white] px-0 py-0 h-12 text-[14px] leading-[14px] lg:w-[250px] w-full lg:mt-0 mt-12;
+  @apply bg-primary text-[white] px-0 py-0 h-12 text-[14px] leading-[14px] lg:w-[250px] w-full lg:mt-0 mt-12;
 }
 .desktop-md {
   @apply hidden md:block;

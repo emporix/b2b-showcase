@@ -1,5 +1,6 @@
 .large-primary-btn {
-  @apply h-12 px-6 bg-primaryBlue text-white font-bold text-[14px] leading-[14px] tracking-[1px] hover:bg-highlight active:bg-primaryBlue w-full;
+  @apply h-12 px-6 rounded-xl bg-primary text-aliceBlue font-bold text-[14px] leading-[14px] tracking-[1px] hover:bg-highlight active:bg-primary w-full;
+  @apply transition-all duration-150 ease-in;
 }
 
 .large-primary-btn:disabled {
@@ -7,11 +8,11 @@
 }
 
 .medium-primary-btn {
-  @apply h-10 px-6 bg-primaryBlue text-white font-bold text-[14px] leading-[14px] tracking-[1px] hover:bg-highlight active:bg-primaryBlue;
+  @apply h-10 px-6 rounded-xl bg-primary text-aliceBlue font-bold text-sm hover:bg-highlight active:bg-highlight;
 }
 
 .medium-secondary-btn {
-  @apply h-10 px-6 bg-bgWhite text-tinBlue font-bold text-[14px] leading-[14px] tracking-[1px] hover:text-white active:text-white hover:bg-lightBlue active:bg-tinBlue w-full;
+  @apply h-10 px-6 rounded bg-transparent text-darkGray border border-darkGray font-bold text-sm hover:text-primary active:text-primary hover:border-primary active:border-primary;
 }
 
 .primary-blue-btn {

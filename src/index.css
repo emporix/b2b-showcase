@@ -137,25 +137,48 @@ code {
   cursor: pointer;
 }
 
-.cta-primary {
+.cta-primary,
+.cta-button {
   @apply cursor-pointer rounded-xl bg-primary hover:bg-highlight;
-  @apply text-aliceBlue text-lg font-semibold whitespace-nowrap uppercase;
-  @apply px-10 p-4;
+  @apply text-aliceBlue text-sm font-semibold whitespace-nowrap uppercase;
+  @apply px-10 py-4;
   @apply transition-all duration-150 ease-in;
 }
 
-.cta-button {
+.cta-primary-md {
+  @apply cursor-pointer rounded-xl bg-primary hover:bg-highlight;
+  @apply text-aliceBlue text-sm font-semibold whitespace-nowrap uppercase;
+  @apply px-4 py-2;
+  @apply transition-all duration-150 ease-in;
+}
+
+.cta-secondary {
+  @apply cursor-pointer rounded border border-eerieBlack bg-transparent hover:text-highlight hover:border-highlight;
+  @apply text-eerieBlack text-sm font-semibold whitespace-nowrap uppercase;
+  @apply px-10 py-4;
+  @apply transition-all duration-150 ease-in;
+}
+
+.cta-secondary-md {
+  @apply cursor-pointer rounded border border-eerieBlack bg-transparent hover:text-highlight hover:border-highlight;
+  @apply text-eerieBlack text-sm font-semibold whitespace-nowrap uppercase;
+  @apply px-4 py-2;
+  @apply transition-all duration-150 ease-in;
+}
+
+/* .cta-button {
+  @apply curosr-pointer rounded-xl
   cursor: pointer;
   border-radius: 0.75rem !important;
   color: #1f1f1f !important;
   font-size: 14px !important;
   line-height: 24px !important;
   font-weight: 600 !important;
-}
+} */
 
-.cta-button:hover {
+/* .cta-button:hover {
   background-color: #e03f58 !important;
-}
+} */
 
 .cta-button-checked {
   border-radius: 4px !important;

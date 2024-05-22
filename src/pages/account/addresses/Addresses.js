@@ -28,7 +28,7 @@ const Addresses = () => {
       setIsRemoving(false)
       setIsDialogOpen(false)
     }
-  }, [addressId])
+  }, [addressId, syncAddresses])
 
   const handleInitRemove = async (addressId) => {
     setIsDialogOpen(true)

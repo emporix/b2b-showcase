@@ -19,7 +19,7 @@ li.item-active {
 }
 
 .content-panel {
-  @apply flex-auto lg:w-[calc((100%-24px)*0.77+24px)];
+  @apply flex-auto w-full lg:w-[calc((100%-24px)*0.77+24px)];
 }
 /* 
 .left-menu-panel {
@@ -85,13 +85,13 @@ li.index-item-active {
   @apply w-24 h-24 rounded-[48px];
 }
 
-.add-new-photo {
+/* .add-new-photo {
   @apply text-[14px] leading-[18px] text-primaryBlue font-inter font-semibold underline;
-}
+} */
 
 .personal-info-content,
 .change-password-info-content {
-  @apply sm:w-[650px] gap-4 w-full;
+  @apply gap-4 w-full;
 }
 
 .form-item {
@@ -99,7 +99,7 @@ li.index-item-active {
 }
 
 .form-input-item {
-  @apply h-[38px] 2xl:w-[438px] xl:w-[438px] lg:w-[250px] rounded py-[7px] px-[13px] sm:w-[200px] w-full;
+  @apply h-[38px] w-full sm:w-[250px] md:w-[200px] lg:w-[250px] xl:w-[438px] 2xl:w-[438px] rounded py-[7px] px-[13px];
 }
 
 .border-gray {
@@ -118,9 +118,9 @@ li.index-item-active {
   @apply mt-6 sm:mt-0 h-12 w-full sm:w-[327px] text-tinBlue font-inter font-bold text-[14px] leading-[14px] bg-bgWhite;
 }
 
-.account-action-bar {
+/* .account-action-bar {
   @apply sm:flex justify-start gap-8 sm:flex-row-reverse;
-}
+} */
 
 .personal-and-summary-content-wrapper {
   @apply pb-4;
@@ -286,11 +286,11 @@ li.index-item-active {
 }
 
 .switch-item {
-  @apply !p-0 !w-[45px] !h-[24px] !rounded-[12px] !border border-gray;
+  @apply !p-0 !w-[45px] !h-[24px] !rounded-[12px] !border border-lightGray;
 }
 
 .switch-item .MuiButtonBase-root {
-  @apply !p-0 !w-4 !h-4 !bg-lightGray !rounded-[12px];
+  @apply !p-0 !w-4 !h-4 bg-lightGray !rounded-[12px];
 }
 
 .switch-item .MuiSwitch-thumb {
@@ -306,11 +306,11 @@ li.index-item-active {
 }
 
 .switch-item .Mui-checked .MuiSwitch-thumb {
-  @apply !bg-lightBlue;
+  @apply bg-primary;
 }
 
 .switch-item:has(.Mui-checked) {
-  @apply !bg-gray !border-lightBlue;
+  @apply bg-lightGray border-primary;
 }
 
 /* .account-recent-orders-wrapper {
