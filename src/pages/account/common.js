@@ -160,11 +160,7 @@ export const Status = ({ width, height, color, title }) => {
         width: `${width}px`,
         height: `${height}px`,
         fontSize: '10px',
-        backgroundColor: classNames(
-          title === 'SHIPPED'
-            ? `rgba(255, 168, 0, 0.2)`
-            : `rgba(75, 203, 103, 0.2)`
-        ),
+        backgroundColor: classNames(title === 'SHIPPED' ? `rgba(255, 168, 0, 0.2)` : `rgba(75, 203, 103, 0.2)`),
         color: `${color}`,
         padding: '8px 16px',
         fontWeight: 'bold',
@@ -221,7 +217,7 @@ const savedCartsList = [
 
 const MobileCartItem = ({ date, name, items, total }) => {
   return (
-    <div className="py-6 border-t border-lightGray">
+    <div className="py-6">
       <div className="flex justify-between">
         <span>{name}</span>
         <div className="">{items} items</div>
@@ -243,28 +239,16 @@ export const SavedCarts = ({ actions }) => {
         <Table sx={{ minWidth: 650 }}>
           <TableHead>
             <TableRow>
-              <TableCell
-                align="left"
-                className="grid-column-title"
-              >
+              <TableCell align="left" className="grid-column-title">
                 Date
               </TableCell>
-              <TableCell
-                align="left"
-                className="grid-column-title"
-              >
+              <TableCell align="left" className="grid-column-title">
                 Name
               </TableCell>
-              <TableCell
-                align="left"
-                className="grid-column-title"
-              >
+              <TableCell align="left" className="grid-column-title">
                 Items
               </TableCell>
-              <TableCell
-                align="left"
-                className="grid-column-title"
-              >
+              <TableCell align="left" className="grid-column-title">
                 Total
               </TableCell>
               <TableCell align="left"></TableCell>
@@ -272,11 +256,7 @@ export const SavedCarts = ({ actions }) => {
           </TableHead>
           <TableBody>
             {savedCartsList.map((row, index) => (
-              <TableRow
-                key={index}
-                sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-                className="!py-6"
-              >
+              <TableRow key={index} sx={{ '&:last-child td, &:last-child th': { border: 0 } }} className="!py-6">
                 <TableCell component="th" scope="row" className="!py-6">
                   {row.date}
                 </TableCell>
@@ -317,13 +297,7 @@ export const SavedCarts = ({ actions }) => {
           <div className="">Name</div>
         </div>
         {savedCartsList.map((rows, index) => (
-          <MobileCartItem
-            key={index}
-            name={rows.name}
-            date={rows.date}
-            items={rows.items}
-            total={rows.total}
-          />
+          <MobileCartItem key={index} name={rows.name} date={rows.date} items={rows.items} total={rows.total} />
         ))}
       </div>
     </div>

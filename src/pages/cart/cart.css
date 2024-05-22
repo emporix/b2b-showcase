@@ -7,16 +7,16 @@
 .cart-action-content {
   @apply gap-6 text-[14px] leading-[18px] font-semibold text-dodgerBlue;
 }
-.cart-head-item {
+/* .cart-head-item {
   @apply font-inter !font-semibold !text-eerieBlack !text-base !leading-[20px];
-}
-.cart-row-item {
+} */
+/* .cart-row-item {
   @apply !py-6;
 }
 
 .cart-row-item div {
   @apply !text-left !text-base;
-}
+} */
 
 .quantity-wrapper {
   @apply w-fit;

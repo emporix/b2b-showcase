@@ -5,11 +5,7 @@ import TableCell from '@mui/material/TableCell'
 import TableContainer from '@mui/material/TableContainer'
 import TableHead from '@mui/material/TableHead'
 import TableRow from '@mui/material/TableRow'
-import {
-  CurrencyBeforeValue,
-  GridLayout,
-  formatDate,
-} from '../../components/Utilities/common'
+import { CurrencyBeforeValue, GridLayout, formatDate } from '../../components/Utilities/common'
 
 const ProductInfo = ({ product }) => {
   return (
@@ -35,7 +31,7 @@ const PriceWithInfo = ({ price, includeVat = false, caption }) => {
   return (
     <div className="font-normal grid grid-cols-1 text-center">
       <div className="">{price && <CurrencyBeforeValue value={price} />}</div>
-      <div className="text-[12px] text-tinBlue">
+      <div className="text-xs text-tinBlue whitespace-nowrap">
         {caption ? caption : includeVat ? 'incl. VAT' : 'ex. VAT'}
       </div>
     </div>
@@ -78,21 +74,13 @@ const OrderDetails = ({ order }) => {
         <TableBody>
           {order.entries &&
             order.entries.map((entry) => (
-              <TableRow
-                key={entry.id}
-                sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-              >
+              <TableRow key={entry.id} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
                 <TableCell>
                   <ProductInfo product={entry.product} />
                 </TableCell>
                 <TableCell className="cart-row-item">
                   {entry.tax && entry.tax.lines[0] ? (
-                    <PriceWithInfo
-                      price={
-                        (entry.totalPrice - entry.totalDiscount.amount) /
-                        entry.effectiveQuantity
-                      }
-                    />
+                    <PriceWithInfo price={(entry.totalPrice - entry.totalDiscount.amount) / entry.effectiveQuantity} />
                   ) : (
                     '-'
                   )}
@@ -100,17 +88,13 @@ const OrderDetails = ({ order }) => {
                 <TableCell align="center">{entry.effectiveQuantity}</TableCell>
                 <TableCell className="cart-row-item">
                   {entry.tax && entry.tax.lines[0] ? (
-                    <PriceWithInfo
-                      price={entry.totalPrice - entry.totalDiscount.amount}
-                    />
+                    <PriceWithInfo price={entry.totalPrice - entry.totalDiscount.amount} />
                   ) : (
                     '-'
                   )}
                 </TableCell>
                 <TableCell className="cart-row-item">
-                  {order.deliveryWindow?.deliveryDate
-                    ? formatDate(order.deliveryWindow?.deliveryDate)
-                    : '-'}
+                  {order.deliveryWindow?.deliveryDate ? formatDate(order.deliveryWindow?.deliveryDate) : '-'}
                 </TableCell>
                 <TableCell className="cart-row-item">
                   <PriceWithInfo price={entry.totalDiscount.amount} />
@@ -118,11 +102,7 @@ const OrderDetails = ({ order }) => {
                 <TableCell className="cart-row-item">
                   {entry.tax && entry.tax.lines[0] ? (
                     <PriceWithInfo
-                    price={
-                      ((entry.totalPrice - entry.totalDiscount.amount) *
-                        entry.tax.lines[0].rate) /
-                      100
-                    }
+                      price={((entry.totalPrice - entry.totalDiscount.amount) * entry.tax.lines[0].rate) / 100}
                       caption={`${entry.tax.lines[0].rate}%`}
                     />
                   ) : (
@@ -134,9 +114,7 @@ const OrderDetails = ({ order }) => {
                     price={
                       entry.totalPrice -
                       entry.totalDiscount.amount +
-                      (+(entry.totalPrice - entry.totalDiscount.amount) *
-                        entry.tax.lines[0].rate) /
-                        100
+                      (+(entry.totalPrice - entry.totalDiscount.amount) * entry.tax.lines[0].rate) / 100
                     }
                     includeVat={true}
                   />

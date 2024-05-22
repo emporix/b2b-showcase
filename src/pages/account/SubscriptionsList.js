@@ -7,11 +7,8 @@ import TableCell from '@mui/material/TableCell'
 import TableBody from '@mui/material/TableBody'
 import { renderStatus } from './common'
 import { Link } from 'react-router-dom'
-import {
-  myAccountMySubscriptionsManage,
-} from '../../services/service.config'
+import { myAccountMySubscriptionsManage } from '../../services/service.config'
 import { formatDate } from '../../components/Utilities/common'
-
 
 export const SubscriptionsList = (props) => {
   const { subscriptions } = props
@@ -19,12 +16,18 @@ export const SubscriptionsList = (props) => {
   const [subsriptionProducts, setSubscriptionProducts] = useState([])
 
   useEffect(() => {
-    const extractedSubscriptions = subscriptions.map(subscription => subscription.entries.filter(entry => entry.product.mixins.subscription).map(subscriptionEntry => ({
-      id : subscription.id,
-      product : subscriptionEntry.product
-    }))).flatMap(arr => arr)
+    const extractedSubscriptions = subscriptions
+      .map((subscription) =>
+        subscription.entries
+          .filter((entry) => entry.product.mixins.subscription)
+          .map((subscriptionEntry) => ({
+            id: subscription.id,
+            product: subscriptionEntry.product,
+          }))
+      )
+      .flatMap((arr) => arr)
     setSubscriptionProducts(extractedSubscriptions)
-  }, [subscriptions])  
+  }, [subscriptions])
 
   return (
     <div className="md:mt-[60px]">
@@ -32,70 +35,36 @@ export const SubscriptionsList = (props) => {
         <Table sx={{ minWidth: 650 }}>
           <TableHead>
             <TableRow className="!py-6">
-            <TableCell
-                align="left"
-                className="font-inter !font-bold text-base"
-              >
-              </TableCell>
-              <TableCell
-                align="left"
-                className="font-inter !font-bold text-base"
-              >
+              <TableCell align="left" className="grid-column-title"></TableCell>
+              <TableCell align="left" className="grid-column-title">
                 Product name
               </TableCell>
-              <TableCell
-                align="left"
-                className="font-inter !font-bold text-base"
-              >
+              <TableCell align="left" className="grid-column-title">
                 Start date
               </TableCell>
-              <TableCell
-                align="left"
-                className="font-inter !font-bold text-base"
-              >
+              <TableCell align="left" className="grid-column-title">
                 End date
               </TableCell>
-              <TableCell
-                align="left"
-                className="font-inter !font-bold text-base"
-              >
+              <TableCell align="left" className="grid-column-title">
                 Billing period
               </TableCell>
-              <TableCell
-                align="left"
-                className="font-inter !font-bold text-base"
-              >
+              <TableCell align="left" className="grid-column-title">
                 Duration
               </TableCell>
-              <TableCell
-                align="left"
-                className="font-inter !font-bold text-base"
-              >
+              <TableCell align="left" className="grid-column-title">
                 Status
               </TableCell>
               <TableCell align="left" />
               <TableCell align="left" />
-              
             </TableRow>
           </TableHead>
           <TableBody>
             {subsriptionProducts.map((row) => (
-              <TableRow
-                key={row.id}
-                sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-              >
-                <TableCell
-                  component="th"
-                  scope="row"
-                  className="!font-bold !py-6"
-                >
-                  {row.product?.images[0]?.url ? <img src={row.product.images[0].url} height="64" width="64"/> : <></>}
+              <TableRow key={row.id} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
+                <TableCell component="th" scope="row" className="!font-bold !py-6">
+                  {row.product?.images[0]?.url ? <img src={row.product.images[0].url} height="64" width="64" /> : <></>}
                 </TableCell>
-                <TableCell
-                  component="th"
-                  scope="row"
-                  className="!font-bold !py-6"
-                >
+                <TableCell component="th" scope="row" className="!font-bold !py-6">
                   {row.product.name}
                 </TableCell>
                 <TableCell align="left" className="!py-6">
@@ -116,18 +85,14 @@ export const SubscriptionsList = (props) => {
                 <TableCell align="left" className="!py-6">
                   <div className="flex">
                     <div className="font-inter font-semibold text-[14px] underline">
-                      <Link to={`${myAccountMySubscriptionsManage()}manage/${row.id}/${row.product.id}`}>
-                        Manage 
-                      </Link>
+                      <Link to={`${myAccountMySubscriptionsManage()}manage/${row.id}/${row.product.id}`}>Manage</Link>
                     </div>
                   </div>
                 </TableCell>
                 <TableCell align="left" className="!py-6">
                   <div className="flex">
                     <div className="font-inter font-semibold text-[14px] underline">
-                    <Link to={`${myAccountMySubscriptionsManage()}view/${row.id}/${row.product.id}`}>
-                         View
-                      </Link>
+                      <Link to={`${myAccountMySubscriptionsManage()}view/${row.id}/${row.product.id}`}>View</Link>
                     </div>
                   </div>
                 </TableCell>

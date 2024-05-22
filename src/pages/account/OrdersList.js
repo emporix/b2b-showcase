@@ -6,10 +6,7 @@ import TableRow from '@mui/material/TableRow'
 import TableCell from '@mui/material/TableCell'
 import TableBody from '@mui/material/TableBody'
 import Status, { renderStatus } from './common'
-import {
-  CurrencyAfterValue,
-  formatDate,
-} from '../../components/Utilities/common'
+import { CurrencyAfterValue, formatDate } from '../../components/Utilities/common'
 import { Link, useNavigate } from 'react-router-dom'
 import {
   myAccountMyOrdersInvoiceUrl,
@@ -27,7 +24,7 @@ const OrderListMobile = ({ orders }) => {
   return (
     <>
       {orders.map((row) => (
-        <div key={row.id} className="py-6 border-t border-lightGray">
+        <div key={row.id} className="py-6">
           <div className="flex justify-between">
             <Status
               width={108}
@@ -40,9 +37,7 @@ const OrderListMobile = ({ orders }) => {
                 <Link to={`${myAccountMyOrdersViewUrl()}${row.id}`}>View</Link>
               </div>
               <div className="font-inter font-semibold text-[14px] underline ml-6">
-                <Link to={`${myAccountMyOrdersInvoiceUrl()}${row.id}`}>
-                  Invoice
-                </Link>
+                <Link to={`${myAccountMyOrdersInvoiceUrl()}${row.id}`}>Invoice</Link>
               </div>
               <div className="font-inter font-semibold text-[14px] underline ml-6">
                 <Link to={`${createReturnUrl()}${row.id}`}>Return</Link>
@@ -68,10 +63,7 @@ export const OrderList = (props) => {
   const [showAlreadySubmittedError, setError] = useState(false)
 
   const downloadInvoice = (order) => {
-    const invoiceUrl = order?.mixins?.invoice?.invoiceDocument.replace(
-      'mediaObject',
-      'customerMediaObject'
-    )
+    const invoiceUrl = order?.mixins?.invoice?.invoiceDocument.replace('mediaObject', 'customerMediaObject')
     const token = localStorage.getItem(ACCESS_TOKEN)
     axios({
       url: invoiceUrl,
@@ -110,7 +102,7 @@ export const OrderList = (props) => {
   )
 
   const getShippingCost = (row) => {
-    if(row && row.shipping && row.shipping.lines && row.shipping.lines.length > 0 && row.shipping.lines[0].amount) {
+    if (row && row.shipping && row.shipping.lines && row.shipping.lines.length > 0 && row.shipping.lines[0].amount) {
       return row.shipping.lines[0].amount
     }
     return 0
@@ -118,88 +110,57 @@ export const OrderList = (props) => {
 
   return (
     <div>
-      {showAlreadySubmittedError && (
-        <ReturnInfoStatus status="INTERNAL_ALREADY_SUBMITTED" />
-      )}
+      {showAlreadySubmittedError && <ReturnInfoStatus status="INTERNAL_ALREADY_SUBMITTED" />}
       <TableContainer className="desktop_only">
         <Table sx={{ minWidth: 650 }}>
           <TableHead>
             <TableRow className="!py-6">
-              <TableCell align="center" className="grid-column-title">
-                Order Number
-              </TableCell>
-              <TableCell align="center" className="grid-column-title">
-                Status
-              </TableCell>
-              <TableCell align="center" className="grid-column-title">
-                <div className="font-normal grid grid-cols-1 text-center">
-                  <div className="">
-                    Total with shipping cost
-                  </div>
-                  <div className="text-[12px]">
-                     incl. VAT
-                  </div>
+              <TableCell className="grid-column-title">Order Number</TableCell>
+              <TableCell className="grid-column-title">Status</TableCell>
+              <TableCell className="grid-column-title">
+                <div className="font-normal grid grid-cols-1">
+                  <div className="">Total with shipping cost</div>
+                  <div className="text-[12px]">incl. VAT</div>
                 </div>
               </TableCell>
-              <TableCell align="center" className="grid-column-title">
-                Exp. Delivery Date
-              </TableCell>
-              <TableCell align="center" className="grid-column-title">
-                Created
-              </TableCell>
-              <TableCell align="center" />
+              <TableCell className="grid-column-title">Exp. Delivery Date</TableCell>
+              <TableCell className="grid-column-title">Created</TableCell>
+              <TableCell />
             </TableRow>
           </TableHead>
           <TableBody>
             {orders.map((row) => (
-              <TableRow
-                key={row.id}
-                sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-              >
-                <TableCell
-                  component="th"
-                  scope="row"
-                  className="!font-bold !py-6"
-                >
+              <TableRow key={row.id} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
+                <TableCell component="th" scope="row" className="!font-bold !py-6">
                   {row.id}
                 </TableCell>
-                <TableCell align="center" className="!py-6">
-                  {renderStatus(row.status)}
-                </TableCell>
-                <TableCell align="center" className="!py-6">
+                <TableCell className="!py-6">{renderStatus(row.status)}</TableCell>
+                <TableCell className="!py-6">
                   <CurrencyAfterValue
-                    value={row.subTotalPrice + getShippingCost(row) + row.tax.lines.reduce((sum, el) => sum + el.amount, 0) }
+                    value={
+                      row.subTotalPrice + getShippingCost(row) + row.tax.lines.reduce((sum, el) => sum + el.amount, 0)
+                    }
                     currency={row.currency}
                   />
                 </TableCell>
-                <TableCell align="center" className="!py-6">
+                <TableCell className="!py-6">
                   {row.deliveryWindow?.deliveryDate ? formatDate(row.deliveryWindow?.deliveryDate) : '-'}
                 </TableCell>
-                <TableCell align="center" className="!py-6">
-                  {formatDate(row.created)}
-                </TableCell>
-                <TableCell align="center" className="!py-6">
+                <TableCell className="!py-6">{formatDate(row.created)}</TableCell>
+                <TableCell className="!py-6">
                   <div className="flex">
                     <div className="font-inter font-semibold text-[14px] underline">
-                      <Link to={`${myAccountMyOrdersViewUrl()}${row.id}`}>
-                        View
-                      </Link>
+                      <Link to={`${myAccountMyOrdersViewUrl()}${row.id}`}>View</Link>
                     </div>
                     <div className="font-inter font-semibold text-[14px] underline ml-6">
-                      <span
-                        onClick={() => handleCreateReturn(row.id)}
-                        className="cursor-pointer"
-                      >
+                      <span onClick={() => handleCreateReturn(row.id)} className="cursor-pointer">
                         Return
                       </span>
                     </div>
                     {invoiceAvailable && (
                       <div className="font-inter font-semibold text-[14px] underline ml-6">
                         {row?.mixins?.invoice?.invoiceDocument && (
-                          <a
-                            onClick={() => downloadInvoice(row)}
-                            className="download-invoice-link"
-                          >
+                          <a onClick={() => downloadInvoice(row)} className="download-invoice-link">
                             Download invoice
                           </a>
                         )}
