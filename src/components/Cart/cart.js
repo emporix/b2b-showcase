@@ -52,44 +52,44 @@ export const CartMobileItem = ({ cartItem }) => {
   const { incrementCartItemQty, decrementCartItemQty, setCartItemQty } = useCart()
   const { getLocalizedValue } = useLanguage()
   const availability = useSelector(availabilityDataSelector)
+  const { removeCartItem } = useCart()
 
-  const inStock = availability['k' + cartItem.id].availabile
+  const inStock = availability?.['k' + cartItem.product.id]?.available
 
   const { t } = useTranslation('page')
 
   return (
     <GridLayout className="gap-4 cart-for-mobile">
       <div className="flex gap-6">
-        <div className="w-[56px]">
+        <div className="w-1/2 sm:w-1/3">
           <CartProductImage className="cart-product-image-mobile" src={cartItem.product.src} />
         </div>
         <div className="flex-auto gap-4">
           <LayoutBetween>
             <GridLayout className="gap-[10px]">
-              <div className="cart-product-name">{getLocalizedValue(cartItem.product.name)}</div>
+              <div className="cart-product-name font-bold">{getLocalizedValue(cartItem.product.name)}</div>
               <div className="cart-product-sku-wrapper">
                 SKU:&nbsp;
                 <span className="cart-product-sku">{cartItem.product.code}</span>
               </div>
             </GridLayout>
             <div>
-              <svg width="10" height="11" viewBox="0 0 10 11" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path
-                  d="M2.8956 0.818182L4.94886 4.28835H5.02841L7.09162 0.818182H9.52273L6.41548 5.90909L9.59233 11H7.11648L5.02841 7.52486H4.94886L2.8608 11H0.394886L3.58168 5.90909L0.454545 0.818182H2.8956Z"
-                  fill="black"
-                />
-                <path d="M-0.0078125 13.7841H9.99503V14.7386H-0.0078125V13.7841Z" fill="black" />
-              </svg>
+              <div
+                className="cursor-pointer text-primary hover:text-highlight"
+                onClick={() => removeCartItem(cartItem)}
+              >
+                <HiOutlineXCircle size="2rem" />
+              </div>
             </div>
           </LayoutBetween>
           <GridLayout className="gap-2 mt-4">
             <span className="cart-product-mobile-info-wrapper">
               <span className="font-bold">Unit Price: </span>
-              <CurrencyBeforeValue value={cartItem.product.price.effectiveValue} />
+              <CurrencyBeforeValue value={cartItem.product.price.effectiveAmount} />
             </span>
             <span className="cart-product-mobile-info-wrapper">
               <span className="font-bold">Subtotal: : </span>
-              <CurrencyBeforeValue value={cartItem.product.price.effectiveValue * cartItem.quantity} />
+              <CurrencyBeforeValue value={cartItem.product.price.effectiveAmount * cartItem.quantity} />
             </span>
             <span className="cart-product-mobile-info-wrapper">
               <span className="font-bold">Discount: </span>
@@ -348,7 +348,7 @@ export const getTotalPrice = (cartAccount, shippingCost) => {
   return cartAccount?.subtotalAggregate ? cartAccount.subtotalAggregate.grossValue + +shippingCost : 0
 }
 
-export const CartActionPanel = ({ action, showShipping }) => {
+export const CartActionPanel = ({ action, showShipping, hideGoCart }) => {
   const { cartAccount, shippingMethod } = useCart()
   const shippingCost = showShipping !== false ? getShippingCost(shippingMethod) : 0
   return (
@@ -421,7 +421,7 @@ export const CartActionPanel = ({ action, showShipping }) => {
         {(action === undefined || action === true) && !localStorage.getItem(PROCUREMENT_SYSTEM_URL) ? (
           <>
             <CartGoCheckout />
-            <CartGoCart />
+            {hideGoCart ? null : <CartGoCart />}
             <CartRequestQuote />
           </>
         ) : (

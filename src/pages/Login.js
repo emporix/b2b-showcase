@@ -136,7 +136,11 @@ const Login = () => {
                 <input type="checkbox" className="w-[18px] h-[18px]" />
                 <label className="pl-2 text-[14px]/[22px]">Remember me</label>
               </div>
-              <a className="text-[16px]/[24px] text-dodgerBlue cursor-pointer">Forgot Password</a>
+              <Link to={`/${userTenant}/reset-password`}>
+                <span className="text-[16px]/[24px] text-dodgerBlue cursor-pointer hover:text-highlight">
+                  Forgot Password
+                </span>
+              </Link>
             </LayoutBetween>
             <Box className="w-full mt-8">
               <button className="w-full cta-button bg-yellow h-12 !text-white" type="submit">
@@ -167,7 +171,7 @@ const Login = () => {
             <Box className="mx-auto">
               <span className="text-[146x]/[24px] text-eerieBlack">Don't have an account?</span>
               <Link to={signupUrl()}>
-                <span className="pl-2 font-semibold hover:cursor-pointer text-[146x]/[24px] font-medium text-dodgerBlue hover:text-highlight">
+                <span className="pl-2 hover:cursor-pointer text-[146x]/[24px] font-medium text-dodgerBlue hover:text-highlight">
                   Sign Up
                 </span>
               </Link>

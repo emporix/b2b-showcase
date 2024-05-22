@@ -214,10 +214,12 @@ function App() {
           <Route path="product/:maincategory/:subcategory/" exact element={<ProductList />} />
           <Route path="product/:maincategory/:subcategory/:category" exact element={<ProductList />} />
           <Route path="product/details/:productId" element={<ProductDetails />} />
+
           <Route path="login" exact element={<Login />} />
           <Route path="reset-password" exact element={<ResetPassword />} />
           <Route path="signup" exact element={<Signup />} />
           <Route path="brand" exact element={<Brand />} />
+
           <Route path="cart" exact element={<Cart />} />
           <Route path="create-return/:orderId" exact element={<CreateReturn />} />
           <Route path="checkout" exact element={<Checkout />} />
@@ -228,6 +230,7 @@ function App() {
           <Route path="payment-callback" exact element={<PaymentCallback />} />
           <Route path="saferpay-callback" exact element={<SaferpayPaymentCallback />} />
           <Route path="quote" exact element={<QuoteCart />} />
+
           <Route
             path="my-account"
             element={
@@ -268,13 +271,16 @@ function App() {
             <Route path="payments/edit_card_details" element={<AccountPaymentsEditCardDetails />} />
             <Route path="reviews" element={<AccountReviews />} />
           </Route>
+
           <Route path="quick_order" element={<QuickOrder />} />
           <Route path="aboutus" element={<AboutUs />} />
           <Route path="storefinder" element={<StoreFinder />} />
+
           <Route path="Content" element={<ContentOverview />} />
           <Route path="Inhalt" element={<ContentOverview />} />
           <Route path="Content/:contentName" element={<ContentPage />} />
           <Route path="Inhalt/:contentName" element={<ContentPage />} />
+
           <Route path="*" element={<NoPage />} />
         </Route>
         <Route path="*" element={<Home />} />
