@@ -1,13 +1,10 @@
-import React, { useCallback, useEffect, useState } from 'react'
+import React, { useCallback, useState } from 'react'
 import AccountLayout from '../AccountLayout'
 import { useUserAddressess } from 'context/user-addresss-context'
 import AddressItem from './AddressItem'
 import { useNavigate } from 'react-router-dom'
 import { deleteAddress } from 'services/user/adresses'
-import {
-  MediumPrimaryButton,
-  PrimaryBlueButton,
-} from 'components/Utilities/button'
+import { MediumPrimaryButton, PrimaryBlueButton } from 'components/Utilities/button'
 import ConfirmationDialog from './ConfirmationDialog'
 import { CircularProgress } from '@mui/material'
 
@@ -17,9 +14,6 @@ const Addresses = () => {
   const [addressId, setAddressId] = useState(null)
   const { addresses, syncAddresses } = useUserAddressess()
   const navigate = useNavigate()
-  useEffect(() => {
-    console.log('addresses', addresses)
-  }, [addresses])
 
   const handleEdit = (addressId) => {
     navigate(`${addressId}`)
@@ -43,14 +37,7 @@ const Addresses = () => {
   return (
     <AccountLayout page="Addresses">
       {addresses.map((a) => {
-        return (
-          <AddressItem
-            key={a.id}
-            address={a}
-            onEdit={handleEdit}
-            onRemove={handleInitRemove}
-          />
-        )
+        return <AddressItem key={a.id} address={a} onEdit={handleEdit} onRemove={handleInitRemove} />
       })}
       <div className="flex flex-row-reverse mt-8">
         <MediumPrimaryButton

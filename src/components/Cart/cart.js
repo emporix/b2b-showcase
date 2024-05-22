@@ -2,12 +2,7 @@ import React, { useState, useContext } from 'react'
 import './cart.css'
 import '../index.css'
 import { Link } from 'react-router-dom'
-import {
-  CurrencyBeforeValue,
-  GridLayout,
-  LayoutBetween,
-  LayoutFlexStart,
-} from 'components/Utilities/common'
+import { CurrencyBeforeValue, GridLayout, LayoutBetween, LayoutFlexStart } from 'components/Utilities/common'
 import Quantity from 'components/Utilities/quantity/quantity'
 import { cartUrl, checkoutUrl, quoteUrl } from 'services/service.config'
 import { useCart } from 'context/cart-provider'
@@ -19,20 +14,15 @@ import { availabilityDataSelector } from 'redux/slices/availabilityReducer'
 import LayoutContext from '../../pages/context'
 import { HiOutlineArrowCircleLeft, HiOutlineXCircle } from 'react-icons/hi'
 
-const CartProductContent = ({ children }) => {
-  return <div className="cart-product-content">{children}</div>
-}
+import { useTranslation } from 'react-i18next'
+
 export const CartProductCaption = () => {
   return <div className="h-10 border-bottom cart-product-caption">Products</div>
 }
 export const CartProductImage = ({ src, className }) => {
   return (
     <div className="rounded-xl w-full">
-      <img
-        src={src}
-        className={'rounded-xl w-full' + (className ? className : '')}
-        alt="product from cart"
-      />
+      <img src={src} className={'rounded-xl w-full' + (className ? className : '')} alt="product from cart" />
     </div>
   )
 }
@@ -42,9 +32,7 @@ export const PriceExcludeVAT = ({ price, caption }) => {
       <div className="">
         <CurrencyBeforeValue value={price} />
       </div>
-      <div className="caption">
-        {caption === undefined ? 'ex. VAT' : caption}
-      </div>
+      <div className="caption">{caption === undefined ? 'ex. VAT' : caption}</div>
     </div>
   )
 }
@@ -55,76 +43,53 @@ export const PriceExcludeVAT1 = ({ price, caption }) => {
       <div className="price">
         <CurrencyBeforeValue value={price} />
       </div>
-      <div className="caption">
-        {caption === undefined ? 'ex. VAT' : caption}
-      </div>
+      <div className="caption">{caption === undefined ? 'ex. VAT' : caption}</div>
     </div>
   )
 }
 
 export const CartMobileItem = ({ cartItem }) => {
-  const { incrementCartItemQty, decrementCartItemQty, setCartItemQty } =
-    useCart()
+  const { incrementCartItemQty, decrementCartItemQty, setCartItemQty } = useCart()
   const { getLocalizedValue } = useLanguage()
   const availability = useSelector(availabilityDataSelector)
 
-  const inStock = availability['k' + cartItem.id].stockLevel
+  const inStock = availability['k' + cartItem.id].availabile
+
+  const { t } = useTranslation('page')
 
   return (
-    <GridLayout className="gap-4">
+    <GridLayout className="gap-4 cart-for-mobile">
       <div className="flex gap-6">
         <div className="w-[56px]">
-          <CartProductImage
-            className="cart-product-image-mobile"
-            src={cartItem.product.src}
-          />
+          <CartProductImage className="cart-product-image-mobile" src={cartItem.product.src} />
         </div>
         <div className="flex-auto gap-4">
           <LayoutBetween>
             <GridLayout className="gap-[10px]">
-              <div className="cart-product-name">
-                {getLocalizedValue(cartItem.product.name)}
-              </div>
+              <div className="cart-product-name">{getLocalizedValue(cartItem.product.name)}</div>
               <div className="cart-product-sku-wrapper">
                 SKU:&nbsp;
-                <span className="cart-product-sku">
-                  {cartItem.product.code}
-                </span>
+                <span className="cart-product-sku">{cartItem.product.code}</span>
               </div>
             </GridLayout>
             <div>
-              <svg
-                width="10"
-                height="11"
-                viewBox="0 0 10 11"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-              >
+              <svg width="10" height="11" viewBox="0 0 10 11" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path
                   d="M2.8956 0.818182L4.94886 4.28835H5.02841L7.09162 0.818182H9.52273L6.41548 5.90909L9.59233 11H7.11648L5.02841 7.52486H4.94886L2.8608 11H0.394886L3.58168 5.90909L0.454545 0.818182H2.8956Z"
                   fill="black"
                 />
-                <path
-                  d="M-0.0078125 13.7841H9.99503V14.7386H-0.0078125V13.7841Z"
-                  fill="black"
-                />
+                <path d="M-0.0078125 13.7841H9.99503V14.7386H-0.0078125V13.7841Z" fill="black" />
               </svg>
             </div>
           </LayoutBetween>
           <GridLayout className="gap-2 mt-4">
             <span className="cart-product-mobile-info-wrapper">
               <span className="font-bold">Unit Price: </span>
-              <CurrencyBeforeValue
-                value={cartItem.product.price.effectiveValue}
-              />
+              <CurrencyBeforeValue value={cartItem.product.price.effectiveValue} />
             </span>
             <span className="cart-product-mobile-info-wrapper">
               <span className="font-bold">Subtotal: : </span>
-              <CurrencyBeforeValue
-                value={
-                  cartItem.product.price.effectiveValue * cartItem.quantity
-                }
-              />
+              <CurrencyBeforeValue value={cartItem.product.price.effectiveValue * cartItem.quantity} />
             </span>
             <span className="cart-product-mobile-info-wrapper">
               <span className="font-bold">Discount: </span>
@@ -132,13 +97,7 @@ export const CartMobileItem = ({ cartItem }) => {
             </span>
             <span className="cart-product-mobile-info-wrapper">
               <span className="font-bold">VAT: </span>
-              <CurrencyBeforeValue
-                value={
-                  Math.trunc(
-                    cartItem.product.price.originalAmount * 0.2 * 100
-                  ) / 100
-                }
-              />
+              <CurrencyBeforeValue value={Math.trunc(cartItem.product.price.originalAmount * 0.2 * 100) / 100} />
             </span>
           </GridLayout>
         </div>
@@ -146,11 +105,11 @@ export const CartMobileItem = ({ cartItem }) => {
       <div className="cart-product-stock-wrapper flex">
         <span
           className={
-            ' text-brightGreen font-inter font-bold cart-product-stock w-[80px] ' +
+            ' text-brightGreen font-bold cart-product-stock w-[80px] ' +
             (inStock ? 'text-limeGreen' : 'text-primaryBlue')
           }
         >
-          {inStock} Stock
+          {inStock ? t('in_stock') : t('out_stock')}
         </span>
         <span className="">Est. delivery time: 3 days</span>
       </div>
@@ -165,14 +124,7 @@ export const CartMobileItem = ({ cartItem }) => {
         </div>
         <div className="!font-bold">
           <PriceExcludeVAT1
-            price={
-              Math.trunc(
-                cartItem.quantity *
-                  cartItem.product.price.originalAmount *
-                  1.2 *
-                  100
-              ) / 100
-            }
+            price={Math.trunc(cartItem.quantity * cartItem.product.price.originalAmount * 1.2 * 100) / 100}
             caption="incl. VAT"
           />
         </div>
@@ -182,8 +134,7 @@ export const CartMobileItem = ({ cartItem }) => {
 }
 
 const CartProductImageAndQuantity = ({ cartItem }) => {
-  const { incrementCartItemQty, decrementCartItemQty, setCartItemQty } =
-    useCart()
+  const { incrementCartItemQty, decrementCartItemQty, setCartItemQty } = useCart()
   return (
     <div className="cart-product-image-and-quantity">
       <GridLayout className="gap-4">
@@ -204,9 +155,7 @@ export const CartProductImageAndReadOnlyQuantity = ({ cartItem }) => {
     <div className="cart-product-image-and-quantity">
       <GridLayout className="gap-11">
         <CartProductImage src={cartItem.product.src} />
-        <div className="cart-product-sku-wrapper">
-          Quantity: {cartItem.quantity}
-        </div>
+        <div className="cart-product-sku-wrapper">Quantity: {cartItem.quantity}</div>
       </GridLayout>
     </div>
   )
@@ -215,14 +164,14 @@ export const CartProductImageAndReadOnlyQuantity = ({ cartItem }) => {
 export const CartProductBasicInfo = ({ cart }) => {
   const { getLocalizedValue } = useLanguage()
   const availability = useSelector(availabilityDataSelector)
-  const inStock = availability['k' + cart.product.id].stockLevel
+  const inStock = availability['k' + cart.product.id].available
+
+  const [t] = useTranslation('page')
 
   return (
     <div className="cart-product-basic-info">
       <GridLayout className="gap-2">
-        <div className="cart-product-name">
-          {getLocalizedValue(cart.product.name)}
-        </div>
+        <div className="cart-product-name">{getLocalizedValue(cart.product.name)}</div>
         {/* <div className="cart-product-sku-wrapper">
           SKU:&nbsp;
           <span className="cart-product-sku">{cart.product.code}</span>
@@ -230,11 +179,10 @@ export const CartProductBasicInfo = ({ cart }) => {
         <div className="cart-product-stock-wrapper">
           <span
             className={
-              ' text-brightGreen font-inter font-bold cart-product-stock ' +
-              (inStock ? 'text-limeGreen' : 'text-primaryBlue')
+              ' text-brightGreen font-bold cart-product-stock ' + (inStock ? 'text-limeGreen' : 'text-primaryBlue')
             }
           >
-            {inStock} Stock
+            {inStock ? t('in_stock') : t('out_stock')}
           </span>
           {/* <span className="cart-product-lead-time">Lead Time: 1 week</span> */}
         </div>
@@ -260,10 +208,7 @@ export const CartProductInfo = ({ cartItem }) => {
       <div className="gap-11 flex justify-between flex-col h-full">
         <CartProductBasicInfo cart={cartItem} />
         {cartItem.price.currency && cartItem.itemTaxInfo && (
-          <CartProductPriceExcludeVat
-            price={cartItem.itemTaxInfo[0].netValue}
-            currency={cartItem.price.currency}
-          />
+          <CartProductPriceExcludeVat price={cartItem.itemTaxInfo[0].netValue} currency={cartItem.price.currency} />
         )}
       </div>
       <GridLayout className="gap-[22px]"></GridLayout>
@@ -291,15 +236,8 @@ const CartProductWrapper = ({ cartItem }) => {
   const { removeCartItem } = useCart()
 
   return (
-    <div
-      className="cart-product-wrapper"
-      onMouseEnter={() => setIsHover(true)}
-      onMouseLeave={() => setIsHover(false)}
-    >
-      <div
-        className="cart-product-wrapper-btn"
-        onClick={() => removeCartItem(cartItem)}
-      >
+    <div className="cart-product-wrapper" onMouseEnter={() => setIsHover(true)} onMouseLeave={() => setIsHover(false)}>
+      <div className="cart-product-wrapper-btn" onClick={() => removeCartItem(cartItem)}>
         <HiOutlineXCircle size="2rem" />
       </div>
 
@@ -332,14 +270,11 @@ export const CartSubTotalIncludeVat = ({ grossValue, currency }) => {
 }
 
 export const CartVat = ({ value, taxPercentage, currency, taxValue }) => {
-  const effectiveTaxValue = taxValue
-    ? taxValue
-    : (value * (taxPercentage / 100)).toFixed(2)
+  const effectiveTaxValue = taxValue ? taxValue : (value * (taxPercentage / 100)).toFixed(2)
   return (
     <>
       <span>
-        VAT {taxPercentage}% of{' '}
-        <CurrencyBeforeValue value={value} currency={currency} />
+        VAT {taxPercentage}% of <CurrencyBeforeValue value={value} currency={currency} />
       </span>
       <span className="whitespace-nowrap">
         <CurrencyBeforeValue value={effectiveTaxValue} currency={currency} />
@@ -410,25 +345,19 @@ export const getShippingCost = (shippingMethod) => {
 }
 
 export const getTotalPrice = (cartAccount, shippingCost) => {
-  return cartAccount?.subtotalAggregate
-    ? cartAccount.subtotalAggregate.grossValue + +shippingCost
-    : 0
+  return cartAccount?.subtotalAggregate ? cartAccount.subtotalAggregate.grossValue + +shippingCost : 0
 }
 
 export const CartActionPanel = ({ action, showShipping }) => {
   const { cartAccount, shippingMethod } = useCart()
-  const shippingCost =
-    showShipping !== false ? getShippingCost(shippingMethod) : 0
+  const shippingCost = showShipping !== false ? getShippingCost(shippingMethod) : 0
   return (
     <div className="cart-action-panel standard_box_shadow">
       <GridLayout className="gap-4">
         <CartActionRow>
           <LayoutBetween>
             {cartAccount.subtotalAggregate?.netValue && (
-              <CartSubTotalExcludeVat
-                value={cartAccount.subtotalAggregate.netValue}
-                currency={cartAccount.currency}
-              />
+              <CartSubTotalExcludeVat value={cartAccount.subtotalAggregate.netValue} currency={cartAccount.currency} />
             )}
           </LayoutBetween>
         </CartActionRow>
@@ -436,14 +365,10 @@ export const CartActionPanel = ({ action, showShipping }) => {
         {cartAccount.totalDiscount?.amount > 0 && (
           <CartActionRow>
             <LayoutBetween>
-              <span className="font-semibold text-green-600">
-                Discount amount
-              </span>
+              <span className="font-semibold text-green-600">Discount amount</span>
               <span className="font-semibold text-green-600">
                 <CurrencyBeforeValue
-                  value={
-                    Math.trunc(cartAccount.totalDiscount.amount * 100) / 100
-                  }
+                  value={Math.trunc(cartAccount.totalDiscount.amount * 100) / 100}
                   currency={cartAccount.totalDiscount.currency}
                 />
               </span>
@@ -471,23 +396,16 @@ export const CartActionPanel = ({ action, showShipping }) => {
 
         <CartActionRow>
           <LayoutBetween>
-            {cartAccount?.subtotalAggregate &&
-              cartAccount?.subtotalAggregate.grossValue && (
-                <CartSubTotalIncludeVat
-                  grossValue={getTotalPrice(cartAccount, 0)}
-                  currency={cartAccount.currency}
-                />
-              )}
+            {cartAccount?.subtotalAggregate && cartAccount?.subtotalAggregate.grossValue && (
+              <CartSubTotalIncludeVat grossValue={getTotalPrice(cartAccount, 0)} currency={cartAccount.currency} />
+            )}
           </LayoutBetween>
         </CartActionRow>
 
         {showShipping !== false && (
           <CartActionRow>
             <LayoutBetween>
-              <CartShipingCost
-                currency={cartAccount.currency}
-                shippingCost={getShippingCost(shippingMethod)}
-              />
+              <CartShipingCost currency={cartAccount.currency} shippingCost={getShippingCost(shippingMethod)} />
             </LayoutBetween>
           </CartActionRow>
         )}
@@ -495,16 +413,12 @@ export const CartActionPanel = ({ action, showShipping }) => {
         <CartActionRow>
           <div className="cart-total-price-wrapper">
             <LayoutBetween>
-              <CartTotalPrice
-                totalValue={getTotalPrice(cartAccount, shippingCost)}
-                currency={cartAccount.currency}
-              />
+              <CartTotalPrice totalValue={getTotalPrice(cartAccount, shippingCost)} currency={cartAccount.currency} />
             </LayoutBetween>
           </div>
         </CartActionRow>
 
-        {(action === undefined || action === true) &&
-        !localStorage.getItem(PROCUREMENT_SYSTEM_URL) ? (
+        {(action === undefined || action === true) && !localStorage.getItem(PROCUREMENT_SYSTEM_URL) ? (
           <>
             <CartGoCheckout />
             <CartGoCart />
@@ -513,8 +427,7 @@ export const CartActionPanel = ({ action, showShipping }) => {
         ) : (
           <></>
         )}
-        {(action === undefined || action === true) &&
-        localStorage.getItem(PROCUREMENT_SYSTEM_URL) ? (
+        {(action === undefined || action === true) && localStorage.getItem(PROCUREMENT_SYSTEM_URL) ? (
           <>
             <CartGoProcurementSystem />
           </>
@@ -539,18 +452,14 @@ const Cart = () => {
         >
           <HiOutlineArrowCircleLeft size="2rem" />
         </span>
-        <span className="cart-caption-font ml-4"> My Cart</span>
-        <span className="cart-caption-font ml-auto">
-          {cartAccount?.items.length || 0} items
-        </span>
+        <span className="cart-caption-font ml-4">My Cart</span>
+        <span className="cart-caption-font ml-auto">{cartAccount?.items.length || 0} items</span>
       </LayoutFlexStart>
-      <CartProductContent>
-        <GridLayout className="gap-4">
-          {cartAccount?.items.map((cartItem, idx) => (
-            <CartProductWrapper key={cartItem.id + idx} cartItem={cartItem} />
-          ))}
-        </GridLayout>
-      </CartProductContent>
+      <GridLayout className="gap-4">
+        {cartAccount?.items.map((cartItem, idx) => (
+          <CartProductWrapper key={cartItem.id + idx} cartItem={cartItem} />
+        ))}
+      </GridLayout>
       {<CartActionPanel showShipping={false} />}
     </>
   )

@@ -60,22 +60,6 @@ code {
   @apply flex lg:space-x-6;
 }
 
-.left-menu-panel {
-  @apply flex-auto lg:w-[calc((100%-24px)*0.23)] hidden lg:block;
-}
-
-.main-left-menu-panel {
-  @apply flex-auto lg:w-[calc((100%-24px)*0.23)] w-full;
-}
-
-.main-content-panel {
-  @apply flex-auto lg:w-[calc((100%-24px)*0.77+24px)] lg:block hidden;
-}
-
-.content-panel {
-  @apply flex-auto lg:w-[calc((100%-24px)*0.77+24px)] w-full;
-}
-
 .login_container {
   @apply w-full h-[100dvh];
 }
@@ -191,10 +175,6 @@ input[type='checkbox'] {
 .MuiButtonBase-root.MuiRadio-root.MuiRadio-colorDefault.PrivateSwitchBase-root.MuiRadio-root.MuiRadio-colorDefault.Mui-checked.MuiRadio-root.MuiRadio-colorDefault
   span {
   background-color: #e9154b !important;
-}
-
-.grey-rounded-container {
-  @apply bg-aliceBlue rounded;
 }
 
 .grid-column-title {

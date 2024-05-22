@@ -90,7 +90,7 @@ const Navbar = () => {
         <div className="pt-12 pb-8 items-center ">
           {user ? (
             <>
-              <div className="h-[75px] border-y w-full justify-between flex text-tinBlue text-center items-center font-inter ">
+              <div className="h-[75px] border-y w-full justify-between flex text-tinBlue text-center items-center">
                 <div
                   className="flex cursor-pointer hover:text-primary"
                   onClick={() => navigate(`/${tenant}/my-account`)}
@@ -155,7 +155,11 @@ const Navbar = () => {
         {user && (
           <div className="flex justify-between py-6 border-b last:border-b-0 text-xl">
             {t('site')}
-            <select className="text-tinBlue appearance-none" onChange={(e) => handleSiteChange(e.target.value)}>
+            <select
+              value={currentSiteObject.code}
+              className="text-tinBlue appearance-none"
+              onChange={(e) => handleSiteChange(e.target.value)}
+            >
               {sites
                 .filter((s) => s.active)
                 .sort((a, b) => a.code.localeCompare(b.code))
@@ -171,11 +175,15 @@ const Navbar = () => {
         )}
         <div className="flex justify-between py-6 border-b last:border-b-0 text-xl">
           {t('language')}
-          <select className="text-tinBlue appearance-none" onChange={(e) => setLanguage(e.target.value)}>
+          <select
+            value={currentLanguage}
+            className="text-tinBlue appearance-none"
+            onChange={(e) => setLanguage(e.target.value)}
+          >
             {languages
               .sort((a, b) => a.localeCompare(b))
               .map((item) => (
-                <option key={item} value={item} selected={currentLanguage === item}>
+                <option key={item} value={item}>
                   {langMap[item]}
                 </option>
               ))}

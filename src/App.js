@@ -39,7 +39,7 @@ import AccountReturns from 'pages/account/AccountReturns'
 import AccountReturnDetails from './pages/account/AccountReturnDetails'
 import ReturnsProvider from 'context/returns-provider'
 import UserAddressProvider from 'context/user-addresss-context'
-import MyDiscounts from 'pages/account/MyDiscounts'
+import AccountMyDiscounts from 'pages/account/AccountMyDiscounts'
 import Addresses from 'pages/account/addresses/Addresses'
 import AddressEdit from 'pages/account/addresses/AddressEdit'
 import AccountMySubscriptions from 'pages/account/AccountMySubscriptions'
@@ -95,6 +95,8 @@ i18n.use(initReactI18next).init({
         currency: 'Currency',
       },
       account: {
+        account: 'My Account',
+        signout: 'Sign Out',
         personal: 'Personal Details',
         company: 'Company',
         phone: 'Phone',
@@ -144,6 +146,8 @@ i18n.use(initReactI18next).init({
         currency: 'Währung',
       },
       account: {
+        account: 'Mein Konto',
+        signout: 'Abmelden',
         personal: 'Personal Details',
         company: 'Company',
         phone: 'Phone',
@@ -221,7 +225,7 @@ function App() {
             <Route path="my-orders" exact element={<AccountMyOrders />} />
             <Route path="my-subscriptions" exact element={<AccountMySubscriptions />} />
             <Route path="my-quotes" exact element={<AccountMyQuotes />} />
-            <Route path="discounts" exact element={<MyDiscounts />} />
+            <Route path="discounts" exact element={<AccountMyDiscounts />} />
 
             <Route path="my-quotes/:quoteId" element={<AccountMyQuoteDetails />} />
             <Route path="my-orders/view/:orderId" exact element={<AccountMyOrdersView />} />
