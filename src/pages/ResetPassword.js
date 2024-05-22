@@ -1,9 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
-import {
-  GridLayout,
-  Container,
-} from '../components/Utilities/common'
+import { GridLayout, Container } from '../components/Utilities/common'
 import { Heading2, Heading4 } from '../components/Utilities/typography'
 import Box from '@mui/material/Box'
 import { homeUrl, signupUrl } from '../services/service.config'
@@ -57,10 +54,7 @@ const ResetPassword = () => {
         <Container className="w-full items-center text-center text-eerieBlack font-bold text-7xl ">
           <Container className="mx-auto">
             <Link to={homeUrl} className="flex">
-              <Logo
-                size={'w-[78px] h-[86px] mr-5'}
-                text={'px-4 flex text-eerieBlack text-[48px]'}
-              />
+              <Logo size={'w-[78px] h-[86px] mr-5'} text={'px-4 flex text-eerieBlack text-[48px]'} />
             </Link>
           </Container>
         </Container>
@@ -82,7 +76,9 @@ const ResetPassword = () => {
                 required
                 className="border rounded border-gray80 w-full px-3 py-2 mt-2"
               />
-              {(!password || password.length < 6) && <h6 style={{ color: 'red' }}>Password must have at least 6 characters</h6>}
+              {(!password || password.length < 6) && (
+                <h6 style={{ color: 'red' }}>Password must have at least 6 characters</h6>
+              )}
             </Box>
             <Box className="!pt-6 w-full text-black text-base">
               <label className="pb-2 text-[14px]/[22px]">Repeat your password</label>
@@ -95,17 +91,20 @@ const ResetPassword = () => {
                 required
                 className="border rounded border-gray80 w-full px-3 py-2 mt-2"
               />
-              {(!confirmPassword || confirmPassword.length <6) && <h6 style={{ color: 'red' }}>Password must have at least 6 characters</h6>}
-              {password && confirmPassword && confirmPassword !== password && <h6 style={{ color: 'red' }}>Passwords must be the same</h6>}
+              {(!confirmPassword || confirmPassword.length < 6) && (
+                <h6 style={{ color: 'red' }}>Password must have at least 6 characters</h6>
+              )}
+              {password && confirmPassword && confirmPassword !== password && (
+                <h6 style={{ color: 'red' }}>Passwords must be the same</h6>
+              )}
               {!token && <h6 style={{ color: 'red' }}>Token query param must be provided</h6>}
             </Box>
-            <Box className="w-full !pt-8">
+            <Box className="w-full mt-8">
               <LargePrimaryButton
                 className="w-full cta-button bg-yellow h-12 !text-white"
-                disabled={!token && !loading && !password || !confirmPassword || confirmPassword !== password}
+                disabled={(!token && !loading && !password) || !confirmPassword || confirmPassword !== password}
                 title="Reset your Password"
-              >
-              </LargePrimaryButton>
+              ></LargePrimaryButton>
             </Box>
           </form>
         </GridLayout>
