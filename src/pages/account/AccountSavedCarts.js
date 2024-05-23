@@ -94,16 +94,15 @@ export const SavedCarts = () => {
   const customerId = user.id
   const [savedCartsList, setSavedCartsList] = useState([])
 
-  const getApprovals = useCallback(async () => {
-    const fetchedPendingApprovals = await approvalService.getPendingAndDeclinedApprovals()
-    setSavedCartsList(fetchedPendingApprovals)
-  })
-
   const shouldNavigateToCheckout = (row) => {
     return row.approver.userId === customerId && row.status === 'PENDING'
   }
 
   useEffect(() => {
+    const getApprovals = async () => {
+      const fetchedPendingApprovals = await approvalService.getPendingAndDeclinedApprovals()
+      setSavedCartsList(fetchedPendingApprovals)
+    }
     getApprovals()
   }, [])
 

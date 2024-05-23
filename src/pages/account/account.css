@@ -248,7 +248,7 @@ li.index-item-active {
 } */
 
 .SavedCarts-Mobile-Header {
-  @apply py-[5px] mb-[10px] font-inter font-bold;
+  @apply py-[5px] mb-[10px] font-bold;
 }
 
 .label {
@@ -261,7 +261,7 @@ li.index-item-active {
 }
 
 .company-input {
-  @apply w-full rounded h-[38px] py-[7px] px-[13px] font-inter font-normal;
+  @apply w-full rounded h-[38px] py-[7px] px-[13px] font-normal;
 }
 
 .company-label {
@@ -269,7 +269,7 @@ li.index-item-active {
 }
 
 .sub-label {
-  @apply font-inter font-normal text-[14px] leading-[21px];
+  @apply font-normal text-[14px] leading-[21px];
 }
 
 .company-info {

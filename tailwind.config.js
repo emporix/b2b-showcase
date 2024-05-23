@@ -1,11 +1,15 @@
 /** @type {import("tailwindcss").Config} */
 const plugin = require('tailwindcss/plugin')
+const defaultTheme = require('tailwindcss/defaultTheme')
 
 module.exports = {
   mode: 'jit',
   content: ['./src/**/*.{js,jsx,ts,tsx}', './public/**/*.html'],
   theme: {
     extend: {
+      fontFamily: {
+        sans: ['Inter', ...defaultTheme.fontFamily.sans],
+      },
       screens: {
         xs: '480px',
         sm: '640px',
@@ -54,6 +58,9 @@ module.exports = {
       addUtilities({
         '.standard-box-shadow': {
           boxShadow: 'rgba(100, 100, 111, 0.2) 0px 7px 29px 0px',
+        },
+        '.text-balance': {
+          textWrap: 'balance',
         },
       })
     }),

@@ -292,9 +292,15 @@ export const SavedCarts = ({ actions }) => {
       </TableContainer>
 
       <div className="mobile_only">
-        <div className="flex py-[5px] justify-between SavedCarts-Mobile-Header">
-          <div>Date</div>
-          <div className="">Name</div>
+        <div className="flex py-1 mb-2 flex-col text-manatee">
+          <div className="flex justify-between">
+            <span>Name</span>
+            <span>Items</span>
+          </div>
+          <div className="flex justify-between">
+            <span>Total</span>
+            <span>Date</span>
+          </div>
         </div>
         {savedCartsList.map((rows, index) => (
           <MobileCartItem key={index} name={rows.name} date={rows.date} items={rows.items} total={rows.total} />

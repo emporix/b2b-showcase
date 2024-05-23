@@ -3,7 +3,7 @@
 @tailwind utilities;
 
 body {
-  @apply bg-bgGradient font-inter;
+  @apply bg-bgGradient;
   margin: 0;
   min-width: 375px;
   background-blend-mode: screen;
