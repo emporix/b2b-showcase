@@ -33,7 +33,6 @@ const Quantity = ({
         className="quantity-input_screen"
         value={value}
         onChange={(ev) => {
-          window.console.log(ev.target.value)
           if (!ev.target.value) {
             onChange(1)
           } else if (!isNaN(ev.target.value)) {
