@@ -1,32 +1,14 @@
 import React, { useContext, useEffect, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
-import {
-  AiOutlineClose,
-  AiOutlineMail,
-  AiOutlineMenu,
-  AiOutlineSearch,
-  AiOutlineShoppingCart,
-} from 'react-icons/ai'
+import { AiOutlineClose, AiOutlineMail, AiOutlineMenu, AiOutlineSearch, AiOutlineShoppingCart } from 'react-icons/ai'
 import { CgNotes } from 'react-icons/cg'
 import { useDispatch, useSelector } from 'react-redux'
 import Badge from '@mui/material/Badge'
 import AccountMenu from './accountmenu'
-import {
-  HiChevronLeft,
-  HiChevronRight,
-  HiOutlineUserCircle,
-} from 'react-icons/hi'
+import { HiChevronLeft, HiChevronRight, HiOutlineUserCircle, HiOutlineLogout } from 'react-icons/hi'
 import LayoutContext from '../../pages/context'
-import { LargePrimaryButton } from '../Utilities/button'
-import {
-  pageMenuSelector,
-  putCmsNavigation,
-} from '../../redux/slices/pageReducer'
-import {
-  addTenantToUrl,
-  homeUrl,
-  loginUrl,
-} from '../../services/service.config'
+import { pageMenuSelector, putCmsNavigation } from '../../redux/slices/pageReducer'
+import { addTenantToUrl, homeUrl, loginUrl } from '../../services/service.config'
 
 import { CurrencyBeforeValue } from 'components/Utilities/common'
 import { useSites } from 'context/sites-provider'
@@ -38,11 +20,11 @@ import { useCart } from 'context/cart-provider'
 import { useCurrency } from 'context/currency-context'
 import { getLocalizedCmsNavigation } from 'services/content/navigation.service'
 import { useTranslation } from 'react-i18next'
-import NavDropdown from './NavDropdown'
+import NavDropdown from '../Utilities/dropdown/NavDropdown'
 
 const Navbar = () => {
-  const { userTenant: tenant } = useAuth()
-  const { sites, onSiteChange, currentSite, currentSiteObject } = useSites()
+  const { userTenant: tenant, logout } = useAuth()
+  const { sites, onSiteChange, currentSiteObject } = useSites()
   const { languages, currentLanguage, setLanguage } = useLanguage()
   const { user } = useAuth()
   const { quotesTotal } = useQuotes()
@@ -62,75 +44,106 @@ const Navbar = () => {
   const currencyChangeHandler = async (value, site) => {
     updateCurrency(value, site)
   }
-  const cmsNavigationData = async () => {
-    const result = await getLocalizedCmsNavigation(currentLanguage)
-    const cmsNavigation = result.data?.cmsNavigation
-    if (!cmsNavigation) {
-      return
-    }
 
-    let contentEntries = cmsNavigation
-      .filter(
-        (i) =>
-          i.seoRoute?.startsWith('/Inhalt') ||
-          i.seoRoute?.startsWith('/Content')
-      )
-      .filter(
-        (i) =>
-          !i.label.toLowerCase().startsWith('inhalt') &&
-          !i.label.toLowerCase().startsWith('content')
-      )
-      .map((i) => {
-        return {
-          title: i.label,
-          url: i.seoRoute.startsWith('/')
-            ? i.seoRoute.substring(1)
-            : i.seoRoute,
-          key: i.caasDocumentId,
-        }
-      })
-
-    dispatch(
-      putCmsNavigation([
-        {
-          title: t('content'),
-          key: 'content',
-          url: 'inhalt',
-          items: contentEntries,
-        },
-      ])
-    )
+  const langMap = {
+    de: 'Deutsch',
+    en: 'English',
   }
 
   useEffect(() => {
+    const cmsNavigationData = async () => {
+      const result = await getLocalizedCmsNavigation(currentLanguage)
+      const cmsNavigation = result.data?.cmsNavigation
+      if (!cmsNavigation) {
+        return
+      }
+
+      let contentEntries = cmsNavigation
+        .filter((i) => i.seoRoute?.startsWith('/Inhalt') || i.seoRoute?.startsWith('/Content'))
+        .filter((i) => !i.label.toLowerCase().startsWith('inhalt') && !i.label.toLowerCase().startsWith('content'))
+        .map((i) => {
+          return {
+            title: i.label,
+            url: i.seoRoute.startsWith('/') ? i.seoRoute.substring(1) : i.seoRoute,
+            key: i.caasDocumentId,
+          }
+        })
+
+      dispatch(
+        putCmsNavigation([
+          {
+            title: t('content'),
+            key: 'content',
+            url: 'inhalt',
+            items: contentEntries,
+          },
+        ])
+      )
+    }
+
     cmsNavigationData()
-  }, [currentLanguage])
+  }, [currentLanguage, dispatch, t])
 
   const ParentBoard = () => {
     return (
       <>
         <div className="pt-12 pb-8 items-center ">
           {user ? (
-            <div className="h-[75px] border-y w-full justify-between flex text-gray text-center items-center font-inter ">
-              <div className="flex">
-                <HiOutlineUserCircle size={25} />
-                <div className="pl-2">{user.username}</div>
+            <>
+              <div className="h-[75px] border-y w-full justify-between flex text-tinBlue text-center items-center">
+                <div
+                  className="flex cursor-pointer hover:text-primary"
+                  onClick={() => navigate(`/${tenant}/my-account`)}
+                >
+                  <HiOutlineUserCircle size={24} />
+                  <div className="pl-2">{user.username}</div>
+                </div>
+                <div className="flex ml-auto justify-center items-center gap-4">
+                  <div className="text-gray">
+                    <AiOutlineMail size={24} />
+                  </div>
+                  <div>
+                    {quotesTotal !== 0 ? (
+                      <Badge badgeContent={quotesTotal} color="error">
+                        <CgNotes size={24} className="cursor-pointer" onClick={handleOpenQuotes} />
+                      </Badge>
+                    ) : (
+                      <CgNotes size={24} className="cursor-pointer" onClick={handleOpenQuotes} />
+                    )}
+                  </div>
+                  <div className="flex cursor-pointer" onClick={handleOpenCart}>
+                    {cartTotal !== 0 ? (
+                      <Badge badgeContent={cartTotal} color="error">
+                        <AiOutlineShoppingCart size={24} />
+                      </Badge>
+                    ) : (
+                      <AiOutlineShoppingCart size={24} />
+                    )}
+                    {/* <div id="cart-value" className="pl-3 text-gray flex">
+                    <CurrencyBeforeValue value={cartTotalPrice} />
+                  </div> */}
+                  </div>
+                </div>
               </div>
               <div>
-                <AiOutlineMail size={20} />
+                <div
+                  className="cursor-pointer flex justify-center mt-4 text-primary hover:text-highlight"
+                  onClick={logout}
+                >
+                  <HiOutlineLogout size={24} />
+                  {t('signout')}
+                </div>
               </div>
-            </div>
+            </>
           ) : (
-            <div className="w-full h-12 text-sm text-center items-center text-white">
-              <Link to={loginUrl()}>
-                <LargePrimaryButton
-                  className="!bg-primary"
-                  title="Login | Register"
-                />
+            <div className="w-full">
+              <Link to={loginUrl()} className="cta-primary inline-block w-full text-sm md:w-auto">
+                <span>{`${t('login')} | ${t('register')}`}</span>
               </Link>
             </div>
           )}
         </div>
+
         <div className="w-full">
           <ul>
             {menuList.map((item, index) => (
@@ -138,10 +151,15 @@ const Navbar = () => {
             ))}
           </ul>
         </div>
+
         {user && (
-          <div className=" flex justify-between py-6 border-b last:border-b-0 text-xl">
-            Site
-            <select className="text-tinBlue appearance-none">
+          <div className="flex justify-between py-6 border-b last:border-b-0 text-xl">
+            {t('site')}
+            <select
+              value={currentSiteObject.code}
+              className="text-tinBlue appearance-none"
+              onChange={(e) => handleSiteChange(e.target.value)}
+            >
               {sites
                 .filter((s) => s.active)
                 .sort((a, b) => a.code.localeCompare(b.code))
@@ -155,21 +173,27 @@ const Navbar = () => {
             </select>
           </div>
         )}
-        <div className=" flex justify-between py-6 border-b last:border-b-0 text-xl">
-          Language
-          <select className="text-tinBlue appearance-none">
-            <option value="Engish">English</option>
-            <option value="Italian">Italian</option>
-            <option value="French">French</option>
+        <div className="flex justify-between py-6 border-b last:border-b-0 text-xl">
+          {t('language')}
+          <select
+            value={currentLanguage}
+            className="text-tinBlue appearance-none"
+            onChange={(e) => setLanguage(e.target.value)}
+          >
+            {languages
+              .sort((a, b) => a.localeCompare(b))
+              .map((item) => (
+                <option key={item} value={item}>
+                  {langMap[item]}
+                </option>
+              ))}
           </select>
         </div>
         <div className=" flex justify-between py-6 border-b last:border-b-0 text-xl">
-          Currency
+          {t('currency')}
           <select
             value={activeCurrency.code !== undefined ? activeCurrency.code : ''}
-            onChange={(e) =>
-              currencyChangeHandler(e.target.value, currentSiteObject)
-            }
+            onChange={(e) => currencyChangeHandler(e.target.value, currentSiteObject)}
             className="text-tinBlue appearance-none"
           >
             {currencyList.map((currency) => {
@@ -190,16 +214,11 @@ const Navbar = () => {
     return (
       <li
         key={item.title}
-        className=" flex justify-between py-6 border-b text-xl"
-        onClick={() => parentMenuClicked(item.title, item.items)}
+        className="flex justify-between py-6 border-b text-xl cursor-pointer"
+        onClick={() => parentMenuClicked(item.title, item.items, item.url)}
       >
-        {item.contentfulFieldName
-          ? fields[item.contentfulFieldName]
-          : item.title}
-        <HiChevronRight
-          size={18}
-          className={item.items?.length ? 'h-8 w-8' : 'hidden'}
-        />
+        {item.contentfulFieldName ? fields[item.contentfulFieldName] : item.title}
+        <HiChevronRight size={18} className={item.items?.length ? 'h-8 w-8' : 'hidden'} />
       </li>
     )
   }
@@ -212,8 +231,8 @@ const Navbar = () => {
           <Link to={addTenantToUrl(item.url)}>
             <li
               key={item.title}
-              className=" flex justify-between items-center pb-4  text-base text-eerieBlack"
-              onClick={() => parentMenuClicked(item.title, item.items)}
+              className="flex justify-between items-center pb-4 text-base text-eerieBlack cursor-pointer"
+              onClick={() => parentMenuClicked(item.title, item.items, item.url)}
             >
               {item.title}
             </li>
@@ -221,8 +240,8 @@ const Navbar = () => {
         ) : (
           <li
             key={item.title}
-            className=" flex justify-between items-center pb-4 text-base text-eerieBlack"
-            onClick={() => parentMenuClicked(item.title, item.items)}
+            className="flex justify-between items-center pb-4 text-base text-eerieBlack cursor-pointer"
+            onClick={() => parentMenuClicked(item.title, item.items, item.url)}
           >
             {item.title}
             <HiChevronRight size={20} className={'h-8 w-8'} />
@@ -236,16 +255,14 @@ const Navbar = () => {
     return (
       <>
         <div
-          className="w-full h-fit flex text-center items-center mt-12 pb-6 text-sm"
+          className="w-full h-fit flex text-center items-center mt-12 mb-6 text-sm cursor-pointer"
           onClick={() => setDisplaySubItems(false)}
         >
           <HiChevronLeft size={20} className="h-12 w-8 pr-1" />
-          Back
+          {t('back')}
         </div>
-        <div className=" flex justify-between py-6 border-b text-xl">
-          {title}
-        </div>
-        <div className=" flex justify-between py-6 text-xl px-12">
+        <div className="flex justify-between py-6 border-b text-xl">{title}</div>
+        <div className="flex justify-between py-6 text-xl px-12">
           <ul>
             {subMenuItems.map((item, index) => (
               <SubMenu key={index} item={item} />
@@ -256,11 +273,13 @@ const Navbar = () => {
     )
   }
 
-  const parentMenuClicked = (title, items) => {
-    if (items.length) {
+  const parentMenuClicked = (title, items, url) => {
+    if (items?.length > 0) {
       setTitle(title)
       setDisplaySubItems(true)
       setSubMenuItems([...items])
+    } else {
+      navigate(`/${tenant}/${url}`)
     }
   }
   const handleOpenCart = () => {
@@ -272,7 +291,7 @@ const Navbar = () => {
   }
   // create a function for toggle mobile nav
   const handleNavOpen = () => {
-    setOpen(!open)
+    setOpen((current) => !current)
   }
   const handleSiteChange = async (e) => {
     await onSiteChange(e.target.value)
@@ -286,11 +305,7 @@ const Navbar = () => {
   const { fields } = useContentful()
   useEffect(() => {
     setCartTotal(cartAccount.items.length || 0)
-    if (
-      cartAccount &&
-      cartAccount.totalPrice &&
-      cartAccount.totalPrice.amount
-    ) {
+    if (cartAccount && cartAccount.totalPrice && cartAccount.totalPrice.amount) {
       setCartTotalPrice(cartAccount.subTotalPrice.amount)
     } else {
       setCartTotalPrice(0)
@@ -315,10 +330,10 @@ const Navbar = () => {
                   text: item.name,
                   value: item.code,
                 }))}
-              onChangeHandler={handleSiteChange}
-              currentValue={currentSiteObject.name}
+              onChangeHandler={(e) => handleSiteChange(e.target.value)}
+              currentValue={currentSiteObject.code}
             >
-              <span className="world-icon absolute h-4 w-4 text-white"></span>
+              <span className="world-icon absolute h-4 w-4 text-white"> </span>
             </NavDropdown>
           </li>
           <li className="mr-4">
@@ -341,12 +356,8 @@ const Navbar = () => {
                 text: item.symbol,
                 value: item.code,
               }))}
-              onChangeHandler={(e) =>
-                currencyChangeHandler(e.target.value, currentSiteObject)
-              }
-              currentValue={
-                activeCurrency.symbol !== undefined ? activeCurrency.symbol : ''
-              }
+              onChangeHandler={(e) => currencyChangeHandler(e.target.value, currentSiteObject)}
+              currentValue={activeCurrency.code !== undefined ? activeCurrency.code : ''}
             />
           </li>
         </ul>
@@ -370,13 +381,13 @@ const Navbar = () => {
             </li>
             <li className="px-2">
               <a className="hover:text-emporixGold" href={`/${tenant}/login`}>
-                Login
+                {t('login')}
               </a>
             </li>
             |
             <li className="px-2">
               <a className="hover:text-emporixGold" href={`/${tenant}/signup`}>
-                Sign Up
+                {t('signup')}
               </a>
             </li>
           </ul>
@@ -389,18 +400,10 @@ const Navbar = () => {
             <li className="px-4 pt-[2px]">
               {quotesTotal !== 0 ? (
                 <Badge badgeContent={quotesTotal} color="error">
-                  <CgNotes
-                    size={16}
-                    className="cursor-pointer"
-                    onClick={handleOpenQuotes}
-                  />
+                  <CgNotes size={16} className="cursor-pointer" onClick={handleOpenQuotes} />
                 </Badge>
               ) : (
-                <CgNotes
-                  size={16}
-                  className="cursor-pointer"
-                  onClick={handleOpenQuotes}
-                />
+                <CgNotes size={16} className="cursor-pointer" onClick={handleOpenQuotes} />
               )}
             </li>
             |
@@ -414,10 +417,7 @@ const Navbar = () => {
               )}
 
               <div className="pl-[17.5px] text-white flex">
-                <CurrencyBeforeValue
-                  currency={cartCurrency}
-                  value={cartTotalPrice}
-                />
+                <CurrencyBeforeValue currency={cartCurrency} value={cartTotalPrice} />
               </div>
             </li>
             |
@@ -437,36 +437,31 @@ const Navbar = () => {
         </div>
 
         <div className="w-1/2 flex justify-end gap-8">
+          {/* TODO: Link to Search Screen? */}
           <div className="mobile_only">
             <AiOutlineSearch size={20} />
           </div>
-          <div className="mobile_only_flex cursor-pointer">
-            {!open ? <AiOutlineMenu size={20} onClick={handleNavOpen} /> : null}
+          <div className="mobile_only_flex">
+            {!open ? (
+              <button onClick={handleNavOpen}>
+                <AiOutlineMenu size={20} />
+              </button>
+            ) : null}
             {/* absolut mobile navigation */}
             <div
-              className={
-                !open
-                  ? 'hidden'
-                  : ' text-black absolute top-0 left-0 w-full  h-screen bg-white p-4 text-center font-medium overflow-y-auto'
-              }
+              className={`text-black fixed inset-0 bg-white p-4 text-center font-medium overflow-y-auto transform-all opacity-0 -translate-y-full duration-500 ease-out ${
+                open ? 'translate-y-0 opacity-100' : ''
+              }`}
             >
               <div className="h-10 justify-between flex">
                 <div className="flex">
                   <Link to={loginUrl()} className="flex">
                     <img src="/img/n11logo.png" className="" alt=""></img>
-                    {/* <div className="px-4 text-[25px] font-medium items-center">
-                                        <span>{fields.companyNameLabel}</span>
-                                    </div> */}
                   </Link>
                 </div>
-                <div
-                  className="flex text-center items-center"
-                  onClick={handleNavOpen}
-                >
-                  <span className="pr-4">Close</span>
-                  <span className="text-xl">&#10006;</span>
-                  {/* <AiOutlineClose size={25}/> */}
-                </div>
+                <button className="flex text-center items-center pr-4" onClick={handleNavOpen}>
+                  <AiOutlineClose size={25} />
+                </button>
               </div>
               {!displaySubItems ? <ParentBoard /> : <SubBoard />}
             </div>

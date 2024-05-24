@@ -15,34 +15,24 @@ import { USER } from 'constants/localstorage'
 
 const MobileCartItem = ({ date, name, items, total }) => {
   return (
-    <div className="py-6 border-t border-lightGray">
+    <div className="py-6">
       <div className="flex justify-between">
         <span>{name}</span>
         <div className="flex">
-          <div className="font-inter font-semibold text-[14px] underline">
-            Edit
-          </div>
-          <div className="font-inter font-semibold text-[14px] underline ml-6">
-            Cancel
-          </div>
+          <div className="font-semibold text-[14px] underline">Edit</div>
+          <div className="font-semibold text-[14px] underline ml-6">Cancel</div>
         </div>
       </div>
       <div className="pt-2">{items} items</div>
       <div className="pt-2">{date}</div>
-      <div className="font-inter font-bold pt-2">{total}</div>
+      <div className="font-bold pt-2">{total}</div>
     </div>
   )
 }
 
 const LeftChevron = () => {
   return (
-    <svg
-      width="7"
-      height="10"
-      viewBox="0 0 7 10"
-      fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-    >
+    <svg width="7" height="10" viewBox="0 0 7 10" fill="none" xmlns="http://www.w3.org/2000/svg">
       <path
         d="M6.125 5.21484C6.37109 4.96875 6.37109 4.55859 6.125 4.28516L2.40625 0.566406C2.13281 0.320312 1.72266 0.320312 1.47656 0.566406L0.847656 1.19531C0.601562 1.46875 0.601562 1.87891 0.847656 2.125L3.5 4.77734L0.847656 7.40234C0.601562 7.64844 0.601562 8.05859 0.847656 8.33203L1.47656 8.93359C1.72266 9.20703 2.13281 9.20703 2.40625 8.93359L6.125 5.21484Z"
         fill="#0380F3"
@@ -54,40 +44,19 @@ const LeftChevron = () => {
 export const renderStatus = (status) => {
   switch (status) {
     case 'PENDING': {
-      return (
-        <ApprovalStatus
-          status={status}
-          bgColor={'rgba(255, 168, 0, 0.2)'}
-          textColor={'#FFA800'}
-        />
-      )
+      return <ApprovalStatus status={status} bgColor={'rgba(255, 168, 0, 0.2)'} textColor={'#FFA800'} />
     }
     case 'APPROVED': {
-      return (
-        <ApprovalStatus
-          status={status}
-          bgColor={'rgba(40, 164, 67, 0.15)'}
-          textColor={'rgba(40, 164, 67, 1)'}
-        />
-      )
+      return <ApprovalStatus status={status} bgColor={'rgba(40, 164, 67, 0.15)'} textColor={'rgba(40, 164, 67, 1)'} />
     }
     default: {
-      return (
-        <ApprovalStatus
-          status={status}
-          bgColor={'rgba(243, 3, 3, 0.15)'}
-          textColor={'rgba(243, 3, 3, 1)'}
-        />
-      )
+      return <ApprovalStatus status={status} bgColor={'rgba(243, 3, 3, 0.15)'} textColor={'rgba(243, 3, 3, 1)'} />
     }
   }
 }
 
 export const calculateTotalPrice = (approval) => {
-  return (
-    approval.resource.subtotalAggregate.grossValue +
-    approval.details.shipping.amount
-  )
+  return approval.resource.subtotalAggregate.grossValue + approval.details.shipping.amount
 }
 
 const ApprovalStatus = ({ status, bgColor, textColor }) => {
@@ -125,17 +94,15 @@ export const SavedCarts = () => {
   const customerId = user.id
   const [savedCartsList, setSavedCartsList] = useState([])
 
-  const getApprovals = useCallback(async () => {
-    const fetchedPendingApprovals =
-      await approvalService.getPendingAndDeclinedApprovals()
-    setSavedCartsList(fetchedPendingApprovals)
-  })
-
-  const shouldNavigateToCheckout = (row) =>{
+  const shouldNavigateToCheckout = (row) => {
     return row.approver.userId === customerId && row.status === 'PENDING'
   }
 
   useEffect(() => {
+    const getApprovals = async () => {
+      const fetchedPendingApprovals = await approvalService.getPendingAndDeclinedApprovals()
+      setSavedCartsList(fetchedPendingApprovals)
+    }
     getApprovals()
   }, [])
 
@@ -145,19 +112,19 @@ export const SavedCarts = () => {
         <Table sx={{ minWidth: 650 }}>
           <TableHead>
             <TableRow>
-              <TableCell align="left" className="!font-bold grid-column-title">
+              <TableCell align="left" className="grid-column-title">
                 Date
               </TableCell>
-              <TableCell align="left" className="!font-bold grid-column-title">
+              <TableCell align="left" className="grid-column-title">
                 Requestor
               </TableCell>
-              <TableCell align="left" className="!font-bold grid-column-title">
+              <TableCell align="left" className="grid-column-title">
                 Approver
               </TableCell>
-              <TableCell align="left" className="!font-bold grid-column-title">
+              <TableCell align="left" className="grid-column-title">
                 Total
               </TableCell>
-              <TableCell align="left" className="!font-bold grid-column-title">
+              <TableCell align="left" className="grid-column-title">
                 Status
               </TableCell>
             </TableRow>
@@ -167,18 +134,12 @@ export const SavedCarts = () => {
               <TableRow
                 key={row.id}
                 onClick={() => {
-                  shouldNavigateToCheckout(row)
-                    ? navigate(approvalCheckoutPage(row.id))
-                    : navigate(`${row.id}`)
+                  shouldNavigateToCheckout(row) ? navigate(approvalCheckoutPage(row.id)) : navigate(`${row.id}`)
                 }}
                 className="cursor-pointer hover:bg-slate-100"
                 sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
               >
-                <TableCell
-                  component="th"
-                  scope="row"
-                  className="!font-bold !py-6"
-                >
+                <TableCell component="th" scope="row" className="!font-bold !py-6">
                   {formatDateTime(row.metadata.createdAt)}
                 </TableCell>
                 <TableCell align="left" className="!font-bold !py-6">
@@ -205,13 +166,7 @@ export const SavedCarts = () => {
       </TableContainer>
       <div className="mobile_only">
         {savedCartsList.map((rows, index) => (
-          <MobileCartItem
-            key={index}
-            name={rows.name}
-            date={rows.date}
-            items={rows.items}
-            total={rows.total}
-          />
+          <MobileCartItem key={index} name={rows.name} date={rows.date} items={rows.items} total={rows.total} />
         ))}
       </div>
     </div>

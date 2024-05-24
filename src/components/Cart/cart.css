@@ -1,14 +1,11 @@
 .cart-caption-font {
-  @apply text-[20px] leading-[22px] font-bold font-inter;
-}
-.cart-product-content {
-  /* @apply pr-[33px]; */
+  @apply text-[20px] leading-[22px] font-bold;
 }
 .cart-product-item {
-  @apply w-full flex gap-4 pb-4 border-bgWhite border-b last:border-b-0;
+  @apply w-full flex flex-col sm:flex-row gap-4 pb-4 border-bgWhite border-b last:border-b-0;
 }
 .cart-product-image-and-quantity {
-  @apply w-2/5;
+  @apply w-4/6 sm:w-2/5;
 }
 .cart-product-info {
   @apply w-full;
@@ -20,14 +17,14 @@
   @apply text-[12px] leading-[20px] text-tinBlue font-normal grid grid-cols-1 text-center;
 }
 .price-exclude-vat .caption {
-  @apply text-darkGray text-[14px];
+  @apply text-darkGray text-[14px] whitespace-nowrap;
 }
 
 .price-exclude-vat1 {
   @apply text-[12px] leading-[20px] text-tinBlue font-normal grid grid-cols-1 text-right;
 }
 .price-exclude-vat1 .caption {
-  @apply text-darkGray text-[12px];
+  @apply text-darkGray text-[12px] whitespace-nowrap;
 }
 .price-exclude-vat1 .price {
   @apply font-bold text-[16px];
@@ -39,9 +36,9 @@
 .cart-product-image {
   @apply w-[52px] h-[52px];
 }
-.cart-product-name {
-  @apply text-[16px] leading-[24px] font-bold;
-}
+/* .cart-product-name {
+  @apply w-11/12 text-[16px] leading-[24px] font-bold;
+} */
 .cart-product-sku-wrapper {
   @apply text-[12px] leading-[16px] font-bold;
 }
@@ -77,17 +74,21 @@
   @apply text-[20px] leading-[22px] font-bold;
 }
 .cart-go-checkout-btn {
-  @apply w-full text-[14px] leading-[14px] text-center font-semibold h-12 px-6 bg-darkBlue text-white;
+  @apply w-full text-[14px] leading-[14px] text-center font-semibold h-12 px-6;
 }
 .cart-go-cart-btn {
-  @apply w-full text-[14px] leading-[14px] text-center font-semibold h-12 px-6 bg-primaryBlue text-white;
+  @apply w-full text-[14px] leading-[14px] text-center font-semibold h-12 px-6;
 }
 .cart-request-quote-btn {
-  @apply w-full text-[14px] leading-[14px] text-center font-semibold h-12 px-6 bg-lightBlue text-white;
+  @apply w-full text-[14px] leading-[14px] text-center font-semibold h-12 px-6;
 }
 .table-cart-product-image {
   @apply w-[52px] h-[52px] p-0;
 }
 .cart-product-image-mobile {
   @apply w-[52px] h-[52px] p-0;
+}
+
+.cart-for-mobile {
+  @apply bg-aliceBlue rounded-xl p-4 standard-box-shadow;
 }

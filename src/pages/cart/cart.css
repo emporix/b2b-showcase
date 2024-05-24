@@ -7,16 +7,16 @@
 .cart-action-content {
   @apply gap-6 text-[14px] leading-[18px] font-semibold text-dodgerBlue;
 }
-.cart-head-item {
+/* .cart-head-item {
   @apply font-inter !font-semibold !text-eerieBlack !text-base !leading-[20px];
-}
-.cart-row-item {
+} */
+/* .cart-row-item {
   @apply !py-6;
 }
 
 .cart-row-item div {
   @apply !text-left !text-base;
-}
+} */
 
 .quantity-wrapper {
   @apply w-fit;
@@ -33,18 +33,7 @@
 }
 
 .cart-product-wrapper-btn {
-  @apply top-4 right-4;
-  position: absolute;
-  cursor: pointer;
-  width: 20px;
-  height: 20px;
-  background-color: #fe6964;
-  color: white;
-  border-radius: 50%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  user-select: none;
+  @apply absolute top-4 right-4 cursor-pointer text-lightRed hover:text-primary;
 }
 
 .cart-page-content .MuiTableCell-head {

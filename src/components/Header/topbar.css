@@ -1,17 +1,3 @@
-.dropdown {
-  float: left;
-}
-
-.dropdown .dropbtn {
-  font: inherit;
-  font-size: 16px;
-  border: none;
-  outline: none;
-  background-color: inherit;
-
-  margin: 0;
-}
-
 .header-mega_dropdown-content {
   @apply rounded-xl mt-10;
   height: 300px;
@@ -120,7 +106,7 @@ input.nosubmit {
 }
 
 .mega_menu_dropbtn {
-  @apply dropbtn flex pt-2 pr-2 md:pr-8 xl:pr-12 hover:text-manatee text-eerieBlack;
+  @apply flex pt-2 pr-2 md:pr-8 xl:pr-12 hover:text-manatee text-eerieBlack;
 }
 
 .mega_menu_dropbtn:last-of-type {
@@ -132,15 +118,15 @@ input.nosubmit {
 }
 
 .mega_content_category_li {
-  @apply pb-6 hover:text-manatee;
+  @apply pb-6 hover:text-manatee whitespace-nowrap;
 }
 
 .mega_content_sub_cat_li {
-  @apply pb-4 hover:text-manatee text-[16px]/[24px];
+  @apply pb-4 hover:text-manatee text-[16px]/[24px] whitespace-nowrap;
 }
 
 input.nosubmit {
-  @apply rounded border-s placeholder-manatee text-eerieBlack w-80 border-manatee;
+  @apply rounded border-s placeholder-manatee text-eerieBlack border-manatee;
 }
 
 input::-webkit-search-cancel-button {

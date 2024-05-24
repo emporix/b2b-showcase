@@ -1,11 +1,11 @@
-import React, {useState} from 'react'
-import {Link, Navigate, useNavigate} from 'react-router-dom'
-import {login} from '../services/user/auth.service'
+import React, { useState } from 'react'
+import { Link, Navigate, useNavigate } from 'react-router-dom'
+import { login } from '../services/user/auth.service'
 import Snackbar from '@mui/material/Snackbar'
 import MuiAlert from '@mui/material/Alert'
 import CircularProgress from '@mui/material/CircularProgress'
-import {Container, GridLayout, LayoutBetween,} from '../components/Utilities/common'
-import {Heading2, Heading4} from '../components/Utilities/typography'
+import { Container, GridLayout, LayoutBetween } from '../components/Utilities/common'
+import { Heading2, Heading4 } from '../components/Utilities/typography'
 import Box from '@mui/material/Box'
 import { homeUrl, signupUrl } from '../services/service.config'
 import { useAuth } from 'context/auth-provider'
@@ -13,69 +13,68 @@ import { TENANT } from '../constants/localstorage'
 import { Logo } from '../components/Logo'
 import './login.css'
 
-
 const AUTH0_DOMAIN = process.env.REACT_APP_AUTH0_DOMAIN
 const AUTH0_CLIENT_ID = process.env.REACT_APP_AUTH0_CLIENT_ID
 
 const Login = () => {
-    const {syncAuth} = useAuth()
-    const [loading, setLoading] = useState(false)
-    const [userEmail, setUserEmail] = useState('')
-    const [openNotification, setOpenNotification] = useState(false)
-    const [password, setPassword] = useState('')
-    const [emailMessage, setEmailMessage] = useState('')
-    const {isLoggedIn} = useAuth()
-    const [message, setMessage] = useState()
-    const navigate = useNavigate()
+  const { syncAuth } = useAuth()
+  const [loading, setLoading] = useState(false)
+  const [userEmail, setUserEmail] = useState('')
+  const [openNotification, setOpenNotification] = useState(false)
+  const [password, setPassword] = useState('')
+  const [emailMessage, setEmailMessage] = useState('')
+  const { isLoggedIn } = useAuth()
+  const [message, setMessage] = useState()
+  const navigate = useNavigate()
 
-    function isValidEmail(email) {
-        return /\S+@\S+\.\S+/.test(email)
-    }
+  function isValidEmail(email) {
+    return /\S+@\S+\.\S+/.test(email)
+  }
 
-    const handleClose = (event, reason) => {
-        if (reason === 'clickaway') {
-            return
-        }
-        setOpenNotification(false)
+  const handleClose = (event, reason) => {
+    if (reason === 'clickaway') {
+      return
     }
-    const Alert = React.forwardRef(function Alert(props, ref) {
-        return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />
-    })
-    const onChangeUserEmail = (e) => {
-        if (!isValidEmail(e.target.value)) {
-            setEmailMessage('Email is invalid')
-        } else {
-            setEmailMessage(null)
-        }
-        setUserEmail(e.target.value)
+    setOpenNotification(false)
+  }
+  const Alert = React.forwardRef(function Alert(props, ref) {
+    return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />
+  })
+  const onChangeUserEmail = (e) => {
+    if (!isValidEmail(e.target.value)) {
+      setEmailMessage('Email is invalid')
+    } else {
+      setEmailMessage(null)
     }
-    const onChangePassword = (e) => {
-        const password = e.target.value
-        setPassword(password)
-    }
-    const userTenant = localStorage.getItem(TENANT)
+    setUserEmail(e.target.value)
+  }
+  const onChangePassword = (e) => {
+    const password = e.target.value
+    setPassword(password)
+  }
+  const userTenant = localStorage.getItem(TENANT)
 
-    const handleLogin = async (e) => {
-        e.preventDefault()
-        try {
-            if (userEmail && password) {
-                setLoading(true)
-                const user = await login(userEmail, password, userTenant)
-                syncAuth(user)
-                navigate(`/${userTenant}`)
-                setOpenNotification(true)
-            }
-        } catch (e) {
-            console.error(e)
-            setOpenNotification(true)
-        } finally {
-            setLoading(false)
-        }
+  const handleLogin = async (e) => {
+    e.preventDefault()
+    try {
+      if (userEmail && password) {
+        setLoading(true)
+        const user = await login(userEmail, password, userTenant)
+        syncAuth(user)
+        navigate(`/${userTenant}`)
+        setOpenNotification(true)
+      }
+    } catch (e) {
+      console.error(e)
+      setOpenNotification(true)
+    } finally {
+      setLoading(false)
     }
+  }
 
-    if (isLoggedIn) {
-        return <Navigate to={homeUrl()}/>
-    }
+  if (isLoggedIn) {
+    return <Navigate to={homeUrl()} />
+  }
 
   return (
     <GridLayout className="login_container bg-aliceBlue">
@@ -92,15 +91,12 @@ const Login = () => {
       <GridLayout className="md:w-[540px] w-[95%] mx-auto h-[740px]">
         <Container className="w-full items-center text-center text-eerieBlack font-bold text-7xl ">
           <Container className="mx-auto flex">
-              <Logo
-                size={'w-[78px] h-[86px] mr-5'}
-                text={'px-4 flex text-eerieBlack text-[48px]'}
-              />
+            <Logo size={'w-[78px] h-[86px] mr-5'} text={'px-4 flex text-eerieBlack text-[48px]'} />
           </Container>
         </Container>
         <GridLayout className="w-full bg-white p-12 rounded">
           <GridLayout className="text-center">
-          <Heading2 className="text-eerieBlack text-[24px]/[32px] font-semibold capitalize">
+            <Heading2 className="text-eerieBlack text-[24px]/[32px] font-semibold capitalize">
               Log in to your account
             </Heading2>
             <Heading4 className="text-manatee text-[16px]/[24px] font-normal pt-3">
@@ -108,7 +104,7 @@ const Login = () => {
             </Heading4>
           </GridLayout>
           <form onSubmit={handleLogin} className="display: block m-0">
-          <Box className="!pt-8 text-black text-base">
+            <Box className="!pt-8 text-black text-base">
               <label className="pb-2 text-[14px]/[22px]">E-mail</label>
               <br />
               <input
@@ -123,7 +119,7 @@ const Login = () => {
               {emailMessage && <h6 style={{ color: 'red' }}>{emailMessage}</h6>}
             </Box>
             <Box className="!pt-6 w-full text-black text-base">
-            <label className="pb-2 text-[14px]/[22px]">Password</label>
+              <label className="pb-2 text-[14px]/[22px]">Password</label>
               <br />
               <input
                 id="password-input"
@@ -136,56 +132,54 @@ const Login = () => {
               />
             </Box>
             <LayoutBetween className="pt-6 text-black text-base">
-            <div className="flex items-center">
-                <input type="checkbox" className='w-[18px] h-[18px]' />
+              <div className="flex items-center">
+                <input type="checkbox" className="w-[18px] h-[18px]" />
                 <label className="pl-2 text-[14px]/[22px]">Remember me</label>
               </div>
-              <a className="text-[16px]/[24px] text-dodgerBlue cursor-pointer">
-                Forgot Password
-              </a>
+              <Link to={`/${userTenant}/reset-password`}>
+                <span className="text-[16px]/[24px] text-dodgerBlue cursor-pointer hover:text-highlight">
+                  Forgot Password
+                </span>
+              </Link>
             </LayoutBetween>
-            <Box className="w-full !pt-8">
-              <button
-                className="w-full cta-button bg-yellow h-12 !text-white"
-                type="submit"
-              >
+            <Box className="w-full mt-8">
+              <button className="w-full cta-button bg-yellow h-12 !text-white" type="submit">
                 {loading ? <CircularProgress color="secondary" /> : 'LOG IN'}
               </button>
             </Box>
           </form>
 
-       {AUTH0_DOMAIN ? (
-                    <GridLayout className="pt-6 w-full  items-center text-center text-base">
-                    <Box className="w-full !pt-8">
-                    <button
-                        className="w-full h-12 social-login-btn"
-                        onClick={() => {window.location.href=`${AUTH0_DOMAIN}/authorize?response_type=code&scope=profile email openid offline_access&client_id=${AUTH0_CLIENT_ID}&redirect_uri=${window.location.origin}/auth0`}}
-                      >
-                        <img src="https://cdn.auth0.com/styleguide/components/1.0.8/media/logos/img/badge.png" width="32"/>
-                        <span className='social-login-btn-label'>Social Login</span> 
-                      </button>
-                  
-                    </Box>
-                  </GridLayout>
-       ) : (<></>)}
+          {AUTH0_DOMAIN ? (
+            <GridLayout className="pt-6 w-full  items-center text-center text-base">
+              <Box className="w-full mt-8">
+                <button
+                  className="w-full h-12 social-login-btn"
+                  onClick={() => {
+                    window.location.href = `${AUTH0_DOMAIN}/authorize?response_type=code&scope=profile email openid offline_access&client_id=${AUTH0_CLIENT_ID}&redirect_uri=${window.location.origin}/auth0`
+                  }}
+                >
+                  <img src="https://cdn.auth0.com/styleguide/components/1.0.8/media/logos/img/badge.png" width="32" />
+                  <span className="social-login-btn-label">Social Login</span>
+                </button>
+              </Box>
+            </GridLayout>
+          ) : (
+            <></>
+          )}
 
-          
           <GridLayout className="pt-6 w-full  items-center text-center text-base">
             <Box className="mx-auto">
-            <span className="text-[146x]/[24px] text-eerieBlack">
-                Don't have an account?
-              </span>
-                            <Link to={signupUrl()}>
-              <span
-                  className="pl-2 font-semibold hover:cursor-pointer text-[146x]/[24px] font-medium text-dodgerBlue hover:text-highlight">
+              <span className="text-[146x]/[24px] text-eerieBlack">Don't have an account?</span>
+              <Link to={signupUrl()}>
+                <span className="pl-2 hover:cursor-pointer text-[146x]/[24px] font-medium text-dodgerBlue hover:text-highlight">
                   Sign Up
                 </span>
-                            </Link>
-                        </Box>
-                    </GridLayout>
-                </GridLayout>
-            </GridLayout>
+              </Link>
+            </Box>
+          </GridLayout>
         </GridLayout>
-    )
+      </GridLayout>
+    </GridLayout>
+  )
 }
 export default Login

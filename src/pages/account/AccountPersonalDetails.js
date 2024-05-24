@@ -1,9 +1,7 @@
 import React, { useState } from 'react'
 import { Navigate } from 'react-router-dom'
-import { useSelector } from 'react-redux'
 import AccountLayout from './AccountLayout'
 import { loginUrl } from '../../services/service.config'
-import AddressForm from 'components/addresses/AddressesForm'
 import { useAuth } from 'context/auth-provider'
 
 export const FromInputItem = ({ label, value }) => {
@@ -25,19 +23,21 @@ export const FromInputItem = ({ label, value }) => {
 
 const PersonalInfo = ({ user }) => {
   return (
-    <div className="personal-info mt-12 pb-12 sm:flex justify-between border-bottom-gray ">
+    <div className="personal-info mt-12 pb-12 md:flex justify-between border-bottom-gray ">
       <div className="personal-title-wrapper">
         <div className="personal-title grid grid-cols-1">
           <ul className="title font-inter gap-2 grid grid-cols-1">
             <li className="font-bold personal-info-catpion">Personal Info</li>
-            <li className="personal-provide-caption">
-              Provide your Personal Info
-            </li>
+            <li className="personal-provide-caption">Provide your Personal Info</li>
           </ul>
           <div className="personal-photo-wrapper">
-            {user.photoUrl ? (<img className="personal-photo" src={user.photoUrl} />) : (<img className="personal-photo" src="/photo.png" />)}
-            <div className="add-photo-wrapper mt-2">
-              <a href={''} className="add-new-photo">
+            {user.photoUrl ? (
+              <img className="personal-photo" src={user.photoUrl} alt="avatar" />
+            ) : (
+              <img className="personal-photo" src="/photo.png" alt="avatar" />
+            )}
+            <div className="text-sm underline text-dodgerBlue mt-2">
+              <a href={'#'} className="add-new-photo">
                 Add New Photo
               </a>
             </div>
@@ -58,16 +58,12 @@ const PersonalInfo = ({ user }) => {
 
 const ChangePasswordContent = () => {
   return (
-    <div className="change-password-info mt-12 pb-12 sm:flex justify-between">
+    <div className="change-password-info mt-12 pb-12 md:flex justify-between">
       <div className="change-password-title-wrapper">
         <div className="change-password-title grid grid-cols-1">
           <ul className="title font-inter gap-2 grid grid-cols-1">
-            <li className="font-bold change-password-info-catpion">
-              Password change
-            </li>
-            <li className="change-password-provide-caption">
-              Provide your Personal Info
-            </li>
+            <li className="font-bold change-password-info-catpion">Password change</li>
+            <li className="change-password-provide-caption">Provide your Personal Info</li>
           </ul>
         </div>
       </div>
@@ -84,7 +80,7 @@ const ChangePasswordContent = () => {
 
 const AccountPersonalSave = () => {
   return (
-    <div className="account-action-bar ">
+    <div className="flex flex-col gap-4 items-center md:flex-row-reverse">
       <ActionSaveButton caption="SAVE" />
       <ActionDiscardButton caption="DISCARD" />
     </div>
@@ -92,11 +88,11 @@ const AccountPersonalSave = () => {
 }
 
 const ActionSaveButton = ({ caption }) => {
-  return <button className="action-save-button">{caption}</button>
+  return <button className="cta-primary w-60">{caption}</button>
 }
 
 const ActionDiscardButton = ({ caption }) => {
-  return <button className="action-discard-button">{caption}</button>
+  return <button className="cta-secondary w-60">{caption}</button>
 }
 
 const PersonalDetails = () => {
@@ -117,7 +113,6 @@ const AccountPersonalDetails = () => {
   return (
     <AccountLayout page="Personal Details">
       <PersonalDetails />
-      <AddressForm />
     </AccountLayout>
   )
 }

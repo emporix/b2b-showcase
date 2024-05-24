@@ -20,11 +20,7 @@ const Layout = ({ children, title }) => {
   const dispatch = useDispatch()
 
   useEffect(() => {
-    if (
-      accesstToken === '' ||
-      !cartAccount ||
-      !Object.keys(cartAccount).length
-    ) {
+    if (accesstToken === '' || !cartAccount || !Object.keys(cartAccount).length) {
       return
     }
     dispatch(GetAvailability())

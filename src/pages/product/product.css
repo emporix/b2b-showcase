@@ -7,8 +7,8 @@
 }
 
 .rotated {
-    transform: rotate(180deg);
-    transition: transform 0.2s ease-in-out;
+  transform: rotate(180deg);
+  transition: transform 0.2s ease-in-out;
 }
 
 .button {
@@ -112,7 +112,7 @@
   @apply font-inter font-normal text-[14px] leading-[20px];
 }
 .MuiBreadcrumbs-separator {
-  @apply !mx-2 !font-normal !text-[16px]/[24px]
+  @apply !mx-2 !font-normal !text-[16px]/[24px];
 }
 .product-content-wrapper {
   @apply flex flex-col lg:flex-row w-full lg:gap-12 lg:pb-12 gap-6;
@@ -189,7 +189,7 @@
   @apply !px-3 !py-2 w-full;
 }
 .react-dropdown-select[aria-expanded='true'] {
-  @apply border-primaryBlue
+  @apply border-primaryBlue;
 }
 .react-dropdown-select-dropdown-handle svg {
   width: 14px !important;
@@ -248,7 +248,7 @@
 }
 
 .product-add-to-cart-btn {
-  @apply bg-primaryBlue text-[white] px-6 py-0 h-12 text-[14px] leading-[14px] lg:w-[250px] w-full lg:mt-0 mt-12;
+  @apply bg-primary text-[white] px-0 py-0 h-12 text-[14px] leading-[14px] lg:w-[250px] w-full lg:mt-0 mt-12;
 }
 .desktop-md {
   @apply hidden md:block;
@@ -311,19 +311,19 @@
   @apply bg-aliceBlue font-normal text-eerieBlack p-1;
 }
 .product-available {
-  @apply text-limeGreen font-inter font-medium text-[14px]/[20px] float-right lg:float-none
+  @apply text-limeGreen font-inter font-medium text-[14px]/[20px] float-right lg:float-none;
 }
 .product-unavailable {
-  @apply text-manatee font-inter font-medium text-[14px]/[20px] float-right lg:float-none
+  @apply text-manatee font-inter font-medium text-[14px]/[20px] float-right lg:float-none;
 }
 .category_pan_title {
-  @apply w-[90%] text-eerieBlack text-[16px]/[24px] font-semibold
+  @apply w-[90%] text-eerieBlack text-[16px]/[24px] font-semibold;
 }
 .category_pan_field {
-  @apply w-[90%] ml-[3px] text-eerieBlack text-[14px]/[22px] font-normal flex items-center justify-between
+  @apply w-[90%] ml-[3px] text-eerieBlack text-[14px]/[22px] font-normal flex items-center justify-between;
 }
 .category_pan_field_title {
-  @apply w-[85%] whitespace-nowrap overflow-hidden text-ellipsis block capitalize
+  @apply w-[85%] whitespace-nowrap overflow-hidden text-ellipsis block capitalize;
 }
 
 .product-configuration-attribute {

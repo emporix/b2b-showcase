@@ -1,139 +1,129 @@
-import React, {useCallback, useMemo} from 'react'
+import React, { useCallback, useMemo } from 'react'
 import ReactStars from 'react-stars'
 import { useNavigate } from 'react-router-dom'
-import { TENANT } from '../../constants/localstorage'
-import {
-  CurrencyBeforeComponent,
-  CurrencyBeforeValue,
-} from 'components/Utilities/common'
-import { LargePrimaryButton } from '../../components/Utilities/button'
-import { trimImage } from '../../helpers/images'
+import { CurrencyBeforeValue } from 'components/Utilities/common'
 import { useAuth } from 'context/auth-provider'
 import { formatPrice } from 'helpers/price'
 import { useLanguage } from 'context/language-provider'
+import { useTranslation } from 'react-i18next'
 
 const EachProduct = ({ item, available, rating, productCount }) => {
-  
   const { isLoggedIn, userTenant } = useAuth()
   const { getLocalizedValue } = useLanguage()
+
+  const { t } = useTranslation('page')
+
   const imageSrc = useMemo(() => {
     return item.media[0] === undefined ? '' : item.media[0]['url']
   }, [item])
 
-    const price = useMemo(() => {
-        return formatPrice(item, isLoggedIn)
-    }, [item.price, isLoggedIn])
+  const price = useMemo(() => {
+    return formatPrice(item, isLoggedIn)
+  }, [item, isLoggedIn])
 
-    const navigate = useNavigate()
-    const handleProductDetail = useCallback(() => {
-        navigate(`/${userTenant}/product/details/${item.id}`)
-    }, [userTenant, item.id])
-    return (
-        <div className="font-inter p-4 h-full flex flex-col gap-4 justify-between cursor-pointer" onClick={handleProductDetail}>
-          <div className='flex flex-col gap-4'>
-            <div className="w-full h-5 justify-between hidden lg:flex">
-                {item.productType !== 'PARENT_VARIANT' && (
-                    <div
-                        className={available ? "text-limeGreen" :
-                            "text-red-500" + " font-inter font-medium float-right lg:float-none"
-                        }
-                    >
-                        {available ? 'In Stock' : 'Out Of Stock'}
-                    </div>
-                )}
-                <div className="flex float-right lg:float-none">
-                    <ReactStars size={16} value={rating} color2={'#FBB13C'}/>(
-                    {productCount})
-                </div>
-            </div>
+  const navigate = useNavigate()
 
-            <div className=" block float-right lg:hidden">
-                <div className=" flex float-right">
-                    <ReactStars size={16} value={rating} color2={'#FBB13C'}/>(
-                    {productCount})
-                </div>
-                <br/>
-                <div
-                    className={
-                        'text-limeGreen font-inter font-medium float-right lg:float-none'
-                    }
-                >
-                    {available ? 'In Stock' : 'Out Of Stock'}
-                </div>
+  const handleProductDetail = useCallback(
+    (item) => {
+      navigate(`/${userTenant}/product/details/${item.id}`)
+    },
+    [userTenant, navigate]
+  )
+
+  return (
+    <div
+      className="p-4 bg-aliceBlue standard_box_shadow rounded-xl h-full flex flex-col gap-4  cursor-pointer"
+      onClick={() => handleProductDetail(item)}
+    >
+      <div className="flex flex-col gap-4">
+        <div className="w-full flex flex-col-reverse justify-start items-end md:flex-row md:items-end">
+          {item.productType !== 'PARENT_VARIANT' && (
+            <div className={available ? 'text-limeGreen' : 'text-red-500'}>
+              {available ? t('in_stock') : t('out_stock')}
             </div>
-            <div className="items-center mx-auto ">
-              <img src={imageSrc} alt="" className="w-full h-fit rounded-xl" />
-            </div>
-            <div className="text-left w-full text-2xl text-eerieBlack font-light">
-              {getLocalizedValue(item.name)}
-            </div>
+          )}
+          <div className="flex ml-auto">
+            <ReactStars size={16} value={rating} color2={'#FBB13C'} />(
+            {productCount})
           </div>
-              {item.productType !== 'PARENT_VARIANT' && (
+        </div>
+      </div>
+
+      <div className="flex flex-col gap-4">
+        <div className="items-center mx-auto ">
+          <img src={imageSrc} alt="" className="w-full h-fit rounded-xl" />
+        </div>
+        <div className="text-left w-full text-2xl text-eerieBlack font-light">
+          {getLocalizedValue(item.name)}
+        </div>
+      </div>
+
+      {item.productType !== 'PARENT_VARIANT' && (
         <div
           className={
             isLoggedIn
-            ? 'flex flex-col w-full gap-4'
-            : 'flex flex-col w-full gap-4 text-left font-bold'
+              ? 'flex flex-col w-full gap-2 mt-auto'
+              : 'flex flex-col w-full gap-2 mt-auto text-left font-bold'
           }
         >
           {isLoggedIn ? (
             <>
-              <div className="text-xl flex items-center gap-2">
+              <div className="text-xl flex items-center">
+                {price !== null ? (
+                  <span className="text-sm text-darkGray">
+                    {isLoggedIn ? t('negotiated') : t('public')}
+                  </span>
+                ) : (
+                  <span className="text-lg text-primaryBlue font-bold">
+                    {t('no_price')}
+                  </span>
+                )}
+              </div>
+              <div className="flex">
                 {price !== null ? (
                   <>
-                    {isLoggedIn ? 'Your negotiated price' : 'List Price'}
+                    <div className="text-[22px]/[22px] lg:text-xl leading-[24px] font-bold ml-1">
+                      <div className="flex flex-col">
+                        <CurrencyBeforeValue value={price} />
+                        <span className="text-xs font-normal text-manatee">
+                          ({isLoggedIn ? t('excl_vat') : t('incl_vat')})
+                        </span>
+                      </div>
+                    </div>
                   </>
-                ) : (
-                  <span className="text-xs text-primaryBlue font-bold">
-                    No Price
+                ) : null}
+              </div>
+            </>
+          ) : (
+            <div className="text-xl flex items-center gap-2">
+              {price !== null ? (
+                <>
+                  <CurrencyBeforeValue value={price} />
+                  <span className="text-sm font-normal text-manatee">
+                    {t('incl_vat')}
                   </span>
-                                )}
-                            </div>
-                            <div className="flex">
-                                {price !== null ? (
-                                    <>
-                                        <div className="text-[22px]/[22px] lg:text-xl leading-[24px] font-bold ml-1">
-                                            <div className='flex flex-col'>
-                                                <CurrencyBeforeValue value={price}/>
-                                                <span className="text-xs font-normal text-manatee">
-                            (Excl. VAT)
-                          </span>
-                                            </div>
-                                        </div>
-                                    </>
-                                ) : null}
-                            </div>
-                        </>
-                    ) : (
-                        <div className="text-xl flex items-center gap-2">
-                            {price !== null ? (
-                                <>
-                                    <CurrencyBeforeValue value={price}/>
-                                    <span className="text-sm font-normal text-manatee">
-                    (Incl. VAT)
-                  </span>
-                                </>
-                            ) : (
-                                <span className="text-xs  text-primaryBlue font-bold">
-                  No Price
+                </>
+              ) : (
+                <span className="text-xs  text-primaryBlue font-bold">
+                  {t('no_price')}
                 </span>
-                            )}
-                        </div>
-                    )}
-                </div>
-            )}
-            {item.productType === 'PARENT_VARIANT' && (
-                <div>
-                    <LargePrimaryButton
-                        className="cta-button bg-primary"
-                        sx={{backgroundColor: '#FAC420 !important'}}
-                        title={'VIEW VARIANTS'}
-                        onClick={handleProductDetail}
-                    />
-                </div>
-            )}
+              )}
+            </div>
+          )}
         </div>
-    )
+      )}
+      {item.productType === 'PARENT_VARIANT' && (
+        <div className="mt-auto">
+          <button
+            className="cta-primary w-full"
+            onClick={() => handleProductDetail(item)}
+          >
+            {t('view_var')}
+          </button>
+        </div>
+      )}
+    </div>
+  )
 }
 
 export default EachProduct

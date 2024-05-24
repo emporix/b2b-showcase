@@ -39,7 +39,7 @@ import AccountReturns from 'pages/account/AccountReturns'
 import AccountReturnDetails from './pages/account/AccountReturnDetails'
 import ReturnsProvider from 'context/returns-provider'
 import UserAddressProvider from 'context/user-addresss-context'
-import MyDiscounts from 'pages/account/MyDiscounts'
+import AccountMyDiscounts from 'pages/account/AccountMyDiscounts'
 import Addresses from 'pages/account/addresses/Addresses'
 import AddressEdit from 'pages/account/addresses/AddressEdit'
 import AccountMySubscriptions from 'pages/account/AccountMySubscriptions'
@@ -56,48 +56,144 @@ import StoreFinder from 'pages/storefinder'
 import ContentOverview from './pages/content/ContentOverview'
 import ContentPage from './pages/content/ContentPage'
 
-import i18n from "i18next";
-import { initReactI18next } from "react-i18next";
+import i18n from 'i18next'
+import { initReactI18next } from 'react-i18next'
 
-i18n
-  .use(initReactI18next)
-  .init({
-    resources: {
-      en: {
-        page: {
-          "content": "Content",
-          "contentPath": "/n11showcase/Content",
-          "back_to_overview": "Back to Overview",
-          "show_all" : "Show all",
-          "all_countries": "All Countries",
-          "categories" : "Categories",
-          "all_wines" : "All Wines",
-          "white_wine" : "White Wine",
-          "red_wine" : "Red Wine",
-          "rose_wine" : "Rosé Wine"
-        }
+i18n.use(initReactI18next).init({
+  resources: {
+    en: {
+      page: {
+        content: 'Content',
+        contentPath: '/n11showcase/Content',
+        back_to_overview: 'Back to Overview',
+        show_all: 'Show all',
+        all_countries: 'All Countries',
+        categories: 'Categories',
+        all_wines: 'All Wines',
+        white_wine: 'White Wine',
+        red_wine: 'Red Wine',
+        rose_wine: 'Rosé Wine',
+        website: 'Go to website',
+        mailto: 'Send Email',
+        negotiated: 'Your negotiated price',
+        public: 'List Price',
+        excl_vat: 'Excl. VAT',
+        incl_vat: 'Incl. VAT',
+        in_stock: 'In Stock',
+        out_stock: 'Out Of Stock',
+        add_cart: 'add to cart',
+        view_var: 'view variants',
+        no_price: 'No Price',
+        more_dtls: 'More Details',
+        login: 'Login',
+        register: 'Register',
+        signup: 'Sign Up',
+        signout: 'Sign Out',
+        back: 'Back',
+        site: 'Site',
+        language: 'Language',
+        currency: 'Currency',
       },
-      de: {
-        page: {
-          "content": "Inhalt",
-          "contentPath": "/n11showcase/Inhalt",
-          "back_to_overview": "Zurück zur Übersicht",
-          "show_all": "Zeige alle",
-          "all_countries": "Alle Länder",
-          "all_wines" : "Alle Weine",
-          "categories" : "Kategorien",
-          "white_wine" : "Weißwein",
-          "red_wine" : "Rotwein",
-          "rose_wine" : "Rosé"
-        }
-      }
+      account: {
+        account: 'My Account',
+        signout: 'Sign Out',
+        personal: 'Personal Details',
+        company: 'Company',
+        phone: 'Phone',
+        mail: 'Email',
+        edit: 'Edit Profile',
+        summary: 'Summary',
+        total: 'Total spent in April',
+        limit: 'Your monthly limit',
+        outstanding: 'Outstanding',
+        refunds: 'Refunds',
+        recent: 'Recent Orders',
+        saved: 'Saved Carts',
+        action: 'View All',
+      },
+      address: {
+        contact: 'Contact Name',
+        street: 'Street',
+        streetnumber: 'St. Number',
+        strappendix: 'St. Appendix',
+        zipcode: 'Zip Code',
+        city: 'City',
+        country: 'Country',
+        state: 'State',
+        tags: 'Tags',
+        default: 'Is Default',
+      },
     },
-    lng: "de",
-    fallbackLng: "de",
-    interpolation: {
-      escapeValue: false
-    }
-  });
+    de: {
+      page: {
+        content: 'Inhalt',
+        contentPath: '/n11showcase/Inhalt',
+        back_to_overview: 'Zurück zur Übersicht',
+        show_all: 'Alle anzeigen',
+        all_countries: 'Alle Länder',
+        all_wines: 'Alle Weine',
+        categories: 'Kategorien',
+        white_wine: 'Weißwein',
+        red_wine: 'Rotwein',
+        rose_wine: 'Rosé',
+        website: 'Webseite besuchen',
+        mailto: 'Email anschreiben',
+        negotiated: 'Ausgehandelte Preis',
+        public: 'Katalogpreis',
+        excl_vat: 'Exkl. MwSt.',
+        incl_vat: 'Inkl. MwSt.',
+        in_stock: 'Auf Lager',
+        out_stock: 'Nicht lieferbar',
+        add_cart: 'in den Warenkorb',
+        view_var: 'mehr optionen',
+        no_price: 'kein Preis',
+        more_dtls: 'Weitere Info',
+        login: 'Anmelden',
+        register: 'Registrieren',
+        signup: 'Konto erstellen',
+        signout: 'Abmelden',
+        back: 'Zurück',
+        site: 'Land',
+        language: 'Sprache',
+        currency: 'Währung',
+      },
+      account: {
+        account: 'Mein Konto',
+        signout: 'Abmelden',
+        personal: 'Personal Details',
+        company: 'Company',
+        phone: 'Phone',
+        mail: 'Email',
+        edit: 'Edit Profile',
+        summary: 'Summary',
+        total: 'Total spent in April',
+        limit: 'Your monthly limit',
+        outstanding: 'Outstanding',
+        refunds: 'Refunds',
+        recent: 'Recent Orders',
+        saved: 'Saved Carts',
+        action: 'View All',
+      },
+      address: {
+        contact: 'Kontakte',
+        street: 'Straße',
+        streetnumber: 'Hausnummer',
+        strappendix: 'Zusatz',
+        zipcode: 'PLZ',
+        city: 'Stadt',
+        country: 'Land',
+        state: 'Bundesland',
+        tags: 'Tags',
+        default: 'Ist Default',
+      },
+    },
+  },
+  lng: 'de',
+  fallbackLng: 'de',
+  interpolation: {
+    escapeValue: false,
+  },
+})
 
 function App() {
   const dispatch = useDispatch()
@@ -115,50 +211,26 @@ function App() {
           <Route index exact element={<Home />} />
 
           <Route path="product/:maincategory" exact element={<ProductList />} />
-          <Route
-            path="product/:maincategory/:subcategory/"
-            exact
-            element={<ProductList />}
-          />
-          <Route
-            path="product/:maincategory/:subcategory/:category"
-            exact
-            element={<ProductList />}
-          />
-          <Route
-            path="product/details/:productId"
-            element={<ProductDetails />}
-          />
+          <Route path="product/:maincategory/:subcategory/" exact element={<ProductList />} />
+          <Route path="product/:maincategory/:subcategory/:category" exact element={<ProductList />} />
+          <Route path="product/details/:productId" element={<ProductDetails />} />
+
           <Route path="login" exact element={<Login />} />
           <Route path="reset-password" exact element={<ResetPassword />} />
           <Route path="signup" exact element={<Signup />} />
           <Route path="brand" exact element={<Brand />} />
+
           <Route path="cart" exact element={<Cart />} />
-          <Route
-            path="create-return/:orderId"
-            exact
-            element={<CreateReturn />}
-          />
+          <Route path="create-return/:orderId" exact element={<CreateReturn />} />
           <Route path="checkout" exact element={<Checkout />} />
-          <Route
-            path="saved-carts/:approvalId/checkout"
-            exact
-            element={<ApprovalCheckout />}
-          />
+          <Route path="saved-carts/:approvalId/checkout" exact element={<ApprovalCheckout />} />
           <Route path="approval-request" exact element={<ApprovalRequest />} />
-          <Route
-            path="approval-order-created"
-            exact
-            element={<ApprovalOrderCreated />}
-          />
+          <Route path="approval-order-created" exact element={<ApprovalOrderCreated />} />
 
           <Route path="payment-callback" exact element={<PaymentCallback />} />
-          <Route
-            path="saferpay-callback"
-            exact
-            element={<SaferpayPaymentCallback />}
-          />
+          <Route path="saferpay-callback" exact element={<SaferpayPaymentCallback />} />
           <Route path="quote" exact element={<QuoteCart />} />
+
           <Route
             path="my-account"
             element={
@@ -171,89 +243,44 @@ function App() {
           >
             <Route index element={<AccountHome />} />
             <Route path="account-summary" element={<MyAccount />} />
-            <Route
-              path="personal-details"
-              element={<AccountPersonalDetails />}
-            />
+            <Route path="personal-details" element={<AccountPersonalDetails />} />
             <Route path="manage-users" element={<AccountManageUsers />} />
             <Route path="addresses" element={<Addresses />} />
             <Route path="addresses/:addressId" element={<AddressEdit />} />
             <Route path="addresses/new" element={<AddressEdit />} />
             <Route path="company-details" element={<AccountCompanyDetails />} />
             <Route path="my-orders" exact element={<AccountMyOrders />} />
-            <Route
-              path="my-subscriptions"
-              exact
-              element={<AccountMySubscriptions />}
-            />
+            <Route path="my-subscriptions" exact element={<AccountMySubscriptions />} />
             <Route path="my-quotes" exact element={<AccountMyQuotes />} />
-            <Route path="discounts" exact element={<MyDiscounts />} />
+            <Route path="discounts" exact element={<AccountMyDiscounts />} />
 
-            <Route
-              path="my-quotes/:quoteId"
-              element={<AccountMyQuoteDetails />}
-            />
-            <Route
-              path="my-orders/view/:orderId"
-              exact
-              element={<AccountMyOrdersView />}
-            />
-            <Route
-              path="my-orders/invoice/:orderId"
-              exact
-              element={<AccountMyOrdersInvoice />}
-            />
+            <Route path="my-quotes/:quoteId" element={<AccountMyQuoteDetails />} />
+            <Route path="my-orders/view/:orderId" exact element={<AccountMyOrdersView />} />
+            <Route path="my-orders/invoice/:orderId" exact element={<AccountMyOrdersInvoice />} />
             <Route path="returns" exact element={<AccountReturns />} />
-            <Route
-              path="returns/:returnId"
-              exact
-              element={<AccountReturnDetails />}
-            />
-            <Route
-              path="replenishment-orders"
-              exact
-              element={<AccountReplenishmentOrders />}
-            />
-            <Route
-              path="replenishment-orders/add"
-              exact
-              element={<AccountReplenishmentAddOrders />}
-            />
-            <Route
-              path="replenishment-orders/edit"
-              exact
-              element={<AccountReplenishmentEditOrders />}
-            />
+            <Route path="returns/:returnId" exact element={<AccountReturnDetails />} />
+            <Route path="replenishment-orders" exact element={<AccountReplenishmentOrders />} />
+            <Route path="replenishment-orders/add" exact element={<AccountReplenishmentAddOrders />} />
+            <Route path="replenishment-orders/edit" exact element={<AccountReplenishmentEditOrders />} />
             <Route path="saved-carts" element={<AccountSavedCarts />} />
-            <Route
-              path="saved-carts/:approvalId"
-              element={<AccountMyOrdersDetails />}
-            />
+            <Route path="saved-carts/:approvalId" element={<AccountMyOrdersDetails />} />
             <Route path="locations" exact element={<AccountLocations />} />
-            <Route
-              path="my-subscriptions/:action/:orderId/:productId"
-              exact
-              element={<SubscriptionDetails />}
-            />
-            <Route
-              path="locations/add"
-              exact
-              element={<AccountAddLocations />}
-            />
+            <Route path="my-subscriptions/:action/:orderId/:productId" exact element={<SubscriptionDetails />} />
+            <Route path="locations/add" exact element={<AccountAddLocations />} />
             <Route path="payments" exact element={<AccountPayments />} />
-            <Route
-              path="payments/edit_card_details"
-              element={<AccountPaymentsEditCardDetails />}
-            />
+            <Route path="payments/edit_card_details" element={<AccountPaymentsEditCardDetails />} />
             <Route path="reviews" element={<AccountReviews />} />
           </Route>
+
           <Route path="quick_order" element={<QuickOrder />} />
           <Route path="aboutus" element={<AboutUs />} />
           <Route path="storefinder" element={<StoreFinder />} />
+
           <Route path="Content" element={<ContentOverview />} />
           <Route path="Inhalt" element={<ContentOverview />} />
           <Route path="Content/:contentName" element={<ContentPage />} />
           <Route path="Inhalt/:contentName" element={<ContentPage />} />
+
           <Route path="*" element={<NoPage />} />
         </Route>
         <Route path="*" element={<Home />} />

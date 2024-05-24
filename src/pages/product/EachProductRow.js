@@ -1,137 +1,172 @@
-import React, {useCallback, useMemo, useState} from 'react'
+import React, { useCallback, useMemo, useState } from 'react'
 import ReactStars from 'react-stars'
 import Quantity from '../../components/Utilities/quantity/quantity'
 import { maxProductDescriptionLength } from '../../constants/page'
 import { CurrencyBeforeValue } from 'components/Utilities/common'
-import { trimImage } from '../../helpers/images'
 import { useAuth } from 'context/auth-provider'
 import { useCart } from 'context/cart-provider'
 import { formatPrice } from 'helpers/price'
-import { LargePrimaryButton } from 'components/Utilities/button'
 import { useNavigate } from 'react-router-dom'
 import { useLanguage } from 'context/language-provider'
+import { useTranslation } from 'react-i18next'
+import { HiChevronDoubleRight } from 'react-icons/hi'
 
 const EachProductRow = ({ item, type, available, rating, productCount }) => {
   const { getLocalizedValue } = useLanguage()
+  const { putCartProduct } = useCart()
+  const navigate = useNavigate()
+  const { isLoggedIn, userTenant } = useAuth()
+  const [quantity, setQuantity] = useState(1)
+
+  const { t } = useTranslation('page')
+
   const imageSrc = useMemo(() => {
     return item.media[0] === undefined ? '' : item.media[0]['url']
   }, [item])
-  const { putCartProduct } = useCart()
+
   const trimmedDescription = useMemo(() => {
     const desc = getLocalizedValue(item.description)
     return desc.length > maxProductDescriptionLength
       ? `${desc.substr(0, maxProductDescriptionLength)} ...`
       : desc
-  }, [item.description])
+  }, [item, getLocalizedValue])
 
-    const {isLoggedIn, userTenant} = useAuth()
-    const [quantity, setQuantity] = useState(1)
-    const navigate = useNavigate()
-    const handleProductDetail = useCallback(() => {
-        navigate(`/${userTenant}/product/details/${item.id}`)
-    }, [userTenant, item.id])
-    const price = useMemo(() => {
-        return formatPrice(item, isLoggedIn)
-    }, [item.price, isLoggedIn])
+  const handleProductDetail = useCallback(
+    (item) => {
+      navigate(`/${userTenant}/product/details/${item.id}`)
+    },
+    [userTenant, navigate]
+  )
 
-    const handleAddToCart = useCallback(() => {
-        putCartProduct({...item, quantity})
-    }, [item, quantity])
+  const price = useMemo(() => {
+    return formatPrice(item, isLoggedIn)
+  }, [item, isLoggedIn])
+
+  const handleAddToCart = useCallback(
+    (e, item, quantity) => {
+      e.preventDefault()
+      putCartProduct({ ...item, quantity })
+    },
+    [putCartProduct]
+  )
 
   const renderPrice = (price) => {
     if (price) {
       return <CurrencyBeforeValue value={price} />
     } else {
-      return <span className="text-xs text-primaryBlue font-bold">No Price</span>
+      return (
+        <span className="text-lg text-primaryBlue font-bold">No Price</span>
+      )
     }
   }
-  return (
-    <div className="standard_box_shadow flex h-full font-inter rounded-xl bg-aliceBlue p-4 gap-4">
-      <div className="flex w-1/4 flex-col justify-between">
-        <img src={imageSrc} alt='' className=" aspect-square h-fit rounded-xl cursor-pointer" onClick={handleProductDetail}/>
-      </div>
-      <div className="flex flex-col w-1/2">
-        <div
-          className={'text-limeGreen font-inter font-medium float-right lg:float-none'}
-        >
-          {available > 0 ? 'In Stock' : 'Out Of Stock'}
-        </div>
-        <div className='flex flex-col gap-2'>
 
-          <div className="mt-4 h-fit text-left w-full text-2xl text-eerieBlack font-light cursor-pointer" onClick={handleProductDetail}>
-            {getLocalizedValue(item.name)}
-          </div>
-          <div className="text-xs font-bold text-gray">{item.code}</div>
-        </div>
-        <div className="text-sm mt-4  text-black flex">
-          <ReactStars size={16} value={rating} color2={'#FBB13C'} />(
-          {productCount})
-        </div>
-        <div className="text-sm mt-4 text-eerieBlack text-base cursor-pointer" onClick={handleProductDetail}>
-          <span>{trimmedDescription}</span>
-        </div>
+  return (
+    <div className="standard_box_shadow h-full rounded-xl bg-aliceBlue p-4 flex flex-col md:flex-row gap-4">
+      <div
+        className="cursor-pointer flex flex-col justify-between"
+        onClick={() => handleProductDetail(item)}
+      >
+        <img src={imageSrc} alt="" className="aspect-square rounded-xl" />
       </div>
-      <div className="flex flex-col justify-between flex-auto w-1/4">
-        <div className={'w-full flex justify-end gap-4'}>
-          {item.productType !== 'PARENT_VARIANT' && (
-            <>
-              <div className="text-gray">
-                {isLoggedIn ? 'Your negotiated price' : 'List Price'}
-              </div>
-              <div className="flex">
-                <div className="text-[20px] leading-[24px] text-end font-bold ml-1">
+
+      <div className="flex flex-col gap-4">
+        <div
+          className="flex flex-row gap-4 cursor-pointer"
+          onClick={() => handleProductDetail(item)}
+        >
+          <div
+            className={`${
+              available > 0 ? 'text-limeGreen' : 'text-red-500'
+            } font-medium float-right lg:float-none`}
+          >
+            {available > 0 ? t('in_stock') : t('out_stock')}
+          </div>
+          <div className="flex flex-col justify-end ml-auto">
+            {item.productType !== 'PARENT_VARIANT' && (
+              <>
+                <div className="text-gray text-sm text-end">
+                  {isLoggedIn ? t('negotiated') : t('public')}
+                </div>
+                <div className="text-[20px] leading-[24px] text-end font-bold ml-1 whitespace-nowrap">
                   {renderPrice(price)} <br />
                   <span className="text-[12px] font-normal text-gray">
-                    ({isLoggedIn ? 'Excl. VAT' : 'Incl. VAT'})
+                    ({isLoggedIn ? t('excl_vat') : t('incl_vat')})
                   </span>
-                                </div>
-                            </div>
-                        </>
-                    )}
                 </div>
+              </>
+            )}
+          </div>
+        </div>
 
-        <div className="flex w-full flex-col gap-2 items-end">
-          {item.productType !== 'PARENT_VARIANT' ? (
-            <>
-              <Quantity
-                value={quantity}
-                increase={() => {
-                  setQuantity((prev) => {
-                    return prev + 1
-                  })
-                }}
-                decrease={() => {
-                  setQuantity((prev) => {
-                    return prev - 1 > 1 ? prev - 1 : 1
-                  })
-                }}
-                onChange={(value) => {
-                  setQuantity(value)
-                }}
-              />
-                <div
-                  className="cursor-pointer cta-button bg-yellow flex items-center justify-center px-10 py-4 transition-all duration-150 ease-in"
-                  onClick={handleAddToCart}
-                  >
-                  <span className="text-aliceBlue text-lg">ADD TO CART</span>
-                </div>
-                <div
-                  className="cursor-pointer cta-button bg-lightGray flex items-center justify-center px-5 py-2 w-fit hover:!bg-gray transition-all duration-150 ease-in"
-                  onClick={handleProductDetail}
-                  >
-                  <span className="text-aliceBlue">MORE DETAILS</span>
-                </div>
-            </>
-          ) : (
-            <div>
-              <LargePrimaryButton
-                title={'VIEW VARIANTS'}
-                onClick={handleProductDetail}
-                className="cta-button bg-yellow"
-                sx={{ backgroundColor: '#FAC420 !important' }}
-              />
+        <div className="flex flex-col md:flex-row gap-4">
+          <div className="flex flex-col">
+            <div className="flex flex-col gap-2">
+              <div
+                className="h-fit text-left w-full text-2xl text-eerieBlack font-light cursor-pointer"
+                onClick={() => handleProductDetail(item)}
+              >
+                {getLocalizedValue(item.name)}
+              </div>
+              <div className="text-xs font-bold text-gray">{item.code}</div>
             </div>
-          )}
+
+            <div className="text-sm mt-4  text-black flex">
+              <ReactStars size={16} value={rating} color2={'#FBB13C'} />(
+              {productCount})
+            </div>
+
+            <div
+              className="text-sm mt-4 text-eerieBlack cursor-pointer"
+              onClick={() => handleProductDetail(item)}
+            >
+              <span>{trimmedDescription}</span>
+            </div>
+          </div>
+          <div className="flex w-full flex-col gap-4 items-cente md:items-end justify-end">
+            {item.productType !== 'PARENT_VARIANT' ? (
+              <>
+                <button
+                  className="mx-auto md:mx-0 cursor-pointer text-darkGray flex items-center justify-center px-5 py-2 w-fit hover:text-primary transition-all duration-150 ease-in uppercase"
+                  onClick={() => handleProductDetail(item)}
+                >
+                  {t('more_dtls')}
+                  <HiChevronDoubleRight />
+                </button>
+                <Quantity
+                  center
+                  value={quantity}
+                  increase={() => {
+                    setQuantity((prev) => {
+                      return prev + 1
+                    })
+                  }}
+                  decrease={() => {
+                    setQuantity((prev) => {
+                      return prev - 1 > 1 ? prev - 1 : 1
+                    })
+                  }}
+                  onChange={(value) => {
+                    setQuantity(value)
+                  }}
+                />
+                <button
+                  className="cta-primary w-full text-sm md:w-auto"
+                  onClick={() => handleAddToCart(item, quantity)}
+                >
+                  {t('add_cart')}
+                </button>
+              </>
+            ) : (
+              <div>
+                <button
+                  className="cta-primary w-full"
+                  onClick={() => handleProductDetail(item)}
+                >
+                  {t('view_var')}
+                </button>
+              </div>
+            )}
+          </div>
         </div>
       </div>
     </div>

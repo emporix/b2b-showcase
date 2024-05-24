@@ -1,6 +1,5 @@
 import React, { useState } from 'react'
 import AccountLayout from './AccountLayout'
-import { useSelector } from 'react-redux'
 import { Navigate } from 'react-router-dom'
 import { loginUrl } from '../../services/service.config'
 import { useAuth } from 'context/auth-provider'
@@ -19,9 +18,7 @@ const CompanyDetails = ({ value }) => {
   return (
     <>
       <div className="w-full md:py-12 py-5 md:flex md:justify-between border-bottom-gray">
-        <div className="font-inter font-bold company-label label">
-          Company Name
-        </div>
+        <div className="font-inter font-bold company-label label">Company Name</div>
         <div className="company-input-wrapper mt-2 md:mt-0">
           <input
             type="text"
@@ -38,18 +35,9 @@ const CompanyDetails = ({ value }) => {
         </div>
         <div className="company-info-wrapper md:flex md:gap-4 flex-col my-3 md:my-0">
           <CompanyInfoItem caption="Legal Name" content={company} />
-          <CompanyInfoItem
-            caption="Tax Registration Number"
-            content="1605492"
-          />
-          <CompanyInfoItem
-            caption="Country Of Registration"
-            content="Germany"
-          />
-          <CompanyInfoItem
-            caption="Registration Agency"
-            content="Handelsregister"
-          />
+          <CompanyInfoItem caption="Tax Registration Number" content="1605492" />
+          <CompanyInfoItem caption="Country Of Registration" content="Germany" />
+          <CompanyInfoItem caption="Registration Agency" content="Handelsregister" />
           <CompanyInfoItem caption="Registration Date" content="DD/MM/YYYY" />
           <CompanyInfoItem caption="Registration ID" content="064464" />
         </div>

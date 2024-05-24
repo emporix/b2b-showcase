@@ -22,7 +22,7 @@ const CartPage = () => {
 
         <div className="float-right">
           <div className="cart-action-panel-wrapper ml-auto">
-            <CartActionPanel showShipping={false}/>
+            <CartActionPanel showShipping={false} hideGoCart={true} />
           </div>
         </div>
         <CartActionBar />
