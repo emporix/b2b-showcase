@@ -235,10 +235,14 @@ input[type='checkbox'] {
   background-blend-mode: screen;
 }
 
+.tooltipped {
+  @apply relative;
+}
+
 .tooltip {
-  @apply hidden xs:invisible absolute;
+  @apply hidden xs:inline-block xs:invisible absolute top-1/2 left-0 -translate-y-1/2;
 }
 
 .tooltipped:hover .tooltip {
-  @apply visible z-50;
+  @apply xs:visible z-50;
 }

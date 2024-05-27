@@ -20,12 +20,7 @@ const ProductList = () => {
     async function fetchFSContent() {
       setIsLoading(true)
       if (categoryTree && categoryTree.length > 0 && maincategory) {
-        const { categoryId: catId } = await getProductCategoryDetail(
-          maincategory,
-          subcategory,
-          category,
-          categoryTree
-        )
+        const { categoryId: catId } = await getProductCategoryDetail(maincategory, subcategory, category, categoryTree)
         if (catId) {
           setCategoryId(() => catId)
           setIsLoading(false)
@@ -47,11 +42,7 @@ const ProductList = () => {
           onClick={() => setIsDrawerOpen((current) => !current)}
           title="Filter"
         >
-          {isDrawerOpen ? (
-            <HiChevronDoubleLeft size={24} />
-          ) : (
-            <HiChevronDoubleRight size={24} />
-          )}
+          {isDrawerOpen ? <HiChevronDoubleLeft size={24} /> : <HiChevronDoubleRight size={24} />}
         </button>
       </div>
       <div className="flex gap-4 xl:gap-12">
@@ -72,11 +63,7 @@ const ProductList = () => {
         </div>
       </div>
       <div className="desktop-lg mt-4">
-        {isLoading ? (
-          <LoadingCircleProgress1 />
-        ) : (
-          <Content type={CMSFilterType.CATEGORY} page={categoryId} />
-        )}
+        {isLoading ? <LoadingCircleProgress1 /> : <Content type={CMSFilterType.CATEGORY} page={categoryId} />}
       </div>
     </>
   )

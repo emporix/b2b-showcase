@@ -1,21 +1,10 @@
 import { TENANT } from 'constants/localstorage'
-import React, {
-  createContext,
-  useCallback,
-  useContext,
-  useEffect,
-  useMemo,
-  useState,
-} from 'react'
+import React, { createContext, useCallback, useContext, useEffect, useMemo, useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { useParams } from 'react-router-dom'
 import { putShopItems } from 'redux/slices/pageReducer'
 import { fetchCatalogs } from 'services/catalogs.service'
-import {
-  getCagegoryDetails,
-  getCategoryId,
-  getProductCategoryTrees,
-} from 'services/product/category.service'
+import { getCagegoryDetails, getCategoryId, getProductCategoryTrees } from 'services/product/category.service'
 import { useSites } from './sites-provider'
 import priceService from '../services/product/price.service'
 import productService from '../services/product/product.service'
@@ -40,12 +29,9 @@ const getProductData = async (productIds, pageNumber, itemsPerPage, sortProp, so
       products[i]['priceTotalValue'] = prices_obj[price_id].totalValue
     }
   }
-  const collator = new Intl.Collator([getLanguageFromLocalStorage()], {numeric: true});
-  products.sort((a,b)=> collator.compare(a[sortProp], b[sortProp]) * sortDir)
-  return products.slice(
-    itemsPerPage * (pageNumber - 1),
-    itemsPerPage * pageNumber
-  )
+  const collator = new Intl.Collator([getLanguageFromLocalStorage()], { numeric: true })
+  products.sort((a, b) => collator.compare(a[sortProp], b[sortProp]) * sortDir)
+  return products.slice(itemsPerPage * (pageNumber - 1), itemsPerPage * pageNumber)
 }
 
 const ProductListProvider = ({ children, id }) => {
@@ -58,12 +44,14 @@ const ProductListProvider = ({ children, id }) => {
   const [pageNumber, setPageNumber] = useState(1)
   const [products, setProducts] = useState([])
   const [productIds, setProductIds] = useState([])
-  const [productsPerPage, setProductsPerPage] = useState(
-    productListCountsPerPage[0]
-  )
-  const sortingTypes =
-    [{name:"Price (High to Low)", prop:"priceTotalValue", dir:-1},{name:"Price (Low to High)", prop:"priceTotalValue", dir:1},{name:"Name (A-Z)", prop:"name", dir:1},{name:"Name (Z-A)", prop:"name", dir:-1}]
-  const [sortingTypeIndex, setSortingTypeIndex] = useState(0);
+  const [productsPerPage, setProductsPerPage] = useState(productListCountsPerPage[0])
+  const sortingTypes = [
+    { name: 'Price (High to Low)', prop: 'priceTotalValue', dir: -1 },
+    { name: 'Price (Low to High)', prop: 'priceTotalValue', dir: 1 },
+    { name: 'Name (A-Z)', prop: 'name', dir: 1 },
+    { name: 'Name (Z-A)', prop: 'name', dir: -1 },
+  ]
+  const [sortingTypeIndex, setSortingTypeIndex] = useState(0)
 
   const { currentSite } = useSites()
   const { activeCurrency } = useCurrency()
@@ -78,10 +66,7 @@ const ProductListProvider = ({ children, id }) => {
       let rootCategoryIds = catalogs.flatMap((catalog) => {
         return catalog.categoryIds
       })
-      const category = await getProductCategoryTrees(
-        [...new Set(rootCategoryIds)],
-        currentLanguage
-      )
+      const category = await getProductCategoryTrees([...new Set(rootCategoryIds)], currentLanguage)
       setCategory(category)
       dispatch(putShopItems(category))
     })()
@@ -109,6 +94,7 @@ const ProductListProvider = ({ children, id }) => {
           sortingTypes[sortingTypeIndex].prop,
           sortingTypes[sortingTypeIndex].dir
         )
+        console.log('newProducts: ', newProducts)
         setProducts(newProducts)
       } catch (e) {
         console.error(e)
@@ -116,15 +102,7 @@ const ProductListProvider = ({ children, id }) => {
         setIsProductsLoading(false)
       }
     })()
-  }, [
-    productIds,
-    productsPerPage,
-    pageNumber,
-    currentSite,
-    activeCurrency,
-    currentLanguage,
-    sortingTypeIndex
-  ])
+  }, [productIds, productsPerPage, pageNumber, currentSite, activeCurrency, currentLanguage, sortingTypeIndex])
 
   return (
     <ProductListContext.Provider
@@ -143,7 +121,7 @@ const ProductListProvider = ({ children, id }) => {
         productListCountsPerPage,
         sortingTypes,
         sortingTypeIndex,
-        setSortingTypeIndex
+        setSortingTypeIndex,
       }}
     >
       {children}

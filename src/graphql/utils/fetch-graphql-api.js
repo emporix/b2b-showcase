@@ -1,16 +1,16 @@
-import { ApolloClient, ApolloLink, HttpLink, InMemoryCache, gql } from "@apollo/client";
+import { ApolloClient, ApolloLink, HttpLink, InMemoryCache, gql } from '@apollo/client'
 
 let client = null
 
 export const getClient = () => {
-  if (client != null) return client;
+  if (client != null) return client
 
   client = new ApolloClient({
     cache: new InMemoryCache(),
     link: ApolloLink.from([
       new HttpLink({
-        uri: process.env.REACT_APP_GQL_API_URL || "http://localhost:4000/graphql"
-      })
+        uri: process.env.REACT_APP_GQL_API_URL || 'http://localhost:4000/graphql',
+      }),
     ]),
     name: '',
   })
@@ -18,21 +18,16 @@ export const getClient = () => {
   return client
 }
 
-export async function fetchGraphqlApi (
-  query,
-  variables,
-  isMutation
-) {
-
+export async function fetchGraphqlApi(query, variables, isMutation) {
   const client = getClient()
 
   const context = {
     headers: {
       'accept-language': 'de_DE',
-    }
+    },
   }
 
-  let res 
+  let res
 
   try {
     if (isMutation) {
@@ -41,25 +36,20 @@ export async function fetchGraphqlApi (
           ${query}
         `,
         variables,
-        context
+        context,
       })
     } else {
-        res = await client.query({
-          query: gql`
-            ${query}
-          `,
-          variables,
-          context,
-        })
-      }
-  } catch(e) {
-    console.error(
-      'query failed:',
-      query,
-      'reason:',
-      JSON.stringify(e)
-    )
-    throw e;
+      res = await client.query({
+        query: gql`
+          ${query}
+        `,
+        variables,
+        context,
+      })
+    }
+  } catch (e) {
+    console.error('query failed:', query, 'reason:', JSON.stringify(e))
+    throw e
   }
   return res
 }
