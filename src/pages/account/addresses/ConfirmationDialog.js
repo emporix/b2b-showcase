@@ -3,17 +3,8 @@ import React from 'react'
 
 const CloseButton = ({ onClick, className }) => {
   return (
-    <button
-      onClick={onClick}
-      className={`p-2 hover:bg-black/[.15] ${className}`}
-    >
-      <svg
-        width="12"
-        height="12"
-        viewBox="0 0 12 12"
-        fill="none"
-        xmlns="http://www.w3.org/2000/svg"
-      >
+    <button onClick={onClick} className={`p-2 hover:bg-black/[.15] ${className}`}>
+      <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
         <path
           fillRule="evenodd"
           clipRule="evenodd"
@@ -31,27 +22,19 @@ const CloseButton = ({ onClick, className }) => {
   )
 }
 
-const ConfirmationDialog = ({
-  children,
-  open,
-  onAccept,
-  onDecline,
-  disabled,
-}) => {
+const ConfirmationDialog = ({ children, open, onAccept, onDecline, disabled }) => {
   if (open) {
     return (
       <div className="flex justify-center items-center w-screen h-screen bg-black/[0.5] fixed inset-x-0 inset-y-0 z-50">
         <div className="bg-white relative p-4">
-          <CloseButton
-            onClick={() => onDecline()}
-            className="absolute right-0 top-0 mt-4 mr-4"
-          />
+          <CloseButton onClick={() => onDecline()} className="absolute right-0 top-0 mt-4 mr-4" />
           <div className="flex flex-col items-center justify-center mt-8">
             {children}
             <div className="flex mt-8">
               <button
                 disabled={disabled}
-                className="border-lightBlue border-[1px] b-1 w-60 px-4 py-2 text-lightBlue text-center font-bold text-sm hover:bg-lightBlue/20 mr-2"
+                className="cta-secondary-md w-60 px-4 py-2 mr-2"
+                // className="cta-secondary"
                 onClick={onDecline}
               >
                 NO
@@ -60,6 +43,7 @@ const ConfirmationDialog = ({
                 disabled={disabled}
                 title="YES"
                 className="w-60 m-auto px-4 py-2 mr-2"
+                // className="cta-primary"
                 onClick={onAccept}
               />
             </div>

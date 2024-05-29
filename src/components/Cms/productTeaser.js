@@ -3,21 +3,22 @@ import productService from '../../services/product/product.service'
 import { ProductMini } from '../Product/productMini'
 
 export const ProductTeaser = (props) => {
-  const [products, setProducts] = useState([]);
-  const productData = props.props?.data?.st_product?.value[0].value;
+  const [products, setProducts] = useState([])
+  const productData = props.props?.data?.st_product?.value[0].value
 
-  const fetchProducts = async ()=> {
-    setProducts(await productService.getProductsWithIds([productData.id]));
-  }
+  useEffect(() => {
+    const fetchProducts = async () => {
+      setProducts(await productService.getProductsWithIds([productData.id]))
+    }
 
-  useEffect(()=> {
-    fetchProducts();
-  },[]);
+    fetchProducts()
+  }, [productData])
 
   return (
-    products[0] && <div className="w-1/2 place-self-center">
+    products[0] && (
+      <div className="w-full mx-auto max-w-3xl">
         <ProductMini productInfo={products[0]} />
-    </div>
+      </div>
+    )
   )
 }
-

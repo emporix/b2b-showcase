@@ -1,11 +1,4 @@
-import React, {
-  createContext,
-  useCallback,
-  useContext,
-  useEffect,
-  useMemo,
-  useState,
-} from 'react'
+import React, { createContext, useCallback, useContext, useEffect, useMemo, useState } from 'react'
 import Typography from '@mui/material/Typography'
 import Breadcrumbs from '@mui/material/Breadcrumbs'
 import Link from '@mui/material/Link'
@@ -23,10 +16,7 @@ import LayoutContext from '../context'
 import { homeUrl, productSchemaApi, productUrl } from '../../services/service.config'
 
 import { LargePrimaryButton } from '../../components/Utilities/button'
-import {
-  CurrencyBeforeComponent,
-  CurrencyBeforeValue,
-} from 'components/Utilities/common'
+import { CurrencyBeforeComponent, CurrencyBeforeValue } from 'components/Utilities/common'
 import { ProductVariants } from './ProductVariants'
 import { PriceTierValues } from './VariantAccordion'
 import { useCart } from 'context/cart-provider'
@@ -37,27 +27,19 @@ import productService from '../../services/product/product.service'
 import priceService from '../../services/product/price.service'
 import { useNavigate } from 'react-router-dom'
 import { ProductConfiguration } from './ProductConfiguration'
-import {
-  Paper,
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
-} from '@mui/material'
+import { Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material'
 import Content from 'pages/home/Content'
 import { CMSFilterType } from 'services/content/filteredPage.service'
-import { useTranslation } from 'react-i18next';
+import { useTranslation } from 'react-i18next'
 import { ACCESS_TOKEN } from '../../constants/localstorage'
 import ApiRequest from '../../services'
-import i18next from 'i18next';
+import i18next from 'i18next'
 import { useSelector } from 'react-redux'
 import { availabilityDataSelector } from '../../redux/slices/availabilityReducer'
 
 const ProductContext = createContext()
-export const i18nProductCustomAttributesNS = "productCustomAttributes"
-export const i18nPCADescriptionSuffix = "_desc"
+export const i18nProductCustomAttributesNS = 'productCustomAttributes'
+export const i18nPCADescriptionSuffix = '_desc'
 
 const Bold = ({ children }) => {
   return <div className="font-bold">{children}</div>
@@ -71,42 +53,20 @@ const ProductDetailCategoryCaptionBar = ({ category }) => {
   }
   return (
     <div className="product-detail-category-caption-bar">
-      <Breadcrumbs
-        className="lg:block hidden"
-        separator=">"
-        aria-label="breadcrumb"
-      >
+      <Breadcrumbs className="lg:block hidden" separator=">" aria-label="breadcrumb">
         {categoryTree.map((row, index) => {
           return row.link === '' ? (
-            <Typography
-              key={index}
-              className="breadcrumb-item"
-              color="text.primary"
-            >
+            <Typography key={index} className="breadcrumb-item" color="text.primary">
               {row.caption}
             </Typography>
           ) : (
-            <Link
-              key={index}
-              className="breadcrumb-item"
-              underline="hover"
-              color="inherit"
-              href={row.link}
-            >
-              {index !== categoryTree.length - 1 ? (
-                row.caption
-              ) : (
-                <Bold>{row.caption}</Bold>
-              )}
+            <Link key={index} className="breadcrumb-item" underline="hover" color="inherit" href={row.link}>
+              {index !== categoryTree.length - 1 ? row.caption : <Bold>{row.caption}</Bold>}
             </Link>
           )
         })}
       </Breadcrumbs>
-      <Breadcrumbs
-        className="lg:hidden md:block hidden"
-        separator=">"
-        aria-label="breadcrumb"
-      >
+      <Breadcrumbs className="lg:hidden md:block hidden" separator=">" aria-label="breadcrumb">
         {categoryTree.map((row, index) => {
           return row.link === '' ? (
             ''
@@ -115,9 +75,7 @@ const ProductDetailCategoryCaptionBar = ({ category }) => {
               key={index}
               className="breadcrumb-item"
               underline="hover"
-              color={
-                index === categoryTree.length - 2 ? 'text.primary' : 'inherit'
-              }
+              color={index === categoryTree.length - 2 ? 'text.primary' : 'inherit'}
               href="/"
             >
               {row.caption}
@@ -127,15 +85,12 @@ const ProductDetailCategoryCaptionBar = ({ category }) => {
       </Breadcrumbs>
       <Breadcrumbs className="md:hidden" separator=">" aria-label="breadcrumb">
         {categoryTree.map((row, index) => {
-          return categoryTree.length - index > 1 &&
-            categoryTree.length - index < 4 ? (
+          return categoryTree.length - index > 1 && categoryTree.length - index < 4 ? (
             <Link
               key={index}
               className="breadcrumb-item"
               underline="hover"
-              color={
-                index === categoryTree.length - 1 ? 'text.primary' : 'inherit'
-              }
+              color={index === categoryTree.length - 1 ? 'text.primary' : 'inherit'}
               href="/"
             >
               {row.caption}
@@ -170,11 +125,7 @@ const ProductImage = ({ product }) => {
               className="rounded-2xl product-detail-sub-image-item flex items-center"
               onClick={() => handleImageClick(link)}
             >
-              <img
-                src={`${link}`}
-                alt="product_"
-                className="w-full m-auto items-center rounded-2xl"
-              />
+              <img src={`${link}`} alt="product_" className="w-full m-auto items-center rounded-2xl" />
             </div>
           )
         })}
@@ -191,13 +142,7 @@ const ProductSkuAndReview = ({ product }) => {
       <div className="reviews-info">
         <div className="lg:flex">
           <div className="flex float-right lg:float-left">
-            <ReactStars
-              size={16}
-              value={product.rating}
-              color2={'#FBB13C'}
-              className="reviews-star"
-            />
-            ({product.count})
+            <ReactStars size={16} value={product.rating} color2={'#FBB13C'} className="reviews-star" />({product.count})
           </div>
         </div>
       </div>
@@ -206,14 +151,10 @@ const ProductSkuAndReview = ({ product }) => {
 }
 const ProductTitle = ({ name }) => {
   const { getLocalizedValue } = useLanguage()
-  return (
-    <div className="mt-6 product-title text-left w-full text-eerieBlack font-light">
-      {getLocalizedValue(name)}
-    </div>
-  )
+  return <div className="mt-6 product-title text-left w-full text-eerieBlack font-light">{getLocalizedValue(name)}</div>
 }
 const ProductPriceAndAmount = ({ price, available, estimatedDelivery }) => {
-  const {t} = useTranslation("page")
+  const { t } = useTranslation('page')
   const { isLoggedIn } = useAuth()
 
   return (
@@ -224,9 +165,7 @@ const ProductPriceAndAmount = ({ price, available, estimatedDelivery }) => {
             <div className="product-price">
               <CurrencyBeforeValue value={price} />
             </div>
-            <div className="vat-caption">
-              {isLoggedIn ? 'Excl. VAT' : 'Incl. VAT'}
-            </div>
+            <div className="vat-caption">{isLoggedIn ? 'Excl. VAT' : 'Incl. VAT'}</div>
           </>
         ) : (
           <></>
@@ -239,24 +178,20 @@ const ProductPriceAndAmount = ({ price, available, estimatedDelivery }) => {
             </CurrencyBeforeComponent>
           </div>
         ) : (
-          <span className="desktop-sm text-xs  text-primaryBlue font-bold">
-            No Price
-          </span>
+          <span className="desktop-sm text-xs  text-primaryBlue font-bold">No Price</span>
         )}
       </div>
 
       <div className="product-amount-wrapper flex mt-6 space-x-6 items-center">
-        <span className="product-number">{available ? t("in_stock") : t("out_of_stock")}</span>
-        <span className="delivery-date">
-          Estimated Delivery {estimatedDelivery}
-        </span>
+        <span className="product-number">{available ? t('in_stock') : t('out_stock')}</span>
+        <span className="delivery-date">Estimated Delivery {estimatedDelivery}</span>
       </div>
     </div>
   )
 }
 const ProductBasicInfo = ({ product }) => {
   const availability = useSelector(availabilityDataSelector)
-  const available = availability['k' +product.id]?.available
+  const available = availability['k' + product.id]?.available
   const { isLoggedIn } = useAuth()
   const price = useMemo(() => {
     return formatPrice(product, isLoggedIn)
@@ -266,11 +201,7 @@ const ProductBasicInfo = ({ product }) => {
       <ProductSkuAndReview product={product} />
       <ProductTitle name={product.name} />
       {product.productType !== 'PARENT_VARIANT' && (
-        <ProductPriceAndAmount
-          available={available}
-          price={price}
-          estimatedCelivery={product.estimated_delivery}
-        />
+        <ProductPriceAndAmount available={available} price={price} estimatedCelivery={product.estimated_delivery} />
       )}
     </div>
   )
@@ -283,17 +214,11 @@ const ProductBundleInfo = ({ product }) => {
   useEffect(() => {
     ;(async () => {
       const bundledProductsIds = product.bundledProducts.map((i) => i.productId)
-      const products = await productService.getProductsWithIds(
-        bundledProductsIds
-      )
-      const prices = await priceService.getPriceWithProductIds(
-        bundledProductsIds
-      )
+      const products = await productService.getProductsWithIds(bundledProductsIds)
+      const prices = await priceService.getPriceWithProductIds(bundledProductsIds)
       const res = products.map((p) => {
         const price = prices.filter((i) => i.itemId.id === p.id)[0]
-        const amount = product.bundledProducts.filter(
-          (prod) => prod.productId === p.id
-        )[0]
+        const amount = product.bundledProducts.filter((prod) => prod.productId === p.id)[0]
         return {
           product: p,
           price: price,
@@ -306,10 +231,7 @@ const ProductBundleInfo = ({ product }) => {
 
   return (
     <>
-      <div
-        className="product-match-caption w-full"
-        style={{ paddingBottom: 0 }}
-      >
+      <div className="product-match-caption w-full" style={{ paddingBottom: 0 }}>
         Bundled products
       </div>
       <TableContainer component={Paper}>
@@ -327,23 +249,14 @@ const ProductBundleInfo = ({ product }) => {
           <TableBody>
             {bundledProducts &&
               bundledProducts.map((bundledProduct) => (
-                <TableRow
-                  key={bundledProduct.product.code}
-                  sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-                >
+                <TableRow key={bundledProduct.product.code} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
                   <TableCell component="th" scope="row">
-                    {bundledProduct.product.media &&
-                      bundledProduct.product.media.length > 0 && (
-                        <img
-                          src={bundledProduct.product.media[0].url}
-                          className="w-fit h-8"
-                        />
-                      )}
+                    {bundledProduct.product.media && bundledProduct.product.media.length > 0 && (
+                      <img src={bundledProduct.product.media[0].url} className="w-fit h-8" alt="products" />
+                    )}
                   </TableCell>
                   <TableCell>{bundledProduct.product.code}</TableCell>
-                  <TableCell>
-                    {getLocalizedValue(bundledProduct.product.name)}
-                  </TableCell>
+                  <TableCell>{getLocalizedValue(bundledProduct.product.name)}</TableCell>
                   <TableCell>{bundledProduct.amount}</TableCell>
                   <TableCell>
                     <CurrencyBeforeValue
@@ -353,10 +266,7 @@ const ProductBundleInfo = ({ product }) => {
                   </TableCell>
                   <TableCell>
                     <CurrencyBeforeValue
-                      value={
-                        bundledProduct.price.effectiveValue *
-                        bundledProduct.amount
-                      }
+                      value={bundledProduct.price.effectiveValue * bundledProduct.amount}
                       currency={bundledProduct.price.currency}
                     />
                   </TableCell>
@@ -401,15 +311,14 @@ const ProductAddToCart = () => {
           onChange={(value) => {
             setQuantity(value)
           }}
+          left
         />
       </div>
       <div className="">
         <LargePrimaryButton
           disabled={!product.price}
           className="product-add-to-cart-btn cta-button bg-yellow !text-aliceBlue !text-lg"
-          onClick={() =>
-            HandleProductAddToCart1(product, setShowCart, quantity)
-          }
+          onClick={() => HandleProductAddToCart1(product, setShowCart, quantity)}
           title="ADD TO CART"
         />
       </div>
@@ -420,11 +329,7 @@ const ProductDiscount = ({ price, quantity }) => {
   return (
     <div className="product-discount-wrapper pt-12 gap-6 ">
       <div className="product-discount-caption">Quantity Discount</div>
-      <PriceTierValues
-        sx={{ borderRight: '1px solid #DFE1E5' }}
-        price={price}
-        quantity={quantity}
-      ></PriceTierValues>
+      <PriceTierValues sx={{ borderRight: '1px solid #DFE1E5' }} price={price} quantity={quantity}></PriceTierValues>
     </div>
   )
 }
@@ -435,10 +340,7 @@ const ProductInfo = ({ product }) => {
       {product.productType !== 'PARENT_VARIANT' && (
         <>
           <ProductAddToCart />
-          <ProductDiscount
-            price={product.price}
-            quantity={product.product_count}
-          />
+          <ProductDiscount price={product.price} quantity={product.product_count} />
         </>
       )}
     </>
@@ -451,12 +353,8 @@ const ProductContent = ({ product, brand, labels }) => {
   if (product.price !== undefined) {
     listPrice = Math.trunc(product.price.totalValue * 100) / 100
     price = listPrice
-    if (
-      product.price.priceModel !== undefined &&
-      product.price.priceModel.includesTax === false
-    ) {
-      price =
-        Math.trunc((price * 10000) / (100 + product.price.tax.taxRate)) / 100
+    if (product.price.priceModel !== undefined && product.price.priceModel.includesTax === false) {
+      price = Math.trunc((price * 10000) / (100 + product.price.tax.taxRate)) / 100
     }
   }
 
@@ -474,11 +372,7 @@ const ProductContent = ({ product, brand, labels }) => {
               {brand && (
                 <>
                   <div>Brands</div>
-                  <img
-                    src={brand.image}
-                    alt={brand.name}
-                    className="w-fit h-8"
-                  />
+                  <img src={brand.image} alt={brand.name} className="w-fit h-8" />
                 </>
               )}
             </div>
@@ -487,13 +381,7 @@ const ProductContent = ({ product, brand, labels }) => {
               <div className="flex gap-2">
                 {labels && labels.length > 0 && <div>Labels</div>}
                 {labels.map((label) => {
-                  return (
-                    <img
-                      src={label.image}
-                      alt={label.name}
-                      className="w-fit h-8"
-                    />
-                  )
+                  return <img src={label.image} alt={label.name} className="w-fit h-8" />
                 })}
               </div>
             </div>
@@ -545,8 +433,7 @@ const ProductDetailsTabContent = ({ product }) => {
         else {
           if (str[loop] === '_') flg = true
           else {
-            if (flg === true || str[loop] === str[loop].toUpperCase())
-              res += ' ' + str[loop].toUpperCase()
+            if (flg === true || str[loop] === str[loop].toUpperCase()) res += ' ' + str[loop].toUpperCase()
             else res += str[loop]
             flg = false
           }
@@ -558,7 +445,7 @@ const ProductDetailsTabContent = ({ product }) => {
   }
   const ensureAttributeNameTranslationIsPresent = async (lang) => {
     if (i18next.hasResourceBundle(lang, i18nProductCustomAttributesNS)) {
-      return;
+      return
     }
 
     const headers = {
@@ -568,34 +455,34 @@ const ProductDetailsTabContent = ({ product }) => {
     }
     const res = await ApiRequest(productSchemaApi(), 'get', {}, headers, {})
     if (res.status !== 200) {
-      return;
+      return
     }
 
-    const data = res.data[0]    
+    const data = res.data[0]
 
     //reflect https://api.emporix.io/schema/n11showcase/schemas to i18next resource
     const resource = {}
     resource[data.id] = data.name[lang]
-    data.attributes.forEach((a)=>{
+    data.attributes.forEach((a) => {
       resource[a.key] = a.name[lang]
       resource[a.key + i18nPCADescriptionSuffix] = a.description[lang]
-    });
-    i18next.addResourceBundle(lang,i18nProductCustomAttributesNS, resource,false, true)
+    })
+    i18next.addResourceBundle(lang, i18nProductCustomAttributesNS, resource, false, true)
     i18next.changeLanguage(lang)
   }
 
-  useEffect(()=>{
+  useEffect(() => {
     ensureAttributeNameTranslationIsPresent(currentLanguage)
-  },[currentLanguage])
+  }, [currentLanguage])
 
   const getAttributes = (items) => {
     let res = []
     Object.keys(items).forEach((key) => {
       let value = items[key]
 
-      if (Array.isArray(value) && currentLanguage === "en") value = value[1].value
-      else if (Array.isArray(value) && currentLanguage === "de") value = value[0].value
-      else if (typeof value === "string") value = items[key]
+      if (Array.isArray(value) && currentLanguage === 'en') value = value[1].value
+      else if (Array.isArray(value) && currentLanguage === 'de') value = value[0].value
+      else if (typeof value === 'string') value = items[key]
       else value = ''
 
       res.push({ property: key, value: value })
@@ -606,13 +493,7 @@ const ProductDetailsTabContent = ({ product }) => {
     <div className="product-details-tab-content-wrapper">
       <div className="grid grid-cols-1 gap-12">
         {Object.keys(product.mixins ? product.mixins : []).map((key) => {
-          return (
-            <ProductInfoPortal
-              key={key}
-              caption={key}
-              items={getAttributes(product.mixins[key])}
-            />
-          )
+          return <ProductInfoPortal key={key} caption={key} items={getAttributes(product.mixins[key])} />
         })}
       </div>
     </div>
@@ -652,12 +533,7 @@ const ProductDetailTabContent = ({ product }) => {
   return (
     <Box>
       <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
-        <Tabs
-          variant="fullWidth"
-          value={tab}
-          onChange={handleChange}
-          aria-label=""
-        >
+        <Tabs variant="fullWidth" value={tab} onChange={handleChange} aria-label="">
           <Tab sx={tabStyle} label="Details" {...a11yProps(0)} />
           <Tab sx={tabStyle} label="Additional Information" {...a11yProps(1)} />
           <Tab sx={tabStyle} label="Reviews" {...a11yProps(2)} />
@@ -671,20 +547,16 @@ const ProductDetailTabContent = ({ product }) => {
           dangerouslySetInnerHTML={{ __html: product.description }}
           className="product-details-tab-content-wrapper text-lg font-light"
         />
-        <Content type={CMSFilterType.PRODUCT} page={product.id}/>
+        <Content type={CMSFilterType.PRODUCT} page={product.id} />
       </TabPanel>
       <TabPanel value={tab} index={2}>
-        <div className="product-details-tab-content-wrapper font-light">
-          Reviews
-        </div>
+        <div className="product-details-tab-content-wrapper font-light">Reviews</div>
       </TabPanel>
     </Box>
   )
 }
 const ProductInfoPortal = ({ caption, items }) => {
   const { t } = useTranslation(i18nProductCustomAttributesNS)
-
-
 
   return (
     <div className="information-portal-wrapper grid grid-cols-1 gap-4">
@@ -693,9 +565,12 @@ const ProductInfoPortal = ({ caption, items }) => {
         {items.map((row, index) => (
           <div key={index} className="grid grid-cols-2 gap-2">
             <div className="information-properties pl-6 grid grid-cols-1 text-lg last tooltipped">
-              <span
-                className="tooltip rounded-b-lg bg-aliceBlue p-1 -mr-2 standard_box_shadow">{t(row.property + i18nPCADescriptionSuffix)}</span>
-              <span key={index} className="tail">{t(row.property)}</span>
+              <span className="tooltip rounded-b-lg bg-aliceBlue p-1 -mr-2 standard_box_shadow">
+                {t(row.property + i18nPCADescriptionSuffix)}
+              </span>
+              <span key={index} className="tail">
+                {t(row.property)}
+              </span>
             </div>
             <div className="information-values pl-6 grid grid-cols-1 text-lg font-light">
               <span key={index}>{row.value}</span>
@@ -721,21 +596,14 @@ const ProductDetailInfo = ({ product }) => {
               <ProductDetailsTabContent product={product} />
             </AccordionItem>
             <AccordionItem index={1} title="Additional Information">
-              <div className="product-details-tab-content-wrapper">
-                {getLocalizedValue(product.description)}
-              </div>
+              <div className="product-details-tab-content-wrapper">{getLocalizedValue(product.description)}</div>
             </AccordionItem>
-            <AccordionItem
-              index={2}
-              title="Reviews"
-              className="product-details-tab-content-wrapper"
-            >
+            <AccordionItem index={2} title="Reviews" className="product-details-tab-content-wrapper">
               <div className="product-details-tab-content-wrapper">Reviews</div>
             </AccordionItem>
           </Accordion>
         </div>
-        <div className="desktop-lg mt-4">
-        </div>
+        <div className="desktop-lg mt-4"></div>
       </div>
     </div>
   )
@@ -842,9 +710,7 @@ const ProductMatchItems = ({ productInput }) => {
   }, [currentLanguage, productInput])
   return (
     <div className="product-match-items-wrapper grid grid-cols-1">
-      <div className="product-match-caption mx-auto font-light w-full lg:w-1/3 border-b-2 pb-2">
-        Related products
-      </div>
+      <div className="product-match-caption mx-auto font-light w-full lg:w-1/3 border-b-2 pb-2">Related products</div>
       {products.length > 0 ? (
         <div className="product-match-items-content w-full">
           <SliderComponent>
@@ -869,9 +735,7 @@ const ProductMatchItems = ({ productInput }) => {
           </SliderComponent>
         </div>
       ) : (
-        <div className="w-full text-center text-lg font-light">
-          No matching products
-        </div>
+        <div className="w-full text-center text-lg font-light">No matching products</div>
       )}
     </div>
   )
@@ -889,9 +753,7 @@ const ProductDetailPage = ({ product, brand, labels }) => {
           ) : (
             <ProductConfiguration product={product} />
           ))}
-        {product.productType === 'BUNDLE' && (
-          <ProductBundleInfo product={product} />
-        )}
+        {product.productType === 'BUNDLE' && <ProductBundleInfo product={product} />}
         <ProductDetailInfo product={product} />
         <ProductMatchItems productInput={product} />
       </div>

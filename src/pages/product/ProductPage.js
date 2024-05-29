@@ -8,8 +8,8 @@ const ProductPage = () => {
     <>
       <ProductListBanner className="w-screen pt-24 md:pt-64 px-4" />
       <div className="px-4 md:px-24 pb-12">
-        <div className="mt-8 w-auto">
-          <ProductList/>
+        <div className="mt-8 w-auto relative">
+          <ProductList />
         </div>
       </div>
     </>

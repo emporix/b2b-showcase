@@ -6,12 +6,7 @@ import { BackButton, MediumPrimaryButton } from 'components/Utilities/button'
 import { useAuth } from 'context/auth-provider'
 import Select from '@mui/material/Select'
 
-import {
-  createAddress,
-  deleteAddress,
-  fetchCountries,
-  updateAddress,
-} from 'services/user/adresses'
+import { createAddress, deleteAddress, fetchCountries, updateAddress } from 'services/user/adresses'
 import ConfirmationDialog from './ConfirmationDialog'
 import { useSites } from 'context/sites-provider'
 import Dropdown from 'components/Utilities/dropdown'
@@ -111,10 +106,7 @@ const AddressesEdit = () => {
 
   return (
     <AccountLayout page={addressId ? 'Address # ' + addressId : 'New Address'}>
-      <BackButton
-        link={`/${userTenant}/my-account/addresses`}
-        title={'Back to addresses'}
-      />
+      <BackButton link={`/${userTenant}/my-account/addresses`} title={'Back to addresses'} />
 
       <div className="grid-cols-2 mt-8">
         <h2 className="text-xl font-bold mb-4">Address Form</h2>
@@ -133,9 +125,7 @@ const AddressesEdit = () => {
                   borderColor: hasError('contactName') && 'red',
                 }}
               />
-              {hasError('contactName') && (
-                <div className="text-red-500 text-xs">Must not be blank</div>
-              )}
+              {hasError('contactName') && <div className="text-red-500 text-xs">Must not be blank</div>}
             </div>
 
             <div className="col-span-1 flex flex-col">
@@ -207,9 +197,7 @@ const AddressesEdit = () => {
                   width: '100px',
                 }}
               />
-              {hasError('country') && (
-                <div className="text-red-500 text-xs">Must not be blank</div>
-              )}
+              {hasError('country') && <div className="text-red-500 text-xs">Must not be blank</div>}
             </div>
             <div className="col-span-1 flex flex-col">
               <label className="mb-1">State:</label>
@@ -254,17 +242,10 @@ const AddressesEdit = () => {
                 />
               </div>
             </div>
-            <div className="mt-6 col-span-2 flex justify-end">
-              <MediumPrimaryButton
-                title="SAVE"
-                className="w-60 m-auto px-4 py-2 mr-2"
-                onClick={handleSubmit}
-              />
+            <div className="mt-6 col-span-2 flex flex-row-reverse justify-end">
+              <MediumPrimaryButton title="SAVE" className="w-60 m-auto px-4 py-2 mr-2" onClick={handleSubmit} />
               {addressId && (
-                <button
-                  className="border-lightBlue border-[1px] b-1 w-60 px-4 py-2 text-lightBlue text-center font-bold text-sm hover:bg-lightBlue/20"
-                  onClick={() => setIsDialogOpen(true)}
-                >
+                <button className="cta-secondary-md w-60 px-4 py-2" onClick={() => setIsDialogOpen(true)}>
                   DELETE
                 </button>
               )}

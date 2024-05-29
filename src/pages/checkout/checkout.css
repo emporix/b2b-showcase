@@ -31,20 +31,16 @@
 .location-info .home-pin {
   @apply h-[20px] !pl-[-1.5rem];
 }
-.address-grid{
+.address-grid {
   display: grid;
   grid-template-columns: 50px 1fr !important;
   align-items: center;
 }
-.billing-information{
-  @apply p-6 border border-quartz rounded
+.billing-information {
+  @apply p-6 border border-quartz rounded;
 }
 .edit-button {
   color: dodgerBlue;
-}
-
-.hidden {
-  display: none;
 }
 
 .fitToModal {

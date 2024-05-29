@@ -3,7 +3,7 @@
 @tailwind utilities;
 
 body {
-  @apply bg-bgGradient font-inter;
+  @apply bg-bgGradient;
   margin: 0;
   min-width: 375px;
   background-blend-mode: screen;
@@ -12,8 +12,7 @@ body {
 }
 
 code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
 }
 
 .header {
@@ -45,10 +44,6 @@ code {
   height: 100dvh;
 }
 
-.home_service {
-  @apply bg-white w-full grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 py-14 px-4  md:px-6 xl:px-36 gap-y-12 md:gap-14 lg:gap-x-4 xl:gap-12;
-}
-
 .home_product {
   @apply bg-white w-full h-[704px] md:h-[746px]  text-black;
 }
@@ -63,22 +58,6 @@ code {
 
 .content-wrapper {
   @apply flex lg:space-x-6;
-}
-
-.left-menu-panel {
-  @apply flex-auto lg:w-[calc((100%-24px)*0.23)] hidden lg:block;
-}
-
-.main-left-menu-panel {
-  @apply flex-auto lg:w-[calc((100%-24px)*0.23)] w-full;
-}
-
-.main-content-panel {
-  @apply flex-auto lg:w-[calc((100%-24px)*0.77+24px)] lg:block hidden;
-}
-
-.content-panel {
-  @apply flex-auto lg:w-[calc((100%-24px)*0.77+24px)] w-full;
 }
 
 .login_container {
@@ -158,18 +137,48 @@ code {
   cursor: pointer;
 }
 
+.cta-primary,
 .cta-button {
+  @apply cursor-pointer rounded-xl bg-primary hover:bg-highlight;
+  @apply text-aliceBlue text-sm font-semibold whitespace-nowrap uppercase;
+  @apply px-10 py-4;
+  @apply transition-all duration-150 ease-in;
+}
+
+.cta-primary-md {
+  @apply cursor-pointer rounded-xl bg-primary hover:bg-highlight;
+  @apply text-aliceBlue text-sm font-semibold whitespace-nowrap uppercase;
+  @apply px-4 py-2;
+  @apply transition-all duration-150 ease-in;
+}
+
+.cta-secondary {
+  @apply cursor-pointer rounded border border-eerieBlack bg-transparent hover:text-highlight hover:border-highlight;
+  @apply text-eerieBlack text-sm font-semibold whitespace-nowrap uppercase;
+  @apply px-10 py-4;
+  @apply transition-all duration-150 ease-in;
+}
+
+.cta-secondary-md {
+  @apply cursor-pointer rounded border border-eerieBlack bg-transparent hover:text-highlight hover:border-highlight;
+  @apply text-eerieBlack text-sm font-semibold whitespace-nowrap uppercase;
+  @apply px-4 py-2;
+  @apply transition-all duration-150 ease-in;
+}
+
+/* .cta-button {
+  @apply curosr-pointer rounded-xl
   cursor: pointer;
   border-radius: 0.75rem !important;
   color: #1f1f1f !important;
   font-size: 14px !important;
   line-height: 24px !important;
   font-weight: 600 !important;
-}
+} */
 
-.cta-button:hover {
+/* .cta-button:hover {
   background-color: #e03f58 !important;
-}
+} */
 
 .cta-button-checked {
   border-radius: 4px !important;
@@ -191,12 +200,8 @@ input[type='checkbox'] {
   background-color: #e9154b !important;
 }
 
-.grey-rounded-container {
-  @apply bg-aliceBlue rounded;
-}
-
 .grid-column-title {
-  @apply !text-manatee text-[14px]/[22px] font-normal;
+  @apply !text-manatee text-sm;
 }
 
 .bordered-container {
@@ -204,8 +209,8 @@ input[type='checkbox'] {
 }
 
 .filter-white {
-  filter: brightness(0) saturate(100%) invert(100%) sepia(100%) saturate(0%)
-    hue-rotate(288deg) brightness(102%) contrast(102%);
+  filter: brightness(0) saturate(100%) invert(100%) sepia(100%) saturate(0%) hue-rotate(288deg) brightness(102%)
+    contrast(102%);
 }
 
 .home_category_shadow {
@@ -216,28 +221,22 @@ input[type='checkbox'] {
   box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
 }
 .hp_teaser_box_shadow {
-  box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px,
-    rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px,
+  box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px, rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px,
     rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px;
 }
 
 .hp_teaser_box_shadow_white {
-  box-shadow: rgba(50, 50, 93, 0.25) 0px 30px 60px -12px inset,
-    rgba(0, 0, 0, 0.3) 0px 18px 36px -18px inset;
+  box-shadow: rgba(50, 50, 93, 0.25) 0px 30px 60px -12px inset, rgba(0, 0, 0, 0.3) 0px 18px 36px -18px inset;
 }
 
 .main_bg_gradient {
   background-image: radial-gradient(73% 147%, #eadfdf 59%, #ece2df 100%),
-    radial-gradient(
-      91% 146%,
-      rgba(255, 255, 255, 0.5) 47%,
-      rgba(0, 0, 0, 0.5) 100%
-    );
+    radial-gradient(91% 146%, rgba(255, 255, 255, 0.5) 47%, rgba(0, 0, 0, 0.5) 100%);
   background-blend-mode: screen;
 }
 
 .tooltip {
-  @apply invisible absolute;
+  @apply hidden xs:invisible absolute;
 }
 
 .tooltipped:hover .tooltip {
