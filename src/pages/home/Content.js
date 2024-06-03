@@ -4,7 +4,7 @@ import FsGenericComponent from 'resolver/firstSpirit.resolver'
 import { getCmsFilteredPage } from 'services/content/filteredPage.service'
 import { useLanguage } from '../../context/language-provider'
 
-const Content = ({ type, page, classList }) => {
+const Content = ({ type, page, classList, title }) => {
   const [content, setContent] = useState([])
   const { currentLanguage } = useLanguage()
 
@@ -19,6 +19,7 @@ const Content = ({ type, page, classList }) => {
 
   return (
     <div className={'content ' + classList}>
+      {title ? <h2 className="font-bold text-2xl text-center lg:text-left pb-2 border-b-2">{title}</h2> : null}
       <FsGenericComponent props={content} />
     </div>
   )

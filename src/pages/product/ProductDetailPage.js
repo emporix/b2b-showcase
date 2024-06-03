@@ -547,7 +547,7 @@ const ProductDetailTabContent = ({ product }) => {
           dangerouslySetInnerHTML={{ __html: product.description }}
           className="product-details-tab-content-wrapper text-lg font-light"
         />
-        <Content type={CMSFilterType.PRODUCT} page={product.id} />
+        {/* <Content type={CMSFilterType.PRODUCT} page={product.id} /> */}
       </TabPanel>
       <TabPanel value={tab} index={2}>
         <div className="product-details-tab-content-wrapper font-light">Reviews</div>
@@ -584,9 +584,14 @@ const ProductInfoPortal = ({ caption, items }) => {
 
 const ProductDetailInfo = ({ product }) => {
   const { getLocalizedValue } = useLanguage()
+  const { t } = useTranslation('products')
+  console.log(getLocalizedValue(product.description))
   return (
     <div className="product-detail-page-info-wrapper pb-12">
       <div className="product-detail-content">
+        <div className="mb-16">
+          <Content type={CMSFilterType.PRODUCT} page={product.id} title={t('description')} />
+        </div>
         <div className="desktop-lg">
           <ProductDetailTabContent product={product} />
         </div>
