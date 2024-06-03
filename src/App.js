@@ -143,7 +143,7 @@ i18n.use(initReactI18next).init({
         excl_vat: 'Exkl. MwSt.',
         incl_vat: 'Inkl. MwSt.',
         in_stock: 'Auf Lager',
-        out_stock: 'Nicht lieferbar',
+        out_stock: 'Nicht verfügbar',
         add_cart: 'in den Warenkorb',
         view_var: 'mehr optionen',
         no_price: 'kein Preis',

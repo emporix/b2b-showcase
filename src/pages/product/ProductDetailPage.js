@@ -34,6 +34,8 @@ import { useTranslation } from 'react-i18next'
 import { ACCESS_TOKEN } from '../../constants/localstorage'
 import ApiRequest from '../../services'
 import i18next from 'i18next'
+import { useSelector } from 'react-redux'
+import { availabilityDataSelector } from '../../redux/slices/availabilityReducer'
 
 const ProductContext = createContext()
 export const i18nProductCustomAttributesNS = 'productCustomAttributes'
@@ -151,7 +153,8 @@ const ProductTitle = ({ name }) => {
   const { getLocalizedValue } = useLanguage()
   return <div className="mt-6 product-title text-left w-full text-eerieBlack font-light">{getLocalizedValue(name)}</div>
 }
-const ProductPriceAndAmount = ({ price, productCount, estimatedDelivery }) => {
+const ProductPriceAndAmount = ({ price, available, estimatedDelivery }) => {
+  const { t } = useTranslation('page')
   const { isLoggedIn } = useAuth()
 
   return (
@@ -180,13 +183,15 @@ const ProductPriceAndAmount = ({ price, productCount, estimatedDelivery }) => {
       </div>
 
       <div className="product-amount-wrapper flex mt-6 space-x-6 items-center">
-        <span className="product-number">{productCount} in Stock</span>
+        <span className="product-number">{available ? t('in_stock') : t('out_stock')}</span>
         <span className="delivery-date">Estimated Delivery {estimatedDelivery}</span>
       </div>
     </div>
   )
 }
 const ProductBasicInfo = ({ product }) => {
+  const availability = useSelector(availabilityDataSelector)
+  const available = availability['k' + product.id]?.available
   const { isLoggedIn } = useAuth()
   const price = useMemo(() => {
     return formatPrice(product, isLoggedIn)
@@ -196,11 +201,7 @@ const ProductBasicInfo = ({ product }) => {
       <ProductSkuAndReview product={product} />
       <ProductTitle name={product.name} />
       {product.productType !== 'PARENT_VARIANT' && (
-        <ProductPriceAndAmount
-          price={price}
-          productCount={product.product_count}
-          estimatedCelivery={product.estimated_delivery}
-        />
+        <ProductPriceAndAmount available={available} price={price} estimatedCelivery={product.estimated_delivery} />
       )}
     </div>
   )
@@ -251,7 +252,7 @@ const ProductBundleInfo = ({ product }) => {
                 <TableRow key={bundledProduct.product.code} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
                   <TableCell component="th" scope="row">
                     {bundledProduct.product.media && bundledProduct.product.media.length > 0 && (
-                      <img src={bundledProduct.product.media[0].url} className="w-fit h-8" />
+                      <img src={bundledProduct.product.media[0].url} className="w-fit h-8" alt="products" />
                     )}
                   </TableCell>
                   <TableCell>{bundledProduct.product.code}</TableCell>

@@ -7,11 +7,10 @@ import { formatPrice } from 'helpers/price'
 import { useLanguage } from 'context/language-provider'
 import { useTranslation } from 'react-i18next'
 
-const EachProduct = ({ item, available, rating, productCount }) => {
+const EachProduct = ({ item, available, rating }) => {
+  const { t } = useTranslation('page')
   const { isLoggedIn, userTenant } = useAuth()
   const { getLocalizedValue } = useLanguage()
-
-  const { t } = useTranslation('page')
 
   const imageSrc = useMemo(() => {
     return item.media[0] === undefined ? '' : item.media[0]['url']
@@ -43,8 +42,7 @@ const EachProduct = ({ item, available, rating, productCount }) => {
             </div>
           )}
           <div className="flex ml-auto">
-            <ReactStars size={16} value={rating} color2={'#FBB13C'} />(
-            {productCount})
+            <ReactStars size={16} value={rating} color2={'#FBB13C'} />({rating})
           </div>
         </div>
       </div>
@@ -53,30 +51,22 @@ const EachProduct = ({ item, available, rating, productCount }) => {
         <div className="items-center mx-auto ">
           <img src={imageSrc} alt="" className="w-full h-fit rounded-xl" />
         </div>
-        <div className="text-left w-full text-2xl text-eerieBlack font-light">
-          {getLocalizedValue(item.name)}
-        </div>
+        <div className="text-left w-full text-2xl text-eerieBlack font-light">{getLocalizedValue(item.name)}</div>
       </div>
 
       {item.productType !== 'PARENT_VARIANT' && (
         <div
           className={
-            isLoggedIn
-              ? 'flex flex-col w-full gap-2 mt-auto'
-              : 'flex flex-col w-full gap-2 mt-auto text-left font-bold'
+            isLoggedIn ? 'flex flex-col w-full gap-2 mt-auto' : 'flex flex-col w-full gap-2 mt-auto text-left font-bold'
           }
         >
           {isLoggedIn ? (
             <>
               <div className="text-xl flex items-center">
                 {price !== null ? (
-                  <span className="text-sm text-darkGray">
-                    {isLoggedIn ? t('negotiated') : t('public')}
-                  </span>
+                  <span className="text-sm text-darkGray">{isLoggedIn ? t('negotiated') : t('public')}</span>
                 ) : (
-                  <span className="text-lg text-primaryBlue font-bold">
-                    {t('no_price')}
-                  </span>
+                  <span className="text-lg text-primaryBlue font-bold">{t('no_price')}</span>
                 )}
               </div>
               <div className="flex">
@@ -99,14 +89,10 @@ const EachProduct = ({ item, available, rating, productCount }) => {
               {price !== null ? (
                 <>
                   <CurrencyBeforeValue value={price} />
-                  <span className="text-sm font-normal text-manatee">
-                    {t('incl_vat')}
-                  </span>
+                  <span className="text-sm font-normal text-manatee">{t('incl_vat')}</span>
                 </>
               ) : (
-                <span className="text-xs  text-primaryBlue font-bold">
-                  {t('no_price')}
-                </span>
+                <span className="text-xs  text-primaryBlue font-bold">{t('no_price')}</span>
               )}
             </div>
           )}
@@ -114,10 +100,7 @@ const EachProduct = ({ item, available, rating, productCount }) => {
       )}
       {item.productType === 'PARENT_VARIANT' && (
         <div className="mt-auto">
-          <button
-            className="cta-primary w-full"
-            onClick={() => handleProductDetail(item)}
-          >
+          <button className="cta-primary w-full" onClick={() => handleProductDetail(item)}>
             {t('view_var')}
           </button>
         </div>

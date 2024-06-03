@@ -10,11 +10,10 @@ import { PROCUREMENT_SYSTEM_URL } from 'constants/localstorage'
 import { useLanguage } from 'context/language-provider'
 import { useSelector } from 'react-redux'
 import { availabilityDataSelector } from 'redux/slices/availabilityReducer'
+import { useTranslation } from 'react-i18next'
 
 import LayoutContext from '../../pages/context'
 import { HiOutlineArrowCircleLeft, HiOutlineXCircle } from 'react-icons/hi'
-
-import { useTranslation } from 'react-i18next'
 
 export const CartProductCaption = () => {
   return <div className="h-10 border-bottom cart-product-caption">Products</div>
@@ -51,12 +50,11 @@ export const PriceExcludeVAT1 = ({ price, caption }) => {
 export const CartMobileItem = ({ cartItem }) => {
   const { incrementCartItemQty, decrementCartItemQty, setCartItemQty } = useCart()
   const { getLocalizedValue } = useLanguage()
+  const { t } = useTranslation('page')
   const availability = useSelector(availabilityDataSelector)
   const { removeCartItem } = useCart()
 
-  const inStock = availability?.['k' + cartItem.product.id]?.available
-
-  const { t } = useTranslation('page')
+  const available = availability?.['k' + cartItem.product.id]?.available
 
   return (
     <GridLayout className="gap-4 cart-for-mobile">
@@ -106,10 +104,10 @@ export const CartMobileItem = ({ cartItem }) => {
         <span
           className={
             ' text-brightGreen font-bold cart-product-stock w-[80px] ' +
-            (inStock ? 'text-limeGreen' : 'text-primaryBlue')
+            (available ? 'text-limeGreen' : 'text-primaryBlue')
           }
         >
-          {inStock ? t('in_stock') : t('out_stock')}
+          {available ? t('in_stock') : t('out_stock')}
         </span>
         <span className="">Est. delivery time: 3 days</span>
       </div>
@@ -162,11 +160,10 @@ export const CartProductImageAndReadOnlyQuantity = ({ cartItem }) => {
 }
 
 export const CartProductBasicInfo = ({ cart }) => {
+  const { t } = useTranslation('page')
   const { getLocalizedValue } = useLanguage()
   const availability = useSelector(availabilityDataSelector)
-  const inStock = availability['k' + cart.product.id].available
-
-  const [t] = useTranslation('page')
+  const available = availability['k' + cart.product.id].available
 
   return (
     <div className="cart-product-basic-info">
@@ -179,10 +176,10 @@ export const CartProductBasicInfo = ({ cart }) => {
         <div className="cart-product-stock-wrapper">
           <span
             className={
-              ' text-brightGreen font-bold cart-product-stock ' + (inStock ? 'text-limeGreen' : 'text-primaryBlue')
+              ' text-brightGreen font-bold cart-product-stock ' + (available ? 'text-limeGreen' : 'text-primaryBlue')
             }
           >
-            {inStock ? t('in_stock') : t('out_stock')}
+            {available ? t('in_stock') : t('out_stock')}
           </span>
           {/* <span className="cart-product-lead-time">Lead Time: 1 week</span> */}
         </div>
@@ -232,7 +229,7 @@ const CartProductItem = ({ cartItem, onMouseEnter, onMouseLeave }) => {
   )
 }
 const CartProductWrapper = ({ cartItem }) => {
-  const [isHover, setIsHover] = useState(false)
+  const [, setIsHover] = useState(false)
   const { removeCartItem } = useCart()
 
   return (
