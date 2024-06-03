@@ -11,7 +11,7 @@ import { useLanguage } from 'context/language-provider'
 import { useTranslation } from 'react-i18next'
 import { HiChevronDoubleRight } from 'react-icons/hi'
 
-const EachProductRow = ({ item, type, available, rating, productCount }) => {
+const EachProductRow = ({ item, available, rating }) => {
   const { getLocalizedValue } = useLanguage()
   const { putCartProduct } = useCart()
   const navigate = useNavigate()
@@ -26,9 +26,7 @@ const EachProductRow = ({ item, type, available, rating, productCount }) => {
 
   const trimmedDescription = useMemo(() => {
     const desc = getLocalizedValue(item.description)
-    return desc.length > maxProductDescriptionLength
-      ? `${desc.substr(0, maxProductDescriptionLength)} ...`
-      : desc
+    return desc.length > maxProductDescriptionLength ? `${desc.substr(0, maxProductDescriptionLength)} ...` : desc
   }, [item, getLocalizedValue])
 
   const handleProductDetail = useCallback(
@@ -54,39 +52,25 @@ const EachProductRow = ({ item, type, available, rating, productCount }) => {
     if (price) {
       return <CurrencyBeforeValue value={price} />
     } else {
-      return (
-        <span className="text-lg text-primaryBlue font-bold">No Price</span>
-      )
+      return <span className="text-lg text-primaryBlue font-bold">No Price</span>
     }
   }
 
   return (
     <div className="standard_box_shadow h-full rounded-xl bg-aliceBlue p-4 flex flex-col md:flex-row gap-4">
-      <div
-        className="cursor-pointer flex flex-col justify-between"
-        onClick={() => handleProductDetail(item)}
-      >
+      <div className="cursor-pointer flex flex-col justify-between" onClick={() => handleProductDetail(item)}>
         <img src={imageSrc} alt="" className="aspect-square rounded-xl" />
       </div>
 
       <div className="flex flex-col gap-4">
-        <div
-          className="flex flex-row gap-4 cursor-pointer"
-          onClick={() => handleProductDetail(item)}
-        >
-          <div
-            className={`${
-              available > 0 ? 'text-limeGreen' : 'text-red-500'
-            } font-medium float-right lg:float-none`}
-          >
+        <div className="flex flex-row gap-4 cursor-pointer" onClick={() => handleProductDetail(item)}>
+          <div className={`${available > 0 ? 'text-limeGreen' : 'text-red-500'} font-medium float-right lg:float-none`}>
             {available > 0 ? t('in_stock') : t('out_stock')}
           </div>
           <div className="flex flex-col justify-end ml-auto">
             {item.productType !== 'PARENT_VARIANT' && (
               <>
-                <div className="text-gray text-sm text-end">
-                  {isLoggedIn ? t('negotiated') : t('public')}
-                </div>
+                <div className="text-gray text-sm text-end">{isLoggedIn ? t('negotiated') : t('public')}</div>
                 <div className="text-[20px] leading-[24px] text-end font-bold ml-1 whitespace-nowrap">
                   {renderPrice(price)} <br />
                   <span className="text-[12px] font-normal text-gray">
@@ -111,14 +95,10 @@ const EachProductRow = ({ item, type, available, rating, productCount }) => {
             </div>
 
             <div className="text-sm mt-4  text-black flex">
-              <ReactStars size={16} value={rating} color2={'#FBB13C'} />(
-              {productCount})
+              <ReactStars size={16} value={rating} color2={'#FBB13C'} />({rating})
             </div>
 
-            <div
-              className="text-sm mt-4 text-eerieBlack cursor-pointer"
-              onClick={() => handleProductDetail(item)}
-            >
+            <div className="text-sm mt-4 text-eerieBlack cursor-pointer" onClick={() => handleProductDetail(item)}>
               <span>{trimmedDescription}</span>
             </div>
           </div>
@@ -158,10 +138,7 @@ const EachProductRow = ({ item, type, available, rating, productCount }) => {
               </>
             ) : (
               <div>
-                <button
-                  className="cta-primary w-full"
-                  onClick={() => handleProductDetail(item)}
-                >
+                <button className="cta-primary w-full" onClick={() => handleProductDetail(item)}>
                   {t('view_var')}
                 </button>
               </div>

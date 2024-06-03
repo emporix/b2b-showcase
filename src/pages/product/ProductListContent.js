@@ -8,13 +8,7 @@ import EachProduct from './EachProduct'
 import EachProductRow from './EachProductRow'
 import { LoadingCircleProgress1 } from '../../components/Utilities/progress'
 
-import {
-  HiChevronDown,
-  HiOutlineArrowLeft,
-  HiOutlineArrowRight,
-  HiViewList,
-  HiViewGrid,
-} from 'react-icons/hi'
+import { HiOutlineArrowLeft, HiOutlineArrowRight, HiViewList, HiViewGrid } from 'react-icons/hi'
 import NavDropdown from 'components/Utilities/dropdown/NavDropdown'
 
 const productListBoxShadow = {
@@ -23,7 +17,6 @@ const productListBoxShadow = {
 
 const ProductListViewSettingBar = ({
   changeDisplayType,
-  productListCount,
   productsPerPage,
   productListCountsPerPage,
   productSortingTypes,
@@ -78,20 +71,10 @@ const ProductListViewSettingBar = ({
                   className="cursor-pointer hover:text-yellow"
                   onClick={() => changeDisplayType('grid')}
                 >
-                  <HiViewGrid
-                    size={20}
-                    color={displayType === 'grid' ? '#FAC420' : 'black'}
-                  />
+                  <HiViewGrid size={20} color={displayType === 'grid' ? '#FAC420' : 'black'} />
                 </div>
-                <div
-                  id="list-view"
-                  className="cursor-pointer"
-                  onClick={() => changeDisplayType('list')}
-                >
-                  <HiViewList
-                    size={20}
-                    color={displayType === 'list' ? '#FAC420' : 'black'}
-                  />
+                <div id="list-view" className="cursor-pointer" onClick={() => changeDisplayType('list')}>
+                  <HiViewList size={20} color={displayType === 'list' ? '#FAC420' : 'black'} />
                 </div>
               </div>
             </li>
@@ -106,32 +89,20 @@ const ProductListViewSettingBar = ({
 const ProductListItems = ({ products, auth, displayType }) => {
   const availability = useSelector(availabilityDataSelector)
 
-  const gridSys =
-    displayType === 'grid'
-      ? 'grid-cols-1 sm:grid-cols-2 xl:grid-cols-3'
-      : 'grid-cols-1'
+  const gridSys = displayType === 'grid' ? 'grid-cols-1 sm:grid-cols-2 xl:grid-cols-3' : 'grid-cols-1'
 
   return (
-    <div
-      className={`grid gap-4 md:gap-8 auto-cols-max ${gridSys} mb-4 xl:mb-12`}
-    >
+    <div className={`grid gap-4 md:gap-8 auto-cols-max ${gridSys} mb-4 xl:mb-12`}>
       {products.map((item) => {
         const available = availability['k' + item.id]?.available
         return (
-          <div
-            key={item.id}
-            className="hover:scale-[1.01] transition-all duration-150 ease-in"
-          >
-            {React.createElement(
-              displayType === 'grid' ? EachProduct : EachProductRow,
-              {
-                key: item.id,
-                available: available,
-                item: item,
-                rating: 4,
-                productCount: 8,
-              }
-            )}
+          <div key={item.id} className="hover:scale-[1.01] transition-all duration-150 ease-in">
+            {React.createElement(displayType === 'grid' ? EachProduct : EachProductRow, {
+              key: item.id,
+              available: available,
+              item: item,
+              rating: 4,
+            })}
           </div>
         )
       })}
@@ -139,12 +110,7 @@ const ProductListItems = ({ products, auth, displayType }) => {
   )
 }
 
-const ProductListPagination = ({
-  changePageNumber,
-  countPerPage,
-  productListCount,
-  pageNumber,
-}) => {
+const ProductListPagination = ({ changePageNumber, countPerPage, productListCount, pageNumber }) => {
   let totalPage = Math.ceil(productListCount / countPerPage)
   let previousPageitems = []
   let next_page_items = []
@@ -153,22 +119,14 @@ const ProductListPagination = ({
 
   for (let i = pageNumber - 1; i > 1 && i > pageNumber - 3; i--)
     previousPageitems.unshift(
-      <li
-        key={i}
-        className="cursor-pointer"
-        onClick={() => changePageNumber(i)}
-      >
+      <li key={i} className="cursor-pointer" onClick={() => changePageNumber(i)}>
         {i}
       </li>
     )
 
   for (let i = pageNumber + 1; i < totalPage && i < pageNumber + 3; i++)
     next_page_items.push(
-      <li
-        key={i}
-        className="cursor-pointer"
-        onClick={() => changePageNumber(i)}
-      >
+      <li key={i} className="cursor-pointer" onClick={() => changePageNumber(i)}>
         {i}
       </li>
     )
@@ -183,10 +141,7 @@ const ProductListPagination = ({
               if (pageNumber > 1) changePageNumber(pageNumber - 1)
             }}
           >
-            <HiOutlineArrowLeft
-              size={24}
-              color={pageNumber === 1 ? '#ACAEB2' : 'black'}
-            />
+            <HiOutlineArrowLeft size={24} color={pageNumber === 1 ? '#ACAEB2' : 'black'} />
           </li>
           {pageNumber !== 1 && (
             <li className="cursor-pointer" onClick={() => changePageNumber(1)}>
@@ -199,10 +154,7 @@ const ProductListPagination = ({
           {next_page_items}
           {pageNumber + 3 < totalPage && <li>...</li>}
           {pageNumber !== totalPage && totalPage !== 0 && (
-            <li
-              className="cursor-pointer"
-              onClick={() => changePageNumber(totalPage)}
-            >
+            <li className="cursor-pointer" onClick={() => changePageNumber(totalPage)}>
               {totalPage}
             </li>
           )}
@@ -214,14 +166,7 @@ const ProductListPagination = ({
               }
             }}
           >
-            <HiOutlineArrowRight
-              size={24}
-              color={
-                pageNumber === totalPage || totalPage === 0
-                  ? '#ACAEB2'
-                  : 'black'
-              }
-            />
+            <HiOutlineArrowRight size={24} color={pageNumber === totalPage || totalPage === 0 ? '#ACAEB2' : 'black'} />
           </li>
         </ul>
       </div>
