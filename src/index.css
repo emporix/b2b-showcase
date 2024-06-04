@@ -68,8 +68,14 @@ code {
   .fs-content-wrapper > * {
     @apply mt-6 mx-4 md:mx-24;
   }
+  .fs-content-wrapper > .mx-adjust {
+    @apply md:mx-24;
+  }
   .fs-content-product > * {
     @apply mt-6;
+  }
+  .fs-content-product > .mx-adjust {
+    @apply md:mx-0;
   }
 }
 li.fs-simple_text_list_faq p:first-child {
