@@ -6,16 +6,17 @@ import './teaser.css'
 
 export const Teaser = (props) => {
   const { productId } = useParams()
+
+  const classId = props?.props?.sectionType || ''
   const content = props.props?.data
   const headline = content?.st_headline
   const text = content?.st_text
   const image = content?.st_picture?.resolutions.ORIGINAL
 
-  if (headline === undefined && text === undefined && image === undefined)
-    return
+  if (headline === undefined && text === undefined && image === undefined) return
   return (
     <div
-      className="teaser"
+      className={`fs-${classId} mx-0 py-8 md:py-24 flex justify-center items-center`}
       style={
         image
           ? {
@@ -27,13 +28,19 @@ export const Teaser = (props) => {
     >
       <div
         className={
-          'teaser__content ' +
+          'w-11/12 md:w-3/4 rounded-3xl p-8 md:p12 flex flex-col justify-center items-center bg-opacity-95 bg-white ' +
           (!productId ? 'hp_teaser_box_shadow' : 'standard_box_shadow')
         }
       >
-        {headline ? <div className="teaser__headline">{headline}</div> : ''}
+        {headline ? (
+          <div className="text-3xl md:text-4xl text-balance font-semibold text-primary text-center pb-7 md:pb-10 w-full md:w-3/4">
+            {headline}
+          </div>
+        ) : (
+          ''
+        )}
         {text.length ? (
-          <div className="teaser__text">
+          <div className="text-lg text-deepGray">
             {text.map((item, index) => {
               return <p key={index}>{item.content[0]?.content}</p>
             })}

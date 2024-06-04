@@ -2,6 +2,8 @@ import React from 'react'
 import { useParams } from 'react-router-dom'
 import './teaser.css'
 
+// TODO: no difference from ./teaser.js (className remain as CSS, but can be replace tailwind)
+
 // for text content with title, text and image (manufacturer, manufacturer process)
 
 export const AdditionalText = (props) => {
@@ -11,8 +13,8 @@ export const AdditionalText = (props) => {
   const text = content?.st_text
   const image = content?.st_picture?.resolutions.ORIGINAL
 
-  if (headline === undefined && text === undefined && image === undefined)
-    return
+  if (headline === undefined && text === undefined && image === undefined) return
+
   return (
     <div
       className="teaser"
@@ -27,10 +29,7 @@ export const AdditionalText = (props) => {
     >
       <div
         // className="teaser__content">
-        className={
-          'teaser__content ' +
-          (!productId ? 'hp_teaser_box_shadow' : 'standard_box_shadow')
-        }
+        className={'teaser__content ' + (!productId ? 'hp_teaser_box_shadow' : 'standard_box_shadow')}
       >
         {headline ? <div className="teaser__headline">{headline}</div> : ''}
         {text.length ? (

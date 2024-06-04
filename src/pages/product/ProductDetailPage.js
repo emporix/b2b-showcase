@@ -585,12 +585,17 @@ const ProductInfoPortal = ({ caption, items }) => {
 const ProductDetailInfo = ({ product }) => {
   const { getLocalizedValue } = useLanguage()
   const { t } = useTranslation('products')
-  console.log(getLocalizedValue(product.description))
+
   return (
     <div className="product-detail-page-info-wrapper pb-12">
       <div className="product-detail-content">
         <div className="mb-16">
-          <Content type={CMSFilterType.PRODUCT} page={product.id} title={t('description')} />
+          <Content
+            type={CMSFilterType.PRODUCT}
+            page={product.id}
+            title={t('description')}
+            classList={'fs-content-product'}
+          />
         </div>
         <div className="desktop-lg">
           <ProductDetailTabContent product={product} />
@@ -747,7 +752,6 @@ const ProductMatchItems = ({ productInput }) => {
 }
 
 const ProductDetailPage = ({ product, brand, labels }) => {
-  console.log(product)
   return (
     <div className="product-detail-page-wrapper ">
       <div className="product-detail-page-content">

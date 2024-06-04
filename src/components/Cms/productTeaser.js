@@ -6,6 +6,8 @@ export const ProductTeaser = (props) => {
   const [products, setProducts] = useState([])
   const productData = props.props?.data?.st_product?.value[0].value
 
+  const classId = props?.props?.sectionType || ''
+
   useEffect(() => {
     const fetchProducts = async () => {
       setProducts(await productService.getProductsWithIds([productData.id]))
@@ -16,7 +18,7 @@ export const ProductTeaser = (props) => {
 
   return (
     products[0] && (
-      <div className="w-full mx-auto max-w-3xl">
+      <div className={`fs-${classId} w-full mx-auto max-w-3xl`}>
         <ProductMini productInfo={products[0]} />
       </div>
     )

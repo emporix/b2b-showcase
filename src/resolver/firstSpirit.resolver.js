@@ -14,7 +14,6 @@ import CMS_Footer from 'components/Cms/footer'
 import Winery from '../components/Cms/winery'
 import React from 'react'
 
-
 const firstSpiritComponentMap = {
   // TODO still needed? check with first spirit data
   additional_text: AdditionalText,
@@ -29,7 +28,7 @@ const firstSpiritComponentMap = {
   product_carousel: ProductCarousel,
   slider: TeaserSlider,
   simple_text_list_faq: SimpleList,
-  text_banner: TextBanner
+  text_banner: TextBanner,
 }
 
 export const normalizeFsStructure = (content) => {
@@ -69,44 +68,42 @@ export const normalizeFooterStructure = (content) => {
   }
 }
 
-const  FsGenericComponent = (props) => {
-
+const FsGenericComponent = (props) => {
   const componentLayout = props?.props?.data?.cmsFilteredPage?.page?.layout
 
-  let componentData = [...Object.values(props?.props?.data?.cmsFilteredPage?.page?.data ?? {})];
+  let componentData = [...Object.values(props?.props?.data?.cmsFilteredPage?.page?.data ?? {})]
 
-  const children =
-    props?.props?.data?.cmsFilteredPage?.page?.children[0]?.children
+  const children = props?.props?.data?.cmsFilteredPage?.page?.children[0]?.children
   if (children !== undefined && Array.isArray(children)) {
     componentData = [...componentData, ...children]
   }
 
   switch (componentLayout) {
-    case "footer":
+    case 'footer':
       const Component = firstSpiritComponentMap[componentLayout]
-      return Component && <Component props={normalizeFooterStructure(componentData)} />;
-    case "productpage":
-       return <Winery props={props.props} />
-    case "homepage":
+      return Component && <Component props={normalizeFooterStructure(componentData)} />
+    case 'productpage':
+    case 'homepage':
     default:
-      return <FsGenericComponentList componentData={componentData}/>
+      return <FsGenericComponentList componentData={componentData} />
   }
 }
 
 export default FsGenericComponent
 
 export const FsGenericComponentList = (props) => {
-  const { componentData } = props;
+  const { componentData } = props
 
   return componentData.map((entry, idx) => {
+    if (!entry) {
+      return
+    }
 
-      if (!entry) {return}
+    const componentTypeKey = entry?.sectionType || entry?.name || entry?.template?.uid || 'text_banner'
+    const Component = firstSpiritComponentMap[componentTypeKey]
 
-      const componentTypeKey = entry?.sectionType || entry?.name || entry?.template?.uid || "text_banner"
-      const Component = firstSpiritComponentMap[componentTypeKey]
+    if (!Component) return
 
-      if (!Component) return;
-
-      return <Component props={entry} key={idx}/>
-    })
+    return <Component props={entry} key={idx} />
+  })
 }

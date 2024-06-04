@@ -31,7 +31,7 @@ const MainContent = ({ page }) => {
   }, [currentLanguage, page])
 
   return (
-    <div>
+    <div className="fs-content-wrapper">
       <FsGenericComponent props={content} />
     </div>
   )
