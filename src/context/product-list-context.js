@@ -94,7 +94,6 @@ const ProductListProvider = ({ children, id }) => {
           sortingTypes[sortingTypeIndex].prop,
           sortingTypes[sortingTypeIndex].dir
         )
-        console.log('newProducts: ', newProducts)
         setProducts(newProducts)
       } catch (e) {
         console.error(e)
