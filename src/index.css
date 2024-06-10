@@ -64,6 +64,24 @@ code {
   @apply w-full h-[100dvh];
 }
 
+@layer components {
+  .fs-content-wrapper > * {
+    @apply mt-6 mx-4 md:mx-24;
+  }
+  .fs-content-wrapper > .mx-adjust {
+    @apply md:mx-24;
+  }
+  .fs-content-product > * {
+    @apply mt-6;
+  }
+  .fs-content-product > .mx-adjust {
+    @apply md:mx-0;
+  }
+}
+li.fs-simple_text_list_faq p:first-child {
+  @apply font-normal pb-2;
+}
+
 .page-wrapper {
   @apply md:pt-60 pt-0 px-4 md:px-20 pb-12;
 }
@@ -137,33 +155,39 @@ code {
   cursor: pointer;
 }
 
-.cta-primary,
-.cta-button {
-  @apply cursor-pointer rounded-xl bg-primary hover:bg-highlight;
-  @apply text-aliceBlue text-sm font-semibold whitespace-nowrap uppercase;
-  @apply px-10 py-4;
-  @apply transition-all duration-150 ease-in;
-}
+@layer components {
+  .cta-primary,
+  .cta-button {
+    @apply cursor-pointer rounded-xl bg-primary hover:bg-highlight;
+    @apply text-aliceBlue text-sm font-semibold whitespace-nowrap uppercase;
+    @apply overflow-hidden text-ellipsis;
+    @apply px-6 md:px-10 py-4 max-w-full;
+    @apply transition-all duration-150 ease-in;
+  }
 
-.cta-primary-md {
-  @apply cursor-pointer rounded-xl bg-primary hover:bg-highlight;
-  @apply text-aliceBlue text-sm font-semibold whitespace-nowrap uppercase;
-  @apply px-4 py-2;
-  @apply transition-all duration-150 ease-in;
-}
+  .cta-primary-md {
+    @apply cursor-pointer rounded-xl bg-primary hover:bg-highlight;
+    @apply text-aliceBlue text-sm font-semibold whitespace-nowrap uppercase;
+    @apply overflow-hidden text-ellipsis;
+    @apply px-4 py-2 max-w-full;
+    @apply transition-all duration-150 ease-in;
+  }
 
-.cta-secondary {
-  @apply cursor-pointer rounded border border-eerieBlack bg-transparent hover:text-highlight hover:border-highlight;
-  @apply text-eerieBlack text-sm font-semibold whitespace-nowrap uppercase;
-  @apply px-10 py-4;
-  @apply transition-all duration-150 ease-in;
-}
+  .cta-secondary {
+    @apply cursor-pointer rounded border border-eerieBlack bg-transparent hover:text-highlight hover:border-highlight;
+    @apply text-eerieBlack text-sm font-semibold whitespace-nowrap uppercase;
+    @apply overflow-hidden text-ellipsis;
+    @apply px-6 md:px-10 py-4 max-w-full;
+    @apply transition-all duration-150 ease-in;
+  }
 
-.cta-secondary-md {
-  @apply cursor-pointer rounded border border-eerieBlack bg-transparent hover:text-highlight hover:border-highlight;
-  @apply text-eerieBlack text-sm font-semibold whitespace-nowrap uppercase;
-  @apply px-4 py-2;
-  @apply transition-all duration-150 ease-in;
+  .cta-secondary-md {
+    @apply cursor-pointer rounded border border-eerieBlack bg-transparent hover:text-highlight hover:border-highlight;
+    @apply text-eerieBlack text-sm font-semibold whitespace-nowrap uppercase;
+    @apply overflow-hidden text-ellipsis;
+    @apply px-4 py-2 max-w-full;
+    @apply transition-all duration-150 ease-in;
+  }
 }
 
 /* .cta-button {
@@ -235,10 +259,14 @@ input[type='checkbox'] {
   background-blend-mode: screen;
 }
 
+.tooltipped {
+  @apply relative;
+}
+
 .tooltip {
-  @apply hidden xs:invisible absolute;
+  @apply hidden xs:inline-block xs:invisible absolute top-1/2 left-0 -translate-y-1/2;
 }
 
 .tooltipped:hover .tooltip {
-  @apply visible z-50;
+  @apply xs:visible z-50;
 }

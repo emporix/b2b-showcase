@@ -123,6 +123,9 @@ i18n.use(initReactI18next).init({
         tags: 'Tags',
         default: 'Is Default',
       },
+      products: {
+        description: 'Product Description',
+      },
     },
     de: {
       page: {
@@ -185,6 +188,9 @@ i18n.use(initReactI18next).init({
         state: 'Bundesland',
         tags: 'Tags',
         default: 'Ist Default',
+      },
+      products: {
+        description: 'Produktbeschreibung',
       },
     },
   },

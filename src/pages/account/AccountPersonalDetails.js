@@ -88,11 +88,11 @@ const AccountPersonalSave = () => {
 }
 
 const ActionSaveButton = ({ caption }) => {
-  return <button className="cta-primary w-60">{caption}</button>
+  return <button className="cta-primary-md w-60">{caption}</button>
 }
 
 const ActionDiscardButton = ({ caption }) => {
-  return <button className="cta-secondary w-60">{caption}</button>
+  return <button className="cta-secondary-md w-60">{caption}</button>
 }
 
 const PersonalDetails = () => {
