@@ -11,10 +11,7 @@ import {
   MobileMDContainer,
   MobileXLContainer,
 } from '../../components/Utilities/common'
-import {
-  ProgressBar,
-  ProgressBarItem,
-} from '../../components/Utilities/progressbar'
+import { ProgressBar, ProgressBarItem } from '../../components/Utilities/progressbar'
 import ShippingMethod from '../../components/Checkout/shiping_method'
 import DeliveryWindow from '../../components/Checkout/DeliveryWindow'
 import PaymentMethodItem from '../../components/Checkout/PaymentMethodItem'
@@ -40,8 +37,7 @@ import ProductContent from './ProductsContent'
 import { useCart } from 'context/cart-provider'
 import { usePayment } from './PaymentProvider'
 import PaymentSpreedly from 'components/Checkout/PaymentSpreedly'
-import { CartProductImageAndReadOnlyQuantity, CartProductInfo, } from 'components/Cart/cart'
-
+import { CartProductImageAndReadOnlyQuantity, CartProductInfo } from 'components/Cart/cart'
 
 const ShippingContent = () => {
   const { setShippingMethod } = useCart()
@@ -59,11 +55,9 @@ const ShippingContent = () => {
   useEffect(() => {
     setShippingMethod(null)
   }, [])
- 
+
   const onShippingChange = (value) => {
-    const selectedShippingMethod = shippingMethods.filter(
-      (method) => method.id === value
-    )[0]
+    const selectedShippingMethod = shippingMethods.filter((method) => method.id === value)[0]
     setShippingMethod(selectedShippingMethod)
     setSelectedDeliveryMethod(selectedShippingMethod)
   }
@@ -81,7 +75,7 @@ const ShippingContent = () => {
             </LayoutBetween>
           </DesktopMDContainer>
           <MobileMDContainer>
-          <GridLayout className="gap-6  border rounded border-quartz p-6">
+            <GridLayout className="gap-6  border rounded border-quartz p-6">
               <Heading3>Shipping Details</Heading3>
               <TextRegular3>
                 <Underline>Ship to multiple addresses</Underline>
@@ -97,9 +91,7 @@ const ShippingContent = () => {
             defaultValue={defaultAddress}
             onChange={(e) => {
               const addressId = e[0].value
-              const address = addresses.find(
-                (address) => address.id === addressId
-              )
+              const address = addresses.find((address) => address.id === addressId)
               if (address !== undefined) {
                 setSelectedAddress(address)
               }
@@ -110,9 +102,7 @@ const ShippingContent = () => {
               Must have at least one address to finalise your order
             </GridLayout>
           )}
-          <GridLayout className="location-info">
-            {selectedAddress && <Address data={selectedAddress} />}
-          </GridLayout>
+          <GridLayout className="location-info">{selectedAddress && <Address data={selectedAddress} />}</GridLayout>
         </GridLayout>
       </GridLayout>
 
@@ -125,39 +115,27 @@ const ShippingContent = () => {
             </TextRegular3>
           </MobileMDContainer>
           <RadioGroup>
-          {shippingMethods.map((method) => {
-            return (
-              <ShippingMethod
-                key={method.id}
-                radioKey={method.id}
-                shippingmode={method.id}
-                date="Monday, June 6 - Tuesday June 7"
-                price={
-                  method.fee === 0 ? (
-                    'Free'
-                  ) : (
-                    <CurrencyBeforeValue value={method.grossFee} />
-                  )
-                }
-                onClick={onShippingChange}
-              />
-            )
-          })}
-        </RadioGroup>
-        </GridLayout>  
+            {shippingMethods.map((method) => {
+              return (
+                <ShippingMethod
+                  key={method.id}
+                  radioKey={method.id}
+                  shippingmode={method.id}
+                  date="Monday, June 6 - Tuesday June 7"
+                  price={method.fee === 0 ? 'Free' : <CurrencyBeforeValue value={method.grossFee} />}
+                  onClick={onShippingChange}
+                />
+              )
+            })}
+          </RadioGroup>
+        </GridLayout>
       </GridLayout>
     </>
   )
 }
 
-const PaymentContent = ({cart}) => {
-  const {
-    selectedAddress,
-    addresses,
-    locations,
-    billingAddress,
-    setBillingAddress,
-  } = useUserAddress()
+const PaymentContent = ({ cart }) => {
+  const { selectedAddress, addresses, locations, billingAddress, setBillingAddress } = useUserAddress()
 
   const [isCustomAddressEnabled, setIsCustomAddressEnabled] = useState(true)
 
@@ -169,14 +147,22 @@ const PaymentContent = ({cart}) => {
 
   return (
     <>
-      <GridLayout className="payment-method-wrapper gap-6 bg-aliceBlue standard_box_shadow">
-        <TextBold1>Payment Methods</TextBold1>
-        <RadioGroup active="radio1">
-          <GridLayout className="gap-4 border border-quartz rounded p-6">
-            <PaymentSpreedly props={{customerId : cart.customerId, grossValue : cart.subtotalAggregate.grossValue, currency: cart.subtotalAggregate.currency}} />
-          </GridLayout>
-        </RadioGroup>
-      </GridLayout>
+      <div className="rounded-xl p-4 bg-aliceBlue rounded-xlstandard_box_shadow">
+        <GridLayout className="payment-method-wrapper gap-6 ">
+          <TextBold1>Payment Methods</TextBold1>
+          <RadioGroup active="radio1">
+            <GridLayout className="gap-4 p-6">
+              <PaymentSpreedly
+                props={{
+                  customerId: cart.customerId,
+                  grossValue: cart.subtotalAggregate.grossValue,
+                  currency: cart.subtotalAggregate.currency,
+                }}
+              />
+            </GridLayout>
+          </RadioGroup>
+        </GridLayout>
+      </div>
       <GridLayout className="billing-details-wrapper gap-6">
         <TextBold1>Billing Details</TextBold1>
         <Checkbox
@@ -196,9 +182,7 @@ const PaymentContent = ({cart}) => {
                 defaultValue={billingAddress}
                 onChange={(e) => {
                   const addressId = e[0].value
-                  const address = addresses.find(
-                    (address) => address.id === addressId
-                  )
+                  const address = addresses.find((address) => address.id === addressId)
                   setBillingAddress(address)
                 }}
               />
@@ -231,10 +215,15 @@ const ShipmentDeliveryContent = () => {
     <GridLayout className="gap-6 !h-18">
       <div>
         <div className="mb-6">
-          <TextBold3>Estimated Delivery:</TextBold3> {selectedDeliveryWindow && (<TextRegular>{selectedDeliveryWindow.deliveryDayLabel} {selectedDeliveryWindow.deliveryTimeLabel}</TextRegular>)}
+          <TextBold3>Estimated Delivery:</TextBold3>{' '}
+          {selectedDeliveryWindow && (
+            <TextRegular>
+              {selectedDeliveryWindow.deliveryDayLabel} {selectedDeliveryWindow.deliveryTimeLabel}
+            </TextRegular>
+          )}
         </div>
-
-        <TextBold3>Delivery Method:</TextBold3> {selectedDeliveryMethod && (<TextRegular>{selectedDeliveryMethod.id}</TextRegular>)}
+        <TextBold3>Delivery Method:</TextBold3>{' '}
+        {selectedDeliveryMethod && <TextRegular>{selectedDeliveryMethod.id}</TextRegular>}
       </div>
     </GridLayout>
   )
@@ -266,7 +255,7 @@ const ReviewOrderContent = (cart) => {
   return (
     <>
       <DesktopLGContainer>
-      <LayoutBetween className="billing-information">
+        <LayoutBetween className="billing-information">
           <Container className="gap-8">
             <div className="property-wrapper">
               <TextBold3>Billing Information</TextBold3>
@@ -277,7 +266,7 @@ const ReviewOrderContent = (cart) => {
       </DesktopLGContainer>
 
       <MobileLGContainer>
-      <GridLayout className="billing-information gap-6">
+        <GridLayout className="billing-information gap-6">
           <LayoutBetween className="gap-8">
             <div className="property-wrapper">
               <TextBold3>Billing Information</TextBold3>
@@ -288,7 +277,7 @@ const ReviewOrderContent = (cart) => {
       </MobileLGContainer>
 
       <MobileLGContainer>
-      <GridLayout className="billing-information gap-6 ">
+        <GridLayout className="billing-information gap-6 ">
           <LayoutBetween className="gap-8">
             <div className="property-wrapper">
               <TextBold3>Shipping Information</TextBold3>
@@ -350,7 +339,7 @@ const ReviewOrderContent = (cart) => {
                     <CartProductImageAndReadOnlyQuantity cartItem={cartItem} />
                     <CartProductInfo key={cartItem.id + idx} cartItem={cartItem} />
                   </div>
-                </> 
+                </>
               ))}
             </GridLayout>
           </Container>
@@ -364,16 +353,16 @@ const ReviewOrderContent = (cart) => {
               <TextBold3>Your Products</TextBold3>
             </div>
           </LayoutBetween>
-            <GridLayout className="gap-4">
-              {cartAccount?.items.map((cartItem, idx) => (
-                <>
-                  <div className="cart-product-item p-2">
-                    <CartProductImageAndReadOnlyQuantity cartItem={cartItem} />
-                    <CartProductInfo key={cartItem.id + idx} cartItem={cartItem} />
-                  </div>
-                </> 
-              ))}
-            </GridLayout>  
+          <GridLayout className="gap-4">
+            {cartAccount?.items.map((cartItem, idx) => (
+              <>
+                <div className="cart-product-item p-2">
+                  <CartProductImageAndReadOnlyQuantity cartItem={cartItem} />
+                  <CartProductInfo key={cartItem.id + idx} cartItem={cartItem} />
+                </div>
+              </>
+            ))}
+          </GridLayout>
         </GridLayout>
       </MobileLGContainer>
     </>
