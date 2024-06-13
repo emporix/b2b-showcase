@@ -17,6 +17,7 @@ import { ApolloProvider } from '@apollo/client'
 import { getClient } from 'graphql/utils/fetch-graphql-api'
 import { CLIENT_ID, TENANT } from './constants/localstorage'
 import MUIThemeContextProvider from 'context/mui-context'
+import { HelmetProvider } from 'react-helmet-async'
 
 const client = getClient()
 
@@ -29,29 +30,31 @@ if (localStorage.getItem(TENANT) === '' || !localStorage.getItem(CLIENT_ID)) {
 
 const root = ReactDOM.createRoot(document.getElementById('root'))
 root.render(
-  <ApolloProvider client={client}>
-    <Provider store={Store}>
-      <AuthProvider>
-        <AppContextProvider>
-          <MUIThemeContextProvider>
-            <SitesProvider>
-              <CartProvider>
-                <CurrencyProvider>
-                  <QuotesProvider>
-                    <LanguageProvider>
-                      <ContentfulProvider>
-                        <ProductListProvider>
-                          <App />
-                        </ProductListProvider>
-                      </ContentfulProvider>
-                    </LanguageProvider>
-                  </QuotesProvider>
-                </CurrencyProvider>
-              </CartProvider>
-            </SitesProvider>
-          </MUIThemeContextProvider>
-        </AppContextProvider>
-      </AuthProvider>
-    </Provider>
-  </ApolloProvider>
+  <HelmetProvider>
+    <ApolloProvider client={client}>
+      <Provider store={Store}>
+        <AuthProvider>
+          <AppContextProvider>
+            <MUIThemeContextProvider>
+              <SitesProvider>
+                <CartProvider>
+                  <CurrencyProvider>
+                    <QuotesProvider>
+                      <LanguageProvider>
+                        <ContentfulProvider>
+                          <ProductListProvider>
+                            <App />
+                          </ProductListProvider>
+                        </ContentfulProvider>
+                      </LanguageProvider>
+                    </QuotesProvider>
+                  </CurrencyProvider>
+                </CartProvider>
+              </SitesProvider>
+            </MUIThemeContextProvider>
+          </AppContextProvider>
+        </AuthProvider>
+      </Provider>
+    </ApolloProvider>
+  </HelmetProvider>
 )
