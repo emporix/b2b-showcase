@@ -20,7 +20,7 @@ const Content = ({ type, page, classList, title }) => {
   return (
     <div className={'content ' + (classList || '')}>
       {title ? <h2 className="font-bold text-2xl text-center lg:text-left pb-2 border-b-2">{title}</h2> : null}
-      <FsGenericComponent props={content} />
+      <FsGenericComponent data={content?.data} />
     </div>
   )
 }

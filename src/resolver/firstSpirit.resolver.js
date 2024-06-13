@@ -11,7 +11,6 @@ import { TextBanner } from 'components/Cms/textBanner'
 import { CMS_Accordion } from '../components/Cms/accordion'
 import CMS_List from 'components/Cms/cms_list'
 import CMS_Footer from 'components/Cms/footer'
-import Winery from '../components/Cms/winery'
 import React from 'react'
 
 const firstSpiritComponentMap = {
@@ -68,25 +67,48 @@ export const normalizeFooterStructure = (content) => {
   }
 }
 
-const FsGenericComponent = (props) => {
-  const componentLayout = props?.props?.data?.cmsFilteredPage?.page?.layout
+const FsGenericComponent = ({ data }) => {
+  const page = data?.cmsFilteredPage?.page || null
 
-  let componentData = [...Object.values(props?.props?.data?.cmsFilteredPage?.page?.data ?? {})]
+  if (!page) return null
 
-  const children = props?.props?.data?.cmsFilteredPage?.page?.children[0]?.children
-  if (children !== undefined && Array.isArray(children)) {
-    componentData = [...componentData, ...children]
-  }
+  const componentLayout = page?.layout || ''
+  const { data: componentData, children } = page
+
+  console.log(componentLayout, componentData, children)
 
   switch (componentLayout) {
     case 'footer':
-      const Component = firstSpiritComponentMap[componentLayout]
-      return Component && <Component props={normalizeFooterStructure(componentData)} />
-    case 'productpage':
+      return componentLayout
     case 'homepage':
+    case 'content_page':
+      return 'header'
+    case 'productpage':
     default:
-      return <FsGenericComponentList componentData={componentData} />
+      return 'content'
   }
+  // const componentData = [...Object.values(page?.data ?? {})]
+  // console.log(componentLayout, Object.keys(page?.data))
+
+  // const componentLayout = props?.props?.data?.cmsFilteredPage?.page?.layout
+  // console.log(props.props)
+
+  // let componentData = [...Object.values(props?.props?.data?.cmsFilteredPage?.page?.data ?? {})]
+  // const children = props?.props?.data?.cmsFilteredPage?.page?.children[0]?.children
+  // if (children !== undefined && Array.isArray(children)) {
+  //   componentData = [...componentData, ...children]
+  // }
+  // switch (componentLayout) {
+  //   case 'footer':
+  //     const Component = firstSpiritComponentMap[componentLayout]
+  //     return Component && <Component props={normalizeFooterStructure(componentData)} />
+  //   case 'productpage':
+  //   case 'homepage':
+  //   default:
+  //     return <FsGenericComponentList componentData={componentData} />
+  // }
+  // retun 'TEST'
+  return componentLayout
 }
 
 export default FsGenericComponent
@@ -95,9 +117,7 @@ export const FsGenericComponentList = (props) => {
   const { componentData } = props
 
   return componentData.map((entry, idx) => {
-    if (!entry) {
-      return
-    }
+    if (!entry) return
 
     const componentTypeKey = entry?.sectionType || entry?.name || entry?.template?.uid || 'text_banner'
     const Component = firstSpiritComponentMap[componentTypeKey]
