@@ -159,7 +159,7 @@ li.fs-simple_text_list_faq p:first-child {
   .cta-primary,
   .cta-button {
     @apply cursor-pointer rounded-xl bg-primary hover:bg-highlight;
-    @apply text-aliceBlue text-sm font-semibold whitespace-nowrap uppercase;
+    @apply text-aliceBlue text-sm whitespace-nowrap uppercase;
     @apply overflow-hidden text-ellipsis;
     @apply px-6 md:px-10 py-4 max-w-full;
     @apply transition-all duration-150 ease-in;
@@ -167,7 +167,7 @@ li.fs-simple_text_list_faq p:first-child {
 
   .cta-primary-md {
     @apply cursor-pointer rounded-xl bg-primary hover:bg-highlight;
-    @apply text-aliceBlue text-sm font-semibold whitespace-nowrap uppercase;
+    @apply text-aliceBlue text-sm whitespace-nowrap uppercase;
     @apply overflow-hidden text-ellipsis;
     @apply px-4 py-2 max-w-full;
     @apply transition-all duration-150 ease-in;
@@ -175,7 +175,7 @@ li.fs-simple_text_list_faq p:first-child {
 
   .cta-secondary {
     @apply cursor-pointer rounded border border-eerieBlack bg-transparent hover:text-highlight hover:border-highlight;
-    @apply text-eerieBlack text-sm font-semibold whitespace-nowrap uppercase;
+    @apply text-eerieBlack text-sm whitespace-nowrap uppercase;
     @apply overflow-hidden text-ellipsis;
     @apply px-6 md:px-10 py-4 max-w-full;
     @apply transition-all duration-150 ease-in;
@@ -183,7 +183,7 @@ li.fs-simple_text_list_faq p:first-child {
 
   .cta-secondary-md {
     @apply cursor-pointer rounded border border-eerieBlack bg-transparent hover:text-highlight hover:border-highlight;
-    @apply text-eerieBlack text-sm font-semibold whitespace-nowrap uppercase;
+    @apply text-eerieBlack text-sm whitespace-nowrap uppercase;
     @apply overflow-hidden text-ellipsis;
     @apply px-4 py-2 max-w-full;
     @apply transition-all duration-150 ease-in;
