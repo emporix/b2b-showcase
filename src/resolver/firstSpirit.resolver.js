@@ -108,7 +108,6 @@ const FsGenericComponent = ({ data }) => {
   //     return <FsGenericComponentList componentData={componentData} />
   // }
   // retun 'TEST'
-  return componentLayout
 }
 
 export default FsGenericComponent
