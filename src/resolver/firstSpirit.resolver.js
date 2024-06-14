@@ -84,6 +84,7 @@ const FsGenericComponent = ({ data }) => {
     case 'homepage':
     case 'content_page':
       const { pt_title, pt_keywords, pt_description } = componentData
+
       return (
         <>
           <Helmet>
