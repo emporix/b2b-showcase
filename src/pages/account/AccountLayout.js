@@ -19,7 +19,7 @@ const AccountLayout = ({ children, page, detail }) => {
       </div>
       <div
         className={`left-menu-panel min-h-max absolute lg:hidden standard_box_shadow bg-aliceBlue rounded-xl p-4 transition-transform duration-500 ${
-          isDrawerOpen ? 'fixed top-0 left-0 z-30 w-full' : '-translate-x-[150%]'
+          isDrawerOpen ? 'fixed top-0 left-0 z-10 w-full' : '-translate-x-[150%]'
         }`}
       >
         <AccountMenu page={page} />

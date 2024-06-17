@@ -85,7 +85,7 @@ const COPYRIGHT_FOOTER = (props) => {
 
 const CMS_Footer = (props) => {
   return (
-    <div className="footer">
+    <div className="footer   relative z-10">
       <CMS_MOBILE_FOOTER content={props.props} />
       <CMS_DESKTOP_FOOTER content={props.props} />
       <COPYRIGHT_FOOTER content={props.props} />
