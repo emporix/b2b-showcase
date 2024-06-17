@@ -1,11 +1,11 @@
 .slick-center {
-    -webkit-transform: scale(1.25);
-    -moz-transform: scale(1.25);
-    transform: scale(1.25);
-    width: 300px;
+  -webkit-transform: scale(1.25);
+  -moz-transform: scale(1.25);
+  transform: scale(1.25);
+  width: 300px;
 }
 
-.slick-slide {
-    width: 200px;
-    padding: 20px;
+.product-carousel .slick-slide {
+  width: 200px;
+  padding: 20px;
 }
