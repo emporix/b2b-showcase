@@ -36,7 +36,7 @@ const SelectionField = ({ title, total }) => {
   )
 }
 
-const Category = ({ item, activeSubCategory, activeCategory }) => {
+const Category = ({ item, activeSubCategory, activeCategory, setIsDrawerOpen }) => {
   const { categoryId, title, items, key, url } = item
   const navigate = useNavigate()
   const { t } = useTranslation('page')
@@ -52,13 +52,11 @@ const Category = ({ item, activeSubCategory, activeCategory }) => {
             className="w-[90%] text-eerieBlack text-[14px]/[22px] font-normal flex items-center border-b-[1px] border-spacing-3 border-eerieBlack cursor-pointer"
             onClick={() => {
               navigate(`/${localStorage.getItem(TENANT)}/${url}`)
+              setTimeout(() => setIsDrawerOpen((current) => !current), 800)
             }}
           >
             <Checkbox
-              defaultChecked={
-                (key === activeSubCategory || !activeSubCategory) &&
-                !activeCategory
-              }
+              defaultChecked={(key === activeSubCategory || !activeSubCategory) && !activeCategory}
               sx={{
                 color: '#cccccc',
                 '&.Mui-checked': {
@@ -76,6 +74,7 @@ const Category = ({ item, activeSubCategory, activeCategory }) => {
                 className="flex"
                 onClick={() => {
                   navigate(`/${localStorage.getItem(TENANT)}/${item.url}`)
+                  setTimeout(() => setIsDrawerOpen((current) => !current), 800)
                 }}
               >
                 <Checkbox
@@ -92,16 +91,11 @@ const Category = ({ item, activeSubCategory, activeCategory }) => {
                   }}
                 />
                 <div className="category_pan_field">
-                  <label
-                    className="category_pan_field_title cursor-pointer"
-                    title={item.title.toLowerCase()}
-                  >
+                  <label className="category_pan_field_title cursor-pointer" title={item.title.toLowerCase()}>
                     {' '}
                     {item.title.toLowerCase()}
                   </label>
-                  <div className="text-manatee pl-3 cursor-pointer">
-                    {item.total}
-                  </div>
+                  <div className="text-manatee pl-3 cursor-pointer">{item.total}</div>
                 </div>
               </div>
             </div>
@@ -128,9 +122,7 @@ const FilterListPanel = ({ filterItems, handleSideFilterContent }) => {
           <span className="mr-2">Filters</span>({filterItems.length})
         </div>
         <div>
-          <button className="font-semibold text-manatee text-right">
-            {t('show_all')}
-          </button>
+          <button className="font-semibold text-manatee text-right">{t('show_all')}</button>
         </div>
       </div>
       <div className="pt-6 pb-2">
@@ -142,7 +134,7 @@ const FilterListPanel = ({ filterItems, handleSideFilterContent }) => {
   )
 }
 
-const CategoryPanel = () => {
+const CategoryPanel = ({ setIsDrawerOpen }) => {
   const { category: categoryTree } = useProductList()
   const [isLoading, setIsLoading] = useState(false)
   const [categoryList, setCategoryList] = useState([])
@@ -150,12 +142,7 @@ const CategoryPanel = () => {
   const { setProductIds } = useProductList()
 
   useEffect(() => {
-    const getCategory = async (
-      categoryTree,
-      maincategory,
-      subcategory,
-      category
-    ) => {
+    const getCategory = async (categoryTree, maincategory, subcategory, category) => {
       setIsLoading(true)
       const { categories, productIds } = await getProductCategoryDetail(
         maincategory,
@@ -185,6 +172,7 @@ const CategoryPanel = () => {
               item={item}
               activeSubCategory={subcategory}
               activeCategory={category}
+              setIsDrawerOpen={setIsDrawerOpen}
             />
           ))}
         </ul>
@@ -193,20 +181,21 @@ const CategoryPanel = () => {
   )
 }
 
-const ProductListFilterPanel = () => {
+const ProductListFilterPanel = ({ setIsDrawerOpen }) => {
   const { t } = useTranslation('page')
   return (
     <div className="relative">
       <div className="w-full text-right">
         <Link
           to={`/${getTenant()}/product/wein`}
+          onClick={() => setTimeout(() => setIsDrawerOpen((current) => !current), 800)}
           className="inline-flex font-sm text-manatee hover:text-primary flex-row justify-end items-center gap-2"
         >
           <MdFilterListOff size={16} />
           {t('show_all')}
         </Link>
       </div>
-      <CategoryPanel />
+      <CategoryPanel setIsDrawerOpen={setIsDrawerOpen} />
     </div>
   )
 }

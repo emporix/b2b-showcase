@@ -53,10 +53,10 @@ const ProductList = () => {
           }`}
           style={productListBoxShadow}
         >
-          <ProductListFilterPanel />
+          <ProductListFilterPanel setIsDrawerOpen={setIsDrawerOpen} />
         </div>
         <div className="flex-auto lg:w-[23%] bg-aliceBlue p-4 rounded-xl hidden lg:block">
-          <ProductListFilterPanel />
+          <ProductListFilterPanel setIsDrawerOpen={setIsDrawerOpen} />
         </div>
         <div className="flex-auto lg:w-[77%] w-full gap-y-4 xl:gap-y-12">
           <ProductListContent />
