@@ -58,12 +58,16 @@ import ContentPage from './pages/content/ContentPage'
 
 import i18n from 'i18next'
 import { initReactI18next } from 'react-i18next'
+import NewsPage from './pages/news/NewsPage'
 
 i18n.use(initReactI18next).init({
   resources: {
     en: {
       page: {
+        news:"News",
         content: 'Content',
+        catalog: 'Catalog',
+        about_us: 'About Us',
         contentPath: '/n11showcase/Content',
         back_to_overview: 'Back to Overview',
         show_all: 'Show all',
@@ -129,7 +133,10 @@ i18n.use(initReactI18next).init({
     },
     de: {
       page: {
+        news:"Neuigkeiten",
         content: 'Inhalt',
+        catalog: 'Katalog',
+        about_us: 'Über uns',
         contentPath: '/n11showcase/Inhalt',
         back_to_overview: 'Zurück zur Übersicht',
         show_all: 'Alle anzeigen',
@@ -286,6 +293,9 @@ function App() {
           <Route path="Inhalt" element={<ContentOverview />} />
           <Route path="Content/:contentName" element={<ContentPage />} />
           <Route path="Inhalt/:contentName" element={<ContentPage />} />
+
+          <Route path="News" element={<NewsPage />} />
+          <Route path="Neuigkeiten" element={<NewsPage />} />
 
           <Route path="*" element={<NoPage />} />
         </Route>

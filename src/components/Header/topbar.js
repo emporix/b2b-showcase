@@ -9,11 +9,13 @@ import { addTenantToUrl, homeUrl } from '../../services/service.config'
 import AlgoliaSearchbar from '../AlgoliaSearchbar'
 import { useContentful } from '../../context/contentful-provider'
 import { Logo } from '../Logo'
+import { useTranslation } from 'react-i18next'
 
 const MegaNav = ({ showMegaMenuContent, setShowMegaMenuContent }) => {
   const [subMenuItems, setSubMenuItems] = useState([])
   const [showMegaMenuRightContent, setShowMegaMenuRightContent] = useState(false)
   const [subMenuMegaContent, setSubMenuMegaContent] = useState([])
+  const {t} = useTranslation("page")
 
   const onShowMegaMenu = () => setShowMegaMenuContent(true)
 
@@ -33,7 +35,7 @@ const MegaNav = ({ showMegaMenuContent, setShowMegaMenuContent }) => {
   const LinkItem = ({ item, main }) => (
     <li key={item.key} className={`mega_content_${main ? 'category_li font-bold text-xl' : 'sub_cat_li font-normal'}`}>
       <Link replace to={addTenantToUrl(item.url)}>
-        {item.title}
+        {t(item.title)}
       </Link>
     </li>
   )
@@ -53,7 +55,7 @@ const MegaNav = ({ showMegaMenuContent, setShowMegaMenuContent }) => {
         >
           <Link to={!item.items?.length ? addTenantToUrl(item.url) : homeUrl}>
             <div className="whitespace-nowrap">
-              {item.contentfulFieldName ? fields[item.contentfulFieldName] : item.title}
+              {t(item.title)}
             </div>
           </Link>
 
@@ -94,7 +96,7 @@ const MegaNav = ({ showMegaMenuContent, setShowMegaMenuContent }) => {
                     <div key={item.title}>
                       <ul className=" text-black text-base">
                         <Link to={addTenantToUrl(item.url)}>
-                          <li className="mega_content_sub_cat_li font-bold">{item.title}</li>
+                          <li className="mega_content_sub_cat_li font-bold">{t(item.title)}</li>
                         </Link>
                         {item.items.map((eachItem) => (
                           <Link key={eachItem.title} to={addTenantToUrl(eachItem.url)}>

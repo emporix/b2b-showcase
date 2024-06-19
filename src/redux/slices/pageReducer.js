@@ -3,8 +3,7 @@ import { createSlice } from '@reduxjs/toolkit'
 export const initialState = {
   menu: [
     {
-      contentfulFieldName: 'catalogLabel',
-      title: 'Katalog',
+      title: 'catalog',
       items: [],
     },
     {
@@ -12,13 +11,17 @@ export const initialState = {
       items: [],
     },
     {
+      title: 'news',
+      items: [],
+      url: 'news'
+    },
+    {
       title: 'Storefinder',
       items: [],
       url: 'storefinder'
     },
     {
-      contentfulFieldName: 'aboutUsLabel',
-      title: 'About Us',
+      title: 'about_us',
       items: [],
       url: 'aboutus',
     },
