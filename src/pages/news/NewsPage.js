@@ -29,15 +29,15 @@ const NewsPage = () => {
 
 const NewsEntry = ({ item}) => {
   return <>
-    {item.data?.tt_title ? <h3 className={`mt-10 text-2xl font-light text-eerieBlack`}>{item.data.tt_title}</h3> : null}
+    {item.data?.tt_title ? <h2 className={`mt-10 text-3xl font-light text-eerieBlack`}>{item.data.tt_title}</h2> : null}
     <div className="md:flex">
       {item.data?.tt_image?.resolutions?.ORIGINAL ?
-      <img className="h-48 w-full object-cover md:h-full md:w-48" src={item.data.tt_image.resolutions.ORIGINAL.url}
+      <img className="h-48 w-full object-cover md:h-full md:w-48 md:mt-2 md:mr-8" src={item.data.tt_image.resolutions.ORIGINAL.url}
            alt="an image" />
        : null}
       <div>
         {item.data?.tt_text ? item.data?.tt_text.map((textItem) => {
-          return <p className="text-lg text-eerieBlack font-light m-1 p-2">{textItem.content[0]?.content}</p>
+          return <p className="text-lg text-eerieBlack font-light pt-1 mt-2 md:first-of-type:mt-0 md:first-of-type:pt-0">{textItem.content[0]?.content}</p>
         }) : null}
       </div>
     </div>
