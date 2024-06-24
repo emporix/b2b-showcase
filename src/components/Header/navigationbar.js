@@ -217,7 +217,7 @@ const Navbar = () => {
         className="flex justify-between py-6 border-b text-xl cursor-pointer"
         onClick={() => parentMenuClicked(item.title, item.items, item.url)}
       >
-        {item.contentfulFieldName ? fields[item.contentfulFieldName] : item.title}
+        {t(item.title)}
         <HiChevronRight size={18} className={item.items?.length ? 'h-8 w-8' : 'hidden'} />
       </li>
     )
@@ -234,7 +234,7 @@ const Navbar = () => {
               className="flex justify-between items-center pb-4 text-base text-eerieBlack cursor-pointer"
               onClick={() => parentMenuClicked(item.title, item.items, item.url)}
             >
-              {item.title}
+              {t(item.title)}
             </li>
           </Link>
         ) : (
@@ -243,7 +243,7 @@ const Navbar = () => {
             className="flex justify-between items-center pb-4 text-base text-eerieBlack cursor-pointer"
             onClick={() => parentMenuClicked(item.title, item.items, item.url)}
           >
-            {item.title}
+            {t(item.title)}
             <HiChevronRight size={20} className={'h-8 w-8'} />
           </li>
         )}
