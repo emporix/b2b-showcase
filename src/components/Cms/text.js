@@ -1,25 +1,37 @@
-import { nanoid } from '@reduxjs/toolkit'
 import React from 'react'
 
-const blockType = {
-  paragraph: 'p',
-  block: 'p',
-}
-
-export const Text = (props) => {
-  const classId = props?.props?.sectionType || ''
-  return props.props.data.st_text.map((block) => {
-    return block.content.map((str, idx) => {
-      return React.createElement(
-        blockType?.[block?.type] || 'p',
-        {
-          className: `fs-${classId} text-lg text-eerieBlack font-light`,
-          key: nanoid,
-        },
-        str.content
+const Elements = ({ type, content, data }) => {
+  switch (type) {
+    case 'paragraph':
+    case 'block':
+      return (
+        <p className={`text-lg text-eerieBlack font-light`}>
+          {content?.map((item) => (
+            <Elements {...item} />
+          ))}
+        </p>
       )
-    })
-  })
+    case 'text':
+    default:
+      if (data?.format === 'bold')
+        return content?.map((item) => (
+          <strong>
+            <Elements {...item} />
+          </strong>
+        ))
+      return Array.isArray(content) ? content?.map((item) => <Elements {...item} />) : content
+  }
 }
 
-//text-lg text-left text-eerieBlack font-light
+export const Text = ({ props }) => {
+  const { type, data } = props
+
+  switch (type) {
+    case 'Section':
+      return data?.st_text?.map((entry) => <Text props={{ type: 'Element', data: entry }} />)
+    case 'Element':
+      return <Elements type={data?.type} content={data?.content} />
+    default:
+      return <p>default</p>
+  }
+}
