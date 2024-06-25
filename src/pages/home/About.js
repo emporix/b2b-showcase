@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react'
 import { useContentful } from '../../context/contentful-provider'
 import './about.css'
+import { Link } from 'react-router-dom'
+import { addTenantToUrl } from '../../services/service.config'
 
 const About = () => {
   const { fields } = useContentful()
@@ -34,7 +36,9 @@ const About = () => {
           erwarten
         </div>
         <div className="pt-[44px] desktop_only text-sm">
-          <button className="cta-primary my-2">{fields.startShoppingButtonLabel}</button>
+          <Link to={addTenantToUrl(`product/wein/`)} className="cta-primary my-2">
+            {fields.startShoppingButtonLabel}
+          </Link>
         </div>
       </div>
 
