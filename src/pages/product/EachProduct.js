@@ -48,8 +48,8 @@ const EachProduct = ({ item, available, rating }) => {
       </div>
 
       <div className="flex flex-col gap-4">
-        <div className="items-center mx-auto ">
-          <img src={imageSrc} alt="" className="w-full h-fit rounded-xl" />
+        <div className="items-center mx-auto">
+          <img src={imageSrc} alt="" className="w-full rounded-xl" />
         </div>
         <div className="text-left w-full text-2xl text-eerieBlack font-light">{getLocalizedValue(item.name)}</div>
       </div>
