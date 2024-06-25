@@ -49,7 +49,7 @@ const ProductList = () => {
         <div
           id="filter-drawer"
           className={`absolute transition-transform duration-500 flex-auto w-full h-full bg-aliceBlue p-4 rounded-xl lg:hidden ${
-            isDrawerOpen ? 'fixed top-0 left-0 z-30' : '-translate-x-[150%]'
+            isDrawerOpen ? 'fixed top-0 left-0 z-10' : '-translate-x-[150%]'
           }`}
           style={productListBoxShadow}
         >
