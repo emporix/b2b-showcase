@@ -1,0 +1,19 @@
+.slick-dots.custom-dots li {
+  @apply w-3 h-3;
+}
+
+.slick-dots.custom-dots li div {
+  @apply flex justify-center items-center w-3 h-3;
+}
+
+.slick-dots.custom-dots li div span {
+  @apply block bg-gray border-4 border-transparent;
+}
+
+.slick-dots.custom-dots li.slick-active div {
+  @apply bg-primary;
+}
+
+.slick-dots.custom-dots li.slick-active div span {
+  @apply border-primary;
+}

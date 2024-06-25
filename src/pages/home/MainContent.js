@@ -32,7 +32,7 @@ const MainContent = ({ page }) => {
 
   return (
     <div className="fs-content-wrapper">
-      <FsGenericComponent props={content} />
+      <FsGenericComponent data={content?.data} />
     </div>
   )
 }

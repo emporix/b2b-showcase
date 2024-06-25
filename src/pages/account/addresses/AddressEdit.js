@@ -242,10 +242,10 @@ const AddressesEdit = () => {
                 />
               </div>
             </div>
-            <div className="mt-6 col-span-2 flex flex-row-reverse justify-end">
-              <MediumPrimaryButton title="SAVE" className="w-60 m-auto px-4 py-2 mr-2" onClick={handleSubmit} />
+            <div className="mt-6 col-span-2 flex flex-col gap-4 items-center md:flex-row-reverse">
+              <MediumPrimaryButton title="SAVE" className="w-60" onClick={handleSubmit} />
               {addressId && (
-                <button className="cta-secondary-md w-60 px-4 py-2" onClick={() => setIsDialogOpen(true)}>
+                <button className="cta-secondary-md w-60" onClick={() => setIsDialogOpen(true)}>
                   DELETE
                 </button>
               )}

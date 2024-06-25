@@ -50,7 +50,7 @@ export const ProductCarousel = (props) => {
 
   return (
     <>
-      <Slider ref={productSlider} {...settings}>
+      <Slider ref={productSlider} {...settings} className="product-carousel">
         {products.map((p) => {
           return (
             <img

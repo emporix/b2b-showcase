@@ -6,14 +6,13 @@ import Layout from '../Layout'
 import Content from './Content'
 import { CMSFilterType, ContentPageMapping } from 'services/content/filteredPage.service'
 
-
 const Home = () => {
   return (
     <Layout title={'home'}>
       <About />
-      <Content type={CMSFilterType.NAME} page={ContentPageMapping.homepage} />
+      <Content type={CMSFilterType.NAME} page={ContentPageMapping.homepage} classList="fs-content-wrapper" />
       <Service />
-      <Category/>
+      <Category />
       <Subscribe />
     </Layout>
   )

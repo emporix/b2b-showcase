@@ -7,3 +7,7 @@
 .accordion-title.active {
   @apply text-black !border-black !font-medium;
 }
+
+.accordion-content > *:not(:first-child) {
+  @apply mt-6;
+}

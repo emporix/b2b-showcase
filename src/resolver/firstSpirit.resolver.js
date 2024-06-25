@@ -11,8 +11,8 @@ import { TextBanner } from 'components/Cms/textBanner'
 import { CMS_Accordion } from '../components/Cms/accordion'
 import CMS_List from 'components/Cms/cms_list'
 import CMS_Footer from 'components/Cms/footer'
-import Winery from '../components/Cms/winery'
 import React from 'react'
+import { Helmet } from 'react-helmet-async'
 
 const firstSpiritComponentMap = {
   // TODO still needed? check with first spirit data
@@ -68,42 +68,51 @@ export const normalizeFooterStructure = (content) => {
   }
 }
 
-const FsGenericComponent = (props) => {
-  const componentLayout = props?.props?.data?.cmsFilteredPage?.page?.layout
+const FsGenericComponent = ({ data }) => {
+  const page = data?.cmsFilteredPage?.page || null
 
-  let componentData = [...Object.values(props?.props?.data?.cmsFilteredPage?.page?.data ?? {})]
+  if (!page) return null
 
-  const children = props?.props?.data?.cmsFilteredPage?.page?.children[0]?.children
-  if (children !== undefined && Array.isArray(children)) {
-    componentData = [...componentData, ...children]
-  }
+  const componentLayout = page?.layout || ''
+  const { data: componentData, children: pageBody } = page
 
   switch (componentLayout) {
     case 'footer':
       const Component = firstSpiritComponentMap[componentLayout]
-      return Component && <Component props={normalizeFooterStructure(componentData)} />
-    case 'productpage':
+      return Component && <Component props={normalizeFooterStructure(Object.values(componentData))} />
+
     case 'homepage':
+    case 'content_page':
+      const { pt_title, pt_keywords, pt_description } = componentData
+
+      return (
+        <>
+          <Helmet>
+            {pt_title ? <title>{pt_title}</title> : null}
+            {pt_keywords ? <meta name="keyword" content={pt_keywords} /> : null}
+            {pt_description ? <meta name="description" content={pt_description} /> : null}
+          </Helmet>
+          {pageBody?.[0]?.children ? <FsGenericComponentList componentData={pageBody[0].children} /> : null}
+        </>
+      )
+
+    case 'productpage':
     default:
-      return <FsGenericComponentList componentData={componentData} />
+      return <>{pageBody?.[0]?.children ? <FsGenericComponentList componentData={pageBody[0].children} /> : null}</>
   }
 }
 
 export default FsGenericComponent
 
-export const FsGenericComponentList = (props) => {
-  const { componentData } = props
-
-  return componentData.map((entry, idx) => {
-    if (!entry) {
-      return
-    }
+export const FsGenericComponentList = ({ componentData }) => {
+  return componentData.map((entry) => {
+    if (!entry) return null
 
     const componentTypeKey = entry?.sectionType || entry?.name || entry?.template?.uid || 'text_banner'
     const Component = firstSpiritComponentMap[componentTypeKey]
 
-    if (!Component) return
+    if (!Component) return null
 
-    return <Component props={entry} key={idx} />
+    return <Component props={entry} key={entry.id} />
   })
 }
