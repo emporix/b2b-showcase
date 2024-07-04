@@ -97,6 +97,9 @@ i18n.use(initReactI18next).init({
         site: 'Site',
         language: 'Language',
         currency: 'Currency',
+        quantity: 'Quantity',
+        unit_price: 'Unit Price',
+        quantity_discount: "Quantity Discount"
       },
       account: {
         account: 'My Account',
@@ -148,7 +151,7 @@ i18n.use(initReactI18next).init({
         rose_wine: 'Rosé',
         website: 'Webseite besuchen',
         mailto: 'Email anschreiben',
-        negotiated: 'Ausgehandelte Preis',
+        negotiated: 'Ausgehandelter Preis',
         public: 'Katalogpreis',
         excl_vat: 'Exkl. MwSt.',
         incl_vat: 'Inkl. MwSt.',
@@ -166,6 +169,10 @@ i18n.use(initReactI18next).init({
         site: 'Land',
         language: 'Sprache',
         currency: 'Währung',
+        quantity: 'Menge',
+        unit_price: 'Preis pro Einheit',
+        quantity_discount: "Mengenrabatt"
+
       },
       account: {
         account: 'Mein Konto',
