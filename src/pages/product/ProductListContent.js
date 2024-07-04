@@ -94,12 +94,11 @@ const ProductListItems = ({ products, auth, displayType }) => {
   return (
     <div className={`grid gap-4 md:gap-8 auto-cols-max ${gridSys} mb-4 xl:mb-12`}>
       {products.map((item) => {
-        const available = availability['k' + item.id]?.available
         return (
           <div key={item.id} className="hover:scale-[1.01] transition-all duration-150 ease-in">
             {React.createElement(displayType === 'grid' ? EachProduct : EachProductRow, {
               key: item.id,
-              available: available,
+              stockLevel: availability['k' + item.id]?.stockLevel || 0,
               item: item,
               rating: 4,
             })}
