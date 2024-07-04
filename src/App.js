@@ -101,6 +101,9 @@ i18n.use(initReactI18next).init({
         glossary: "Glossary",
         glossary_term: "Begriff",
         glossary_descr: "Beschreibung",
+        quantity: 'Quantity',
+        unit_price: 'Unit Price',
+        quantity_discount: "Quantity Discount"
       },
       account: {
         account: 'My Account',
@@ -173,7 +176,9 @@ i18n.use(initReactI18next).init({
         glossary: "Glossar",
         glossary_term: "Begriff",
         glossary_descr: "Beschreibung",
-
+        quantity: 'Menge',
+        unit_price: 'Preis pro Einheit',
+        quantity_discount: "Mengenrabatt"
 
       },
       account: {
