@@ -77,9 +77,13 @@ code {
   .fs-content-product > .mx-adjust {
     @apply md:mx-0;
   }
+
+  .fs-content-wrapper {
+    @apply mb-10;
+  }
 }
-li.fs-simple_text_list_faq p:first-child {
-  @apply font-normal pb-2;
+li.fs-text_faq p {
+  @apply pt-2;
 }
 
 .page-wrapper {
