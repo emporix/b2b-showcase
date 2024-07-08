@@ -31,7 +31,7 @@ const ContentOverview = () => {
 
   return (
     <Layout title={t("content")}>
-      <div>
+      <div className="fs-content-wrapper">
         {content.map((item, index) => (
           <div key={index}>
             <button onClick={() => navigate('/n11showcase' + item.seoRoute)}>
@@ -39,6 +39,11 @@ const ContentOverview = () => {
             </button>
           </div>
         ))}
+        <div>
+          <button onClick={() => navigate('/n11showcase/glossary')}>
+            {t('glossary')}
+          </button>
+        </div>
       </div>
     </Layout>
   )

@@ -59,6 +59,7 @@ import ContentPage from './pages/content/ContentPage'
 import i18n from 'i18next'
 import { initReactI18next } from 'react-i18next'
 import NewsPage from './pages/news/NewsPage'
+import GlossaryPage from './pages/glossary/GlossaryPage'
 
 i18n.use(initReactI18next).init({
   resources: {
@@ -97,6 +98,9 @@ i18n.use(initReactI18next).init({
         site: 'Site',
         language: 'Language',
         currency: 'Currency',
+        glossary: "Glossary",
+        glossary_term: "Begriff",
+        glossary_descr: "Beschreibung",
       },
       account: {
         account: 'My Account',
@@ -166,6 +170,11 @@ i18n.use(initReactI18next).init({
         site: 'Land',
         language: 'Sprache',
         currency: 'Währung',
+        glossary: "Glossar",
+        glossary_term: "Begriff",
+        glossary_descr: "Beschreibung",
+
+
       },
       account: {
         account: 'Mein Konto',
@@ -296,6 +305,9 @@ function App() {
 
           <Route path="News" element={<NewsPage />} />
           <Route path="Neuigkeiten" element={<NewsPage />} />
+
+          <Route path="Glossary" element={<GlossaryPage />} />
+          <Route path="Glossar" element={<GlossaryPage />} />
 
           <Route path="*" element={<NoPage />} />
         </Route>
