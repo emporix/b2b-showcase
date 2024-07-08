@@ -4,6 +4,7 @@ import { ProductTeaser } from './productTeaser'
 import { HiChevronLeft, HiChevronRight } from 'react-icons/hi'
 import Slider from 'react-slick'
 import './teaserSlider.css'
+import { nanoid } from '@reduxjs/toolkit'
 
 const arrowStyles = 'absolute bg-primary text-aliceBlue rounded-full cursor-pointer z-20'
 
@@ -64,7 +65,7 @@ export const TeaserSlider = ({ props }) => {
       <Slider {...settings}>
         {teasers.map((p) => {
           return (
-            <div className="min-w-full">
+            <div className="min-w-full" key={nanoid()}>
               {p?.sectionType === 'teaser' ? <Teaser props={p} /> : null}
               {p?.sectionType === 'product_teaser' ? <ProductTeaser props={p} /> : null}
             </div>

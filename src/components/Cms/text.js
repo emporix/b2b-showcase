@@ -1,3 +1,4 @@
+import { nanoid } from '@reduxjs/toolkit'
 import React from 'react'
 
 const Elements = ({ type, content, data }) => {
@@ -5,9 +6,9 @@ const Elements = ({ type, content, data }) => {
     case 'paragraph':
     case 'block':
       return (
-        <p className={`text-lg text-eerieBlack font-light`}>
+        <p className={`text-lg text-eerieBlack font-light`} key={nanoid()}>
           {content?.map((item) => (
-            <Elements {...item} />
+            <Elements {...item} key={nanoid()} />
           ))}
         </p>
       )
@@ -15,11 +16,11 @@ const Elements = ({ type, content, data }) => {
     default:
       if (data?.format === 'bold')
         return content?.map((item) => (
-          <strong>
+          <strong key={nanoid()}>
             <Elements {...item} />
           </strong>
         ))
-      return Array.isArray(content) ? content?.map((item) => <Elements {...item} />) : content
+      return Array.isArray(content) ? content?.map((item) => <Elements {...item} key={nanoid()} />) : content
   }
 }
 
@@ -28,10 +29,10 @@ export const Text = ({ props }) => {
 
   switch (type) {
     case 'Section':
-      return data?.st_text?.map((entry) => <Text props={{ type: 'Element', data: entry }} />)
+      return data?.st_text?.map((entry) => <Text props={{ type: 'Element', data: entry }} key={nanoid()} />)
     case 'Element':
-      return <Elements type={data?.type} content={data?.content} />
+      return <Elements type={data?.type} content={data?.content} key={nanoid()} />
     default:
-      return <p>default</p>
+      return null
   }
 }

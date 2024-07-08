@@ -1,5 +1,6 @@
 import React from 'react'
 import { Text } from './text'
+import { nanoid } from '@reduxjs/toolkit'
 
 const TextFaq = ({ data }) => {
   const { st_question, st_answer } = data
@@ -34,7 +35,7 @@ export const SimpleList = ({ props }) => {
         {listEntries.map((entry) => {
           const sectionId = entry?.sectionType || 'text'
           return (
-            <li className={`fs-${sectionId} mt-4`}>
+            <li className={`fs-${sectionId} mt-4`} key={nanoid()}>
               <TextFaq data={entry.data} />
             </li>
           )
