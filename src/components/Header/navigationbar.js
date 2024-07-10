@@ -69,6 +69,8 @@ const Navbar = () => {
           }
         })
 
+      contentEntries.push({title:t("glossary"), url:"glossary"})
+
       dispatch(
         putCmsNavigation([
           {
