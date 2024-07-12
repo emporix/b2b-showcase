@@ -103,7 +103,7 @@ i18n.use(initReactI18next).init({
         glossary_descr: "Beschreibung",
         quantity: 'Quantity',
         unit_price: 'Unit Price',
-        quantity_discount: "Quantity Discount"
+        quantity_discount: "Quantity Discount",
       },
       account: {
         account: 'My Account',
@@ -155,7 +155,7 @@ i18n.use(initReactI18next).init({
         rose_wine: 'Rosé',
         website: 'Webseite besuchen',
         mailto: 'Email anschreiben',
-        negotiated: 'Ausgehandelte Preis',
+        negotiated: 'Ausgehandelter Preis',
         public: 'Katalogpreis',
         excl_vat: 'Exkl. MwSt.',
         incl_vat: 'Inkl. MwSt.',
