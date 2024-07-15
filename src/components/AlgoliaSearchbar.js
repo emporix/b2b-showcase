@@ -77,7 +77,7 @@ const AlgoliaSearchbar = () => {
       <form ref={searchBar} className="nosubmit">
         <input
           id="search-input"
-          className="nosubmit lg:w-72 xl:w-80 relative !bg-aliceBlue"
+          className="nosubmit lg:w-60 xl:w-72 relative !bg-aliceBlue"
           type="search"
           placeholder={fields.searchHelpLabel}
           onChange={handleSearch}

@@ -10,9 +10,7 @@ export const RadioGroup = ({ children, active }) => {
 
   return (
     <div className="radio-group-wrapper">
-      <RadioContext.Provider value={{ radioActive, setRadioActive }}>
-        {children}
-      </RadioContext.Provider>
+      <RadioContext.Provider value={{ radioActive, setRadioActive }}>{children}</RadioContext.Provider>
     </div>
   )
 }
@@ -38,17 +36,13 @@ const RadioIcon = styled('span')(({ theme }) => ({
   },
   'input:disabled ~ &': {
     boxShadow: 'none',
-    background:
-      theme.palette.mode === 'dark'
-        ? 'rgba(57,75,89,.5)'
-        : 'rgba(206,217,224,.5)',
+    background: theme.palette.mode === 'dark' ? 'rgba(57,75,89,.5)' : 'rgba(206,217,224,.5)',
   },
 }))
 
 const RadioCheckedIcon = styled(RadioIcon)({
   backgroundColor: '#137cbd',
-  backgroundImage:
-    'linear-gradient(180deg,hsla(0,0%,100%,.1),hsla(0,0%,100%,0))',
+  backgroundImage: 'linear-gradient(180deg,hsla(0,0%,100%,.1),hsla(0,0%,100%,0))',
   '&:before': {
     margin: 5.5,
     display: 'block',
@@ -65,6 +59,7 @@ const RadioCheckedIcon = styled(RadioIcon)({
 export const RadioItem = ({ radioKey, onChange }) => {
   const { radioActive, setRadioActive } = useContext(RadioContext)
 
+  console.log(radioKey)
   return (
     <Radio
       sx={{ '&:hover': { bgcolor: 'transparent' } }}
@@ -75,6 +70,7 @@ export const RadioItem = ({ radioKey, onChange }) => {
       onChange={onChange}
       checked={radioKey == radioActive ? true : false}
       onClick={() => setRadioActive(radioKey)}
+      key={radioKey}
     />
   )
 }
