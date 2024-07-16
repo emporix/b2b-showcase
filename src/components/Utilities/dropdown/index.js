@@ -33,7 +33,6 @@ const Dropdown = ({ options, placeholder, onChange, defaultValue, style, classNa
           )}
         </>
       )}
-      toString={() => nanoid()}
     />
   )
 }

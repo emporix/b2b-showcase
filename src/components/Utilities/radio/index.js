@@ -14,6 +14,7 @@ export const RadioGroup = ({ children, active }) => {
     </div>
   )
 }
+
 const RadioIcon = styled('span')(({ theme }) => ({
   borderRadius: '50%',
   width: 24,
@@ -59,7 +60,7 @@ const RadioCheckedIcon = styled(RadioIcon)({
 export const RadioItem = ({ radioKey, onChange }) => {
   const { radioActive, setRadioActive } = useContext(RadioContext)
 
-  console.log(radioKey)
+  // console.log(radioKey)
   return (
     <Radio
       sx={{ '&:hover': { bgcolor: 'transparent' } }}
@@ -70,7 +71,6 @@ export const RadioItem = ({ radioKey, onChange }) => {
       onChange={onChange}
       checked={radioKey == radioActive ? true : false}
       onClick={() => setRadioActive(radioKey)}
-      key={radioKey}
     />
   )
 }
