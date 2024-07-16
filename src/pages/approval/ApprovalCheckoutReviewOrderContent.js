@@ -1,9 +1,6 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import './approval.css'
-import {
-  CartProductPriceExcludeVat,
-  CartProductImageAndReadOnlyQuantity,
-} from 'components/Cart/cart'
+import { CartProductPriceExcludeVat, CartProductImageAndReadOnlyQuantity } from 'components/Cart/cart'
 import {
   Container,
   DesktopLGContainer,
@@ -36,10 +33,7 @@ export const CartProductInfo = ({ item }) => {
       <GridLayout className="gap-[22px]">
         <CartProductBasicInfo item={item} />
         {item.itemPrice.currency && item.itemPrice.amount && (
-          <CartProductPriceExcludeVat
-            price={item.itemPrice.amount}
-            currency={item.itemPrice.currency}
-          />
+          <CartProductPriceExcludeVat price={item.itemPrice.amount} currency={item.itemPrice.currency} />
         )}
       </GridLayout>
     </div>
@@ -133,20 +127,15 @@ const ApprovalCheckoutReviewOrderContent = () => {
               </div>
               <GridLayout className="gap-4">
                 {approval.resource.items.map((cartItem, idx) => (
-                  <>
-                    <div className="cart-product-item p-2">
-                      <CartProductImageAndReadOnlyQuantity
-                        cartItem={{
-                          product: { src: cartItem.media.url },
-                          quantity: cartItem.quantity,
-                        }}
-                      />
-                      <CartProductInfo
-                        key={cartItem.id + idx}
-                        item={cartItem}
-                      />
-                    </div>
-                  </>
+                  <div className="cart-product-item p-2" key={cartItem.id + idx}>
+                    <CartProductImageAndReadOnlyQuantity
+                      cartItem={{
+                        product: { src: cartItem.media.url },
+                        quantity: cartItem.quantity,
+                      }}
+                    />
+                    <CartProductInfo item={cartItem} />
+                  </div>
                 ))}
               </GridLayout>
             </Container>
@@ -163,14 +152,14 @@ const ApprovalCheckoutReviewOrderContent = () => {
             <GridLayout className="gap-4">
               {approval.resource.items.map((cartItem, idx) => (
                 <>
-                  <div className="cart-product-item p-2">
+                  <div className="cart-product-item p-2" key={cartItem.id + idx}>
                     <CartProductImageAndReadOnlyQuantity
                       cartItem={{
                         product: { src: cartItem.media.url },
                         quantity: cartItem.quantity,
                       }}
                     />
-                    <CartProductInfo key={cartItem.id + idx} item={cartItem} />
+                    <CartProductInfo item={cartItem} />
                   </div>
                 </>
               ))}

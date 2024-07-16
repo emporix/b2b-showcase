@@ -60,7 +60,6 @@ const RadioCheckedIcon = styled(RadioIcon)({
 export const RadioItem = ({ radioKey, onChange }) => {
   const { radioActive, setRadioActive } = useContext(RadioContext)
 
-  // console.log(radioKey)
   return (
     <Radio
       sx={{ '&:hover': { bgcolor: 'transparent' } }}

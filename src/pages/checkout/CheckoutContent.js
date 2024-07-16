@@ -86,7 +86,7 @@ const ShippingContent = () => {
             onChange={(e) => {
               const addressId = e[0].value
               const address = addresses.find((address) => address.id === addressId)
-              console.log({ addressId, address })
+
               if (address !== undefined) {
                 setSelectedAddress(address)
               }
@@ -329,12 +329,10 @@ const ReviewOrderContent = (cart) => {
             </div>
             <GridLayout className="gap-4">
               {cartAccount?.items.map((cartItem, idx) => (
-                <>
-                  <div className="cart-product-item p-2">
-                    <CartProductImageAndReadOnlyQuantity cartItem={cartItem} />
-                    <CartProductInfo key={cartItem.id + idx} cartItem={cartItem} />
-                  </div>
-                </>
+                <div className="cart-product-item p-2" key={cartItem.id + idx}>
+                  <CartProductImageAndReadOnlyQuantity cartItem={cartItem} />
+                  <CartProductInfo cartItem={cartItem} />
+                </div>
               ))}
             </GridLayout>
           </Container>
@@ -350,12 +348,10 @@ const ReviewOrderContent = (cart) => {
           </LayoutBetween>
           <GridLayout className="gap-4">
             {cartAccount?.items.map((cartItem, idx) => (
-              <>
-                <div className="cart-product-item p-2">
-                  <CartProductImageAndReadOnlyQuantity cartItem={cartItem} />
-                  <CartProductInfo key={cartItem.id + idx} cartItem={cartItem} />
-                </div>
-              </>
+              <div className="cart-product-item p-2" key={cartItem.id + idx}>
+                <CartProductImageAndReadOnlyQuantity cartItem={cartItem} />
+                <CartProductInfo cartItem={cartItem} />
+              </div>
             ))}
           </GridLayout>
         </GridLayout>
