@@ -52,6 +52,7 @@ const ShippingContent = () => {
 
   const onShippingChange = (value) => {
     const selectedShippingMethod = shippingMethods.filter((method) => method.id === value)[0]
+
     setShippingMethod(selectedShippingMethod)
     setSelectedDeliveryMethod(selectedShippingMethod)
   }

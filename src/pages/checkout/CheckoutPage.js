@@ -21,6 +21,7 @@ import {
   approvalConfirmationPage,
   approvalPermitted,
   authorizePayment,
+  cartUrl,
 } from 'services/service.config'
 import { ACCESS_TOKEN } from 'constants/localstorage'
 import Dropdown, { DropdownWithLabel } from 'components/Utilities/dropdown'
@@ -359,6 +360,8 @@ const CheckoutPage = () => {
   const [approvalNeeded, setApprovalNeeded] = useState(false)
   const [approvers, setApprovers] = useState([])
 
+  const navigate = useNavigate()
+
   const subtotalWithoutVat = useMemo(() => {
     let subTotal = cartAccount.subtotalAggregate ? cartAccount.subtotalAggregate.grossValue : 0
     if (cartAccount.totalDiscount && cartAccount.totalDiscount.amount) {
@@ -430,16 +433,22 @@ const CheckoutPage = () => {
       const headers = {
         Authorization: `Bearer ${localStorage.getItem(ACCESS_TOKEN)}`,
       }
+      let res
+      try {
+        res = await api.post(`${approvalPermitted()}`, body, { headers })
 
-      const res = await api.post(`${approvalPermitted()}`, body, { headers })
-      setApprovalNeeded(!res.data.permitted)
+        setApprovalNeeded(!res?.data?.permitted)
 
-      if (!res.data.permitted) {
-        const approversResponse = await api.post(`${approvalApprovers()}`, body, { headers })
-        setApprovers(approversResponse.data)
+        if (!res?.data?.permitted) {
+          const approversResponse = await api.post(`${approvalApprovers()}`, body, { headers })
+          // console.log(approversResponse)
+          setApprovers(approversResponse.data)
+        }
+      } catch (error) {
+        navigate(cartUrl())
       }
     })()
-  }, [cartAccount])
+  }, [cartAccount, navigate])
 
   return (
     <div className="checkout-page-wrapper ">

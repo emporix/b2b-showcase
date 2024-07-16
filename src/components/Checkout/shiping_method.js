@@ -31,11 +31,15 @@ const ShippingMethod = ({ radioKey, shippingmode, price, onClick }) => {
     return deliveryWindows.filter((deliveryWindow) => deliveryWindow.deliveryMethod === shippingmode)
   }
 
+  const handleOnChange = () => {
+    return onClick !== undefined && onClick(radioKey)
+  }
+
   return (
     <>
       {getActualDeliveryWindows(deliveryWindows, currentSite).length > 0 && (
         <div
-          onChange={radioActive === radioKey && onClick !== undefined ? onClick(radioKey) : null}
+          onChange={handleOnChange}
           className={radioActive === radioKey ? 'shipping_method_selected' : 'shipping_method'}
         >
           <div className="flex justify-between w-full items-center">

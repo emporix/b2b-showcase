@@ -4,10 +4,29 @@ import { TextRegular1 } from '../typography'
 import './dropdown.css'
 import { nanoid } from '@reduxjs/toolkit'
 
+// since react-dropdown-select is using value.toString() for key in multiple component
+// in case value is array or object, which will break unique key as '[object Object]'
+const tweakOptions = (options) => {
+  const revisedOptions = options?.map((option) => {
+    const { value } = option
+    const isArray = Array.isArray(value)
+    const isObject = (typeof value === 'object' || typeof value === 'function') && value !== null
+
+    const newValue = isArray
+      ? value?.map((val) => ({ ...val, toString: () => nanoid() }))
+      : isObject
+      ? { ...value, toString: () => nanoid() }
+      : value
+    return { ...option, value: newValue }
+  })
+  return revisedOptions
+}
+
 const Dropdown = ({ options, placeholder, onChange, defaultValue, style, className, searchable }) => {
+  const serializedOptions = tweakOptions(options)
   return (
     <Select
-      options={options}
+      options={serializedOptions}
       searchable={searchable === undefined ? true : searchable}
       values={defaultValue ? [defaultValue] : []}
       onChange={onChange}
