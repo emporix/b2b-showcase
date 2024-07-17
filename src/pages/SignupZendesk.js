@@ -1,19 +1,16 @@
-import React, { useMemo, useState } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
-import { login, register, refreshCustomerData } from '../services/user/auth.service'
+import React, { useEffect, useMemo, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
+import { registerZD } from 'services/user/zendesk.service'
 import Snackbar from '@mui/material/Snackbar'
 import MuiAlert from '@mui/material/Alert'
 import PhoneField from '../components/Utilities/phoneinput/PhoneField'
 import { Container, GridLayout } from '../components/Utilities/common'
 import { Heading2, Heading4 } from '../components/Utilities/typography'
 import Box from '@mui/material/Box'
-import { TENANT } from '../constants/localstorage'
+import { USER } from '../constants/localstorage'
 import { homeUrl } from '../services/service.config'
 import { Logo } from '../components/Logo'
-import { useAuth } from 'context/auth-provider'
-import { createAddress } from 'services/user/adresses'
 import { LargePrimaryButton } from 'components/Utilities/button'
-import { useCurrency } from 'context/currency-context'
 import { useTranslation } from 'react-i18next'
 
 const Input = ({ isValid, errorText, label, value, action, className, placeholder, type, required, ...rest }) => {
@@ -180,13 +177,11 @@ const SignupZendesk = (props) => {
   const [message, setMessage] = useState(null)
   const [userEmail, setUserEmail] = useState('')
   const [openNotification, setOpenNotification] = useState(false)
-  const [password, setPassword] = useState('')
-  const [confirmPassword, setConfirmPassword] = useState('')
   const [firstName, setFirstName] = useState('')
   const [lastName, setLastName] = useState('')
   const [company, setCompany] = useState('')
-  const [registrationId, setRegistrationId] = useState('')
   const [phoneNumber, setPhoneNumber] = useState('')
+  const [isSignedUp, setIsSignedUp] = useState(false)
   const [shippingAddress, setShippingAddress] = useState({
     contactName: '',
     street: '',
@@ -197,30 +192,17 @@ const SignupZendesk = (props) => {
     state: '',
     city: '',
   })
-  const [billingAddress, setBillingAddress] = useState({
-    contactName: '',
-    street: '',
-    streetNumber: '',
-    streetAppendix: '',
-    zipCode: '',
-    country: '',
-    state: '',
-    city: '',
-  })
-  const { activeCurrency } = useCurrency()
+
   const { t } = useTranslation('signup')
+  const navigate = useNavigate()
 
   const isAddressValid = useMemo(() => {
-    return addressValid(shippingAddress) && addressValid(billingAddress)
-  }, [shippingAddress, billingAddress])
+    return addressValid(shippingAddress)
+  }, [shippingAddress])
 
-  const { syncAuth } = useAuth()
-
-  function isValidEmail(email) {
+  const isValidEmail = (email) => {
     return /\S+@\S+\.\S+/.test(email)
   }
-  const [isSignedUp, setIsSignedUp] = useState(false)
-  const navigate = useNavigate()
 
   const handleClose = (event, reason) => {
     if (reason === 'clickaway') {
@@ -232,30 +214,16 @@ const SignupZendesk = (props) => {
     return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />
   })
 
-  const tenant = localStorage.getItem(TENANT)
-
-  const onChangeUserEmail = (e) => {
-    setUserEmail(e.target.value)
-  }
-  const onChangePassword = (e) => {
-    const password = e.target.value
-    setPassword(password)
-  }
-
   const isCreationBlocked = () => {
     const isCorrectEssentialData =
       loading ||
-      !password ||
-      !confirmPassword ||
-      confirmPassword !== password ||
       !userEmail ||
       !isValidEmail(userEmail) ||
       !firstName ||
       !lastName ||
-      !addressEmptyValid(billingAddress) ||
       !addressEmptyValid(shippingAddress)
 
-    return company ? isCorrectEssentialData || !registrationId || !isAddressValid : isCorrectEssentialData
+    return company ? isCorrectEssentialData || !isAddressValid : isCorrectEssentialData
   }
 
   const handleSignup = async (e) => {
@@ -263,30 +231,15 @@ const SignupZendesk = (props) => {
     try {
       setLoading(true)
       if (!isSignedUp) {
-        await register(
-          userEmail,
-          password,
-          firstName,
-          lastName,
-          tenant,
-          company,
-          registrationId,
-          phoneNumber,
-          activeCurrency
-        )
-        await login(userEmail, password, tenant)
-        syncAuth()
+        await registerZD({
+          email: userEmail,
+          firstName: firstName,
+          lastName: lastName,
+          company: company,
+          phoneNumber: phoneNumber,
+          address: shippingAddress,
+        })
         setIsSignedUp(true)
-      }
-      if (addressValid(shippingAddress)) {
-        await createAddress({ ...shippingAddress, tags: ['shipping'] })
-      }
-      if (addressValid(billingAddress)) {
-        await createAddress({ ...billingAddress, tags: ['billing'] })
-      }
-      await refreshCustomerData(tenant)
-      if (isSignedUp) {
-        props.history.replace(`/${tenant}`)
       }
       navigate(homeUrl())
       setLoading(false)
@@ -298,6 +251,26 @@ const SignupZendesk = (props) => {
       setLoading(false)
     }
   }
+
+  useEffect(() => {
+    const user = localStorage.getItem(USER)
+    if (!user) return navigate(homeUrl())
+
+    let userJS
+    try {
+      userJS = JSON.parse(user)
+    } catch (err) {
+      userJS = {}
+    }
+
+    setUserEmail(userJS?.contactEmail ?? '')
+    setFirstName(userJS?.firstName ?? '')
+    setLastName(userJS?.lastName ?? '')
+    setCompany(userJS?.company ?? '')
+    setPhoneNumber(userJS?.contactPhone ?? '')
+
+    setShippingAddress((current) => ({ ...current, ...(userJS?.addresses?.[0] ?? current) }))
+  }, [])
 
   return (
     <GridLayout className="signup_container bg-aliceBlue">
@@ -319,8 +292,8 @@ const SignupZendesk = (props) => {
         </Container>
         <GridLayout className="w-full bg-white p-12  rounded">
           <GridLayout className="text-center">
-            <Heading2 className="text-eerieBlack text-[24px]/[32px] font-semibold">{t('heading2')}</Heading2>
-            <Heading4 className="text-eerieBlack text-[16px]/[24px] font-semibold pt-6">{t('heading4')}</Heading4>
+            <Heading2 className="text-eerieBlack text-[24px]/[32px] font-semibold">{t('heading2_z')}</Heading2>
+            <Heading4 className="text-eerieBlack text-[16px]/[24px] font-semibold pt-6">{t('heading4_z')}</Heading4>
           </GridLayout>
 
           <form onSubmit={handleSignup} className="display: block m-0">
@@ -336,31 +309,6 @@ const SignupZendesk = (props) => {
                 isValid={!userEmail || isValidEmail(userEmail)}
                 errorText={t('email_err')}
               />
-              <Input
-                label={t('password')}
-                placeholder={t('password_ph')}
-                className="col-span-4"
-                value={password}
-                action={setPassword}
-                type="password"
-                required
-                isValid={!password || password.length >= 6}
-                errorText={t('password_err')}
-              />
-              <Input
-                label={t('password2')}
-                placeholder={t('password2_ph')}
-                className="col-span-4"
-                value={confirmPassword}
-                action={setConfirmPassword}
-                type="password"
-                required
-                isValid={!password || password.length >= 6}
-                errorText={t('password_err')}
-              />
-              {password && confirmPassword && confirmPassword !== password && (
-                <h6 className={'text-red-500 col-span-4'}>{t('password2_err')}</h6>
-              )}
               <Input
                 label={t('firstname')}
                 placeholder={t('firstname_ph')}
@@ -392,16 +340,6 @@ const SignupZendesk = (props) => {
                 action={setCompany}
                 type="text"
               />
-              <Input
-                label={t('registration')}
-                placeholder={t('registration_ph')}
-                className="col-span-4"
-                value={registrationId}
-                action={setRegistrationId}
-                type="text"
-                isValid={(!company && !registrationId) || (company && registrationId)}
-                errorText={t('registration_err')}
-              />
 
               <Input
                 label={t('phone')}
@@ -414,9 +352,9 @@ const SignupZendesk = (props) => {
               />
 
               <Box className="col-span-4">
-                <div className="mt-2 text-black text-lg">{t('address_ship')}</div>
+                <div className="mt-2 text-black text-lg">{t('address')}*</div>
                 {((company && !addressValid(shippingAddress)) || !addressEmptyValid(shippingAddress)) && (
-                  <h6 style={{ color: 'red' }}>{t('address_ship_err')}</h6>
+                  <h6 style={{ color: 'red' }}>{t('address_err')}</h6>
                 )}
                 <AddressForm
                   form={shippingAddress}
@@ -424,20 +362,8 @@ const SignupZendesk = (props) => {
                     setShippingAddress(newAddress)
                   }}
                 />
-                <br />
-                <div className="mt-2 text-black text-lg">{t('address_bill')}</div>
-                {((company && !addressValid(billingAddress)) || !addressEmptyValid(billingAddress)) && (
-                  <h6 style={{ color: 'red' }}>{t('address_bill_err')}</h6>
-                )}
-                <AddressForm
-                  form={billingAddress}
-                  handleUpdate={(newAddress) => {
-                    setBillingAddress(newAddress)
-                  }}
-                />
               </Box>
               <Box className="mt-8 col-span-4">
-                {console.log(isCreationBlocked())}
                 <LargePrimaryButton
                   className="w-full cta-button !bg-primary h-12 !text-white"
                   disabled={isCreationBlocked()}

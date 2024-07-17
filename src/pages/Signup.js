@@ -406,7 +406,7 @@ const Signup = (props) => {
               />
 
               <Box className="col-span-4">
-                <div className="mt-2 text-black text-lg">{t('address_ship')}</div>
+                <div className="mt-2 text-black text-lg">{t('address_ship')}*</div>
                 {((company && !addressValid(shippingAddress)) || !addressEmptyValid(shippingAddress)) && (
                   <h6 style={{ color: 'red' }}>{t('address_ship_err')}</h6>
                 )}
@@ -417,7 +417,7 @@ const Signup = (props) => {
                   }}
                 />
                 <br />
-                <div className="mt-2 text-black text-lg">{t('address_bill')}</div>
+                <div className="mt-2 text-black text-lg">{t('address_bill')}*</div>
                 {((company && !addressValid(billingAddress)) || !addressEmptyValid(billingAddress)) && (
                   <h6 style={{ color: 'red' }}>{t('address_bill_err')}</h6>
                 )}
@@ -429,7 +429,6 @@ const Signup = (props) => {
                 />
               </Box>
               <Box className="mt-8 col-span-4">
-                {console.log(isCreationBlocked())}
                 <LargePrimaryButton
                   className="w-full cta-button !bg-primary h-12 !text-white"
                   disabled={isCreationBlocked()}
