@@ -175,7 +175,7 @@ const addressEmptyValid = (address) => {
   )
 }
 
-const Signup = (props) => {
+const SignupZendesk = (props) => {
   const [loading, setLoading] = useState(false)
   const [message, setMessage] = useState(null)
   const [userEmail, setUserEmail] = useState('')
@@ -233,6 +233,14 @@ const Signup = (props) => {
   })
 
   const tenant = localStorage.getItem(TENANT)
+
+  const onChangeUserEmail = (e) => {
+    setUserEmail(e.target.value)
+  }
+  const onChangePassword = (e) => {
+    const password = e.target.value
+    setPassword(password)
+  }
 
   const isCreationBlocked = () => {
     const isCorrectEssentialData =
@@ -443,4 +451,4 @@ const Signup = (props) => {
     </GridLayout>
   )
 }
-export default Signup
+export default SignupZendesk

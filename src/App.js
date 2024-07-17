@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Route, Routes } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
 import Login from './pages/Login'
 import Signup from './pages/Signup'
+import SignupZendesk from './pages/SignupZendesk'
 import Home from './pages/home'
 import Cart from './pages/cart'
 import QuickOrder from './pages/quickorder'
@@ -65,7 +66,7 @@ i18n.use(initReactI18next).init({
   resources: {
     en: {
       page: {
-        news:"News",
+        news: 'News',
         content: 'Content',
         catalog: 'Catalog',
         about_us: 'About Us',
@@ -98,9 +99,9 @@ i18n.use(initReactI18next).init({
         site: 'Site',
         language: 'Language',
         currency: 'Currency',
-        glossary: "Glossary",
-        glossary_term: "Begriff",
-        glossary_descr: "Beschreibung",
+        glossary: 'Glossary',
+        glossary_term: 'Begriff',
+        glossary_descr: 'Beschreibung',
       },
       account: {
         account: 'My Account',
@@ -134,10 +135,43 @@ i18n.use(initReactI18next).init({
       products: {
         description: 'Product Description',
       },
+      signup: {
+        heading2: 'Register as a New User',
+        heading4: 'Welcome! Please enter your details',
+        heading2_z: 'Register for Help Center',
+        heading4_z: '',
+        email: 'E-mail address',
+        email_ph: 'joe.doe@zendesk.com',
+        email_err: 'Email is invalid',
+        password: 'Password',
+        password_ph: 'Strong password',
+        password_err: 'Password must have at least 6 characters',
+        password2: 'Confirm Password',
+        password2_ph: 'Confirm Password',
+        password2_err: 'Password must be the same',
+        firstname: 'First Name',
+        firstname_ph: 'Jon',
+        firstname_err: 'First Name must be provided',
+        lastname: 'Last Name',
+        lastname_ph: 'Doe',
+        lastname_err: 'Last Name must be provided',
+        company: 'Company',
+        company_ph: 'Company Name',
+        registration: 'Registration Number',
+        registration_ph: '123-456-789',
+        registration_err: 'Registration Number must be provided',
+        phone: 'Phone Number',
+        phone_ph: 'Phone Number',
+        address_ship: 'Shipping Address',
+        address_ship_err: 'Correct shipping address must be provided',
+        address_bill: 'Billing Address',
+        address_bill_err: 'Correct billing address must be provided',
+        signup: 'Sign Up',
+      },
     },
     de: {
       page: {
-        news:"Neuigkeiten",
+        news: 'Neuigkeiten',
         content: 'Inhalt',
         catalog: 'Katalog',
         about_us: 'Über uns',
@@ -170,11 +204,9 @@ i18n.use(initReactI18next).init({
         site: 'Land',
         language: 'Sprache',
         currency: 'Währung',
-        glossary: "Glossar",
-        glossary_term: "Begriff",
-        glossary_descr: "Beschreibung",
-
-
+        glossary: 'Glossar',
+        glossary_term: 'Begriff',
+        glossary_descr: 'Beschreibung',
       },
       account: {
         account: 'Mein Konto',
@@ -207,6 +239,39 @@ i18n.use(initReactI18next).init({
       },
       products: {
         description: 'Produktbeschreibung',
+      },
+      signup: {
+        heading2: 'Register as a New User',
+        heading4: 'Welcome! Please enter your details',
+        heading2_z: 'Register for Help Center',
+        heading4_z: '',
+        email: 'E-mail address',
+        email_ph: 'joe.doe@zendesk.com',
+        email_err: 'Email is invalid',
+        password: 'Password',
+        password_ph: 'Strong password',
+        password_err: 'Password must have at least 6 characters',
+        password2: 'Confirm Password',
+        password2_ph: 'Confirm Password',
+        password2_err: 'Password must be the same',
+        firstname: 'First Name',
+        firstname_ph: 'Jon',
+        firstname_err: 'First Name must be provided',
+        lastname: 'Last Name',
+        lastname_ph: 'Doe',
+        lastname_err: 'Last Name must be provided',
+        company: 'Company',
+        company_ph: 'Company Name',
+        registration: 'Registration Number',
+        registration_ph: '123-456-789',
+        registration_err: 'Registration Number must be provided',
+        phone: 'Phone Number',
+        phone_ph: 'Phone Number',
+        address_ship: 'Shipping Address',
+        address_ship_err: 'Correct shipping address must be provided',
+        address_bill: 'Billing Address',
+        address_bill_err: 'Correct billing address must be provided',
+        signup: 'Sign Up',
       },
     },
   },
@@ -241,6 +306,7 @@ function App() {
           <Route path="reset-password" exact element={<ResetPassword />} />
           <Route path="signup" exact element={<Signup />} />
           <Route path="brand" exact element={<Brand />} />
+          <Route path="signup-helpcenter" exact element={<SignupZendesk />} />
 
           <Route path="cart" exact element={<Cart />} />
           <Route path="create-return/:orderId" exact element={<CreateReturn />} />

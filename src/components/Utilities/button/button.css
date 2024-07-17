@@ -4,7 +4,7 @@
 }
 
 .large-primary-btn:disabled {
-  @apply bg-bgWhite text-gray;
+  @apply !bg-gray !text-white;
 }
 
 .medium-primary-btn {
