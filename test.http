@@ -1,7 +1,0 @@
-POST https://con-neteleven.zendesk.com/api/v2/users HTTP/1.1
-content-type: application/json
-Authorization: Bearer ISAV4aBhQJ8NnMcw5W3JKOSmlpFP2bX67ywxymdG
-
-{
-
-}

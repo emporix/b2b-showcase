@@ -10,7 +10,7 @@ import {
 import CartService from '../cart.service'
 
 const API_URL = process.env.REACT_APP_API_URL
-const ZD_TOKEN = process.env.REACT_APP_ZENDESK_ACCESS_TOKEN
+const ZD_TOKEN = process.env.REACT_APP_ZENDESK_OAUTH
 
 export const register = async (
   email,

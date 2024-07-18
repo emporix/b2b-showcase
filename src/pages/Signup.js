@@ -1,6 +1,7 @@
 import React, { useMemo, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { login, register, refreshCustomerData } from '../services/user/auth.service'
+import { registerZD } from 'services/user/zendesk.service'
 import Snackbar from '@mui/material/Snackbar'
 import MuiAlert from '@mui/material/Alert'
 import PhoneField from '../components/Utilities/phoneinput/PhoneField'
@@ -268,6 +269,16 @@ const Signup = (props) => {
         )
         await login(userEmail, password, tenant)
         syncAuth()
+
+        await registerZD({
+          email: userEmail,
+          firstName: firstName,
+          lastName: lastName,
+          company: company,
+          phoneNumber: phoneNumber,
+          address: shippingAddress,
+        })
+
         setIsSignedUp(true)
       }
       if (addressValid(shippingAddress)) {

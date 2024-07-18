@@ -241,7 +241,7 @@ const SignupZendesk = (props) => {
         })
         setIsSignedUp(true)
       }
-      navigate(homeUrl())
+      // navigate(homeUrl())
       setLoading(false)
     } catch (e) {
       console.log(e)
