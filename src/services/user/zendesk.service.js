@@ -11,7 +11,7 @@ export const registerZD = async ({ email, firstName, lastName, company, phoneNum
       name: `${firstName} ${lastName}`,
       email: email,
       'user.organization': company,
-      phone: phoneNumber,
+      phone: '+49 170 12 45 789',
       user_fields: {
         ort: address.city,
         strasse: address.street,
