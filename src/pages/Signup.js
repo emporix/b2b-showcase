@@ -17,10 +17,22 @@ import { LargePrimaryButton } from 'components/Utilities/button'
 import { useCurrency } from 'context/currency-context'
 import { useTranslation } from 'react-i18next'
 
-const Input = ({ isValid, errorText, label, value, action, className, placeholder, type, required, ...rest }) => {
+const Input = ({
+  prefix,
+  isValid,
+  errorText,
+  label,
+  value,
+  action,
+  className,
+  placeholder,
+  type,
+  required,
+  ...rest
+}) => {
   return (
     <div className={`!pt-2 w-full text-black text-base ${className}`}>
-      <label htmlFor={label} className="inline-block w-full pb-0 truncate">
+      <label htmlFor={prefix + label} className="inline-block w-full pb-0 truncate">
         {label}
         {required ? '*' : ''}
       </label>
@@ -29,8 +41,8 @@ const Input = ({ isValid, errorText, label, value, action, className, placeholde
         <PhoneField value={value} onChange={(value) => action(value)} classes={'h-5'} />
       ) : (
         <input
-          name={label}
-          id={label}
+          name={prefix + label}
+          id={prefix + label}
           placeholder={placeholder}
           onChange={(e) => action(e.target.value)}
           value={value}
@@ -45,11 +57,13 @@ const Input = ({ isValid, errorText, label, value, action, className, placeholde
   )
 }
 
-const AddressForm = ({ form, handleUpdate }) => {
+const AddressForm = ({ form, handleUpdate, prefix }) => {
   const { t } = useTranslation('address')
+
   return (
     <div className="grid grid-cols-4 gap-x-4">
       <Input
+        prefix={prefix}
         label={t('contact')}
         className="col-span-4"
         placeholder="Contact name"
@@ -62,6 +76,7 @@ const AddressForm = ({ form, handleUpdate }) => {
         }
       />
       <Input
+        prefix={prefix}
         label="Street"
         className="col-span-4 md:col-span-2"
         placeholder="Street"
@@ -74,6 +89,7 @@ const AddressForm = ({ form, handleUpdate }) => {
         }
       />
       <Input
+        prefix={prefix}
         label="St. Number"
         placeholder="Street Number"
         className="col-span-2 md:col-span-1"
@@ -86,6 +102,7 @@ const AddressForm = ({ form, handleUpdate }) => {
         }
       />
       <Input
+        prefix={prefix}
         label="St. Appendix"
         className="col-span-2 md:col-span-1"
         value={form.streetAppendix}
@@ -97,6 +114,7 @@ const AddressForm = ({ form, handleUpdate }) => {
         }
       />
       <Input
+        prefix={prefix}
         label="Zip Code"
         placeholder="Zip Code"
         className="col-span-2"
@@ -109,6 +127,7 @@ const AddressForm = ({ form, handleUpdate }) => {
         }
       />
       <Input
+        prefix={prefix}
         label="City"
         placeholder="City"
         className="col-span-2"
@@ -121,6 +140,7 @@ const AddressForm = ({ form, handleUpdate }) => {
         }
       />
       <Input
+        prefix={prefix}
         label="State"
         placeholder="State"
         className="col-span-2"
@@ -133,6 +153,7 @@ const AddressForm = ({ form, handleUpdate }) => {
         }
       />
       <Input
+        prefix={prefix}
         label="Country"
         placeholder="Country"
         className="col-span-2"
@@ -422,6 +443,7 @@ const Signup = (props) => {
                   <h6 style={{ color: 'red' }}>{t('address_ship_err')}</h6>
                 )}
                 <AddressForm
+                  prefix="ship"
                   form={shippingAddress}
                   handleUpdate={(newAddress) => {
                     setShippingAddress(newAddress)
@@ -433,6 +455,7 @@ const Signup = (props) => {
                   <h6 style={{ color: 'red' }}>{t('address_bill_err')}</h6>
                 )}
                 <AddressForm
+                  prefix="bill"
                   form={billingAddress}
                   handleUpdate={(newAddress) => {
                     setBillingAddress(newAddress)
