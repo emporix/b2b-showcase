@@ -87,7 +87,6 @@ export const loginBasedOnCustomerToken = async (data, userTenant) => {
     localStorage.setItem(SAAS_TOKEN, data.saasToken)
     localStorage.setItem(CUSTOMER_TOKEN_EXPIRES_IN, now + data.expiresIn * 1000)
     localStorage.setItem(ZENDESK_ACCESS_TOKEN, ZD_TOKEN)
-    console.log(ZD_TOKEN)
 
     let customerAccesstoken = data.accessToken
 

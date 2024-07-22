@@ -33,15 +33,16 @@ export const registerZD = async ({ email, firstName, lastName, company, phoneNum
     data: payload,
   }
 
+  let res
   axios(config)
     .then(function (response) {
-      console.log('Response: ', JSON.stringify(response.data))
+      res = response?.data || {}
     })
     .catch(function (error) {
       console.log('Error: ', error)
     })
 
-  return null
+  return res
 }
 
 // const headers = {
