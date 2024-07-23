@@ -53,9 +53,7 @@ const ResetPassword = () => {
       <GridLayout className="md:w-[540px] w-[95%] mx-auto h-[740px]">
         <Container className="w-full items-center text-center text-eerieBlack font-bold text-7xl ">
           <Container className="mx-auto">
-            <Link to={homeUrl} className="flex">
-              <Logo size={'w-[78px] h-[86px] mr-5'} text={'px-4 flex text-eerieBlack text-[48px]'} />
-            </Link>
+            <Logo size={'w-[78px] h-[86px] mr-5'} text={'px-4 flex text-eerieBlack text-[48px]'} />
           </Container>
         </Container>
         <GridLayout className="w-full bg-white p-12 rounded">

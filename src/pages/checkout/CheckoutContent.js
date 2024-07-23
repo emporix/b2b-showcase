@@ -13,17 +13,12 @@ import {
 } from '../../components/Utilities/common'
 import { ProgressBar, ProgressBarItem } from '../../components/Utilities/progressbar'
 import ShippingMethod from '../../components/Checkout/shiping_method'
-import DeliveryWindow from '../../components/Checkout/DeliveryWindow'
-import PaymentMethodItem from '../../components/Checkout/PaymentMethodItem'
-import PaymentInvoiceItem from '../../components/Checkout/PaymentInvoiceItem'
 import {
   Heading3,
   Heading4,
   TextBold1,
   TextBold3,
-  TextBold4,
   TextRegular,
-  TextRegular1,
   TextRegular3,
   Underline,
 } from '../../components/Utilities/typography'
@@ -33,7 +28,6 @@ import './checkout.css'
 import Checkbox from '../../components/Utilities/checkbox'
 import { useUserAddress } from './AddressProvider'
 import Address from './Address'
-import ProductContent from './ProductsContent'
 import { useCart } from 'context/cart-provider'
 import { usePayment } from './PaymentProvider'
 import PaymentSpreedly from 'components/Checkout/PaymentSpreedly'
@@ -58,6 +52,7 @@ const ShippingContent = () => {
 
   const onShippingChange = (value) => {
     const selectedShippingMethod = shippingMethods.filter((method) => method.id === value)[0]
+
     setShippingMethod(selectedShippingMethod)
     setSelectedDeliveryMethod(selectedShippingMethod)
   }
@@ -92,6 +87,7 @@ const ShippingContent = () => {
             onChange={(e) => {
               const addressId = e[0].value
               const address = addresses.find((address) => address.id === addressId)
+
               if (address !== undefined) {
                 setSelectedAddress(address)
               }
@@ -115,7 +111,7 @@ const ShippingContent = () => {
             </TextRegular3>
           </MobileMDContainer>
           <RadioGroup>
-            {shippingMethods.map((method) => {
+            {shippingMethods?.map((method) => {
               return (
                 <ShippingMethod
                   key={method.id}
@@ -126,7 +122,7 @@ const ShippingContent = () => {
                   onClick={onShippingChange}
                 />
               )
-            })}
+            }) || null}
           </RadioGroup>
         </GridLayout>
       </GridLayout>
@@ -334,12 +330,10 @@ const ReviewOrderContent = (cart) => {
             </div>
             <GridLayout className="gap-4">
               {cartAccount?.items.map((cartItem, idx) => (
-                <>
-                  <div className="cart-product-item p-2">
-                    <CartProductImageAndReadOnlyQuantity cartItem={cartItem} />
-                    <CartProductInfo key={cartItem.id + idx} cartItem={cartItem} />
-                  </div>
-                </>
+                <div className="cart-product-item p-2" key={cartItem.id + idx}>
+                  <CartProductImageAndReadOnlyQuantity cartItem={cartItem} />
+                  <CartProductInfo cartItem={cartItem} />
+                </div>
               ))}
             </GridLayout>
           </Container>
@@ -355,12 +349,10 @@ const ReviewOrderContent = (cart) => {
           </LayoutBetween>
           <GridLayout className="gap-4">
             {cartAccount?.items.map((cartItem, idx) => (
-              <>
-                <div className="cart-product-item p-2">
-                  <CartProductImageAndReadOnlyQuantity cartItem={cartItem} />
-                  <CartProductInfo key={cartItem.id + idx} cartItem={cartItem} />
-                </div>
-              </>
+              <div className="cart-product-item p-2" key={cartItem.id + idx}>
+                <CartProductImageAndReadOnlyQuantity cartItem={cartItem} />
+                <CartProductInfo cartItem={cartItem} />
+              </div>
             ))}
           </GridLayout>
         </GridLayout>
