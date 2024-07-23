@@ -163,7 +163,7 @@ export const CartProductBasicInfo = ({ cart }) => {
   const { t } = useTranslation('page')
   const { getLocalizedValue } = useLanguage()
   const availability = useSelector(availabilityDataSelector)
-  const available = availability['k' + cart.product.id].available
+  const available = availability?.['k' + cart.product.id].available
 
   return (
     <div className="cart-product-basic-info">
