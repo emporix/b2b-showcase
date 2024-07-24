@@ -192,6 +192,7 @@ const ProductListContent = () => {
     setSortingTypeIndex,
     total,
   } = useProductList()
+  console.log({ products })
 
   const productsWithoutVariants = useMemo(() => {
     return products.filter((p) => p.productType !== 'VARIANT')

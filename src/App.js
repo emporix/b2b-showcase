@@ -55,6 +55,7 @@ import Auth0Callback from 'pages/Auth0Callback'
 import StoreFinder from 'pages/storefinder'
 import ContentOverview from './pages/content/ContentOverview'
 import ContentPage from './pages/content/ContentPage'
+import ProductsDescription from 'pages/chatbot/ProductsDescription'
 
 import i18n from 'i18next'
 import { initReactI18next } from 'react-i18next'
@@ -65,7 +66,7 @@ i18n.use(initReactI18next).init({
   resources: {
     en: {
       page: {
-        news:"News",
+        news: 'News',
         content: 'Content',
         catalog: 'Catalog',
         about_us: 'About Us',
@@ -98,9 +99,9 @@ i18n.use(initReactI18next).init({
         site: 'Site',
         language: 'Language',
         currency: 'Currency',
-        glossary: "Glossary",
-        glossary_term: "Begriff",
-        glossary_descr: "Beschreibung",
+        glossary: 'Glossary',
+        glossary_term: 'Begriff',
+        glossary_descr: 'Beschreibung',
       },
       account: {
         account: 'My Account',
@@ -137,7 +138,7 @@ i18n.use(initReactI18next).init({
     },
     de: {
       page: {
-        news:"Neuigkeiten",
+        news: 'Neuigkeiten',
         content: 'Inhalt',
         catalog: 'Katalog',
         about_us: 'Über uns',
@@ -170,11 +171,9 @@ i18n.use(initReactI18next).init({
         site: 'Land',
         language: 'Sprache',
         currency: 'Währung',
-        glossary: "Glossar",
-        glossary_term: "Begriff",
-        glossary_descr: "Beschreibung",
-
-
+        glossary: 'Glossar',
+        glossary_term: 'Begriff',
+        glossary_descr: 'Beschreibung',
       },
       account: {
         account: 'Mein Konto',
@@ -308,6 +307,9 @@ function App() {
 
           <Route path="Glossary" element={<GlossaryPage />} />
           <Route path="Glossar" element={<GlossaryPage />} />
+
+          <Route path="products-description/:maincategory" element={<ProductsDescription lang="en" />} />
+          <Route path="produkte-beschreibung/:maincategory" element={<ProductsDescription lang="de" />} />
 
           <Route path="*" element={<NoPage />} />
         </Route>

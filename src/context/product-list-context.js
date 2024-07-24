@@ -14,7 +14,7 @@ export const ProductListContext = createContext({})
 
 export const useProductList = () => useContext(ProductListContext)
 
-const getProductData = async (productIds, pageNumber, itemsPerPage, sortProp, sortDir) => {
+const getProductData = async (productIds, pageNumber, itemsPerPage, sortProp, sortDir, setProductsAll) => {
   const products = await productService.getProductsWithIds(productIds)
   const prices = await priceService.getPriceWithProductIds(productIds)
   const prices_obj = {}
@@ -31,6 +31,7 @@ const getProductData = async (productIds, pageNumber, itemsPerPage, sortProp, so
   }
   const collator = new Intl.Collator([getLanguageFromLocalStorage()], { numeric: true })
   products.sort((a, b) => collator.compare(a[sortProp], b[sortProp]) * sortDir)
+  setProductsAll(products)
   return products.slice(itemsPerPage * (pageNumber - 1), itemsPerPage * pageNumber)
 }
 
@@ -43,6 +44,7 @@ const ProductListProvider = ({ children, id }) => {
   const [isProductsLoading, setIsProductsLoading] = useState(false)
   const [pageNumber, setPageNumber] = useState(1)
   const [products, setProducts] = useState([])
+  const [productsAll, setProductsAll] = useState([])
   const [productIds, setProductIds] = useState([])
   const [productsPerPage, setProductsPerPage] = useState(productListCountsPerPage[0])
   const sortingTypes = [
@@ -92,7 +94,8 @@ const ProductListProvider = ({ children, id }) => {
           pageNumber,
           productsPerPage,
           sortingTypes[sortingTypeIndex].prop,
-          sortingTypes[sortingTypeIndex].dir
+          sortingTypes[sortingTypeIndex].dir,
+          setProductsAll
         )
         setProducts(newProducts)
       } catch (e) {
@@ -121,6 +124,7 @@ const ProductListProvider = ({ children, id }) => {
         sortingTypes,
         sortingTypeIndex,
         setSortingTypeIndex,
+        productsAll,
       }}
     >
       {children}

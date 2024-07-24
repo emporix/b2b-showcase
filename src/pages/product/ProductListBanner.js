@@ -11,14 +11,10 @@ const ProductListBanner = ({ className }) => {
     }
     if (currentSiteObject && currentSiteObject.code) {
       let media = categoryDetails.media.find((item) =>
-        item.customAttributes.name.includes(
-          currentSiteObject.code.toUpperCase()
-        )
+        item.customAttributes.name.includes(currentSiteObject.code.toUpperCase())
       )
       if (!media) {
-        media = categoryDetails.media.find((item) =>
-          item.customAttributes.name.includes('USA')
-        )
+        media = categoryDetails.media.find((item) => item.customAttributes.name.includes('USA'))
       }
       return media.url
     }
