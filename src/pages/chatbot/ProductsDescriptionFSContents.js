@@ -25,6 +25,7 @@ const ProductsDescriptionFSContents = ({ components }) => {
   // console.log(components)
   console.log(sectionType !== 'text' && sectionType !== 'headline' ? { sectionType, ...data } : null)
   // console.log(sectionType === 'headline' ? { sectionType, ...data } : '')
+
   switch (sectionType) {
     case 'text':
       return (
@@ -42,7 +43,7 @@ const ProductsDescriptionFSContents = ({ components }) => {
       const level = data?.st_headlineLevel?.value || 'h5'
       return data?.st_headline ? React.createElement(level, {}, data.st_headline) : null
 
-    case '':
+    case 'buttonLink':
       return
 
     case 'text_faq':
@@ -73,7 +74,7 @@ const ProductsDescriptionFSContents = ({ components }) => {
 
     case 'teaser':
     case 'text_picture':
-      // console.log(data)
+      console.log(data)
       return (
         <>
           {data?.st_headline ? (
@@ -86,6 +87,9 @@ const ProductsDescriptionFSContents = ({ components }) => {
           ) : null}
           {data?.st_text ? (
             <ProductsDescriptionFSContents components={{ sectionType: 'text', data: { st_text: data.st_text } }} />
+          ) : null}
+          {data?.st_buttonLink ? (
+            <a href={data?.st_buttonLink?.data?.lt_url || '*'}>{data?.st_buttonLink?.data?.lt_text}</a>
           ) : null}
         </>
       )

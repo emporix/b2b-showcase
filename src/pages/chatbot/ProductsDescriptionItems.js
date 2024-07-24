@@ -21,7 +21,7 @@ const getAttributes = (items, currentLanguage) => {
   return res
 }
 
-const ProductsDescriptionItems = ({ content }) => {
+const ProductsDescriptionItems = ({ content, fsTitle }) => {
   const [data, setData] = useState([])
   const { currentLanguage } = useLanguage()
 
@@ -60,7 +60,7 @@ const ProductsDescriptionItems = ({ content }) => {
       {/* {data && console.log(data)} */}
 
       <div className="bg-slate-50">
-        <h4>Description</h4>
+        <h4>{fsTitle}</h4>
         {data && data?.map((item) => <FSComponent components={item} key={nanoid()} />)}
       </div>
     </article>

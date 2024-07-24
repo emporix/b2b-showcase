@@ -56,7 +56,7 @@ const Category = ({ item, activeSubCategory, activeCategory, setIsDrawerOpen }) 
             }}
           >
             <Checkbox
-              defaultChecked={(key === activeSubCategory || !activeSubCategory) && !activeCategory}
+              checked={(key === activeSubCategory || !activeSubCategory) && !activeCategory}
               sx={{
                 color: '#cccccc',
                 '&.Mui-checked': {
@@ -78,7 +78,7 @@ const Category = ({ item, activeSubCategory, activeCategory, setIsDrawerOpen }) 
                 }}
               >
                 <Checkbox
-                  defaultChecked={
+                  checked={
                     (item.key === activeCategory || !activeCategory) &&
                     (key === activeSubCategory || !activeSubCategory)
                   }

@@ -10,14 +10,23 @@ import { ACCESS_TOKEN } from '../../constants/localstorage'
 import ApiRequest from 'services'
 import { productSchemaApi } from 'services/service.config'
 import { nanoid } from '@reduxjs/toolkit'
+import { useTranslation } from 'react-i18next'
+import { Helmet } from 'react-helmet-async'
 
 export const i18nProductCustomAttributesNS = 'productCustomAttributes'
 export const i18nPCADescriptionSuffix = '_desc'
 
+const subcategories = [
+  { key: 'red_wine', sub: 'rotwein' },
+  { key: 'white_wine', sub: 'weißwein' },
+  { key: 'rose_wine', sub: 'roséwein' },
+]
+
 const ProductsDescription = ({ lang }) => {
   const [isLoading, setIsLoading] = useState(true)
-  const [contents, setContents] = useState([])
+  const [contents, setContents] = useState({})
   const { setLanguage, currentLanguage } = useLanguage()
+  const { t } = useTranslation('page')
 
   const { maincategory, subcategory, category } = useParams()
 
@@ -38,13 +47,27 @@ const ProductsDescription = ({ lang }) => {
       fetchProducts()
       setIsLoading(false)
     }
-  }, [categoryTree, maincategory, subcategory, category, setProductIds])
+  }, [maincategory, subcategory, category, categoryTree, setProductIds])
 
   useEffect(() => {
-    // const injectFS = productsAll?.length > 0 ? productsAll.map((product) => product) : []
-    // console.log({ productsAll, injectFS })
-    setContents(productsAll)
-  }, [productsAll])
+    const fetchIds = async ({ key, sub }) => {
+      const { productIds } = await getProductCategoryDetail(maincategory, sub, category, categoryTree)
+
+      if (productIds.length > 0) {
+        const filteredProducts = productsAll.filter((product) => productIds.includes(product.id))
+
+        setContents((cur) => {
+          return {
+            ...cur,
+            [key]: filteredProducts,
+          }
+        })
+      }
+    }
+    if (categoryTree && categoryTree?.length > 0 && maincategory) {
+      subcategories.map((cat) => fetchIds(cat))
+    }
+  }, [maincategory, subcategory, category, categoryTree, setProductIds, productsAll])
 
   useEffect(() => {
     const ensureAttributeNameTranslationIsPresent = async (lang) => {
@@ -64,8 +87,6 @@ const ProductsDescription = ({ lang }) => {
 
       const resp = res.data[0]
 
-      // console.log({ resp })
-
       //reflect https://api.emporix.io/schema/n11showcase/schemas to i18next resource
       const resource = {}
       resource[resp.id] = resp.name[lang]
@@ -82,15 +103,26 @@ const ProductsDescription = ({ lang }) => {
 
   return (
     <div>
+      <Helmet>
+        <meta name="robots" content="noindex"></meta>
+      </Helmet>
       {isLoading ? (
         <LoadingCircleProgress1 />
       ) : (
-        <section>
-          <h1>Products</h1>
-          <h2>{maincategory}</h2>
-          {contents?.map((content) => (
-            <ProductsDescriptionItems content={content} key={nanoid()} />
-          ))}
+        <section id="products">
+          <h1>{t('product')}</h1>
+          {subcategories.map((cat) => {
+            return (
+              <section key={cat.key}>
+                <h2>{t(cat.key)}</h2>
+                {subcategories.map((cat) => {
+                  return contents?.[cat.key]?.map((item) => (
+                    <ProductsDescriptionItems content={item} fsTitle={t('description')} key={nanoid()} />
+                  ))
+                })}
+              </section>
+            )
+          })}
         </section>
       )}
     </div>

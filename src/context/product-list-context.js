@@ -81,6 +81,7 @@ const ProductListProvider = ({ children, id }) => {
       }
       const categoryId = getCategoryId(categoryName)
       const categoryDetails = await getCagegoryDetails(categoryId)
+
       setCategoryDetails(categoryDetails)
     })()
   }, [categoryName])
