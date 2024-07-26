@@ -89,14 +89,14 @@ const CartProvider = ({ children }) => {
   const products = useMemo(() => {
     return cartAccount.items.map((cart) => {
       return {
-        id: cart.product.id,
-        name: cart.product.name,
-        sku: cart.product.code,
+        id: cart?.product?.id,
+        name: cart?.product?.name,
+        sku: cart?.product?.code,
         estimated_delivery: '23.05.2022',
         quantity: cart.quantity,
         src:
           cart.product?.media?.length > 0 ? cart.product.media[0]['url'] : '',
-        price: cart.product.price.totalValue,
+        price: cart.product?.price?.totalValue ? cart.product?.price?.totalValue : cart.price.effectiveAmount,
       }
     })
   }, [cartAccount])

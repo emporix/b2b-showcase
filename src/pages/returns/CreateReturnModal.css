@@ -1,0 +1,22 @@
+.rma-modal-title {
+  font-size: 24px;
+  margin-bottom: 32px;
+}
+.centered {
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+.border-round-sm {
+  border-radius: .25rem !important;
+}
+.border-1 {
+  border-width: 1px !important;
+  border-style: solid;
+}
+.border-gray-300 {
+  border-color: #c0d0df !important;
+}
+.w-8rem {
+  width: 8rem;
+}
