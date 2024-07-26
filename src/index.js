@@ -14,28 +14,36 @@ import CartProvider from 'context/cart-provider'
 import CurrencyProvider from 'context/currency-context'
 import ProductListProvider from 'context/product-list-context'
 
+import { apiPlugin, storyblokInit } from '@storyblok/react'
+import { componentList } from './components/storyblok/storyblok-components'
+
+storyblokInit({
+  accessToken: process.env.REACT_APP_STORYBLOK_DRAFT_TOKEN,
+  use: [apiPlugin],
+  components: componentList(),
+})
 
 const root = ReactDOM.createRoot(document.getElementById('root'))
 root.render(
-    <Provider store={Store}>
-        <AuthProvider>
-            <AppContextProvider>
-                <SitesProvider>
-                    <CartProvider>
-                        <CurrencyProvider>
-                            <QuotesProvider>
-                                <LanguageProvider>
-                                    <ContentfulProvider>
-                                        <ProductListProvider>
-                                            <App />
-                                        </ProductListProvider>
-                                    </ContentfulProvider>
-                                </LanguageProvider>
-                            </QuotesProvider>
-                        </CurrencyProvider>
-                    </CartProvider>
-                </SitesProvider>
-            </AppContextProvider>
-        </AuthProvider>
-    </Provider>
+  <Provider store={Store}>
+    <AuthProvider>
+      <AppContextProvider>
+        <SitesProvider>
+          <CartProvider>
+            <CurrencyProvider>
+              <QuotesProvider>
+                <LanguageProvider>
+                  <ContentfulProvider>
+                    <ProductListProvider>
+                      <App />
+                    </ProductListProvider>
+                  </ContentfulProvider>
+                </LanguageProvider>
+              </QuotesProvider>
+            </CurrencyProvider>
+          </CartProvider>
+        </SitesProvider>
+      </AppContextProvider>
+    </AuthProvider>
+  </Provider>,
 )

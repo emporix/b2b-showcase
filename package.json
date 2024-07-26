@@ -9,6 +9,7 @@
     "@mui/material": "^5.10.4",
     "@reduxjs/toolkit": "^1.8.5",
     "@sentry/react": "^7.77.0",
+    "@storyblok/react": "^3.0.10",
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^13.3.0",
     "@testing-library/user-event": "^13.5.0",
@@ -55,7 +56,8 @@
     "build:prod": "env-cmd -f .env.prod react-scripts build",
     "build:stage": "env-cmd -f .env.stage react-scripts build",
     "build:develop": "env-cmd -f .env.develop react-scripts build",
-    "deploy:auth0": "npm run build && firebase deploy --only hosting:b2b-showcase-auth0 --config firebase.json --project b2b-showcase-stage"
+    "deploy:auth0": "npm run build && firebase deploy --only hosting:b2b-showcase-auth0 --config firebase.json --project b2b-showcase-stage",
+    "proxy": "sh -c \"set TRUST_STORES=system && mkcert -install && mkcert localhost && local-ssl-proxy --source 3010 --target 3000 --cert localhost.pem --key localhost-key.pem\""
   },
   "eslintConfig": {
     "extends": [
@@ -78,6 +80,7 @@
   "devDependencies": {
     "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
     "autoprefixer": "^10.4.8",
+    "local-ssl-proxy": "^2.0.5",
     "postcss": "^8.4.31",
     "prettier": "2.8.2",
     "redux-devtools-extension": "^2.13.9",

@@ -2464,6 +2464,20 @@
   dependencies:
     "@sinonjs/commons" "^1.7.0"
 
+"@storyblok/js@^3.0.8":
+  version "3.0.8"
+  resolved "https://registry.yarnpkg.com/@storyblok/js/-/js-3.0.8.tgz#22d9ecc25f333e80ffa936c287317a2dcc0f166c"
+  integrity sha512-JY+abbswBId84Ubr0yRwNpq5Klf9546Ia2Qs1pn6en5Trz8o6EcBJIwxvR6evjJ0Vp2cLKT7MV1yfGLAtnzycA==
+  dependencies:
+    storyblok-js-client "^6.7.2"
+
+"@storyblok/react@^3.0.10":
+  version "3.0.10"
+  resolved "https://registry.yarnpkg.com/@storyblok/react/-/react-3.0.10.tgz#86335335099ed602c03168fe7ae3f0cf58e5c07c"
+  integrity sha512-7cyUdCoT/kTXFJLojPhqhguvcTjvIizPh3wf90Q99zrD7quMALX9E6Ag/gSGkyWdMTQ7Wcbh2zEQaZxEDx0FRg==
+  dependencies:
+    "@storyblok/js" "^3.0.8"
+
 "@surma/rollup-plugin-off-main-thread@^2.2.3":
   version "2.2.3"
   resolved "https://registry.npmjs.org/@surma/rollup-plugin-off-main-thread/-/rollup-plugin-off-main-thread-2.2.3.tgz"
@@ -3340,6 +3354,11 @@ algoliasearch@^4.14.3:
     "@algolia/requester-node-http" "4.24.0"
     "@algolia/transporter" "4.24.0"
 
+ansi-colors@^4.1.3:
+  version "4.1.3"
+  resolved "https://registry.yarnpkg.com/ansi-colors/-/ansi-colors-4.1.3.tgz#37611340eb2243e70cc604cad35d63270d48781b"
+  integrity sha512-/6w/C21Pm1A7aZitlI5Ni/2J6FFQN8i1Cvz3kHABAAbw93v/NlvKdVOqz7CCWz/3iv/JplRSEEZ83XION15ovw==
+
 ansi-escapes@^4.2.1, ansi-escapes@^4.3.1:
   version "4.3.2"
   resolved "https://registry.npmjs.org/ansi-escapes/-/ansi-escapes-4.3.2.tgz"
@@ -4157,6 +4176,11 @@ combined-stream@^1.0.8:
   integrity sha512-FQN4MRfuJeHf7cBbBMJFXhKSDq+2kAArBlmRBvcvFE5BB1HZKXtSFASDhdlz9zOYwxh8lDdnvmMOe/+5cdoEdg==
   dependencies:
     delayed-stream "~1.0.0"
+
+commander@^10.0.0:
+  version "10.0.1"
+  resolved "https://registry.yarnpkg.com/commander/-/commander-10.0.1.tgz#881ee46b4f77d1c1dccc5823433aa39b022cbe06"
+  integrity sha512-y4Mg2tXshplEbSGzx7amzPwKKOCGuoSRP/CjEdwwk0FOGlUbq6lKuoyDZTNZkmxHdJtp54hdfY/JUrdL7Xfdug==
 
 commander@^2.20.0:
   version "2.20.3"
@@ -7580,6 +7604,15 @@ loader-utils@^3.2.0:
   resolved "https://registry.npmjs.org/loader-utils/-/loader-utils-3.2.1.tgz"
   integrity sha512-ZvFw1KWS3GVyYBYb7qkmRM/WwL2TQQBxgCK62rlvm4WpVQ23Nb4tYjApUlfjrEGvOs7KHEsmyUn75OHZrJMWPw==
 
+local-ssl-proxy@^2.0.5:
+  version "2.0.5"
+  resolved "https://registry.yarnpkg.com/local-ssl-proxy/-/local-ssl-proxy-2.0.5.tgz#792ad902a61c36a650f8c45b790e19765fd48a11"
+  integrity sha512-/oWxo8IX12HTVNWza+Ui1HNz7TfrNsVyD0+ZSyf5UZocJXdR70wfNb/xHgNfEPFyjgbsaRFdqFdfxg2d11aANQ==
+  dependencies:
+    ansi-colors "^4.1.3"
+    commander "^10.0.0"
+    http-proxy "^1.18.1"
+
 localforage@^1.8.1:
   version "1.10.0"
   resolved "https://registry.yarnpkg.com/localforage/-/localforage-1.10.0.tgz#5c465dc5f62b2807c3a84c0c6a1b1b3212781dd4"
@@ -10079,6 +10112,11 @@ stop-iteration-iterator@^1.0.0:
   integrity sha512-iCGQj+0l0HOdZ2AEeBADlsRC+vsnDsZsbdSiH1yNSjcfKM7fdpCMfqAL/dwF5BLiw/XhRft/Wax6zQbhq2BcjQ==
   dependencies:
     internal-slot "^1.0.4"
+
+storyblok-js-client@^6.7.2:
+  version "6.8.1"
+  resolved "https://registry.yarnpkg.com/storyblok-js-client/-/storyblok-js-client-6.8.1.tgz#f830c761f1e871776134b4a94f0e2c4216bb1840"
+  integrity sha512-/iH67CRmDi3nGds5B6X9B7dDyA1DA0B4UOxuPia/RF+tVc+lBnM0sac2qLxijMNmLKAeVGuSmB70MNUe6uD3NQ==
 
 string-convert@^0.2.0:
   version "0.2.1"
