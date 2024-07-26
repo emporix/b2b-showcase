@@ -22,6 +22,8 @@ import ReturnInfoStatus from './ReturnInfoStatus'
 import axios from 'axios'
 import { ACCESS_TOKEN } from 'constants/localstorage'
 import './OrderList.css'
+import CreateReturnModal from 'pages/returns/CreateReturnModal'
+import Dialog from 'components/Utilities/Dialog'
 
 const OrderListMobile = ({ orders }) => {
   return (
@@ -61,9 +63,12 @@ const OrderListMobile = ({ orders }) => {
 }
 
 export const OrderList = (props) => {
+  const RMA_MODAL = process.env.REACT_APP_RMA_MODAL
   const { orders, invoiceAvailable } = props
   const { returns } = useReturns()
   const navigate = useNavigate()
+  const [showRMAModal, setShowRMAModal] = useState(false)
+  const [RMAId, setRMAId] = useState(null)
 
   const [showAlreadySubmittedError, setError] = useState(false)
 
@@ -93,6 +98,13 @@ export const OrderList = (props) => {
     })
   }
 
+  const handleCloseRMAModal = useCallback(
+    () => {
+      setShowRMAModal(false)
+      setRMAId(null)
+    }
+  )
+
   const handleCreateReturn = useCallback(
     (id) => {
       setError(false)
@@ -103,7 +115,12 @@ export const OrderList = (props) => {
       ) {
         setError(true)
       } else {
-        navigate(`${createReturnUrl()}${id}`, { replace: true })
+        if(RMA_MODAL) {
+          setShowRMAModal(true)
+          setRMAId(id)
+        } else {
+          navigate(`${createReturnUrl()}${id}`, { replace: true })
+        }
       }
     },
     [returns]
@@ -121,6 +138,13 @@ export const OrderList = (props) => {
 
   return (
     <div>
+      <Dialog
+          maxWidth="xl"
+          open={showRMAModal}
+          onClose={handleCloseRMAModal}
+        >
+        <CreateReturnModal orderId={RMAId}></CreateReturnModal>
+      </Dialog>
       {showAlreadySubmittedError && (
         <ReturnInfoStatus status="INTERNAL_ALREADY_SUBMITTED" />
       )}

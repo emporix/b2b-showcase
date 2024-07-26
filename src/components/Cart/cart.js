@@ -180,7 +180,7 @@ const CartProductImageAndQuantity = ({ cartItem }) => {
   return (
     <div className="cart-product-image-and-quantity">
       <GridLayout className="gap-11">
-        <CartProductImage src={cartItem.product.src} />
+        {cartItem?.product?.src && (<CartProductImage src={cartItem?.product?.src} />) }
         <Quantity
           value={cartItem.quantity}
           increase={() => incrementCartItemQty(cartItem.id)}
@@ -196,7 +196,7 @@ export const CartProductImageAndReadOnlyQuantity = ({ cartItem }) => {
   return (
     <div className="cart-product-image-and-quantity">
       <GridLayout className="gap-11">
-        <CartProductImage src={cartItem.product.src} />
+        {cartItem?.product?.src && (<CartProductImage src={cartItem.product.src} />)}
         <div className='cart-product-sku-wrapper'>
           Quantity: {cartItem.quantity}
         </div>
@@ -207,26 +207,28 @@ export const CartProductImageAndReadOnlyQuantity = ({ cartItem }) => {
 
 export const CartProductBasicInfo = ({ cart }) => {
   const { getLocalizedValue } = useLanguage()
+  const yrnParts = cart.itemYrn.split(";")
+
   return (
     <div className="cart-product-basic-info">
       <GridLayout className="gap-2">
-        <div className="cart-product-name">{getLocalizedValue(cart.product.name)}</div>
+        <div className="cart-product-name">{getLocalizedValue(cart.product?.name)}</div>
         <div className="cart-product-sku-wrapper">
           SKU:&nbsp;
-          <span className="cart-product-sku">{cart.product.code}</span>
+          <span className="cart-product-sku">{cart.product?.code || yrnParts[yrnParts.length - 1]}</span>
         </div>
         <div className="cart-product-stock-wrapper">
           <span
             className={
               'cart-product-stock ' +
-              (cart.product.stock === 'Low'
+              (cart.product?.stock === 'Low'
                 ? 'text-emporixGold'
-                : cart.product.stock === 'In'
+                : cart.product?.stock === 'In'
                 ? 'text-brightGreen '
                 : 'text-primaryBlue')
             }
           >
-            {cart.product.stock} Stock
+            {cart.product?.stock} Stock
           </span>
           {/* <span className="cart-product-lead-time">Lead Time: 1 week</span> */}
         </div>
