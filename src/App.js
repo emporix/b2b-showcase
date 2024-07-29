@@ -56,6 +56,7 @@ import Auth0Callback from 'pages/Auth0Callback'
 import StoreFinder from 'pages/storefinder'
 import ContentOverview from './pages/content/ContentOverview'
 import ContentPage from './pages/content/ContentPage'
+import ProductsDescription from 'pages/chatbot/ProductsDescription'
 
 import i18n from 'i18next'
 import { initReactI18next } from 'react-i18next'
@@ -75,6 +76,7 @@ i18n.use(initReactI18next).init({
         show_all: 'Show all',
         all_countries: 'All Countries',
         categories: 'Categories',
+        product: 'Products',
         all_wines: 'All Wines',
         white_wine: 'White Wine',
         red_wine: 'Red Wine',
@@ -102,6 +104,7 @@ i18n.use(initReactI18next).init({
         glossary: 'Glossary',
         glossary_term: 'Begriff',
         glossary_descr: 'Beschreibung',
+        description: 'Product Description',
       },
       account: {
         account: 'My Account',
@@ -183,6 +186,7 @@ i18n.use(initReactI18next).init({
         all_countries: 'Alle Länder',
         all_wines: 'Alle Weine',
         categories: 'Kategorien',
+        product: 'Produkte',
         white_wine: 'Weißwein',
         red_wine: 'Rotwein',
         rose_wine: 'Rosé',
@@ -209,6 +213,7 @@ i18n.use(initReactI18next).init({
         glossary: 'Glossar',
         glossary_term: 'Begriff',
         glossary_descr: 'Beschreibung',
+        description: 'Produktbeschreibung',
       },
       account: {
         account: 'Mein Konto',
@@ -378,6 +383,9 @@ function App() {
 
           <Route path="Glossary" element={<GlossaryPage />} />
           <Route path="Glossar" element={<GlossaryPage />} />
+
+          <Route path="products-description/:maincategory" element={<ProductsDescription lang="en" />} />
+          <Route path="produkte-beschreibung/:maincategory" element={<ProductsDescription lang="de" />} />
 
           <Route path="*" element={<NoPage />} />
         </Route>
