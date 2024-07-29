@@ -20,6 +20,7 @@ import { getLabel } from 'services/product/labels'
 import { useCurrency } from 'context/currency-context'
 
 const ProductList = () => {
+  console.log('Producte')
   return (
     <Layout title="Weine">
       <ProductPage />
@@ -105,19 +106,14 @@ export const ProductDetails = () => {
 
         // Set price...
         if (prices.length > 0) res.price = prices[0]
-        const category = await getRetrieveAllCategoriesWithResoureceId(
-          productId
-        )
+        const category = await getRetrieveAllCategoriesWithResoureceId(productId)
         if (category.length > 0) {
-          let { data: categories } = await getAllParentCategories(
-            category[0]['id']
-          )
+          let { data: categories } = await getAllParentCategories(category[0]['id'])
           categories.push(category[0])
           let rootCategory, subCategory
           let childCategories = {}
           for (let c in categories) {
-            if (categories[c].parentId === undefined)
-              rootCategory = categories[c]
+            if (categories[c].parentId === undefined) rootCategory = categories[c]
             else childCategories[categories[c].parentId] = categories[c]
           }
           let productCategory = []
@@ -142,11 +138,7 @@ export const ProductDetails = () => {
       {product.loading ? (
         <LoadingCircleProgress1 />
       ) : (
-        <ProductDetailPage
-          product={product.data}
-          brand={brand}
-          labels={labels}
-        />
+        <ProductDetailPage product={product.data} brand={brand} labels={labels} />
       )}
     </Layout>
   )
