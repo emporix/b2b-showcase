@@ -1,9 +1,9 @@
 .shipping_method {
-  @apply w-full md:flex p-4 mb-2  font-inter;
+  @apply w-full md:flex p-4 mb-2  ;
 }
 
 .shipping_method_selected {
-  @apply w-full p-4 md:flex mb-2 font-inter;
+  @apply w-full p-4 md:flex mb-2 ;
 }
 .payment-method-item-wrapper {
   @apply w-full;

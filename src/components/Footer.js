@@ -4,7 +4,7 @@ import { AiOutlineInstagram } from 'react-icons/ai'
 const Mobile_footer = () => {
   return (
     <>
-      <ul className="mobile_only text-emporixGold font-inter font-bold text-base px-6">
+      <ul className="mobile_only text-emporixGold  font-bold text-base px-6">
         <li className="py-4 border-b">About Us</li>
         <li className="py-4 border-b">Support</li>
         <li className="py-4 border-b">My Account</li>
@@ -30,7 +30,7 @@ const Dektop_footer = () => {
   return (
     <div className="desktop_only_flex  md:pt-24 max-w-screen-xl mx-auto ">
       <div className="mx-auto">
-        <ul className="font-inter text-base text-manatee">
+        <ul className=" text-base text-manatee">
           <li className="text-eerieBlack font-bold ">About Us</li>
           <li className=" font-light pt-4">Who we are</li>
           <li className=" font-light pt-4">Quality in the details</li>
@@ -38,7 +38,7 @@ const Dektop_footer = () => {
         </ul>
       </div>
       <div className="mx-auto">
-        <ul className="font-inter text-base text-manatee">
+        <ul className=" text-base text-manatee">
           <li className="text-eerieBlack font-bold ">Support</li>
           <li className=" font-light pt-4">Delivery</li>
           <li className=" font-light pt-4">Returns</li>
@@ -47,7 +47,7 @@ const Dektop_footer = () => {
         </ul>
       </div>
       <div className="mx-auto">
-        <ul className="font-inter text-base text-manatee">
+        <ul className=" text-base text-manatee">
           <li className="text-eerieBlack font-bold ">My Account</li>
           <li className=" font-light pt-4">Sign In</li>
           <li className=" font-light pt-4">Register</li>
@@ -56,7 +56,7 @@ const Dektop_footer = () => {
         </ul>
       </div>
       <div className="mx-auto">
-        <ul className="font-inter text-base text-manatee">
+        <ul className=" text-base text-manatee">
           <li className="text-eerieBlack font-bold ">Contact</li>
           <li className=" font-light pt-4">Call Us: +44123645678</li>
         </ul>

@@ -61,7 +61,7 @@ const RatingFilterItem = ({ rating, total }) => {
           />
         </label>
       </div>
-      <div className="font-inter font-medium text-base text-lightGray pt-4">
+      <div className=" font-medium text-base text-lightGray pt-4">
         {total}
       </div>
     </div>
@@ -234,7 +234,7 @@ const MobileFilterPanel = (props) => {
           <RatingFilter />
         </ul>
       </div>
-      <div className="mt-12 font-inter font-bold">
+      <div className="mt-12  font-bold">
       <div className="w-full h-12 bg-yellow text-eerieBlack  flex items-center cursor-pointer">
           <span className="text-center w-full">APPLY FILTER </span>
         </div>

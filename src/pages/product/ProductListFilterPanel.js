@@ -8,7 +8,7 @@ import { Checkbox } from '@mui/material'
 
 const SelectedFilter = ({ title, val }) => {
   return (
-    <div className="flex font-inter pb-4">
+    <div className="flex  pb-4">
       <img src="/del_filter.png" className="w-6 h-6" alt="delete icon" />
       <span className="font-bold ml-2">{title}: &nbsp;</span>
       <span className="font-normal">{val}</span>
@@ -18,7 +18,7 @@ const SelectedFilter = ({ title, val }) => {
 
 const SelectionField = ({ title, total }) => {
   return (
-    // <div className="flex justify-between pb-4 font-inter font-medium text-base">
+    // <div className="flex justify-between pb-4  font-medium text-base">
     <div className="category_pan_field">
       {/* <div c> */}
         <label className='category_pan_field_title' title={title.toLowerCase()}> {title.toLowerCase()}</label>
@@ -108,7 +108,7 @@ const FilterListPanel = ({ filterItems, handleSideFilterContent }) => {
           <span className="mr-2">Filters</span>({filterItems.length})
         </div>
         <div>
-          <a className="font-inter font-semibold font-[14px] text-manatee">
+          <a className=" font-semibold font-[14px] text-manatee">
             Clear Filters
           </a>
         </div>

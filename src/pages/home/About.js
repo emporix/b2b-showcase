@@ -31,10 +31,10 @@ const About = () => {
     >
     <div className="mx-6 md:ml-16 mt-[48px] md:mt-[114px] w-[492px]">
           <DemoBanner />
-          <div className="text-[48px] md:text-[48px] font-inter font-semibold md:leading-[64px] leading-[56px]">
+          <div className="text-[48px] md:text-[48px]  font-semibold md:leading-[64px] leading-[56px]">
             {fields.mainTitle}
           </div>
-          <div className="text-[18px] leading-[30px] font-inter font-normal pt-[24px] md:max-w-[525px]">
+          <div className="text-[18px] leading-[30px]  font-normal pt-[24px] md:max-w-[525px]">
             {fields.companyMission}
           </div>
           <div className="pt-[44px] desktop_only text-sm">

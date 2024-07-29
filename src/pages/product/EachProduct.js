@@ -33,7 +33,7 @@ const EachProduct = ({ item, available, rating, productCount }) => {
         {item.productType !== 'PARENT_VARIANT' && (
           <div
             className={
-              'text-limeGreen font-inter text-[14px]/[20px] font-medium float-right lg:float-none'
+              'text-limeGreen  text-[14px]/[20px] font-medium float-right lg:float-none'
             }
           >
             {available ? 'In Stock' : 'Out Of Stock'}
@@ -53,7 +53,7 @@ const EachProduct = ({ item, available, rating, productCount }) => {
         <br />
         <div
           className={
-            'text-limeGreen font-inter text-[14px]/[20px] font-medium float-right lg:float-none'
+            'text-limeGreen  text-[14px]/[20px] font-medium float-right lg:float-none'
           }
         >
           {available ? 'In Stock' : 'Out Of Stock'}
@@ -63,7 +63,7 @@ const EachProduct = ({ item, available, rating, productCount }) => {
       <div className="pt-10 lg:w-[200px] lg:h-[260px] w-[100px] h-[140px] md:w-[150px] md:h-[200px] items-center mx-auto ">
         <img src={trimImage(`${imageSrc}`)} className="mx-auto h-full" />
       </div>
-      <div className="mt-2 lg:mt-9 w-full font-inter">
+      <div className="mt-2 lg:mt-9 w-full ">
           <div className="text-left text-[14px]/[20px] font-normal leading-xs text-manatee">
           {item.code}
         </div>

@@ -55,7 +55,7 @@ const TopNav = ({ title }) => {
         </div>
       </div>
       {nav_title_condition && (
-        <div className="md:absolute top-44 left-24 text-eerieBlack font-inter  font-semibold text-[24px]/[32px]">
+        <div className="md:absolute top-44 left-24 text-eerieBlack   font-semibold text-[24px]/[32px]">
         {title}
         </div>
       )}

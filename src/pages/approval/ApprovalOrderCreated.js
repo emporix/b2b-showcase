@@ -20,7 +20,7 @@ const ApprovalOrderCreated = () => {
         className="brand-page-wrapper text-center w-full"
         style={{ marginTop: 50 + 'px' }}
       >
-        <div className="font-inter">
+        <div className="">
           <div className="border-b pb-12">
             <div className="md:flex justify-between">
               <div className="font-semibold text-[24px] px-6 py-0 w-full">

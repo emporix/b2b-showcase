@@ -46,13 +46,13 @@ const EachProductRow = ({ item, type, available, rating, productCount }) => {
     }
   }
   return (
-    <div className="flex h-full font-inter rounded border border-quartz p-4">
+    <div className="flex h-full  rounded border border-quartz p-4">
       <div className="flex w-[15%] flex-col mr-4">
         <div
           className={
             available
-              ? 'text-brightGreen font-inter font-bold text-xs float-right mb-14'
-              : 'text-primaryBlue font-inter font-bold text-xs float-right mb-14'
+              ? 'text-brightGreen  font-bold text-xs float-right mb-14'
+              : 'text-primaryBlue  font-bold text-xs float-right mb-14'
           }
         >
           {available ? 'In Stock' : 'Out Of Stock'}

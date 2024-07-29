@@ -371,7 +371,7 @@ export const CompanyCustomers = () => {
                 </TableCell>
                 <TableCell align="left" className="!py-6">
                   <div className="flex">
-                    <div className="font-inter font-semibold text-[14px] underline ml-6">
+                    <div className=" font-semibold text-[14px] underline ml-6">
                       <span
                         onClick={() => handleEditCustomer(row)}
                         className="cursor-pointer"

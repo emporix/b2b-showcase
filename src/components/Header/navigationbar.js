@@ -62,7 +62,7 @@ const Navbar = () => {
         <div className="pt-12 items-center ">
           {user ? (
             <div
-              className="h-[75px] border-y w-full justify-between flex text-gray text-center items-center font-inter ">
+              className="h-[75px] border-y w-full justify-between flex text-gray text-center items-center  ">
               <div className="flex">
                 <HiOutlineUserCircle size={25} />
                 <div className="pl-2">{user.username}</div>
@@ -89,7 +89,7 @@ const Navbar = () => {
         </div>
         {user && (
           <div
-            className="w-full h-[59px] border-y flex justify-between items-center mt-6 font-inter text-base">
+            className="w-full h-[59px] border-y flex justify-between items-center mt-6  text-base">
             Site
             <select className="text-tinBlue appearance-none">
               {sites.filter((s) => s.active).
@@ -105,7 +105,7 @@ const Navbar = () => {
           </div>
         )}
         <div
-          className="w-full h-[59px] border-y flex justify-between items-center mt-6 font-inter text-base">
+          className="w-full h-[59px] border-y flex justify-between items-center mt-6  text-base">
           Language
           <select className="text-tinBlue appearance-none">
             <option value="Engish">English</option>
@@ -251,7 +251,7 @@ const Navbar = () => {
   return (
     <header className="header">
       {/* Dektop language and currency selection */}
-      <div className="desktop_only_flex font-inter text-sm text-white">
+      <div className="desktop_only_flex  text-sm text-white">
         <div className="flex items-center">
           <span className="world-icon"></span>
           {fields.siteLabel}:
@@ -310,7 +310,7 @@ const Navbar = () => {
 
       {/* Dektop navigation selection */}
       <div
-        className="desktop_only_flex font-inter font-normal text-sm text-white">
+        className="desktop_only_flex  font-normal text-sm text-white">
         {!user ? (
           <ul className="flex">
             <li className="px-4 flex">

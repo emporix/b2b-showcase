@@ -57,7 +57,7 @@ const CheckoutSummary = ({ setFinal, order }) => {
         </>
       ) : (
         <>
-          <div className="font-inter mb-8">
+          <div className=" mb-8">
             <div className="bordered-container p-6">
               <div className="md:flex justify-between">
                 <div className="font-semibold text-[32px]">

@@ -112,7 +112,7 @@ code {
   border: transparent;
 }
 .invalid-tenant-page {
-  @apply w-full text-darkGray items-center h-screen  text-center font-inter;
+  @apply w-full text-darkGray items-center h-screen  text-center ;
 }
 .rotatable {
   border-radius: 2px;

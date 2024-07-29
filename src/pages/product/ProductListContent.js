@@ -22,7 +22,7 @@ const ProductListViewSettingBar = ({
     <div className="view-setting-wrapper h-6">
       <div className="view-setting-bar gap-6">
         <div className="gap-2">
-          <ul className="setting gap-6 flex justify-between h-[24px] font-inter text-base font-normal">
+          <ul className="setting gap-6 flex justify-between h-[24px]  text-base font-normal">
           <li className="per-page hidden xl:block">
               <div id="products-per-page" className="products-filter-name">
                 Products Per Page: &nbsp;
@@ -316,7 +316,7 @@ const ProductListPagination = ({
   return (
     <div className="product-list-pagination items-center h-[24px] text-center w-full mx-auto">
       <div className="text-center items-center flex">
-        <ul className="select-none gap-6 mx-auto items-center flex text-[18px] leading-[26px] font-inter text-gray">
+        <ul className="select-none gap-6 mx-auto items-center flex text-[18px] leading-[26px]  text-gray">
           <li
             className="cursor-pointer"
             onClick={() => {

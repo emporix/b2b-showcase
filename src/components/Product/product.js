@@ -14,8 +14,8 @@ const Product = (props) => {
         <div
           className={
             props.stock === 'Low'
-              ? 'text-emporixGold font-inter font-bold text-[12px] pt-[6px]'
-              : 'text-brightGreen font-inter font-bold text-[12px] pt-[6px]'
+              ? 'text-emporixGold  font-bold text-[12px] pt-[6px]'
+              : 'text-brightGreen  font-bold text-[12px] pt-[6px]'
           }
         >
           {props.stock} Stock
@@ -28,7 +28,7 @@ const Product = (props) => {
       <div className="pt-[47px] w-[260px] h-[240px] items-center mx-auto ">
         <img src={props.src} className="h-full mx-auto" />
       </div>
-      <div className="mt-11 w-full font-inter">
+      <div className="mt-11 w-full ">
         <div className="text-left text-[12px] leading-[12px] text-gray">
           {props.code}
         </div>

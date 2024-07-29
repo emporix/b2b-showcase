@@ -7,7 +7,7 @@ const QuoteSummary = (props) => {
   const { quoteId } = props
 
   return (
-    <div className="font-inter">
+    <div className="">
       <div className="border-b pb-12">
         <div className="md:flex justify-between">
           <div className="font-semibold text-[32px]">

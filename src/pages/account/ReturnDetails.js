@@ -37,25 +37,25 @@ export const ReturnDetails = ({ data }) => {
             <TableRow className="!py-6">
               <TableCell
                 align="left"
-                className="font-inter !font-bold text-base"
+                className=" !font-bold text-base"
               >
                 Product
               </TableCell>
               <TableCell
                 align="left"
-                className="font-inter !font-bold text-base"
+                className=" !font-bold text-base"
               >
                 Price
               </TableCell>
               <TableCell
                 align="left"
-                className="font-inter !font-bold text-base"
+                className=" !font-bold text-base"
               >
                 Quantity
               </TableCell>
               <TableCell
                 align="left"
-                className="font-inter !font-bold text-base"
+                className=" !font-bold text-base"
               >
                 Refund Amount
               </TableCell>
