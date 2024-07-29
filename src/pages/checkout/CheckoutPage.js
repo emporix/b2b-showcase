@@ -36,7 +36,7 @@ const PaymentAction = ({ action, disabled }) => {
     <>
       <DesktopMDContainer>
         <LargePrimaryButton
-          className="md:block hidden cta-button bg-yellow"
+          className="md:block hidden cta-button bg-aldiBlue1"
           title="REVIEW ORDER"
           disabled={disabled}
           onClick={action}
@@ -59,14 +59,14 @@ const ReviewOrderAction = ({ action }) => {
     <>
       <DesktopMDContainer>
         <LargePrimaryButton
-          className="md:block hidden cta-button bg-yellow"
+          className="md:block hidden cta-button bg-aldiBlue1"
           title="CONFIRM AND PAY"
           onClick={action}
         />
       </DesktopMDContainer>
 
       <MobileMDContainer>
-        <LargePrimaryButton className='cta-button bg-yellow' title="CONFIRM AND PAY" onClick={action} />
+        <LargePrimaryButton className='cta-button bg-aldiBlue1' title="CONFIRM AND PAY" onClick={action} />
       </MobileMDContainer>
     </>
   )
@@ -152,7 +152,7 @@ const ApprovalNeededAction = ({ approvers }) => {
                 onClick={handleCancelApproval}
               />
               <LargePrimaryButton
-                className="md:block hidden bg-yellow mt-[50px]"
+                className="md:block hidden bg-aldiBlue1 mt-[50px]"
                 title="SUBMIT"
                 onClick={handleCreateApproval}
               />
@@ -161,7 +161,7 @@ const ApprovalNeededAction = ({ approvers }) => {
         </div>
       </Dialog>
       <LargePrimaryButton
-        className="md:block hidden cta-button bg-yellow"
+        className="md:block hidden cta-button bg-aldiBlue1"
         title="APPROVAL REQUEST"
         onClick={() => setShowDialog(true)}
       />
@@ -546,7 +546,7 @@ const CheckoutPage = () => {
                       <DesktopMDContainer>
                         <Coupon />
                         <LargePrimaryButton
-                          className="md:block hidden cta-button bg-yellow"
+                          className="md:block hidden cta-button bg-aldiBlue1"
                           title="GO TO PAYMENT"
                           disabled={user ? (addresses.length === 0 || shippingMethod == null) : shippingMethod == null}
                           onClick={handlePayment}
@@ -599,7 +599,7 @@ const CheckoutPage = () => {
                   </RadioGroup>
                   {!payment.requiresInitialization && (<FilledButton
                     onClick={executePayment}
-                    className="mt-4 w-auto bg-yellow text-eerieBlack"
+                    className="mt-4 w-auto bg-aldiBlue1 text-eerieBlack"
                   >
                     PAY
                   </FilledButton>)}

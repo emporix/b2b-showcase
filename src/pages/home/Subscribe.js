@@ -7,7 +7,7 @@ const Subscribe = () => {
         Subscribe to our Newsletter and get the latest news and offers
       </div>
       {/* <button className="bg-darkBlue mt-6 md:mt-12  h-12 px-[98.5px] md:px-[55px] py-[17px] md:w-[240px] text-center border border-white font-bold  text-[14px] leading-[14px]"> */}
-      <button className="px-6 py-3.5 font-semibold bg-yellow text-eerieBlack rounded mt-6 md:mt-12  h-12 md:px-[55px] md:w-[240px] text-center  text-[14px] leading-[24px]">        SUBSCRIBE NOW
+      <button className="px-6 py-3.5 font-semibold bg-aldiBlue1 text-eerieBlack rounded mt-6 md:mt-12  h-12 md:px-[55px] md:w-[240px] text-center  text-[14px] leading-[24px]">        SUBSCRIBE NOW
       </button>
     </div>
   )

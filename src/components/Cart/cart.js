@@ -387,7 +387,7 @@ const CartGoGuestCheckout = () => {
 const CartGoCheckout = () => {
   return (
     <Link to={checkoutUrl()} className="w-full">
-      <button className="cart-go-checkout-btn py-[12px] px-[14px] bg-yellow rounded text-eerieBlack">
+      <button className="cart-go-checkout-btn py-[12px] px-[14px] bg-aldiBlue1 rounded text-eerieBlack">
         GO TO CHECKOUT
       </button>
     </Link>
@@ -406,7 +406,7 @@ const CartGoCart = () => {
 const CartGoProcurementSystem = () => {
   return (
     <Link to={localStorage.getItem(PROCUREMENT_SYSTEM_URL)} className="w-full">
-      <button className="cart-go-checkout-btn py-[12px] px-[14px] bg-yellow rounded text-eerieBlack">
+      <button className="cart-go-checkout-btn py-[12px] px-[14px] bg-aldiBlue1 rounded text-eerieBlack">
         TRANSFER TO PROCUREMENT SYSTEM
       </button>
     </Link>

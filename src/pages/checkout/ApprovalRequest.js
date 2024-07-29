@@ -25,7 +25,7 @@ const ApprovalRequest = () => {
               </div>
             </div>
             <div>
-                <button className="bg-yellow text-[white] px-6 py-0 h-[50px] text-[14px] leading-[14px] md:w-[400px] w-full" 
+                <button className="bg-aldiBlue1 text-[white] px-6 py-0 h-[50px] text-[14px] leading-[14px] md:w-[400px] w-full" 
                 onClick={() => {
                   navigate(`/${tenant}/my-account/saved-carts`)
                 }}>

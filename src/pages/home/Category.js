@@ -5,7 +5,7 @@ import { addTenantToUrl } from '../../services/service.config'
 const EachCategory = (props) => {
   return (
     <div>
-      <div className="before:bg-yellow before:w-[12px] before:h-[312px] before:absolute before:rounded-l-[4px]">
+      <div className="before:bg-aldiBlue1 before:w-[12px] before:h-[312px] before:absolute before:rounded-l-[4px]">
         <img src={props.src} alt="" className="w-[276px] h-[312px] object-cover rounded-l-[4px]"/>
       </div>
       <div className="pt-6  font-semibold text-[20px] leading-[32px]">

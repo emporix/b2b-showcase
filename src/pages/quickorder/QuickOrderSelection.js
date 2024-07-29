@@ -61,7 +61,7 @@ const QuickOrderSelection = () => {
           onChange={handleFileChange}
         />
         <LargePrimaryButton
-                  className="cta-button bg-yellow"
+                  className="cta-button bg-aldiBlue1"
 
           title="UPLOAD FILE"
           onClick={() => {
@@ -87,7 +87,7 @@ const QuickOrderSelection = () => {
       </div>
       <div className="pt-6">
         <LargePrimaryButton
-                  className="cta-button bg-yellow"
+                  className="cta-button bg-aldiBlue1"
 
           title="ADD TO LIST"
           disabled={!isValid}
@@ -95,7 +95,7 @@ const QuickOrderSelection = () => {
         />
       </div>
       <div className="mobile_only pt-12">
-        <button className="quickorder-add-to-cart-btn cta-button bg-yellow">
+        <button className="quickorder-add-to-cart-btn cta-button bg-aldiBlue1">
           ADD TO CART
         </button>      
       </div>

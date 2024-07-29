@@ -279,7 +279,7 @@ export const CompanyCustomers = () => {
             </div>
             <div className="dialog-user-footer">
               <LargePrimaryButton
-                className="dialog-user-btn bg-yellow"
+                className="dialog-user-btn bg-aldiBlue1"
                 title={mode === 'CREATE' ? 'CREATE NEW USER' : 'SAVE'}
                 disabled={
                   !(
@@ -388,7 +388,7 @@ export const CompanyCustomers = () => {
       </TableContainer>
       <div className="create-customer-wrapper">
         <MediumPrimaryButton
-          className="cta-button bg-yellow"
+          className="cta-button bg-aldiBlue1"
           title="CREATE NEW USER"
           onClick={handleCreateCustomer}
         />

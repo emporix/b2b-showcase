@@ -87,7 +87,7 @@ const ShipmentContent = () => {
               />
               <div className='approval-shipment-edit-wrapper'>
               <MediumPrimaryButton
-                className="cta-button bg-yellow"
+                className="cta-button bg-aldiBlue1"
                 title="EDIT"
                 onClick={handleEditShipping}
               />
@@ -99,7 +99,7 @@ const ShipmentContent = () => {
               <div className='flex-container'>
                 <ApprovalShippingContent className="gap-12" />
                 <MediumPrimaryButton
-                  className="cta-button bg-yellow approval-shipment-button"
+                  className="cta-button bg-aldiBlue1 approval-shipment-button"
                   title="CONFIRM"
                   onClick={handleUpdateShipping}
                 />

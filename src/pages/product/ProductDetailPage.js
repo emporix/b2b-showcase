@@ -347,7 +347,7 @@ const PrdouctAddToCart = () => {
       <div className="">
         <LargePrimaryButton
           disabled={!product.price}
-          className="product-add-to-cart-btn cta-button bg-yellow"
+          className="product-add-to-cart-btn cta-button bg-aldiBlue1"
           onClick={() =>
             HandleProductAddToCart1(product, setShowCart, quantity)
           }

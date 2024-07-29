@@ -38,7 +38,7 @@ const About = () => {
             {fields.companyMission}
           </div>
           <div className="pt-[44px] desktop_only text-sm">
-              <button className="px-6 py-4 font-semibold bg-yellow text-eerieBlack rounded">
+              <button className="px-6 py-4 font-semibold bg-aldiBlue1 text-eerieBlack rounded">
                 {fields.startShoppingButtonLabel}
               </button>
           </div>
