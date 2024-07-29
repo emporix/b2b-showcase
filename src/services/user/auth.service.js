@@ -5,10 +5,12 @@ import {
   CUSTOMER_TOKEN_EXPIRES_IN,
   CUSTOMER_TOKEN,
   SAAS_TOKEN,
+  ZENDESK_ACCESS_TOKEN,
 } from 'constants/localstorage'
 import CartService from '../cart.service'
 
 const API_URL = process.env.REACT_APP_API_URL
+const ZD_TOKEN = process.env.REACT_APP_ZENDESK_OAUTH
 
 export const register = async (
   email,
@@ -29,9 +31,7 @@ export const register = async (
   }
   const siteCode = localStorage.getItem('siteCode')
   const currentLanguage = localStorage.getItem('current-language')
-  const b2bValue = registrationId
-    ? { companyRegistrationId: registrationId }
-    : null
+  const b2bValue = registrationId ? { companyRegistrationId: registrationId } : null
   const payload = {
     email: email,
     password: password,
@@ -44,7 +44,7 @@ export const register = async (
       contactEmail: email,
       preferredCurrency: currency.code,
       preferredSite: siteCode,
-      preferredLanguage: currentLanguage
+      preferredLanguage: currentLanguage,
     },
     signup: {
       email: email,
@@ -82,25 +82,20 @@ export const loginBasedOnCustomerToken = async (data, userTenant) => {
   let responseData = null
   if (data.accessToken) {
     let now = Date.now()
-    localStorage.setItem(
-      'customer_accesstoken',
-      JSON.stringify(data.accessToken)
-    )
+    localStorage.setItem('customer_accesstoken', JSON.stringify(data.accessToken))
     localStorage.setItem(CUSTOMER_TOKEN, data.accessToken)
     localStorage.setItem(SAAS_TOKEN, data.saasToken)
     localStorage.setItem(CUSTOMER_TOKEN_EXPIRES_IN, now + data.expiresIn * 1000)
+    localStorage.setItem(ZENDESK_ACCESS_TOKEN, ZD_TOKEN)
 
     let customerAccesstoken = data.accessToken
 
-    const { data: me } = await axios.get(
-      API_URL + `/customer/${userTenant}/me?expand=addresses,mixin:*`,
-      {
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: 'Bearer ' + customerAccesstoken,
-        },
-      }
-    )
+    const { data: me } = await axios.get(API_URL + `/customer/${userTenant}/me?expand=addresses,mixin:*`, {
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: 'Bearer ' + customerAccesstoken,
+      },
+    })
 
     setScopes(userTenant, customerAccesstoken)
 
@@ -108,7 +103,6 @@ export const loginBasedOnCustomerToken = async (data, userTenant) => {
       responseData = me
     }
   }
-
 
   let userdata = {
     ...responseData,
@@ -126,32 +120,26 @@ export const loginBasedOnCustomerToken = async (data, userTenant) => {
 }
 
 export const refreshCustomerData = async (userTenant) => {
-  const { data: me } = await axios.get(
-    API_URL + `/customer/${userTenant}/me?expand=addresses,mixin:*`,
-    {
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: 'Bearer ' + localStorage.getItem(CUSTOMER_TOKEN)
-      },
-    }
-  )
+  const { data: me } = await axios.get(API_URL + `/customer/${userTenant}/me?expand=addresses,mixin:*`, {
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: 'Bearer ' + localStorage.getItem(CUSTOMER_TOKEN),
+    },
+  })
   let userdata = {
     ...me,
     userTenant: userTenant,
     username: me.firstName + ' ' + me.lastName,
   }
-  localStorage.setItem('user', JSON.stringify(userdata)) 
+  localStorage.setItem('user', JSON.stringify(userdata))
 }
 
 const setScopes = async (tenant, customerAccessToken) => {
-  const { data: scopeResponse } = await axios.get(
-    API_URL + `/iam/${tenant}/users/me/scopes`,
-    {
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: 'Bearer ' + customerAccessToken,
-      },
-    }
-  )
+  const { data: scopeResponse } = await axios.get(API_URL + `/iam/${tenant}/users/me/scopes`, {
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: 'Bearer ' + customerAccessToken,
+    },
+  })
   localStorage.setItem('scopes', scopeResponse.scopes.split(' '))
 }

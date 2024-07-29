@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Route, Routes } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
 import Login from './pages/Login'
 import Signup from './pages/Signup'
+import SignupZendesk from './pages/SignupZendesk'
 import Home from './pages/home'
 import Cart from './pages/cart'
 import QuickOrder from './pages/quickorder'
@@ -137,6 +138,41 @@ i18n.use(initReactI18next).init({
       products: {
         description: 'Product Description',
       },
+      signup: {
+        heading2: 'Register as a New User',
+        heading4: 'Welcome! Please enter your details',
+        heading2_z: 'Register for Help Center',
+        heading4_z: 'Create your Help Center Account',
+        email: 'E-mail address',
+        email_ph: 'joe.doe@zendesk.com',
+        email_err: 'Email is invalid',
+        password: 'Password',
+        password_ph: 'Strong password',
+        password_err: 'Password must have at least 6 characters',
+        password2: 'Confirm Password',
+        password2_ph: 'Confirm Password',
+        password2_err: 'Password must be the same',
+        firstname: 'First Name',
+        firstname_ph: 'Jon',
+        firstname_err: 'First Name must be provided',
+        lastname: 'Last Name',
+        lastname_ph: 'Doe',
+        lastname_err: 'Last Name must be provided',
+        company: 'Company',
+        company_ph: 'Company Name',
+        registration: 'Registration Number',
+        registration_ph: '123-456-789',
+        registration_err: 'Registration Number must be provided',
+        phone: 'Phone Number',
+        phone_ph: 'Phone Number',
+        address: 'Address',
+        address_err: 'Correct address must be provided',
+        address_ship: 'Shipping Address',
+        address_ship_err: 'Correct shipping address must be provided',
+        address_bill: 'Billing Address',
+        address_bill_err: 'Correct billing address must be provided',
+        signup: 'Sign Up',
+      },
     },
     de: {
       page: {
@@ -211,6 +247,41 @@ i18n.use(initReactI18next).init({
       products: {
         description: 'Produktbeschreibung',
       },
+      signup: {
+        heading2: 'Register as a New User',
+        heading4: 'Welcome! Please enter your details',
+        heading2_z: 'Register for Help Center',
+        heading4_z: 'Create your Help Center Account',
+        email: 'E-mail address',
+        email_ph: 'joe.doe@zendesk.com',
+        email_err: 'Email is invalid',
+        password: 'Password',
+        password_ph: 'Strong password',
+        password_err: 'Password must have at least 6 characters',
+        password2: 'Confirm Password',
+        password2_ph: 'Confirm Password',
+        password2_err: 'Password must be the same',
+        firstname: 'First Name',
+        firstname_ph: 'Jon',
+        firstname_err: 'First Name must be provided',
+        lastname: 'Last Name',
+        lastname_ph: 'Doe',
+        lastname_err: 'Last Name must be provided',
+        company: 'Company',
+        company_ph: 'Company Name',
+        registration: 'Registration Number',
+        registration_ph: '123-456-789',
+        registration_err: 'Registration Number must be provided',
+        phone: 'Phone Number',
+        phone_ph: 'Phone Number',
+        address: 'Address',
+        address_err: 'Correct address must be provided',
+        address_ship: 'Shipping Address',
+        address_ship_err: 'Correct shipping address must be provided',
+        address_bill: 'Billing Address',
+        address_bill_err: 'Correct billing address must be provided',
+        signup: 'Sign Up',
+      },
     },
   },
   lng: 'de',
@@ -244,6 +315,7 @@ function App() {
           <Route path="reset-password" exact element={<ResetPassword />} />
           <Route path="signup" exact element={<Signup />} />
           <Route path="brand" exact element={<Brand />} />
+          <Route path="signup-helpcenter" exact element={<SignupZendesk />} />
 
           <Route path="cart" exact element={<Cart />} />
           <Route path="create-return/:orderId" exact element={<CreateReturn />} />
