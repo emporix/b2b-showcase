@@ -140,7 +140,7 @@ input.nosubmit {
 }
 
 .mega_menu_dropbtn {
-  @apply dropbtn flex pt-2 pr-2 md:pr-8 xl:pr-12 hover:text-manatee text-eerieBlack;
+  @apply text-2xl flex pt-2 pr-2 md:pr-8 xl:pr-12 hover:text-manatee text-eerieBlack;
 }
 
 .mega_content_bg {

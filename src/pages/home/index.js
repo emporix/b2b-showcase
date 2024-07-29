@@ -13,9 +13,7 @@ const Home = () => {
   return (
     <Layout title={'home'}>
       <About />
-      <Service />
       <Category />
-      <Subscribe />
     </Layout>
   )
 }

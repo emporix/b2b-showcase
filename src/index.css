@@ -57,7 +57,7 @@ code {
 }
 
 .footer {
-  @apply w-full h-[358px] md:h-[342px] bg-aliceBlue;
+  @apply w-full bg-aldiGray1;
 }
 
 .content-wrapper {

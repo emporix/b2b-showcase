@@ -23,7 +23,7 @@ const MegaNav = ({ showMegaMenuContent, setShowMegaMenuContent }) => {
 
   const { fields } = useContentful()
   return (
-    <div id="topbar-buttons" className="dropdown flex text-base border border-red-600">
+    <div id="topbar-buttons" className="dropdown flex">
       {menuList.map((item, index) => (
         <button
           key={index}

@@ -1,4 +1,4 @@
-/** @type {import("tailwindcss").Config} */
+/** @type {import('tailwindcss').Config} */
 module.exports = {
   mode: 'jit',
   content: ['./src/**/*.{js,jsx,ts,tsx}', './public/**/*.html'],
@@ -39,7 +39,8 @@ module.exports = {
         aldiBlue3: '#207ebd',
         aldiBlue4: '#1F2B78',
         aldiBlue5: '#0A085A',
-        aldiYellow: '#FFC800'
+        aldiYellow: '#FFC800',
+        aldiGray1: '#F5F5F5',
       },
     },
   },
