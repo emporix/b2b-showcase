@@ -22,7 +22,7 @@ const TopNav = ({ title }) => {
         title === 'home'
           ? 'desktop_only_flex w-full md:h-[136px] absolute z-10 bg-aldiBlue1'
           : title === ''
-          ? 'desktop_only_flex h-[136px]'
+          ? 'desktop_only_flex w-full h-[136px] bg-aldiBlue1'
           : 'desktop_only_flex w-full md:h-60 absolute z-10 bg-aldiBlue1'
       }
     >
