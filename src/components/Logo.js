@@ -2,7 +2,7 @@ import {useContentful} from "../context/contentful-provider";
 import React, {useEffect, useState} from "react";
 import {Link} from "react-router-dom";
 import {homeUrl} from "../services/service.config";
-import newLogo from '../assets/new_logo.svg'
+import newLogo from '../assets/aldi-logo.svg'
 
 export const Logo = ({ onMouseOver, size, text }) => {
     const { fields } = useContentful()
@@ -27,7 +27,7 @@ export const Logo = ({ onMouseOver, size, text }) => {
 
     return (
         <Link to={homeUrl()} className="flex" onMouseOver={onMouseOver}>
-            <img id="logo-img" src={newLogo} alt={'Logo'} className="w-[203px] h-[84px] mt-[-20px]"/>
+            <img id="logo-img" src={newLogo} alt={'Logo'} className="w-[203px] h-[56px]"/>
         </Link>
     )
 }

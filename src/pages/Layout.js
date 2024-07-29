@@ -11,6 +11,7 @@ import { GetAvailability } from 'redux/slices/availabilityReducer'
 import InvalidTenant from './InvalidTenant'
 import { useAuth } from 'context/auth-provider'
 import { useCart } from 'context/cart-provider'
+import '../fonts/font.css'
 
 const Layout = ({ children, title }) => {
   const { accesstToken, userTenant } = useAuth()

@@ -10,113 +10,7 @@ import AlgoliaSearchbar from '../AlgoliaSearchbar'
 import { useContentful } from '../../context/contentful-provider'
 import {Logo} from "../Logo";
 import { APPLICATION_ID } from '../../constants/localstorage'
-
-const MegaNav = ({ showMegaMenuContent, setShowMegaMenuContent }) => {
-  const [subMenuItems, setSubMenuItems] = useState([])
-  const [showMegaMenuRightContent, setShowMegaMenuRightContent] =
-    useState(false)
-  const [subMenuMegaContent, setSubMenuMegaContent] = useState([])
-  const onShowMegaMenu = () => setShowMegaMenuContent(true)
-  const overMenuItem = (items) => {
-    setSubMenuItems(items)
-    if (!showMegaMenuContent) setShowMegaMenuContent(true)
-  }
-  const hideMegaMenuContent = () => {
-    setShowMegaMenuContent(false)
-  }
-  const menuList = useSelector(pageMenuSelector)
-
-  const { fields } = useContentful()
-  return (
-    <div id="topbar-buttons" className="dropdown flex text-base">
-      {menuList.map((item, index) => (
-        <button
-          key={index}
-          className="mega_menu_dropbtn"
-          onMouseOver={() =>
-            item.items.length !== 0
-              ? overMenuItem(item.items)
-              : hideMegaMenuContent()
-          }
-        >
-          <Link to={!item.items.length ? addTenantToUrl(item.url) : homeUrl}>
-            <div>
-              {' '}
-              {item.contentfulFieldName
-                ? fields[item.contentfulFieldName]
-                : item.title}
-            </div>
-          </Link>
-
-			<HiChevronDown size={20}
-            className={item.items.length ? 'ml-2 mt-1 h-5 w-5' : 'hidden'}
-            aria-hidden="true"
-          />
-        </button>
-      ))}
-      {showMegaMenuContent ? (
-        <div
-          className="header-mega_dropdown-content"
-          onMouseEnter={onShowMegaMenu}
-          onClick={() => setShowMegaMenuContent(false)}
-        >
-          <div className="row w-full h-full flex">
-            <div className="h-full w-[24%] text-[16px]/[24px] text-eerieBlack">
-              <div className="pl-[76px] pt-[48px] overflow-y-auto max-h-full">
-                <ul className="text-base font-bold">
-                  {subMenuItems.map((item, index) => (
-                    <Link replace key={index} to={addTenantToUrl(item.url)}>
-                      <li
-                        className="mega_content_category_li"
-                        onMouseOver={() => {
-                          setSubMenuMegaContent(item.items)
-                          setShowMegaMenuRightContent(true)
-                        }}
-                        onMouseLeave={() => {
-                          setShowMegaMenuRightContent(false)
-                        }}
-                      >
-                        {item.title}
-                      </li>
-                    </Link>
-                  ))}
-                </ul>
-              </div>
-            </div>
-            <div
-              className="h-full w-[76%] grid grid-cols-4 overflow-y-auto gap-4 pl-[24px] pt-[48px] max-h-full"
-              onMouseOver={() => setShowMegaMenuRightContent(true)}
-            >
-              {showMegaMenuRightContent
-                ? subMenuMegaContent.map((item) => (
-                    <div key={item.categoryId}>
-                      <ul className=" text-black text-base">
-                        <Link to={addTenantToUrl(item.url)}>
-                          <li className="mega_content_sub_cat_li font-bold">
-                            {item.title}
-                          </li>
-                        </Link>
-                        {item.items.map((eachItem) => (
-                          <Link
-                            key={eachItem.categoryId}
-                            to={addTenantToUrl(eachItem.url)}
-                          >
-                            <li className="mega_content_sub_cat_li">
-                              {eachItem.title}
-                            </li>
-                          </Link>
-                        ))}
-                      </ul>
-                    </div>
-                  ))
-                : null}
-            </div>
-          </div>
-        </div>
-      ) : null}
-    </div>
-  )
-}
+import MegaNav from './MegaNav'
 
 const TopNav = ({ title }) => {
   const nav_title_condition = title !== '' && title !== 'home' ? true : false
@@ -126,29 +20,30 @@ const TopNav = ({ title }) => {
     <div
       className={
         title === 'home'
-          ? 'desktop_only_flex w-full md:h-36 absolute z-10 bg-white'
+          ? 'desktop_only_flex w-full md:h-[136px] absolute z-10 bg-aldiBlue1'
           : title === ''
-          ? 'desktop_only_flex h-36'
-          : 'desktop_only_flex w-full md:h-60 absolute z-10 bg-white'
+          ? 'desktop_only_flex h-[136px]'
+          : 'desktop_only_flex w-full md:h-60 absolute z-10 bg-aldiBlue1'
       }
     >
-      <div className="px-10 pt-[76px] w-full  flex xl:px-24  h-36 border border-herringSilver">
+      <div className="px-10 pt-[76px] w-full  flex xl:px-24  h-[136px] border border-aldiBlue1">
         <div
           className="menu-wrapper flex w-full"
           onMouseLeave={() => {
             setShowMegaMenuContent(false)
           }}
         >
-          <div className="flex justify-between w-full h-10">
-            <Logo onMouseOver={() => setShowMegaMenuContent(false)} />
-
-            <MegaNav
-              showMegaMenuContent={showMegaMenuContent}
-              setShowMegaMenuContent={setShowMegaMenuContent}
-            />
+          <div className="flex w-full h-10">
+            <div className="flex flex-row justify-between pr-[8px] w-[470px] ml-[-97px] pl-[140px] bg-aldiBlue4 h-[81px] mt-[-21px]">
+              <div className="mt-[12px]">
+                <Logo onMouseOver={() => setShowMegaMenuContent(false)} />
+              </div>
+              <span className="text-white font-aldiCondensed tracking-[2px] mt-[8px] text-[42px]">ALDI</span>
+            </div>
+            <span className="ml-[8px] mt-[-13px] text-white font-bold font-aldiCondensed tracking-[2px] text-[42px]">ONLINESHOP</span>
 
             <div
-              className="hidden lg:flex"
+              className="hidden lg:flex ml-20"
               onMouseOver={() => setShowMegaMenuContent(false)}
             >
               <>
@@ -160,7 +55,7 @@ const TopNav = ({ title }) => {
         </div>
       </div>
       {nav_title_condition && (
-        <div className="md:absolute top-44 left-24 text-eerieBlack font-inter font-semibold text-[24px]/[32px]">
+        <div className="md:absolute top-44 left-24 text-eerieBlack font-inter  font-semibold text-[24px]/[32px]">
         {title}
         </div>
       )}

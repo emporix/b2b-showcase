@@ -12,8 +12,6 @@ const Home = () => {
 
   return (
     <Layout title={'home'}>
-      <pre>{JSON.stringify(story, null, 2)}</pre>
-      <StoryblokComponent blok={story.content} />
       <About />
       <Service />
       <Category />
