@@ -9,7 +9,7 @@ const MobileFooter = ({ blok }) => {
           {blok.linkLists.map((linkList, index) => (
             <div
               className="flex flex-col w-full border-b border-white pt-6 pb-10"
-              key={'Footer_1_' + index}>
+              key={'Footer_1_' + index} {...storyblokEditable(blok.linkLists[index])}>
               <span
                 className="font-semibold text-xl mb-8">{linkList.title}</span>
               {linkList.links.map((textLink, index) => (
@@ -34,7 +34,7 @@ const DesktopFooter = ({ blok }) => {
       <div className="grid w-full grid-cols-5">
         {blok.linkLists.map((linkList, index) => (
           <div className="flex flex-col h-full border-r border-white pl-6"
-               key={'Footer_1_' + index}>
+               key={'Footer_1_' + index} {...storyblokEditable(blok.linkLists[index])}>
             <span className="font-semibold text-xl mb-8">{linkList.title}</span>
             {linkList.links.map((textLink, index) => (
               <a href={textLink.link.url} target="_self"
