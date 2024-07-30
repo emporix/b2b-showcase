@@ -6,7 +6,10 @@ import { Provider } from 'react-redux'
 import Store from './redux/store'
 import { AppContextProvider } from './context/app-context'
 import { AuthProvider } from 'context/auth-provider'
-import { LanguageProvider } from './context/language-provider'
+import {
+  CURRENT_LANGUAGE_KEY,
+  LanguageProvider,
+} from './context/language-provider'
 import { SitesProvider } from './context/sites-provider'
 import { QuotesProvider } from 'context/quotes-context'
 import { ContentfulProvider } from './context/contentful-provider'
@@ -24,6 +27,7 @@ storyblokInit({
 })
 
 const root = ReactDOM.createRoot(document.getElementById('root'))
+
 root.render(
   <Provider store={Store}>
     <AuthProvider>

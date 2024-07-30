@@ -21,7 +21,7 @@ import { useCurrency } from 'context/currency-context'
 
 const ProductList = () => {
   return (
-    <Layout title="Product">
+    <Layout title="">
       <ProductPage />
     </Layout>
   )

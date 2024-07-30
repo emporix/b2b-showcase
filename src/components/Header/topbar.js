@@ -11,15 +11,7 @@ const TopNav = ({ title }) => {
   const [showMegaMenuContent, setShowMegaMenuContent] = useState(false)
 
   return (
-    <div
-      className={
-        title === 'home'
-          ? 'desktop_only_flex w-full md:h-[136px] fixed z-10 bg-aldiBlue1'
-          : title === ''
-            ? 'desktop_only_flex w-full h-[136px] fixed bg-aldiBlue1'
-            : 'desktop_only_flex w-full md:h-60 fixed z-10 bg-aldiBlue1'
-      }
-    >
+    <div className="desktop_only_flex w-full md:h-[136px] fixed z-10 bg-aldiBlue1">
       <div
         className="px-10 pt-[76px] w-full  flex xl:px-24  h-[136px] border border-aldiBlue1">
         <div
@@ -30,7 +22,7 @@ const TopNav = ({ title }) => {
         >
           <div className="flex w-full h-10">
             <div
-              className="flex flex-row justify-between pr-[8px] w-[470px] ml-[-97px] pl-[140px] bg-aldiBlue4 h-[81px] mt-[-21px]">
+              className="flex flex-row justify-between pr-[8px] w-[470px] ml-[-97px] pl-[140px] bg-aldiBlue4 h-[81px] mt-[-22px]">
               <div className="mt-[12px]">
                 <Logo onMouseOver={() => setShowMegaMenuContent(false)} />
               </div>

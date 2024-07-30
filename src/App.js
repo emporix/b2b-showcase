@@ -75,7 +75,7 @@ function App() {
             exact
             element={<SocialLoginCallback />}
           />
-        <Route path="/:tenant">
+        <Route path=":lang?/:tenant">
           <Route index exact element={<Home />} />
 
           <Route path="product/:maincategory" exact element={<ProductList />} />

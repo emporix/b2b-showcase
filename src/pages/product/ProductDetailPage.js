@@ -761,7 +761,7 @@ const ProductMatchItems = ({ productInput }) => {
 
 const ProductDetailPage = ({ product, brand, labels }) => {
   return (
-    <div className="product-detail-page-wrapper ">
+    <div className="product-detail-page-wrapper mt-20">
       <div className="product-detail-page-content">
         <ProductDetailCategoryCaptionBar category={product.category} />
         <ProductContent product={product} brand={brand} labels={labels} />
