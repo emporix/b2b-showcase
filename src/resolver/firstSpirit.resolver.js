@@ -74,37 +74,46 @@ const FsGenericComponent = ({ data }) => {
   if (!page) return null
 
   const componentLayout = page?.layout || ''
-  const { data: componentData, children: pageBody } = page
+  const {data: componentData, children: pageBody} = page
 
   switch (componentLayout) {
     case 'footer':
       const Component = firstSpiritComponentMap[componentLayout]
-      return Component && <Component props={normalizeFooterStructure(Object.values(componentData))} />
+      return Component && <Component props={normalizeFooterStructure(Object.values(componentData))}/>
 
     case 'homepage':
     case 'content_page':
-      const { pt_title, pt_keywords, pt_description,pt_product } = componentData
+      const {pt_title, pt_keywords, pt_description} = componentData
 
       return (
-        <>
-          <Helmet>
-            {pt_title ? <title>{pt_title}</title> : null}
-            {pt_keywords ? <meta name="keyword" content={pt_keywords} /> : null}
-            {pt_description ? <meta name="description" content={pt_description} /> : null}
-          </Helmet>
-
-          {pt_product ? <div data-preview-id={pt_product.value[0]?.identifier}>
-          {pageBody?.[0]?.children ? <FsGenericComponentList componentData={pageBody[0].children} /> : null}
-          </div> : <FsGenericComponentList componentData={pageBody[0].children} />}
+          <>
+            <Helmet>
+              {pt_title ? <title>{pt_title}</title> : null}
+              {pt_keywords ? <meta name="keyword" content={pt_keywords}/> : null}
+              {pt_description ? <meta name="description" content={pt_description}/> : null}
+            </Helmet>
+            {pageBody?.[0]?.children ? <FsGenericComponentList componentData={pageBody[0].children}/> : null}
           </>
       )
 
     case 'productpage':
+
     default:
-      return <>{pageBody?.[0]?.children ? <FsGenericComponentList componentData={pageBody[0].children} /> : null}</>
+      const {pt_product} = componentData
+      return <>
+        {pt_product ? (
+            <div data-preview-id={pt_product.value[0]?.identifier}>
+              {pageBody?.[0]?.children ? (
+                  <FsGenericComponentList componentData={pageBody[0].children}/>
+              ) : null}
+            </div>
+        ) : (
+            <FsGenericComponentList componentData={pageBody[0].children}/>
+        )
+        }
+      </>
   }
 }
-
 export default FsGenericComponent
 
 export const FsGenericComponentList = ({ componentData }) => {
