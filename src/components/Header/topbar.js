@@ -14,10 +14,10 @@ const TopNav = ({ title }) => {
     <div
       className={
         title === 'home'
-          ? 'desktop_only_flex w-full md:h-[136px] absolute z-10 bg-aldiBlue1'
+          ? 'desktop_only_flex w-full md:h-[136px] fixed z-10 bg-aldiBlue1'
           : title === ''
-            ? 'desktop_only_flex w-full h-[136px] bg-aldiBlue1'
-            : 'desktop_only_flex w-full md:h-60 absolute z-10 bg-aldiBlue1'
+            ? 'desktop_only_flex w-full h-[136px] fixed bg-aldiBlue1'
+            : 'desktop_only_flex w-full md:h-60 fixed z-10 bg-aldiBlue1'
       }
     >
       <div
