@@ -65,7 +65,7 @@ const EachProductRow = ({ item, type, available, rating, productCount }) => {
           {getLocalizedValue(item.name)}
         </div>
         <div className="text-sm mt-4  text-black flex">
-          <ReactStars size={16} value={rating} color2={'#FBB13C'} />(
+          <ReactStars size={16} value={rating} color2={'#00B6ED'} />(
           {productCount})
         </div>
         <div className="text-sm mt-4  text-gray text-normal">

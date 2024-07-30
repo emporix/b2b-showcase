@@ -74,7 +74,7 @@ const ProductListViewSettingBar = ({
                   <IconContext.Provider
                     value={{
                       size: 20,
-                      color: displayType ? '#FAC420' : 'black',
+                      color: displayType ? '#00B6ED' : 'black',
                     }}
                   >
                     <>
@@ -90,7 +90,7 @@ const ProductListViewSettingBar = ({
                   <IconContext.Provider
                     value={{
                       size: 20,
-                      color: displayType ? 'black' : '#FAC420',
+                      color: displayType ? 'black' : '#00B6ED',
                     }}
                   >
                     <>

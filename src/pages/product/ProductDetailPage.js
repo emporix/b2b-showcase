@@ -168,7 +168,7 @@ const ProductSkuAndReview = ({ product }) => {
             <ReactStars
               size={16}
               value={product.rating}
-              color2={'#FBB13C'}
+              color2={'#00B6ED'}
               className="reviews-star"
             />
             ({product.count})

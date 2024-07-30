@@ -62,7 +62,7 @@ const Category = ({ item }) => {
             <Checkbox defaultChecked sx={{
                   color: "#cccccc",
                   '&.Mui-checked': {
-                    color:"#FAC420",
+                    color:"#00B6ED",
                   },
                   '& .MuiSvgIcon-root': { fontSize: 18 }
                 }} iconStyle={{fill: 'white'}} />
@@ -76,7 +76,7 @@ const Category = ({ item }) => {
                   sx={{
                     color: "#cccccc",
                     '&.Mui-checked': {
-                      color:"#FAC420",
+                      color:"#00B6ED",
                     },
                     '& .MuiSvgIcon-root': { fontSize: 18 }
                   }}
@@ -88,7 +88,7 @@ const Category = ({ item }) => {
                 />
               </div>
             </div>
-          ))}        
+          ))}
       </div>
       </div>
     </li>

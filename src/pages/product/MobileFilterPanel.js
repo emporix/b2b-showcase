@@ -56,7 +56,7 @@ const RatingFilterItem = ({ rating, total }) => {
           <ReactStars
             size={30}
             value={rating}
-            color2={'#FBB13C'}
+            color2={'#00B6ED'}
             edit={false}
           />
         </label>
