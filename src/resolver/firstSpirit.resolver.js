@@ -101,7 +101,7 @@ const FsGenericComponent = ({ data }) => {
     default:
       const {children} = pageBody
       return <>
-        {pt_product ? (
+        {children ? (
             <div data-preview-id={children[0].previewId}>
               {pageBody?.[0]?.children ? (
                   <FsGenericComponentList componentData={pageBody[0].children}/>
