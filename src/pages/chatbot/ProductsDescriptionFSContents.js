@@ -23,7 +23,7 @@ const ProductsDescriptionFSContents = ({ components }) => {
   const { sectionType, data } = components
 
   // console.log(components)
-  console.log(sectionType !== 'text' && sectionType !== 'headline' ? { sectionType, ...data } : null)
+  // console.log(sectionType !== 'text' && sectionType !== 'headline' ? { sectionType, ...data } : null)
   // console.log(sectionType === 'headline' ? { sectionType, ...data } : '')
 
   switch (sectionType) {
