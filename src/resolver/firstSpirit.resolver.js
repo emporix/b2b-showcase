@@ -81,7 +81,7 @@ const FsGenericComponent = ({ data }) => {
       const Component = firstSpiritComponentMap[componentLayout]
       return (
         <div data-preview-id = {page?.previewId}>
-          Component && <Component props={normalizeFooterStructure(Object.values(componentData))}/>
+          {Component && <Component props={normalizeFooterStructure(Object.values(componentData))}/>}
         </div>
       )
     case 'homepage':
@@ -96,14 +96,21 @@ const FsGenericComponent = ({ data }) => {
               {pt_keywords ? <meta name="keyword" content={pt_keywords}/> : null}
               {pt_description ? <meta name="description" content={pt_description}/> : null}
             </Helmet>
-            {pageBody?.[0]?.children ? <FsGenericComponentList componentData={pageBody[0].children}/> : null}
+              <div data-preview-id={pageBody.previewId}>
+                {pageBody?.[0]?.children ? <FsGenericComponentList componentData={pageBody[0].children}/> : null}
+              </div>
             </div>
             </>
       )
 
     case 'productpage':
     default:
-      return <>{pageBody?.[0]?.children ? <FsGenericComponentList componentData={pageBody[0].children} /> : null}</>
+      return (
+          <div data-preview-id={pageBody[0]?.previewId}>
+            {pageBody?.[0]?.children ? <FsGenericComponentList componentData={pageBody[0].children} /> : null}
+          </div>
+
+      )
   }
 }
 export default FsGenericComponent
