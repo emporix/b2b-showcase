@@ -79,21 +79,26 @@ const FsGenericComponent = ({ data }) => {
   switch (componentLayout) {
     case 'footer':
       const Component = firstSpiritComponentMap[componentLayout]
-      return Component && <Component props={normalizeFooterStructure(Object.values(componentData))}/>
-
+      return (
+        <div data-preview-id = {page?.previewId}>
+          Component && <Component props={normalizeFooterStructure(Object.values(componentData))}/>
+        </div>
+      )
     case 'homepage':
     case 'content_page':
       const {pt_title, pt_keywords, pt_description} = componentData
 
       return (
           <>
+            <div data-preview-id={page?.previewId}>
             <Helmet>
               {pt_title ? <title>{pt_title}</title> : null}
               {pt_keywords ? <meta name="keyword" content={pt_keywords}/> : null}
               {pt_description ? <meta name="description" content={pt_description}/> : null}
             </Helmet>
             {pageBody?.[0]?.children ? <FsGenericComponentList componentData={pageBody[0].children}/> : null}
-          </>
+            </div>
+            </>
       )
 
     case 'productpage':
