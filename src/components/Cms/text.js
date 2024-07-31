@@ -29,7 +29,11 @@ export const Text = ({ props }) => {
 
   switch (type) {
     case 'Section':
-      return data?.st_text?.map((entry) => <Text props={{ type: 'Element', data: entry }} key={nanoid()} />)
+      return (
+          <div data-preview-id={props.previewId}>
+            data?.st_text?.map((entry) => <Text props={{ type: 'Element', data: entry }} key={nanoid()} />)
+          </div>
+      )
     case 'Element':
       return <Elements type={data?.type} content={data?.content} key={nanoid()} />
     default:

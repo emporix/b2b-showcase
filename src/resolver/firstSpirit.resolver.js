@@ -102,21 +102,8 @@ const FsGenericComponent = ({ data }) => {
       )
 
     case 'productpage':
-
     default:
-      const {children} = pageBody
-      return <>
-        {children ? (
-            <div data-preview-id={children[0].previewId}>
-              {pageBody?.[0]?.children ? (
-                  <FsGenericComponentList componentData={pageBody[0].children}/>
-              ) : null}
-            </div>
-        ) : (
-            <FsGenericComponentList componentData={pageBody[0].children}/>
-        )
-        }
-      </>
+      return <>{pageBody?.[0]?.children ? <FsGenericComponentList componentData={pageBody[0].children} /> : null}</>
   }
 }
 export default FsGenericComponent
