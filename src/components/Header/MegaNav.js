@@ -33,14 +33,14 @@ const MegaNav = ({ blok, showMegaMenuContent, setShowMegaMenuContent }) => {
           }
         >
           <Link to={!item.items.length ? addTenantToUrl(item.url) : homeUrl}>
-            <div>
+            <div className="text-white font-bold text-4xl font-aldiCondensed">
               {blok.catalogLabel}
             </div>
           </Link>
 
           <HiChevronDown size={20}
                          className={item.items.length ?
-                           'ml-2 mt-1 h-5 w-5' :
+                           'ml-2 mt-3 h-5 w-5 text-white' :
                            'hidden'}
                          aria-hidden="true"
           />

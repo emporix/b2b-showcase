@@ -78,6 +78,7 @@ const DesktopFooter = ({ blok }) => {
 }
 
 const Footer = ({ blok }) => {
+  console.log(blok)
   return (
     <div className="footer" {...storyblokEditable(blok)}>
       <MobileFooter blok={blok} />

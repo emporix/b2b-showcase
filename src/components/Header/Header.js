@@ -32,7 +32,7 @@ const TopNav = ({ blok }) => {
               <span
                 className="hidden lg:block ml-[8px] mt-[-13px] text-white font-bold font-aldiCondensed tracking-[2px] text-[42px]">ONLINESHOP</span>
 
-              <div className="ml-14 mt-[-4px]">
+              <div className="ml-14 mt-[-9px]">
                 <MegaNav
                   blok={blok}
                   showMegaMenuContent={showMegaMenuContent}

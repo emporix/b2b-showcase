@@ -4,7 +4,7 @@ import { cn } from '../cssUtils'
 
 const BannerSmall = ({ blok }) => {
   return (
-    <div className={cn('mx-4 md:mx-6 xl:mx-auto w-full max-w-screen-xl my-4 md:my-6 grid gap-x-4 md:gap-x-6',
+    <div className={cn('mx-4 xl:mx-auto w-full max-w-screen-xl my-4 grid gap-x-4',
         {
           "grid-cols-1": blok.images.length === 1,
           "grid-cols-2": blok.images.length === 2,
