@@ -49,8 +49,9 @@ const DesktopFooter = ({ blok }) => {
               'grid-cols-5': blok.linkLists.length === 5,
             })}>
             {blok.linkLists.map((linkList, index) => (
-              <div className={cn('flex flex-col h-full pl-6', {
+              <div className={cn('flex flex-col h-full pl-6 xl:pl-0', {
                 'border-r border-white': index < blok.linkLists.length - 1,
+                'xl:pl-6': index > 0
               })}
                    key={'Footer_1_' + index} {...storyblokEditable(
                 blok.linkLists[index])}>
@@ -69,7 +70,7 @@ const DesktopFooter = ({ blok }) => {
           </div>
         </div>
       </div>
-      <div className="max-w-screen-xl mx-auto prose-p:text-xs p-6 prose-p:text-aldiBlue4">
+      <div className="max-w-screen-xl mx-auto prose-p:text-xs p-6 xl:px-0 prose-p:text-aldiBlue4">
         <FormattedTextBox text={blok.legalInformation} />
       </div>
     </div>

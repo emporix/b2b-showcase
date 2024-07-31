@@ -18,7 +18,6 @@ const FormattedTextBox = (props) => {
       <div
         className={cn(
           'w-full md:max-w-none max-w-none',
-          'prose-sm md:prose',
           'prose-headings:leading-none prose-headings:font-medium',
           'prose-ul:ml-2 prose-ul:mt-3 prose-ul:list-[square]',
           'prose-ol:ml-2 prose-ol:mt-3',
