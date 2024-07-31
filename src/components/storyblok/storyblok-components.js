@@ -9,6 +9,7 @@ import Header from '../Header/Header'
 import Hero from './Hero'
 import BannerSmall from './BannerSmall'
 import RichText from './RichText'
+import DateText from './DateText'
 
 export const componentList = () => {
   return {
@@ -22,6 +23,7 @@ export const componentList = () => {
     aec_footer: Footer,
     aec_hero: Hero,
     aec_banner_small: BannerSmall,
-    aec_rich_text: RichText
+    aec_rich_text: RichText,
+    aec_date: DateText
   }
 }
