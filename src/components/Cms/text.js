@@ -31,7 +31,7 @@ export const Text = ({ props }) => {
     case 'Section':
       return (
           <div data-preview-id={previewId}>
-            data?.st_text?.map((entry) => <Text props={{ type: 'Element', data: entry }} key={nanoid()} />)
+            {data?.st_text?.map((entry) => <Text props={{ type: 'Element', data: entry }} key={nanoid()} />)}
           </div>
       )
     case 'Element':
