@@ -82,7 +82,7 @@ function App() {
           />
         <Route path=":lang?/intern/:page" element={<SBPage />} />
         <Route path=":lang?/:tenant">
-          <Route index exact element={<Home />} />
+          <Route index exact element={<SBPage />} />
 
           <Route path="product/:maincategory" exact element={<ProductList />} />
           <Route

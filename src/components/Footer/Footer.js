@@ -69,7 +69,7 @@ const DesktopFooter = ({ blok }) => {
           </div>
         </div>
       </div>
-      <div className="prose-p:text-xs p-6 prose-p:text-aldiBlue4">
+      <div className="max-w-screen-xl mx-auto prose-p:text-xs p-6 prose-p:text-aldiBlue4">
         <FormattedTextBox text={blok.legalInformation} />
       </div>
     </div>

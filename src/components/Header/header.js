@@ -64,7 +64,7 @@ const TopNav = ({ title }) => {
   )
 }
 
-const Topbar = ({ title }) => {
+const Header = ({ title }) => {
   return (
     <>
       <Navbar />
@@ -73,4 +73,4 @@ const Topbar = ({ title }) => {
   )
 }
 
-export default Topbar
+export default Header

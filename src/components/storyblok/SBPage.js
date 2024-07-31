@@ -1,14 +1,18 @@
 import Layout from '../../pages/Layout'
 import {
   apiPlugin,
-  getStoryblokApi, registerStoryblokBridge,
+  getStoryblokApi,
+  registerStoryblokBridge,
   StoryblokComponent,
   storyblokInit,
 } from '@storyblok/react'
 import { useEffect, useState } from 'react'
-import { getLanguageFromLocalStorage } from '../../context/language-provider'
-import StoryblokBridgeLoader from '@storyblok/react/bridge-loader'
+import {
+  getLanguageFromLocalStorage,
+  useLanguage,
+} from '../../context/language-provider'
 import { componentList } from './storyblok-components'
+import { useAuth } from '../../context/auth-provider'
 
 storyblokInit({
   accessToken: process.env.REACT_APP_STORYBLOK_DRAFT_TOKEN,
@@ -18,14 +22,16 @@ storyblokInit({
 
 const SBPage = () => {
   const [story, setStory] = useState()
-  const language = getLanguageFromLocalStorage()
+  const { currentLanguage } = useLanguage()
+  const { userTenant, accessToken } = useAuth()
 
   useEffect(() => {
-    const slug = window.location.pathname.replace(/^\/de\/|^\/en\/|^\//, '')
+    const slug = window.location.pathname.replace(/^\/de\/|^\/en\/|^\//, '').
+      replace(userTenant, 'home')
     const sbParams = {
       version: 'draft',
       resolve_relations: 'global-reference.reference',
-      language: language,
+      language: currentLanguage,
       fallback_lang: 'default',
       cv: new Date().getTime(),
     }
@@ -35,11 +41,11 @@ const SBPage = () => {
       registerStoryblokBridge(
         result.data.story.id,
         (story) => setStory(story),
-        {}
-      );
+        {},
+      )
       setStory(result.data.story)
     })
-  }, [language])
+  }, [currentLanguage])
 
   return story && (
     <>

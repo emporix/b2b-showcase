@@ -5,7 +5,6 @@ import { cn } from '../cssUtils'
 const resolvers = {
   nodeResolvers: {
     [NODE_PARAGRAPH]: (children) => {
-      console.log(children)
       return children ? <p>{children}</p> : <br />
     },
   },

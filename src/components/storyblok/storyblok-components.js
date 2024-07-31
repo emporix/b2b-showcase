@@ -4,6 +4,8 @@ import Feature from './Feature'
 import Grid from './Grid'
 import Global from './Global'
 import footer from '../Footer/Footer'
+import GlobalReference from './GlobalReference'
+import header from '../Header/header'
 
 export const componentList = () => {
   return {
@@ -12,6 +14,8 @@ export const componentList = () => {
     feature: Feature,
     grid: Grid,
     global: Global,
-    footer: footer
+    "global-reference": GlobalReference,
+    aec_header: header,
+    aec_footer: footer,
   }
 }
