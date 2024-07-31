@@ -57,7 +57,7 @@ code {
 }
 
 .footer {
-  @apply w-full bg-aldiGray1;
+  @apply w-full;
 }
 
 .content-wrapper {
