@@ -47,7 +47,7 @@ const SBPage = () => {
 
   return story && (
     <>
-      <Layout>
+      <Layout fromSBPage={true}>
         <StoryblokComponent blok={story.content} />
       </Layout>
     </>

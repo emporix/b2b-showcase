@@ -33,39 +33,11 @@ export const ProductDetails = () => {
     loading: true,
     data: null,
   })
-  const [brand, setBrand] = useState()
-  const [labels, setLabels] = useState([])
   const availability = useSelector(availabilityDataSelector)
   const { getProduct } = useProducts()
   const { activeCurrency } = useCurrency()
-
   const { currentLanguage } = useLanguage()
-
   const { currentSite } = useSites()
-  useEffect(() => {
-    ;(async () => {
-      if (!product.data) return
-      const brandId = product.data.mixins.productCustomAttributes.brand
-      const brand = await getBrand(brandId)
-      setBrand(brand)
-    })()
-  }, [product.data])
-
-  useEffect(() => {
-    ;(async () => {
-      if (!product.data) return
-      const lableIds = product.data.mixins.productCustomAttributes.labels
-      if (lableIds && lableIds.length > 0) {
-        const labels = await Promise.all(
-          lableIds.map(async (labelId) => {
-            const label = await getLabel(labelId)
-            return label
-          })
-        )
-        setLabels(labels)
-      }
-    })()
-  }, [product.data])
 
   useEffect(() => {
     ;(async () => {
@@ -143,8 +115,6 @@ export const ProductDetails = () => {
       ) : (
         <ProductDetailPage
           product={product.data}
-          brand={brand}
-          labels={labels}
         />
       )}
     </Layout>

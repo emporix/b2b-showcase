@@ -16,10 +16,8 @@ import {
   registerStoryblokBridge,
   StoryblokComponent,
 } from '@storyblok/react'
-import Footer from '../components/Footer/Footer'
-import Header from '../components/Header/Header'
 
-const Layout = ({ children, title }) => {
+const Layout = ({ children, fromSBPage }) => {
   const { accesstToken, userTenant } = useAuth()
   const { cartAccount } = useCart()
   const [showCart, setShowCart] = useState(false)
@@ -62,9 +60,10 @@ const Layout = ({ children, title }) => {
       })
     }
 
-    getStory("intern/header", setHeaderStory)
-    getStory("intern/footer", setFooterStory)
-
+    if (!fromSBPage) {
+      getStory("intern/header", setHeaderStory)
+      getStory("intern/footer", setFooterStory)
+    }
   }, [currentLanguage])
 
   return (
