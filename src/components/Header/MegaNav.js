@@ -1,12 +1,11 @@
 import React, { useState } from 'react'
 import { useSelector } from 'react-redux'
 import { pageMenuSelector } from '../../redux/slices/pageReducer'
-import { useContentful } from '../../context/contentful-provider'
 import { Link } from 'react-router-dom'
 import { addTenantToUrl, homeUrl } from '../../services/service.config'
 import { HiChevronDown } from 'react-icons/hi'
 
-const MegaNav = ({ showMegaMenuContent, setShowMegaMenuContent }) => {
+const MegaNav = ({ blok, showMegaMenuContent, setShowMegaMenuContent }) => {
   const [subMenuItems, setSubMenuItems] = useState([])
   const [showMegaMenuRightContent, setShowMegaMenuRightContent] =
     useState(false)
@@ -21,7 +20,6 @@ const MegaNav = ({ showMegaMenuContent, setShowMegaMenuContent }) => {
   }
   const menuList = useSelector(pageMenuSelector)
 
-  const { fields } = useContentful()
   return (
     <div id="topbar-buttons" className="dropdown flex">
       {menuList.map((item, index) => (
@@ -36,15 +34,14 @@ const MegaNav = ({ showMegaMenuContent, setShowMegaMenuContent }) => {
         >
           <Link to={!item.items.length ? addTenantToUrl(item.url) : homeUrl}>
             <div>
-              {' '}
-              {item.contentfulFieldName
-                ? fields[item.contentfulFieldName]
-                : item.title}
+              {blok.catalogLabel}
             </div>
           </Link>
 
           <HiChevronDown size={20}
-                         className={item.items.length ? 'ml-2 mt-1 h-5 w-5' : 'hidden'}
+                         className={item.items.length ?
+                           'ml-2 mt-1 h-5 w-5' :
+                           'hidden'}
                          aria-hidden="true"
           />
         </button>

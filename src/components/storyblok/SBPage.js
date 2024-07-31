@@ -7,10 +7,7 @@ import {
   storyblokInit,
 } from '@storyblok/react'
 import { useEffect, useState } from 'react'
-import {
-  getLanguageFromLocalStorage,
-  useLanguage,
-} from '../../context/language-provider'
+import { useLanguage } from '../../context/language-provider'
 import { componentList } from './storyblok-components'
 import { useAuth } from '../../context/auth-provider'
 
@@ -23,11 +20,12 @@ storyblokInit({
 const SBPage = () => {
   const [story, setStory] = useState()
   const { currentLanguage } = useLanguage()
-  const { userTenant, accessToken } = useAuth()
+  const { userTenant } = useAuth()
 
   useEffect(() => {
-    const slug = window.location.pathname.replace(/^\/de\/|^\/en\/|^\//, '').
-      replace(userTenant, 'home')
+    const slug = window.location.pathname
+      .replace(/^\/de\/|^\/en\/|^\//, '')
+      .replace(userTenant, 'home')
     const sbParams = {
       version: 'draft',
       resolve_relations: 'global-reference.reference',

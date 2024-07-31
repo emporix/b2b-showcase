@@ -30,12 +30,11 @@ import { useSites } from 'context/sites-provider'
 import { useAuth } from 'context/auth-provider'
 import { useLanguage } from '../../context/language-provider'
 import { useQuotes } from 'context/quotes-context'
-import { useContentful } from '../../context/contentful-provider'
 import { useCart } from 'context/cart-provider'
 import { useCurrency } from 'context/currency-context'
 import logo from '../../assets/aldi-logo.svg'
 
-const Navbar = () => {
+const Navbar = ({blok}) => {
   const { userTenant: tenant } = useAuth()
   const { sites, onSiteChange, currentSite, currentSiteObject } = useSites()
   const { languages, currentLanguage, setLanguage } = useLanguage()
@@ -92,9 +91,9 @@ const Navbar = () => {
             className="w-full h-[59px] border-y flex justify-between items-center mt-6  text-base">
             Site
             <select className="text-tinBlue appearance-none">
-              {sites.filter((s) => s.active).
-                sort((a, b) => a.code.localeCompare(b.code)).
-                map((site) => {
+              {sites.filter((s) => s.active)
+                .sort((a, b) => a.code.localeCompare(b.code))
+                .map((site) => {
                   return (
                     <option key={site.code} value={site.code}>
                       {site.name}
@@ -229,7 +228,7 @@ const Navbar = () => {
   const [cartTotal, setCartTotal] = useState(0)
   const [cartTotalPrice, setCartTotalPrice] = useState(0)
   const [cartCurrency, setCartCurrency] = useState('-')
-  const { fields } = useContentful()
+
   useEffect(() => {
     setCartTotal(cartAccount.items.length || 0)
     if (
@@ -254,15 +253,15 @@ const Navbar = () => {
       <div className="desktop_only_flex  text-sm text-white">
         <div className="flex items-center">
           <span className="world-icon"></span>
-          {fields.siteLabel}:
+          {blok.countryLabel}:
           <select
             className="bg-aldiBlue2 w-38 mr-[22px]"
             onChange={handleSiteChange}
             value={currentSite}
           >
-            {sites.filter((s) => s.active).
-              sort((a, b) => a.code.localeCompare(b.code)).
-              map((site) => {
+            {sites.filter((s) => s.active)
+              .sort((a, b) => a.code.localeCompare(b.code))
+              .map((site) => {
                 return (
                   <option key={site.code} value={site.code}>
                     {site.name}
@@ -272,7 +271,7 @@ const Navbar = () => {
           </select>
         </div>
         <div>
-          {fields.languageLabel}:
+          {blok.languageLabel}:
           <select
             className="bg-aldiBlue2"
             onChange={(event) => setLanguage(event.target.value)}
@@ -288,7 +287,7 @@ const Navbar = () => {
           </select>
         </div>
         <div className="ml-[22px]">
-          {fields.currencyLabel}:
+          {blok.currencyLabel}:
           <select
             id="currency-select"
             value={activeCurrency.code !== undefined ? activeCurrency.code : ''}
@@ -327,13 +326,13 @@ const Navbar = () => {
             </li>
             <li className="px-2">
               <a className="hover:text-emporixGold" href={`/${tenant}/login`}>
-                Login
+                {blok.loginLabel}
               </a>
             </li>
             |
             <li className="px-2">
               <a className="hover:text-emporixGold" href={`/${tenant}/signup`}>
-                Sign Up
+                {blok.signupLabel}
               </a>
             </li>
           </ul>
@@ -401,7 +400,7 @@ const Navbar = () => {
           <div className="h-12 py-1 pl-1  justify-between flex bg-aldiBlue4">
             <div className="flex">
               <Link to={loginUrl()} className="flex">
-                <img src={logo} className=""></img>
+                <img src={logo} alt=""></img>
                 <div className="px-4 text-white text-[40px] mt-[-12px] font-normal font-aldiCondensed">ALDI</div>
               </Link>
             </div>
@@ -416,7 +415,7 @@ const Navbar = () => {
 
       <div className="mobile_only_flex text-white">
         <Link to={homeUrl()} className="flex">
-          <img src={logo}></img>
+          <img src={logo} alt=""></img>
           <p className="font-normal font-aldiCondensed pb-1.5 text-[40px] px-3 pt-1">
             ALDI
           </p>

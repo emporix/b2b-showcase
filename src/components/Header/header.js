@@ -6,8 +6,7 @@ import { Logo } from '../Logo'
 import { APPLICATION_ID } from '../../constants/localstorage'
 import MegaNav from './MegaNav'
 
-const TopNav = ({ title }) => {
-  const nav_title_condition = title !== '' && title !== 'home' ? true : false
+const TopNav = ({ blok }) => {
   const [showMegaMenuContent, setShowMegaMenuContent] = useState(false)
 
   return (
@@ -35,6 +34,7 @@ const TopNav = ({ title }) => {
 
               <div className="ml-14 mt-[-4px]">
                 <MegaNav
+                  blok={blok}
                   showMegaMenuContent={showMegaMenuContent}
                   setShowMegaMenuContent={setShowMegaMenuContent}
                 />
@@ -54,21 +54,15 @@ const TopNav = ({ title }) => {
           </div>
         </div>
       </div>
-      {nav_title_condition && (
-        <div
-          className="md:absolute top-44 left-24 text-eerieBlack   font-semibold text-[24px]/[32px]">
-          {title}
-        </div>
-      )}
     </div>
   )
 }
 
-const Header = ({ title }) => {
+const Header = ({ blok }) => {
   return (
     <>
-      <Navbar />
-      <TopNav title={title} />
+      <Navbar blok={blok}/>
+      <TopNav blok={blok} />
     </>
   )
 }
