@@ -16,6 +16,7 @@ const ProductGrid = ({ blok }) => {
     const fetchProducts = async () => {
       const productIds = blok.productIds.split(',')
       getProductData(productIds, 1, 100000).then(products => {
+        console.log(products)
         setProducts(products)
       })
     }

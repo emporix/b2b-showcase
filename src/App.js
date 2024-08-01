@@ -97,7 +97,7 @@ function App() {
           />
           <Route
             path="product/details/:productId"
-            element={<ProductDetails />}
+            element={<SBPage />}
           />
           <Route path="login" exact element={<Login />} />
           <Route path="reset-password" exact element={<ResetPassword />} />

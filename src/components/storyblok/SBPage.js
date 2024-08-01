@@ -23,9 +23,9 @@ const SBPage = () => {
   const { userTenant } = useAuth()
 
   useEffect(() => {
-    const slug = window.location.pathname
-      .replace(/^\/de\/|^\/en\/|^\//, '')
-      .replace(userTenant, 'home')
+    const pathName = window.location.pathname
+    const slug = pathName.includes('product/details') ? 'pdp' :
+      pathName.replace(/^\/de\/|^\/en\/|^\//, '').replace(userTenant, 'home')
     const sbParams = {
       version: 'draft',
       resolve_relations: 'global-reference.reference',

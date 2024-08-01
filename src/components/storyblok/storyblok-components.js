@@ -13,6 +13,11 @@ import DateText from './DateText'
 import Headline from './Headline'
 import SubHeadline from './SubHeadline'
 import ProductGrid from './ProductGrid'
+import PdpTitle from './pdp/PdpTitle'
+import PdpPage from './pdp/PdpPage'
+import PdpImage from './pdp/PdpImage'
+import PdpColumnLayout2 from './pdp/PdpColumnLayout2'
+import PdpDescription from './pdp/PdpDescription'
 
 export const componentList = () => {
   return {
@@ -30,6 +35,11 @@ export const componentList = () => {
     aec_date: DateText,
     aec_headline: Headline,
     aec_sub_headline: SubHeadline,
-    aec_product_grid: ProductGrid
+    aec_product_grid: ProductGrid,
+    "product-detail-page": PdpPage,
+    aec_pdp_column_layout_2: PdpColumnLayout2,
+    aec_pdp_image: PdpImage,
+    aec_pdp_title: PdpTitle,
+    aec_pdp_description: PdpDescription
   }
 }

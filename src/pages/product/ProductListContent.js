@@ -391,8 +391,6 @@ const ProductListContent = () => {
     setProductsPerPage,
   } = useProductList()
 
-  console.log("ppp", products)
-
   const productsWithoutVariants = useMemo(() => {
     return products.filter((p) => p.productType !== 'VARIANT')
   }, [products])

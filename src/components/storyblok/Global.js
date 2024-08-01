@@ -2,7 +2,7 @@ import { StoryblokComponent, storyblokEditable } from "@storyblok/react/rsc"
 
 const Global = ({ blok }) => {
   return (
-    <div className="" {...storyblokEditable(blok)}>
+    <div {...storyblokEditable(blok)}>
       {blok.body ? (
         <>
           {blok.body.map((nestedBlok) => {
@@ -10,7 +10,6 @@ const Global = ({ blok }) => {
               <StoryblokComponent
                 blok={nestedBlok}
                 key={nestedBlok._uid}
-                nestedBlok
               />
             )
           })}
