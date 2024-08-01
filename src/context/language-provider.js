@@ -24,9 +24,9 @@ export const LanguageProvider = ({ children }) => {
   }
 
   const getLocalizedValue = (value) => {
-    if(!value) return value
-    if(typeof value === 'string' || value instanceof String) return value
-    if(value[currentLanguage]) return value[currentLanguage]
+    if (!value) return value
+    if (typeof value === 'string' || value instanceof String) return value
+    if (value[currentLanguage]) return value[currentLanguage]
     return value['en']
   }
 
@@ -40,6 +40,13 @@ export const LanguageProvider = ({ children }) => {
           setLanguage(currentSiteObject.defaultLanguage)
         }
       }
+    }
+
+    if (window.location.pathname.startsWith('/en/')) {
+      setLanguage('en')
+    }
+    if (window.location.pathname.startsWith('/de/')) {
+      setLanguage('de')
     }
   }, [currentSite, sites.length])
 

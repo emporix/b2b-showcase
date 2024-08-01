@@ -7,24 +7,24 @@ export const initialState = {
       title: 'Shop',
       items: [],
     },
-    {
-      contentfulFieldName: 'brandLabel',
-      title: 'Brands',
-      items: [],
-      url: 'brand',
-    },
-    {
-      contentfulFieldName: 'quickOrderLabel',
-      title: 'Quick Order',
-      items: [],
-      url: 'quick_order',
-    },
-    {
-      contentfulFieldName: 'aboutUsLabel',
-      title: 'About Us',
-      items: [],
-      url: 'aboutus',
-    },
+    // {
+    //   contentfulFieldName: 'brandLabel',
+    //   title: 'Brands',
+    //   items: [],
+    //   url: 'brand',
+    // },
+    // {
+    //   contentfulFieldName: 'quickOrderLabel',
+    //   title: 'Quick Order',
+    //   items: [],
+    //   url: 'quick_order',
+    // },
+    // {
+    //   contentfulFieldName: 'aboutUsLabel',
+    //   title: 'About Us',
+    //   items: [],
+    //   url: 'aboutus',
+    // },
   ],
   tenantList: [],
 }

@@ -1,9 +1,12 @@
-/** @type {import("tailwindcss").Config} */
+/** @type {import('tailwindcss').Config} */
 module.exports = {
   mode: 'jit',
   content: ['./src/**/*.{js,jsx,ts,tsx}', './public/**/*.html'],
   theme: {
     extend: {
+      fontFamily: {
+        'aldiCondensed': ['FFDINWebProCondensed'],
+      },
       colors: {
         white: '#FFFFFF',
         black: '#000000',
@@ -31,8 +34,18 @@ module.exports = {
         herringSilver: '#C4C5CC',
         flamingo: '#EB5757',
         dodgerBlue: '#2F80ED',
+        aldiBlue1: '#00B6ED',
+        aldiBlue2: '#2590D7',
+        aldiBlue3: '#207ebd',
+        aldiBlue4: '#1F2B78',
+        aldiBlue5: '#0A085A',
+        aldiYellow: '#FFC800',
+        aldiGray1: '#F5F5F5',
+        aldiGray2: '#DFDFDF',
       },
     },
   },
-  plugins: [require('tailwindcss-font-inter')],
+  plugins: [
+    require('tailwindcss-font-inter'),
+    require('@tailwindcss/typography')],
 }

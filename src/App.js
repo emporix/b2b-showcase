@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react'
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
 import Login from './pages/Login'
 import Signup from './pages/Signup'
@@ -19,9 +19,12 @@ import AccountMyQuotes from './pages/account/AccountMyQuotes'
 import AccountMyQuoteDetails from './pages/account/AccountMyQuoteDetails'
 import AccountMyOrdersView from './pages/account/AccountMyOrdersView'
 import AccountMyOrdersInvoice from './pages/account/AccountMyOrdersInvoice'
-import AccountReplenishmentOrders from './pages/account/AccountReplenishmentOrders'
-import AccountReplenishmentAddOrders from './pages/account/AccountReplenishmentAddOrders'
-import AccountReplenishmentEditOrders from './pages/account/AccountReplenishmentEditOrders'
+import AccountReplenishmentOrders
+  from './pages/account/AccountReplenishmentOrders'
+import AccountReplenishmentAddOrders
+  from './pages/account/AccountReplenishmentAddOrders'
+import AccountReplenishmentEditOrders
+  from './pages/account/AccountReplenishmentEditOrders'
 import AccountSavedCarts from './pages/account/AccountSavedCarts'
 import AccountMyOrdersDetails from 'pages/account/AccountSavedCartDetails'
 import AccountLocations from './pages/account/AccountLocations'
@@ -30,7 +33,8 @@ import CreateReturn from './pages/returns/Return'
 import AccountAddLocations from './pages/account/AccountAddLocations'
 import AccountPayments from './pages/account/AccountPayments'
 import AccountReviews from './pages/account/AccountReviews'
-import AccountPaymentsEditCardDetails from './pages/account/AccountPaymentsEditCardDetails'
+import AccountPaymentsEditCardDetails
+  from './pages/account/AccountPaymentsEditCardDetails'
 import NoPage from './pages/NoPage'
 import { history } from './helpers/history'
 import { clearMessage } from './redux/slices/messageReducer'
@@ -53,6 +57,7 @@ import ApprovalOrderCreated from 'pages/approval/ApprovalOrderCreated'
 import AccountManageUsers from 'pages/account/AccountManageUsers'
 import ResetPassword from 'pages/ResetPassword'
 import SocialLoginCallback from 'pages/SocialLoginCallback'
+import SBPage from './components/storyblok/SBPage'
 
 function App() {
   const dispatch = useDispatch()
@@ -75,8 +80,9 @@ function App() {
             exact
             element={<SocialLoginCallback />}
           />
-        <Route path="/:tenant">
-          <Route index exact element={<Home />} />
+        <Route path=":lang?/intern/:page" element={<SBPage />} />
+        <Route path=":lang?/:tenant">
+          <Route index exact element={<SBPage />} />
 
           <Route path="product/:maincategory" exact element={<ProductList />} />
           <Route

@@ -441,13 +441,13 @@ const AccountMyOrdersDetails = () => {
               <FilledButton
                 onClick={handleAcceptQuote}
                 disabled={quote.status.value !== 'OPEN'}
-                className="mt-4 w-auto bg-yellow text-eerieBlack"
+                className="mt-4 w-auto bg-aldiBlue1 text-eerieBlack"
               >
                 ACCEPT QUOTE
               </FilledButton>
               <FilledButton
                 onClick={handleInitDeclineQuote}
-                className="mt-4 w-auto bg-yellow text-eerieBlack"
+                className="mt-4 w-auto bg-aldiBlue1 text-eerieBlack"
                 disabled={quote.status.value !== 'OPEN'}
               >
                 DECLINE QUOTE

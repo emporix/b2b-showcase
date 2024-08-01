@@ -68,37 +68,37 @@ export const QuotesList = (props) => {
             <TableRow className="!py-6">
               <TableCell
                 align="left"
-                className="font-inter !font-bold text-base"
+                className=" !font-bold text-base"
               >
                 Created at
               </TableCell>
               <TableCell
                 align="left"
-                className="font-inter !font-bold text-base"
+                className=" !font-bold text-base"
               >
                 Created By
               </TableCell>
               <TableCell
                 align="left"
-                className="font-inter !font-bold text-base"
+                className=" !font-bold text-base"
               >
                 Quote number
               </TableCell>
               <TableCell
                 align="left"
-                className="font-inter !font-bold text-base"
+                className=" !font-bold text-base"
               >
                 Valid until
               </TableCell>
               <TableCell
                 align="left"
-                className="font-inter !font-bold text-base"
+                className=" !font-bold text-base"
               >
                 Contact
               </TableCell>
               <TableCell
                 align="left"
-                className="font-inter !font-bold text-base"
+                className=" !font-bold text-base"
               >
                 Status
               </TableCell>

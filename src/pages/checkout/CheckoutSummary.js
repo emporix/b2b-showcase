@@ -57,7 +57,7 @@ const CheckoutSummary = ({ setFinal, order }) => {
         </>
       ) : (
         <>
-          <div className="font-inter mb-8">
+          <div className=" mb-8">
             <div className="bordered-container p-6">
               <div className="md:flex justify-between">
                 <div className="font-semibold text-[32px]">
@@ -82,7 +82,7 @@ const CheckoutSummary = ({ setFinal, order }) => {
                       FINISH PAYMENT
                     </button>
                   ) : (
-                    <button className="cta-button bg-yellow px-6 py-0 h-[50px] text-[14px] leading-[14px] md:w-[400px] w-full">
+                    <button className="cta-button bg-aldiBlue1 px-6 py-0 h-[50px] text-[14px] leading-[14px] md:w-[400px] w-full">
                       VIEW INVOICE
                     </button>
                   )}
@@ -129,7 +129,7 @@ const CheckoutSummary = ({ setFinal, order }) => {
             <div className="pt-12 w-full flex gap-8 checkout-actions">
               <Link to={homeUrl()}>
                 <LargePrimaryButton
-                  className="md:block hidden cta-button bg-yellow"
+                  className="md:block hidden cta-button bg-aldiBlue1"
                   title="BACK TO HOME PAGE"
                   onClick={() => setFinal(false)}
                 />
@@ -137,7 +137,7 @@ const CheckoutSummary = ({ setFinal, order }) => {
               {user && (
                 <Link to={myAccountMyOrders()}>
                   <LargePrimaryButton
-                    className="md:block hidden cta-button bg-yellow"
+                    className="md:block hidden cta-button bg-aldiBlue1"
                     title="GO TO ORDERS"
                     onClick={() => setFinal(false)}
                   />

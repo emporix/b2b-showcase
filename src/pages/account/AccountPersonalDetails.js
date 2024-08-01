@@ -28,7 +28,7 @@ const PersonalInfo = ({ user }) => {
     <div className="personal-info mt-12 pb-12 sm:flex justify-between border-bottom-gray ">
       <div className="personal-title-wrapper">
         <div className="personal-title grid grid-cols-1">
-          <ul className="title font-inter gap-2 grid grid-cols-1">
+          <ul className="title  gap-2 grid grid-cols-1">
             <li className="font-bold personal-info-catpion">Personal Info</li>
             <li className="personal-provide-caption">
               Provide your Personal Info
@@ -61,7 +61,7 @@ const ChangePasswordContent = () => {
     <div className="change-password-info mt-12 pb-12 sm:flex justify-between">
       <div className="change-password-title-wrapper">
         <div className="change-password-title grid grid-cols-1">
-          <ul className="title font-inter gap-2 grid grid-cols-1">
+          <ul className="title  gap-2 grid grid-cols-1">
             <li className="font-bold change-password-info-catpion">
               Password change
             </li>

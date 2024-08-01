@@ -7,7 +7,7 @@ const QuoteSummary = (props) => {
   const { quoteId } = props
 
   return (
-    <div className="font-inter">
+    <div className="">
       <div className="border-b pb-12">
         <div className="md:flex justify-between">
           <div className="font-semibold text-[32px]">
@@ -46,13 +46,13 @@ const QuoteSummary = (props) => {
       <div className="pt-12 w-full flex gap-8 checkout-actions">
         <Link to={homeUrl()}>
           <LargePrimaryButton
-            className="md:block hidden w-auto bg-yellow rounded text-eerieBlack"
+            className="md:block hidden w-auto bg-aldiBlue1 rounded text-eerieBlack"
             title="BACK TO HOME PAGE"
           />
         </Link>
         <Link to={myAccountQuotes()}>
           <LargePrimaryButton
-            className="md:block hidden w-auto bg-yellow rounded text-eerieBlack"
+            className="md:block hidden w-auto bg-aldiBlue1 rounded text-eerieBlack"
             title="QUOTE OVERVIEW"
           />
         </Link>

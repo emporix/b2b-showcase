@@ -71,7 +71,7 @@ export const MediumSecondaryButton = ({ title, onClick, className }) => {
 
 export const BackButton = ({ link, title, className }) => {
   return (
-    <div className={`${className} font-inter font-semibold text-[14px]`}>
+    <div className={`${className}  font-semibold text-[14px]`}>
       <Link to={link}>
         <span>&#60;- </span>
         {title}

@@ -164,13 +164,13 @@ const Login = () => {
                 <input type="checkbox" className="w-[18px] h-[18px]" />
                 <label className="pl-2 text-[14px]/[22px]">Remember me</label>
               </div>
-              <a className="text-[16px]/[24px] text-dodgerBlue cursor-pointer">
+              <a className="text-[16px]/[24px] text-aldiBlue4 cursor-pointer">
                 Forgot Password
               </a>
             </LayoutBetween>
             <Box className="w-full !pt-8">
               <button
-                className="w-full cta-button bg-yellow h-12"
+                className="w-full cta-button bg-aldiBlue1 hover:bg-aldiBlue2 h-12"
                 type="submit"
               >
                 {loading ? <CircularProgress color="secondary" /> : 'LOG IN'}

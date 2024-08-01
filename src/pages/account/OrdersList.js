@@ -38,21 +38,21 @@ const OrderListMobile = ({ orders }) => {
               color={row.status === 'SHIPPED' ? '#FFA800' : '#4BCB67'}
             />
             <div className="flex">
-              <div className="font-inter font-semibold text-[14px] underline">
+              <div className=" font-semibold text-[14px] underline">
                 <Link to={`${myAccountMyOrdersViewUrl()}${row.id}`}>View</Link>
               </div>
-              <div className="font-inter font-semibold text-[14px] underline ml-6">
+              <div className=" font-semibold text-[14px] underline ml-6">
                 <Link to={`${myAccountMyOrdersInvoiceUrl()}${row.id}`}>
                   Invoice
                 </Link>
               </div>
-              <div className="font-inter font-semibold text-[14px] underline ml-6">
+              <div className=" font-semibold text-[14px] underline ml-6">
                 <Link to={`${createReturnUrl()}${row.id}`}>Return</Link>
               </div>
             </div>
           </div>
           <div className="pt-2 font-bold">{row.id}</div>
-          <div className="font-inter pt-2">
+          <div className=" pt-2">
             <CurrencyAfterValue value={row.totalPrice} />
           </div>
           <div className="pt-2">{row.created}</div>
@@ -207,12 +207,12 @@ export const OrderList = (props) => {
                 </TableCell>
                 <TableCell align="center" className="!py-6">
                   <div className="flex">
-                    <div className="font-inter font-semibold text-[14px] underline">
+                    <div className=" font-semibold text-[14px] underline">
                       <Link to={`${myAccountMyOrdersViewUrl()}${row.id}`}>
                         View
                       </Link>
                     </div>
-                    <div className="font-inter font-semibold text-[14px] underline ml-6">
+                    <div className=" font-semibold text-[14px] underline ml-6">
                       <span
                         onClick={() => handleCreateReturn(row.id)}
                         className="cursor-pointer"
@@ -221,7 +221,7 @@ export const OrderList = (props) => {
                       </span>
                     </div>
                     {invoiceAvailable && (
-                      <div className="font-inter font-semibold text-[14px] underline ml-6">
+                      <div className=" font-semibold text-[14px] underline ml-6">
                         {row?.mixins?.invoice?.invoiceDocument && (
                           <a
                             onClick={() => downloadInvoice(row)}

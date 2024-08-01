@@ -17,7 +17,7 @@ const ApprovalRequest = () => {
   return (
     <Layout title={title}>
       <div className="brand-page-wrapper text-center w-full" style={{marginTop: 50+'px'}}>
-        <div className="font-inter">
+        <div className="">
           <div className="border-b pb-12">
             <div className="md:flex justify-between">
               <div className="font-semibold text-[24px] px-6 py-0 w-full">
@@ -25,7 +25,7 @@ const ApprovalRequest = () => {
               </div>
             </div>
             <div>
-                <button className="bg-yellow text-[white] px-6 py-0 h-[50px] text-[14px] leading-[14px] md:w-[400px] w-full" 
+                <button className="bg-aldiBlue1 text-[white] px-6 py-0 h-[50px] text-[14px] leading-[14px] md:w-[400px] w-full" 
                 onClick={() => {
                   navigate(`/${tenant}/my-account/saved-carts`)
                 }}>

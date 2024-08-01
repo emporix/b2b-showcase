@@ -46,13 +46,13 @@ const EachProductRow = ({ item, type, available, rating, productCount }) => {
     }
   }
   return (
-    <div className="flex h-full font-inter rounded border border-quartz p-4">
+    <div className="flex h-full  rounded border border-quartz p-4">
       <div className="flex w-[15%] flex-col mr-4">
         <div
           className={
             available
-              ? 'text-brightGreen font-inter font-bold text-xs float-right mb-14'
-              : 'text-primaryBlue font-inter font-bold text-xs float-right mb-14'
+              ? 'text-brightGreen  font-bold text-xs float-right mb-14'
+              : 'text-primaryBlue  font-bold text-xs float-right mb-14'
           }
         >
           {available ? 'In Stock' : 'Out Of Stock'}
@@ -65,7 +65,7 @@ const EachProductRow = ({ item, type, available, rating, productCount }) => {
           {getLocalizedValue(item.name)}
         </div>
         <div className="text-sm mt-4  text-black flex">
-          <ReactStars size={16} value={rating} color2={'#FBB13C'} />(
+          <ReactStars size={16} value={rating} color2={'#00B6ED'} />(
           {productCount})
         </div>
         <div className="text-sm mt-4  text-gray text-normal">
@@ -116,7 +116,7 @@ const EachProductRow = ({ item, type, available, rating, productCount }) => {
                 }}
               />
               <div
-                className="ml-6 mt-4 h-10 w-40 cursor-pointer cta-button bg-yellow flex items-center justify-center"
+                className="ml-6 mt-4 h-10 w-40 cursor-pointer cta-button bg-aldiBlue1 flex items-center justify-center"
                 onClick={handleAddToCart}
               >
                 <span className="px-4">ADD TO CART</span>
@@ -127,7 +127,7 @@ const EachProductRow = ({ item, type, available, rating, productCount }) => {
               <LargePrimaryButton
                 title={'VIEW VARIANTS'}
                 onClick={handleProductDetail}
-                className="cta-button bg-yellow"
+                className="cta-button bg-aldiBlue1"
                 sx={{ backgroundColor: '#FAC420 !important' }}
               />
             </div>

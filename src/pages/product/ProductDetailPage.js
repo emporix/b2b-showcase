@@ -168,7 +168,7 @@ const ProductSkuAndReview = ({ product }) => {
             <ReactStars
               size={16}
               value={product.rating}
-              color2={'#FBB13C'}
+              color2={'#00B6ED'}
               className="reviews-star"
             />
             ({product.count})
@@ -347,7 +347,7 @@ const PrdouctAddToCart = () => {
       <div className="">
         <LargePrimaryButton
           disabled={!product.price}
-          className="product-add-to-cart-btn cta-button bg-yellow"
+          className="product-add-to-cart-btn cta-button bg-aldiBlue1"
           onClick={() =>
             HandleProductAddToCart1(product, setShowCart, quantity)
           }
@@ -386,7 +386,7 @@ const ProductInfo = ({ product }) => {
   )
 }
 
-const ProductContent = ({ product, brand, labels }) => {
+const ProductContent = ({ product }) => {
   let price = '',
     listPrice = ''
   if (product.price !== undefined) {
@@ -408,36 +408,7 @@ const ProductContent = ({ product, brand, labels }) => {
           <ProductTitle name={product.name} />
         </div>
         <div className="product-image-wrapper">
-          <ProductImage product={product} />{' '}
-          <div className="grid grid-cols-2 mt-2">
-            <div className="flex flex-col">
-              {brand && (
-                <>
-                  <div>Brands</div>
-                  <img
-                    src={brand.image}
-                    alt={brand.name}
-                    className="w-fit h-8"
-                  />
-                </>
-              )}
-            </div>
-
-            <div className="flex flex-col">
-              <div className="flex gap-2">
-                {labels && labels.length > 0 && <div>Labels</div>}
-                {labels.map((label) => {
-                  return (
-                    <img
-                      src={label.image}
-                      alt={label.name}
-                      className="w-fit h-8"
-                    />
-                  )
-                })}
-              </div>
-            </div>
-          </div>
+          <ProductImage product={product} />
         </div>
 
         <div className="mobile-price-and-amount-wrapper">
@@ -759,12 +730,12 @@ const ProductMatchItems = ({ productInput }) => {
   )
 }
 
-const ProductDetailPage = ({ product, brand, labels }) => {
+const ProductDetailPage = ({ product }) => {
   return (
-    <div className="product-detail-page-wrapper ">
+    <div className="product-detail-page-wrapper mt-20">
       <div className="product-detail-page-content">
         <ProductDetailCategoryCaptionBar category={product.category} />
-        <ProductContent product={product} brand={brand} labels={labels} />
+        <ProductContent product={product} />
         {product.productType === 'PARENT_VARIANT' && (
            product?.mixins?.b2bShowcase?.productConfiguration === false ? <ProductVariants product={product} /> : <ProductConfiguration product={product} />
         )}

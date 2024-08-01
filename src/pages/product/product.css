@@ -103,13 +103,13 @@
   z-index: 30;
 }
 .product-detail-page-wrapper {
-  @apply w-full md:pt-8 pt-8 md:px-[76px] px-[16.5px] md:pb-24 pb-12 font-inter;
+  @apply w-full md:pt-8 pt-8 md:px-[76px] px-[16.5px] md:pb-24 pb-12 ;
 }
 .product-detail-page-content {
   @apply max-w-screen-xl mx-auto grid grid-cols-1 md:gap-12 gap-6;
 }
 .product-detail-category-caption-bar {
-  @apply font-inter font-normal text-[14px] leading-[20px];
+  @apply  font-normal text-[14px] leading-[20px];
 }
 .MuiBreadcrumbs-separator {
   @apply !mx-2 !font-normal !text-[16px]/[24px]
@@ -136,7 +136,7 @@
   @apply border border-lightGray p-[10px];
 }
 .sku-info {
-  @apply text-gray font-inter font-normal text-[16px] leading-[24px];
+  @apply text-gray  font-normal text-[16px] leading-[24px];
 }
 .sku {
   @apply font-bold;
@@ -148,22 +148,22 @@
   @apply leading-[18px] text-[16px] text-primaryBlue font-semibold underline;
 }
 .product-title {
-  @apply lg:text-[40px] font-semibold lg:leading-[56px] font-inter text-[24px] leading-[28.8px];
+  @apply lg:text-[40px] font-semibold lg:leading-[56px]  text-[24px] leading-[28.8px];
 }
 .product-price {
-  @apply text-[32px] leading-[32px] font-bold font-inter;
+  @apply text-[32px] leading-[32px] font-bold ;
 }
 .vat-caption {
-  @apply text-[16px] leading-[24px] font-bold font-inter;
+  @apply text-[16px] leading-[24px] font-bold ;
 }
 .list-price {
-  @apply text-[16px] leading-[24px] font-normal font-inter text-gray;
+  @apply text-[16px] leading-[24px] font-normal  text-gray;
 }
 .product-number {
-  @apply text-[16px] leading-[24px] font-bold font-inter text-brightGreen;
+  @apply text-[16px] leading-[24px] font-bold  text-brightGreen;
 }
 .delivery-date {
-  @apply text-[14px] leading-[20px] font-normal font-inter text-black;
+  @apply text-[14px] leading-[20px] font-normal  text-black;
 }
 .product-basic-info-wrapper {
   @apply border-b border-lightGray pb-12;
@@ -178,7 +178,7 @@
   @apply text-[16px] leading-[24px] font-normal;
 }
 .dropdown-menu {
-  @apply mt-2 rounded-[1px] h-12 py-2 px-3 w-[240px] leading-[24px] text-[16px] font-inter bg-white border border-lightGray;
+  @apply mt-2 rounded-[1px] h-12 py-2 px-3 w-[240px] leading-[24px] text-[16px]  bg-white border border-lightGray;
 }
 .dropdown-wrapper {
   @apply grid grid-cols-1;
@@ -225,7 +225,7 @@
   @apply hidden sm:block;
 }
 .react-dropdown-select-input {
-  @apply !text-[16px] !leading-[24px] !text-gray font-inter;
+  @apply !text-[16px] !leading-[24px] !text-gray ;
 }
 .react-dropdown-select-item-selected {
   @apply !bg-bgWhite !text-black;
@@ -310,10 +310,10 @@
   @apply bg-[white] font-normal text-eerieBlack
 }
 .product-available {
-  @apply text-limeGreen font-inter font-medium text-[14px]/[20px] float-right lg:float-none
+  @apply text-limeGreen  font-medium text-[14px]/[20px] float-right lg:float-none
 }
 .product-unavailable {
-  @apply text-manatee font-inter font-medium text-[14px]/[20px] float-right lg:float-none
+  @apply text-manatee  font-medium text-[14px]/[20px] float-right lg:float-none
 }
 .category_pan_title {
   @apply w-[90%] text-eerieBlack text-[16px]/[24px] font-semibold
@@ -336,7 +336,7 @@
 }
 
 .product-configuration-attribute-value-active {
-  background-color: rgb(250, 196, 32);
+  background-color: #00B6ED;
 }
 
 .product-configuration-attribute-value-inactive {

@@ -125,31 +125,31 @@ const MyOrdersInvoice = () => {
               <TableRow>
                 <TableCell
                   align="left"
-                  className="font-inter !font-bold text-base"
+                  className=" !font-bold text-base"
                 >
                   Ordered
                 </TableCell>
                 <TableCell
                   align="left"
-                  className="font-inter !font-bold text-base"
+                  className=" !font-bold text-base"
                 >
                   Item Number
                 </TableCell>
                 <TableCell
                   align="left"
-                  className="font-inter !font-bold text-base"
+                  className=" !font-bold text-base"
                 >
                   Description
                 </TableCell>
                 <TableCell
                   align="left"
-                  className="font-inter !font-bold text-base"
+                  className=" !font-bold text-base"
                 >
                   Unit Price
                 </TableCell>
                 <TableCell
                   align="left"
-                  className="font-inter !font-bold text-base"
+                  className=" !font-bold text-base"
                 >
                   Total
                 </TableCell>

@@ -56,12 +56,12 @@ const RatingFilterItem = ({ rating, total }) => {
           <ReactStars
             size={30}
             value={rating}
-            color2={'#FBB13C'}
+            color2={'#00B6ED'}
             edit={false}
           />
         </label>
       </div>
-      <div className="font-inter font-medium text-base text-lightGray pt-4">
+      <div className=" font-medium text-base text-lightGray pt-4">
         {total}
       </div>
     </div>
@@ -234,8 +234,8 @@ const MobileFilterPanel = (props) => {
           <RatingFilter />
         </ul>
       </div>
-      <div className="mt-12 font-inter font-bold">
-      <div className="w-full h-12 bg-yellow text-eerieBlack  flex items-center cursor-pointer">
+      <div className="mt-12  font-bold">
+      <div className="w-full h-12 bg-aldiBlue1 text-eerieBlack  flex items-center cursor-pointer">
           <span className="text-center w-full">APPLY FILTER </span>
         </div>
         <div className="w-full h-12 bg-aliceBlue text-eerieBlack  flex items-center mt-6 cursor-pointer">
