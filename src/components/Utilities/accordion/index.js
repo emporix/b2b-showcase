@@ -40,11 +40,11 @@ export const AccordionItem = ({ index, title, children }) => {
     </div>
   )
 }
-const Accordion = ({ children }) => {
+const Accordion = ({ children, previewId }) => {
   const [activeItem, setActiveItem] = useState(0)
   return (
     <AccordionContext.Provider value={{ activeItem, setActiveItem }}>
-      <div className="accordition-wrapper">{children}</div>
+      <div data-preview-id={previewId} className="accordition-wrapper">{children}</div>
     </AccordionContext.Provider>
   )
 }
