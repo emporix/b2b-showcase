@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { Teaser } from './teaser'
 import { ProductTeaser } from './productTeaser'
 import { HiChevronLeft, HiChevronRight } from 'react-icons/hi'
@@ -61,11 +61,11 @@ export const TeaserSlider = ({ props }) => {
   }
 
   return (
-    <div className={`fs-${classId}`}>
+    <div data-preview-id={props?.previewId} className={`fs-${classId}`}>
       <Slider {...settings}>
         {teasers.map((p) => {
           return (
-            <div className="min-w-full" key={nanoid()}>
+            <div data-preview-id={p.previewId} className="min-w-full" key={nanoid()}>
               {p?.sectionType === 'teaser' ? <Teaser props={p} /> : null}
               {p?.sectionType === 'product_teaser' ? <ProductTeaser props={p} /> : null}
             </div>

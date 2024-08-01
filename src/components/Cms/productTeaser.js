@@ -18,7 +18,7 @@ export const ProductTeaser = (props) => {
 
   return (
     products[0] && (
-      <div className={`fs-${classId} w-full mx-auto max-w-3xl`}>
+      <div data-preview-id={props?.props?.previewId} className={`fs-${classId} w-full mx-auto max-w-3xl`}>
         <ProductMini productInfo={products[0]} />
       </div>
     )
