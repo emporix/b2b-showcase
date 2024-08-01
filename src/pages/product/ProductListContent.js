@@ -108,7 +108,7 @@ const ProductListViewSettingBar = ({
   )
 }
 
-const ProductListItems = ({ products, auth, displayType }) => {
+export const ProductListItems = ({ products, auth, displayType }) => {
   const availability = useSelector(availabilityDataSelector)
   let itemArr = []
   let subItemArr = []
@@ -390,6 +390,8 @@ const ProductListContent = () => {
     productsPerPage,
     setProductsPerPage,
   } = useProductList()
+
+  console.log("ppp", products)
 
   const productsWithoutVariants = useMemo(() => {
     return products.filter((p) => p.productType !== 'VARIANT')

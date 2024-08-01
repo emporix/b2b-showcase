@@ -41,6 +41,7 @@ module.exports = {
         aldiBlue5: '#0A085A',
         aldiYellow: '#FFC800',
         aldiGray1: '#F5F5F5',
+        aldiGray2: '#DFDFDF',
       },
     },
   },

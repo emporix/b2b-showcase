@@ -10,8 +10,8 @@ const BannerSmall = ({ blok }) => {
           "grid-cols-2": blok.images.length === 2,
         })} {...storyblokEditable(
       blok)}>
-      {blok.images.map((imageLink) => (
-          <a href={imageLink.link.url}>
+      {blok.images.map((imageLink, index) => (
+          <a href={imageLink.link.url} key={"BannerSmall_" + index}>
             <StoryblokImage className="w-full" src={imageLink.image.filename} alt={imageLink.image.alt} />
           </a>
         )

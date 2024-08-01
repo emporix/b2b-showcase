@@ -1,8 +1,9 @@
-import React, { useState, useRef, useEffect } from 'react'
-import { HiChevronDown, HiChevronUp } from "react-icons/hi";
+import React, { Fragment, useEffect, useRef, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import { LoadingCircleProgress1 } from '../../components/Utilities/progress'
-import { getProductCategoryDetail } from '../../services/product/category.service'
+import {
+  getProductCategoryDetail,
+} from '../../services/product/category.service'
 import { useProductList } from 'context/product-list-context'
 import { Checkbox } from '@mui/material'
 
@@ -21,7 +22,8 @@ const SelectionField = ({ title, total }) => {
     // <div className="flex justify-between pb-4  font-medium text-base">
     <div className="category_pan_field">
       {/* <div c> */}
-        <label className='category_pan_field_title' title={title.toLowerCase()}> {title.toLowerCase()}</label>
+      <label className="category_pan_field_title"
+             title={title.toLowerCase()}> {title.toLowerCase()}</label>
       {/* </div> */}
       <div className="text-manatee pl-3">{total}</div>
     </div>
@@ -57,39 +59,42 @@ const Category = ({ item }) => {
         //     : { height: '0px' }
         // }
       >
-      <div className="content content-center justify-center">
-          <div className="w-[90%] text-eerieBlack text-[14px]/[22px] font-normal flex items-center">
+        <div className="content content-center justify-center">
+          <div
+            className="w-[90%] text-eerieBlack text-[14px]/[22px] font-normal flex items-center">
             <Checkbox defaultChecked sx={{
-                  color: "#cccccc",
-                  '&.Mui-checked': {
-                    color:"#00B6ED",
-                  },
-                  '& .MuiSvgIcon-root': { fontSize: 18 }
-                }} iconStyle={{fill: 'white'}} />
+              color: '#cccccc',
+              '&.Mui-checked': {
+                color: '#00B6ED',
+              },
+              '& .MuiSvgIcon-root': { fontSize: 18 },
+            }} iconstyle={{ fill: 'white' }} />
             <div>Select All</div>
           </div>
           {items.map((item, index) => (
+            <Fragment key={'PLFP_' + index}>
               <div className="flex">
-              <div className="flex">
-                <Checkbox
-                  defaultChecked
-                  sx={{
-                    color: "#cccccc",
-                    '&.Mui-checked': {
-                      color:"#00B6ED",
-                    },
-                    '& .MuiSvgIcon-root': { fontSize: 18 }
-                  }}
-                />
-                <SelectionField
-                  key={index}
-                  title={item.title}
-                  total={item.total}
-                />
+                <div className="flex">
+                  <Checkbox
+                    defaultChecked
+                    sx={{
+                      color: '#cccccc',
+                      '&.Mui-checked': {
+                        color: '#00B6ED',
+                      },
+                      '& .MuiSvgIcon-root': { fontSize: 18 },
+                    }}
+                  />
+                  <SelectionField
+                    key={index}
+                    title={item.title}
+                    total={item.total}
+                  />
+                </div>
               </div>
-            </div>
+            </Fragment>
           ))}
-      </div>
+        </div>
       </div>
     </li>
   )
@@ -132,14 +137,14 @@ const CategoryPanel = () => {
     categoryTree,
     maincategory,
     subcategory,
-    category
+    category,
   ) => {
     setIsLoading(true)
     const { categories, productIds } = await getProductCategoryDetail(
       maincategory,
       subcategory,
       category,
-      categoryTree
+      categoryTree,
     )
     setProductIds(productIds)
     setCategoryList(categories)

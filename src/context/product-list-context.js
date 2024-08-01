@@ -25,7 +25,7 @@ export const ProductListContext = createContext({})
 
 export const useProductList = () => useContext(ProductListContext)
 
-const getProductData = async (productIds, pageNumber, itemsPerPage) => {
+export const getProductData = async (productIds, pageNumber, itemsPerPage) => {
   const ids = productIds.slice(
     itemsPerPage * (pageNumber - 1),
     itemsPerPage * pageNumber

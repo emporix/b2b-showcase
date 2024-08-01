@@ -19,7 +19,6 @@ const MegaNav = ({ blok, showMegaMenuContent, setShowMegaMenuContent }) => {
     setShowMegaMenuContent(false)
   }
   const menuList = useSelector(pageMenuSelector)
-
   return (
     <div id="topbar-buttons" className="dropdown flex">
       {menuList.map((item, index) => (
