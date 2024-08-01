@@ -5,6 +5,7 @@ import {
   availabilityDataSelector,
 } from '../../redux/slices/availabilityReducer'
 import { getProductData } from '../../context/product-list-context'
+import { storyblokEditable } from '@storyblok/react'
 
 const ProductGrid = ({ blok }) => {
   const [products, setProducts] = useState([])
@@ -13,7 +14,7 @@ const ProductGrid = ({ blok }) => {
 
   useEffect(() => {
     const fetchProducts = async () => {
-      const productIds = blok.productIds.split(';')
+      const productIds = blok.productIds.split(',')
       getProductData(productIds, 1, 100000).then(products => {
         setProducts(products)
       })
@@ -22,7 +23,7 @@ const ProductGrid = ({ blok }) => {
   }, [blok])
 
   return <div
-    className="mx-4 xl:mx-auto gap-2 w-full max-w-screen-xl my-10 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+    className="mx-4 xl:mx-auto gap-2 w-full max-w-screen-xl my-10 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4" {...storyblokEditable(blok)}>
     {products.map(product => (
       <div className="border border-aldiGray2 rounded" key={product.id}>
         <EachProduct item={product} available={available(product)}
