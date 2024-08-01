@@ -16,8 +16,10 @@ import ProductGrid from './ProductGrid'
 import PdpTitle from './pdp/PdpTitle'
 import PdpPage from './pdp/PdpPage'
 import PdpImage from './pdp/PdpImage'
+import PdpColumnLayout1 from './pdp/PdpColumnLayout1'
 import PdpColumnLayout2 from './pdp/PdpColumnLayout2'
 import PdpDescription from './pdp/PdpDescription'
+import PdpBreadcrumbs from './pdp/PdpBreadcrumbs'
 
 export const componentList = () => {
   return {
@@ -37,9 +39,11 @@ export const componentList = () => {
     aec_sub_headline: SubHeadline,
     aec_product_grid: ProductGrid,
     "product-detail-page": PdpPage,
+    aec_pdp_column_layout_1: PdpColumnLayout1,
     aec_pdp_column_layout_2: PdpColumnLayout2,
     aec_pdp_image: PdpImage,
     aec_pdp_title: PdpTitle,
-    aec_pdp_description: PdpDescription
+    aec_pdp_description: PdpDescription,
+    aec_pdp_breadcrumbs: PdpBreadcrumbs
   }
 }

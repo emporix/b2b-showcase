@@ -3,7 +3,7 @@ import { StoryblokComponent } from '@storyblok/react'
 
 const PdpColumnLayout2 = ({ blok, ...restProps }) => {
   return (<div
-    className="grid grid-cols-1 md:grid-cols-2 mx-4 xl:mx-auto w-full max-w-screen-xl my-10 gap-8">
+    className="grid grid-cols-1 md:grid-cols-2 mx-4 xl:mx-auto w-full max-w-screen-xl my-10 gap-x-8">
     <div>{blok.leftColumn.map(
       (childBlok) => (<Fragment key={childBlok._uid}>
         <StoryblokComponent blok={childBlok} {...restProps} />
