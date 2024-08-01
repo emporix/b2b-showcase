@@ -89,8 +89,7 @@ const FsGenericComponent = ({ data }) => {
       const {pt_title, pt_keywords, pt_description} = componentData
 
       return (
-          <>
-            <div data-preview-id={page?.previewId}>
+          <div data-preview-id={page?.previewId}>
             <Helmet>
               {pt_title ? <title>{pt_title}</title> : null}
               {pt_keywords ? <meta name="keyword" content={pt_keywords}/> : null}
@@ -99,8 +98,7 @@ const FsGenericComponent = ({ data }) => {
               <div data-preview-id={pageBody.previewId}>
                 {pageBody?.[0]?.children ? <FsGenericComponentList componentData={pageBody[0].children}/> : null}
               </div>
-            </div>
-            </>
+          </div>
       )
 
     case 'productpage':

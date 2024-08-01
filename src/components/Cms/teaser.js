@@ -1,5 +1,5 @@
 import React from 'react'
-import { useParams } from 'react-router-dom'
+import {useParams} from 'react-router-dom'
 import './teaser.css'
 
 // for content like teasers or simple content with with title, text and image (manufacturer, manufacturer process)
@@ -15,7 +15,7 @@ export const Teaser = (props) => {
 
   if (headline === undefined && text === undefined && image === undefined) return
   return (
-    <div
+    <div data-preview-id={props?.props?.previewId}
       className={`fs-${classId} mx-0 py-8 md:py-24 flex justify-center items-center`}
       style={
         image
