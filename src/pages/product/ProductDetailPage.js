@@ -586,7 +586,7 @@ const ProductDetailInfo = ({ product }) => {
   const { getLocalizedValue } = useLanguage()
   const { t } = useTranslation('products')
 
-  console.log(product)
+  // console.log(product)
   return (
     <div className="product-detail-page-info-wrapper pb-12">
       <div className="product-detail-content">
