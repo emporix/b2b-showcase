@@ -23,9 +23,9 @@ const ProductGrid = ({ blok }) => {
   }, [blok])
 
   return <div
-    className="mx-4 xl:mx-auto gap-2 w-full max-w-screen-xl my-10 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4" {...storyblokEditable(blok)}>
+    className="mx-4 xl:mx-auto gap-2 max-w-screen-xl my-10 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4" {...storyblokEditable(blok)}>
     {products.map(product => (
-      <div className="border border-aldiGray2 rounded cursor-pointer" key={product.id}>
+      <div className="border border-aldiGray2 rounded" key={product.id}>
         <EachProduct item={product} available={available(product)}
                      productCount={8} rating={4} />
       </div>

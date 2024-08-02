@@ -52,10 +52,12 @@ const EachProduct = ({ item, available, rating, productCount }) => {
 
   const navigate = useNavigate()
   const handleProductDetail = useCallback(() => {
+    console.log(`/${userTenant}/product/details/${item.id}`)
     navigate(`/${userTenant}/product/details/${item.id}`)
+    navigate(0)
   }, [userTenant, item.id])
   return (
-    <div className="p-4" onClick={handleProductDetail}>
+    <div className="p-4 cursor-pointer" onClick={handleProductDetail}>
       <div className="w-full h-5  justify-between hidden lg:flex">
         {item.productType !== 'PARENT_VARIANT' && (
           <div
@@ -95,7 +97,7 @@ const EachProduct = ({ item, available, rating, productCount }) => {
 
       <div
         className="pt-10 lg:w-[200px] lg:h-[260px] w-[100px] h-[140px] md:w-[150px] md:h-[200px] items-center mx-auto ">
-        <img src={trimImage(`${imageSrc}`)} className="mx-auto h-full" />
+        <img src={trimImage(`${imageSrc}`)} className="mx-auto h-full" alt="" />
       </div>
       <div className="mt-2 lg:mt-9 w-full ">
         <div

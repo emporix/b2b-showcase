@@ -7,7 +7,7 @@ const PdpPrice = ({ blok, ...restProps }) => {
   const { currentLanguage } = useLanguage()
 
   return (
-    <div className="mb-8 flex flex-col" {...storyblokEditable()}>
+    <div className="flex flex-col" {...storyblokEditable()}>
       <div className="mb-1 flex flex-row">
         <div className="text-4xl text-aldiBlue4 font-aldiCondensed font-bold">{product.price.effectiveValue}</div>
         <div>*</div>

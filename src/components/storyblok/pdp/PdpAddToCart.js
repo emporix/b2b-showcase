@@ -10,7 +10,7 @@ const PdpAddToCart = ({ blok, ...restProps }) => {
   const product = restProps.product
   const [quantity, setQuantity] = useState(1)
   const { setShowCart } = useContext(LayoutContext)
-  const { syncCart, putCartProduct } = useCart()
+  const { putCartProduct } = useCart()
   const { currentLanguage } = useLanguage()
 
   const increaseQty = () => {
@@ -40,10 +40,10 @@ const PdpAddToCart = ({ blok, ...restProps }) => {
         }}
       />
     </div>
-    <div className="">
+    <div className="flex w-full">
       <button
         disabled={!product.price}
-        className="ml-4 flex flex-row w-[448px] h-[50px] place-items-center place-content-center bg-aldiBlue6 hover:bg-aldiBlue7 rounded text-white uppercase font-bold"
+        className="ml-4 flex flex-row w-full max-w-[448px] h-[50px] place-items-center place-content-center bg-aldiBlue6 hover:bg-aldiBlue7 rounded text-white uppercase font-bold"
         onClick={() =>
           HandleProductAddToCart1(product, setShowCart, quantity)
         }

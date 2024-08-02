@@ -24,7 +24,7 @@ const PdpBreadcrumbs = ({ blok, ...restProps }) => {
           return row.link === '' ? (
             <p
               key={index}
-              className="text-[12px] text-aldiBlue4"
+              className="text-xs text-aldiBlue4"
             >
               {row.caption}
             </p>
@@ -37,9 +37,9 @@ const PdpBreadcrumbs = ({ blok, ...restProps }) => {
               href={row.link}
             >
               {index !== categoryTree.length - 1 ? (
-                <p className="text-[12px] text-aldiBlue4">{row.caption}</p>
+                <p className="text-xs text-aldiBlue4">{row.caption}</p>
               ) : (
-                <p className="text-[12px] font-bold text-aldiBlue4">{row.caption}</p>
+                <p className="text-xs font-bold text-aldiBlue4">{row.caption}</p>
               )}
             </Link>
           )

@@ -5,7 +5,7 @@ const PdpTitle = ({blok, ...restProps} ) => {
   const product = restProps.product
   const { getLocalizedValue } = useLanguage()
 
-  return (<h1 className="text-aldiBlue4 font-bold text-4xl pb-6" {...storyblokEditable(blok)}>
+  return (<h1 className="text-aldiBlue4 font-bold text-4xl" {...storyblokEditable(blok)}>
     {getLocalizedValue(product.name)}
   </h1>)
 }
