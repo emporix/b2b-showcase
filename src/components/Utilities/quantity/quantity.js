@@ -1,48 +1,52 @@
 import React from 'react'
 import './quantity.css'
 
-const Quantity = ({ value, increase = () => {}, decrease = () => {}, onChange = (value) => {} }) => {
+const Quantity = ({
+                    value, increase = () => {
+  }, decrease = () => {
+  }, onChange = (value) => {
+  },
+                  }) => {
   return (
-    <div className="quantity-input rounded border border-quartz" sx={{ width: '84px' }}>
+    <div className="flex h-[50px] flex-row rounded border border-aldiGray3">
       <button
         id="quantity-decrease"
-        className="quantity-input_modifier quantity-input__modifier--left"
+        className="w-[48px] flex flex-col items-center justify-center"
         onClick={() => decrease()}
       >
         <svg
-          width="10"
-          height="3"
-          viewBox="0 0 10 3"
-          fill="none"
+          width="20"
+          height="2"
+          viewBox="0 0 20 2"
           xmlns="http://www.w3.org/2000/svg"
+          className="fill-aldiGray3 stroke-2 stroke-aldiGray3"
         >
-          <path d="M10 0.908417V2.47092H0V0.908417H10Z" fill="#818385" />
+          <path d="M 0 1 H 20 V 0 H 0 Z" />
         </svg>
       </button>
-      <input className="quantity-input_screen" value={value} onChange={(ev) => {
-        window.console.log(ev.target.value)
-        if(!ev.target.value) {
+      <input
+        className="w-[50px] text-center border border-x-1 border-y-0 border-aldiGray3"
+        value={value} onChange={(ev) => {
+        if (!ev.target.value) {
           onChange(1)
-        } else if(!isNaN(ev.target.value)) {
+        } else if (!isNaN(ev.target.value)) {
           onChange(parseInt(ev.target.value))
         }
       }} />
       <button
         id="quantity-increase"
-        className="quantity-input_modifier quantity-input__modifier--right"
+        className="w-[48px] flex flex-col items-center justify-center"
         onClick={() => increase()}
       >
         <svg
-          width="10"
-          height="10"
-          viewBox="0 0 10 10"
-          fill="none"
+          width="22"
+          height="22"
+          viewBox="0 0 21 21"
           xmlns="http://www.w3.org/2000/svg"
+          className="fill-aldiGray3 stroke-1 stroke-aldiGray3"
         >
           <path
-            d="M3.89205 9.37717V0.00216675H5.48295V9.37717H3.89205ZM0 5.48512V3.89421H9.375V5.48512H0Z"
-            fill="#818385"
-          />
+            d="M 0 11 h 10 V 21 H 11 V 11 H 21 V 10 H 11 V 0 H 10 V 10 H 0 Z" />
         </svg>
       </button>
     </div>

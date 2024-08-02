@@ -13,8 +13,8 @@ const PdpPrice = ({ blok, ...restProps }) => {
         <div>*</div>
       </div>
       <div className="flex flex-row text-xs">
-        <div className="text-aldiGray3">{getVAT(currentLanguage, true)}</div>
-        <div className="text-aldiBlue1 ml-2">{getShipment(currentLanguage)}</div>
+        <div className="text-aldiGray4">{getVAT(currentLanguage, true)}</div>
+        <div className="text-aldiBlue6 ml-2">{getShipment(currentLanguage)}</div>
       </div>
     </div>
   )
