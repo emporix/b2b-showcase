@@ -14,11 +14,7 @@ const ContentOverview = () => {
   const getData = async () => {
     let data = await getLocalizedCmsNavigation(currentLanguage)
     data = data.data.cmsNavigation.filter((item) => {
-      return (
-        (item.seoRoute?.startsWith('/Content') || item.seoRoute?.startsWith('/Inhalt')) &&
-        item.label !== 'Content' &&
-        item.label !== 'Inhalt'
-      )
+      return item.seoRoute?.startsWith('/Content') || item.seoRoute?.startsWith('/Inhalt')
     })
 
     setContent(data)
@@ -36,9 +32,6 @@ const ContentOverview = () => {
             <button onClick={() => navigate('/n11showcase' + item.seoRoute)}>{item.label}</button>
           </div>
         ))}
-        {/* <div>
-          <button onClick={() => navigate('/n11showcase/glossary')}>{t('glossary') + '- hier'}</button>
-        </div> */}
       </div>
     </Layout>
   )
