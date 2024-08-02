@@ -23,6 +23,7 @@ import PdpBreadcrumbs from './pdp/PdpBreadcrumbs'
 import PdpId from './pdp/PdpId'
 import PdpPrice from './pdp/PdpPrice'
 import PdpAddToCart from './pdp/PdpAddToCart'
+import PdpAccordion from './pdp/PdpAccordion'
 
 export const componentList = () => {
   return {
@@ -51,5 +52,6 @@ export const componentList = () => {
     aec_pdp_id: PdpId,
     aec_pdp_price: PdpPrice,
     aec_pdp_add_to_cart: PdpAddToCart,
+    aec_pdp_accordion: PdpAccordion,
   }
 }
