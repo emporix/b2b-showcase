@@ -20,6 +20,9 @@ import PdpColumnLayout1 from './pdp/PdpColumnLayout1'
 import PdpColumnLayout2 from './pdp/PdpColumnLayout2'
 import PdpDescription from './pdp/PdpDescription'
 import PdpBreadcrumbs from './pdp/PdpBreadcrumbs'
+import PdpId from './pdp/PdpId'
+import PdpPrice from './pdp/PdpPrice'
+import PdpAddToCart from './pdp/PdpAddToCart'
 
 export const componentList = () => {
   return {
@@ -44,6 +47,9 @@ export const componentList = () => {
     aec_pdp_image: PdpImage,
     aec_pdp_title: PdpTitle,
     aec_pdp_description: PdpDescription,
-    aec_pdp_breadcrumbs: PdpBreadcrumbs
+    aec_pdp_breadcrumbs: PdpBreadcrumbs,
+    aec_pdp_id: PdpId,
+    aec_pdp_price: PdpPrice,
+    aec_pdp_add_to_cart: PdpAddToCart,
   }
 }
