@@ -13,9 +13,9 @@ const PdpLabels = ({ blok, ...restProps }) => {
     })
   }, [product])
 
-  return labels && (<div className="grid grid-cols-[40px,1fr] items-center" {...storyblokEditable(blok)}>
+  return labels && (<div className="grid grid-cols-[50px,1fr] auto-rows-[50px] items-center" {...storyblokEditable(blok)}>
     {labels.map((label) => <Fragment key={label.id}>
-      <img className="w-10 h-10 justify-self-center" src={label.image} alt="" />
+      <img className="justify-self-center" src={label.image} alt="" />
       <div className="ml-2 text-aldiBlue4">{label.name}</div>
     </Fragment>)}
   </div>)
