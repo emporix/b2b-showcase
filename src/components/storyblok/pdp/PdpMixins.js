@@ -3,7 +3,10 @@ import { AccordionItem } from '../../Utilities/accordion'
 import React, { Fragment } from 'react'
 import HtmlTextBox from '../HtmlTextBox'
 
-const ignoreMixins = ['productCustomAttributes', 'productAdditionalInformation']
+const ignoreMixins = [
+  'productCustomAttributes',
+  'productAdditionalInformation',
+  'productVariantAttributes']
 
 const PdpMixins = ({ blok, ...restProps }) => {
   const product = restProps.product
