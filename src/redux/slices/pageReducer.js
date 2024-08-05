@@ -21,9 +21,9 @@ export const initialState = {
       url: 'storefinder'
     },
     {
-      title: 'about_us',
+      title: 'technical',
       items: [],
-      url: 'aboutus',
+      url: 'technical',
     },
   ],
   tenantList: [],
