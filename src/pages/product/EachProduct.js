@@ -30,6 +30,12 @@ const EachProduct = ({ item, available, rating }) => {
   )
 
   return (
+  <a
+      href={`/${userTenant}/product/details/${item.id}`}
+      target="_blank"
+      rel="noopener noreferrer"
+      className="no-underline"
+  >
     <div
       className="p-4 bg-aliceBlue standard_box_shadow rounded-xl h-full flex flex-col gap-4  cursor-pointer"
       onClick={() => handleProductDetail(item)}
@@ -106,6 +112,7 @@ const EachProduct = ({ item, available, rating }) => {
         </div>
       )}
     </div>
+</a>
   )
 }
 
