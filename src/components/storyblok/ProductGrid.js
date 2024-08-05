@@ -10,7 +10,7 @@ import { storyblokEditable } from '@storyblok/react'
 const ProductGrid = ({ blok }) => {
   const [products, setProducts] = useState([])
   const availability = useSelector(availabilityDataSelector)
-  const available = (item) => availability['k' + item.id]?.available
+  const available = (product) => availability['k' + product.id]?.available
 
   useEffect(() => {
     const fetchProducts = async () => {

@@ -11,7 +11,6 @@ const PdpUSPs = ({blok, ...restProps} ) => {
     return usps.filter(usp => usp.language === currentLanguage)[0]?.value
   }
 
-  console.log(getLocalizedUSPs() )
   return (<div className="text-aldiBlue4" {...storyblokEditable(blok)}>
     <HtmlTextBox text={getLocalizedUSPs()} />
   </div>)

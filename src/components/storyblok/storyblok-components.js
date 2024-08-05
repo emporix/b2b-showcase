@@ -28,6 +28,7 @@ import PdpBrand from './pdp/PdpBrand'
 import PdpLabels from './pdp/PdpLabels'
 import PdpMixins from './pdp/PdpMixins'
 import PdpUSPs from './pdp/PdpUSPs'
+import PdpRelatedProducts from './pdp/PdpRelatedProducts'
 
 export const componentList = () => {
   return {
@@ -60,6 +61,7 @@ export const componentList = () => {
     aec_pdp_brand: PdpBrand,
     aec_pdp_labels: PdpLabels,
     aec_pdp_mixins: PdpMixins,
-    aec_pdp_usps: PdpUSPs
+    aec_pdp_usps: PdpUSPs,
+    aec_pdp_related_products: PdpRelatedProducts
   }
 }
