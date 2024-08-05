@@ -24,6 +24,10 @@ import PdpId from './pdp/PdpId'
 import PdpPrice from './pdp/PdpPrice'
 import PdpAddToCart from './pdp/PdpAddToCart'
 import PdpAccordion from './pdp/PdpAccordion'
+import PdpBrand from './pdp/PdpBrand'
+import PdpLabels from './pdp/PdpLabels'
+import PdpMixins from './pdp/PdpMixins'
+import PdpUSPs from './pdp/PdpUSPs'
 
 export const componentList = () => {
   return {
@@ -53,5 +57,9 @@ export const componentList = () => {
     aec_pdp_price: PdpPrice,
     aec_pdp_add_to_cart: PdpAddToCart,
     aec_pdp_accordion: PdpAccordion,
+    aec_pdp_brand: PdpBrand,
+    aec_pdp_labels: PdpLabels,
+    aec_pdp_mixins: PdpMixins,
+    aec_pdp_usps: PdpUSPs
   }
 }
