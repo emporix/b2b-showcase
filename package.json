@@ -23,6 +23,7 @@
     "env-cmd": "^10.1.0",
     "history": "^5.3.0",
     "html-react-parser": "^3.0.4",
+    "isomorphic-dompurify": "^2.14.0",
     "react": "^18.2.0",
     "react-animated-slider": "^1.1.4",
     "react-async": "^10.0.1",

@@ -5,7 +5,7 @@ const StoryblokImage = (props) => {
 
   // see also storyblok image service https://www.storyblok.com/docs/image-service/
   const imageSource = (() => {
-    return props.src.toLowerCase().includes(".svg")
+    return props.src?.toLowerCase().includes(".svg")
       ? props.src
       : props.src + "/m/"
   })()

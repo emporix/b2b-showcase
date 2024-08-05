@@ -1,5 +1,6 @@
-import React, { useState, createContext, useContext } from 'react'
+import React, { createContext, useContext, useState } from 'react'
 import './accordion.css'
+import { cn } from '../../cssUtils'
 
 const AccordionContext = createContext()
 
@@ -7,57 +8,40 @@ export const AccordionItem = ({ index, title, children }) => {
 
   const { activeItem, setActiveItem } = useContext(AccordionContext)
   return (
-    <div className="accordiion-item-wrapper">
+    <div>
       <div
-        className={
-          activeItem == index
-            ? 'accordion-title active cursor-pointer'
-            : 'cursor-pointer accordion-title'
-        }
+        className="cursor-pointer flex"
         onClick={() =>
-          activeItem != index ? setActiveItem(index) : setActiveItem(-1)
+          activeItem !== index ? setActiveItem(index) : setActiveItem(-1)
         }
       >
-        <span className="w-full text-center">{title}</span>
-        <div className="accordion-arrow-action">
-          {activeItem == index ? (
-            <svg
-              width="15"
-              height="8"
-              viewBox="0 0 15 8"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                d="M1.5 1L7.5 7L13.5 1"
-                stroke="black"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-            </svg>
-          ) : (
-            <svg
-              width="9"
-              height="14"
-              viewBox="0 0 9 14"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                d="M1.5 13L7.5 7L1.5 1"
-                stroke="#ACAEB2"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-            </svg>
-          )}
+        <span
+          className="w-full mb-6 font-bold hover:text-aldiBlue6 text-aldiBlue4">{title}</span>
+        <div className="stroke-aldiBlue4">
+          <svg
+            width="14"
+            height="14"
+            viewBox="0 0 24 24"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+            className={cn('mt-1 mr-1',
+              { 'rotate-90': activeItem !== index },
+              { '-rotate-90': activeItem === index },
+            )}
+          >
+            <g fill="none" style={{ color: 'rgb0,82,194)' }}>
+              <polyline
+                fill="none"
+                strokeWidth="1.8"
+                points="7 1 18 12 7 23"
+              ></polyline>
+            </g>
+          </svg>
         </div>
       </div>
       <div
         className={
-          activeItem == index ? 'accordion-content' : 'accordion-content hidden'
+          activeItem === index ? 'block' : 'hidden'
         }
       >
         {children}
@@ -69,7 +53,8 @@ const Accordion = ({ children }) => {
   const [activeItem, setActiveItem] = useState(0)
   return (
     <AccordionContext.Provider value={{ activeItem, setActiveItem }}>
-      <div className="accordition-wrapper">{children}</div>
+      <div
+        className="grid grid-cols-1 gap-10 border-y border-aldiGray3 pt-6">{children}</div>
     </AccordionContext.Provider>
   )
 }

@@ -108,9 +108,7 @@
 .product-detail-page-content {
   @apply max-w-screen-xl mx-auto grid grid-cols-1 md:gap-12 gap-6;
 }
-.product-detail-category-caption-bar {
-  @apply  font-normal text-[14px] leading-[20px];
-}
+
 .MuiBreadcrumbs-separator {
   @apply !mx-2 !font-normal !text-[16px]/[24px]
 }

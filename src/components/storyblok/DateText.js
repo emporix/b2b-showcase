@@ -18,7 +18,7 @@ const DateText = ({ blok }) => {
   const dateText = date.toLocaleDateString(currentLanguage, options).replace(",", "")
   return (
     <div
-      className="mx-4 xl:mx-auto w-full max-w-screen-xl my-4 flex flex-row" {...storyblokEditable(
+      className="mx-4 xl:mx-auto max-w-screen-xl my-4 flex flex-row" {...storyblokEditable(
       blok)}>
       <img className="mt-[-1px] ml-[-10px]" src={calendar} alt="" />
       <h5 className="ml-2 text-xl font-bold text-aldiBlue4">{starting} {dateText}</h5>

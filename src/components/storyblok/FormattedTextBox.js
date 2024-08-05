@@ -19,11 +19,11 @@ const FormattedTextBox = (props) => {
         className={cn(
           'w-full md:max-w-none max-w-none',
           'prose-headings:leading-none prose-headings:font-medium',
-          'prose-ul:ml-2 prose-ul:mt-3 prose-ul:list-[square]',
+          'prose-ul:ml-2 prose-ul:mt-1 prose-ul:list-[disc]',
           'prose-ol:ml-2 prose-ol:mt-3',
-          'prose-li:m-3',
+          'prose-li:m-3 prose-li:text-aldiBlue4 prose-li:marker:text-aldiBlue4',
           'prose-a:no-underline',
-          'prose-p:tracking-[0px]'
+          'prose-p:tracking-[0px] prose-p:mb-2.5'
         )}
       >
         {render(props.text, resolvers)}
