@@ -8,7 +8,7 @@ export const AccordionItem = ({ index, title, children }) => {
 
   const { activeItem, setActiveItem } = useContext(AccordionContext)
   return (
-    <div>
+    <div className="border-b border-aldiGray3 py-6">
       <div
         className="cursor-pointer flex"
         onClick={() =>
@@ -16,8 +16,10 @@ export const AccordionItem = ({ index, title, children }) => {
         }
       >
         <span
-          className="w-full mb-6 font-bold hover:text-aldiBlue6 text-aldiBlue4">{title}</span>
-        <div className="stroke-aldiBlue4">
+          className={cn('w-full font-bold hover:text-aldiBlue6 text-aldiBlue4', {
+            "pb-6": activeItem === index
+          })}>{title}</span>
+        <div className="stroke-aldiBlue6">
           <svg
             width="14"
             height="14"
@@ -32,7 +34,7 @@ export const AccordionItem = ({ index, title, children }) => {
             <g fill="none" style={{ color: 'rgb0,82,194)' }}>
               <polyline
                 fill="none"
-                strokeWidth="1.8"
+                strokeWidth="3"
                 points="7 1 18 12 7 23"
               ></polyline>
             </g>
@@ -54,7 +56,7 @@ const Accordion = ({ children }) => {
   return (
     <AccordionContext.Provider value={{ activeItem, setActiveItem }}>
       <div
-        className="grid grid-cols-1 gap-10 border-y border-aldiGray3 pt-6">{children}</div>
+        className="grid grid-cols-1 border-t border-aldiGray3">{children}</div>
     </AccordionContext.Provider>
   )
 }

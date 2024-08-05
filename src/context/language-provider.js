@@ -37,15 +37,18 @@ export const LanguageProvider = ({ children }) => {
       if (currentSiteObject && currentSiteObject.languages) {
         setLanguages(currentSiteObject.languages)
         if (currentSiteObject.defaultLanguage) {
+          console.log("1", currentSiteObject.defaultLanguage)
           setLanguage(currentSiteObject.defaultLanguage)
         }
       }
     }
 
     if (window.location.pathname.startsWith('/en/')) {
+      console.log("en")
       setLanguage('en')
     }
     if (window.location.pathname.startsWith('/de/')) {
+      console.log("de")
       setLanguage('de')
     }
   }, [currentSite, sites.length])
