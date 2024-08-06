@@ -30,6 +30,7 @@ import PdpMixins from './pdp/PdpMixins'
 import PdpUSPs from './pdp/PdpUSPs'
 import PdpRelatedProducts from './pdp/PdpRelatedProducts'
 import PdpVariantSelection from './pdp/PdpVariantSelection'
+import PdpBundle from './pdp/PdpBundle'
 
 export const componentList = () => {
   return {
@@ -64,6 +65,7 @@ export const componentList = () => {
     aec_pdp_mixins: PdpMixins,
     aec_pdp_usps: PdpUSPs,
     aec_pdp_related_products: PdpRelatedProducts,
-    aec_pdp_variant_selection: PdpVariantSelection
+    aec_pdp_variant_selection: PdpVariantSelection,
+    aec_pdp_bundle: PdpBundle
   }
 }

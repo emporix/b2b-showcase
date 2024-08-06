@@ -40,26 +40,25 @@ const PdpPage = ({ blok }) => {
         return Object.assign({}, ...result)
       }
 
-      const getProductId = async () => {
-        const newProduct = await getProduct(productId)
-        if (newProduct.productType === 'PARENT_VARIANT') {
-          const newVariantAttributes = newProduct.variantAttributes
-          const childProduct = await getVariantChildren(productId).then((childProducts) => {
-            return childProducts.find(child =>
-              _.isEqual(child.mixins.productVariantAttributes,
-                defaultProductVariantAttributes(newVariantAttributes),
+      const evaluateProduct = async () => {
+        return getProduct(productId).then(newProduct => {
+          if (newProduct.productType === 'PARENT_VARIANT') {
+            const newVariantAttributes = newProduct.variantAttributes
+            return getVariantChildren(productId).then((childProducts) => {
+              return childProducts.find(child =>
+                _.isEqual(child.mixins.productVariantAttributes,
+                  defaultProductVariantAttributes(newVariantAttributes),
+                ),
               )
-            )
-          })
-          return childProduct.id
-         } else {
-          return productId
-        }
+            })
+          } else {
+            return newProduct
+          }
+        })
       }
 
       try {
-        const productId = await getProductId()
-        let res = await getProduct(productId)
+        let res = await evaluateProduct()
         res.src = res.media[0] === undefined ? '' : res.media[0]['url']
         let stock,
           stockLevel = 0
@@ -97,9 +96,10 @@ const PdpPage = ({ blok }) => {
           productId,
         )
         if (category.length > 0) {
-          let { data: categories } = await getAllParentCategories(
+          let parentCategories = await getAllParentCategories(
             category[0]['id'],
           )
+          const categories = parentCategories ? parentCategories.data : []
           categories.push(category[0])
           let rootCategory, subCategory
           let childCategories = {}
@@ -114,7 +114,7 @@ const PdpPage = ({ blok }) => {
           subCategory = childCategories[rootCategory.id]
 
           rootCategory = subCategory
-          productCategory.push(subCategory.name)
+          subCategory && productCategory.push(subCategory.name)
 
           res.category = productCategory
           setProduct((prev) => ({ ...prev, data: res }))
@@ -125,12 +125,17 @@ const PdpPage = ({ blok }) => {
     })()
   }, [productId, currentSite, currentLanguage, activeCurrency])
 
+  useEffect(() => {
+    console.log(product)
+  }, [product])
+
   return product.loading ? (
     <LoadingCircleProgress1 />
   ) : (<main {...storyblokEditable(blok)}>
     {blok.body && blok.body.map((blok, index) => {
       return index !== 1 ?
-        <StoryblokComponent blok={blok} key={blok._uid} product={product.data} /> :
+        <StoryblokComponent blok={blok} key={blok._uid}
+                            product={product.data} /> :
         <Fragment key={blok._uid}>
           <div className="h-[80px] md:h-[136px]" />
           <StoryblokComponent blok={blok} product={product.data} />

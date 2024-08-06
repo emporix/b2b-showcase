@@ -13,7 +13,7 @@ const PdpBrand = ({ blok, ...restProps }) => {
     })
   }, [product])
 
-  return (<div
+  return (brand && <div
     className="text-aldiGray4 uppercase font-bold text-[14px] " {...storyblokEditable(
     blok)}>
     {blok.showPicture ? <img src={brand?.image} alt="" /> : brand?.name}

@@ -7,6 +7,7 @@ import { useSelector } from 'react-redux'
 import {
   availabilityDataSelector,
 } from '../../../redux/slices/availabilityReducer'
+import priceService from '../../../services/product/price.service'
 
 const PdpRelatedProducts = ({ blok, ...restProps }) => {
   const product = restProps.product
@@ -16,10 +17,15 @@ const PdpRelatedProducts = ({ blok, ...restProps }) => {
   const available = (product) => availability['k' + product.id]?.available
 
   useEffect(() => {
-    const productIds = product.relatedItems.map(item => item.refId)
+    const productIds = product.relatedItems?.map(item => item.refId)
     productService.getProductsWithIds(productIds).
       then(result => {
-        setRelatedProducts(result)
+        priceService.getPriceWithProductIds(result.map(item => item.id)).then((prices) => {
+          const newRelatedProducts = result.map((pi, index) => {
+            return {...result[index], price: prices[index]}
+          })
+          setRelatedProducts(newRelatedProducts)
+        })
       })
   }, [product])
 
@@ -36,7 +42,7 @@ const PdpRelatedProducts = ({ blok, ...restProps }) => {
             {relatedProducts.map((item, index) => (
               <div className="w-fit" key={'PdpRelatedProducts' + index}>
                 <div className="mx-2 border rounded border-aldiGray2">
-                  <EachProduct item={product} available={available(product)}
+                  <EachProduct item={item} available={available(product)}
                                productCount={product.productCount}
                                rating={product.rating} />
                 </div>

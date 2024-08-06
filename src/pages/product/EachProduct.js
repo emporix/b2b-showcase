@@ -52,7 +52,6 @@ const EachProduct = ({ item, available, rating, productCount }) => {
 
   const navigate = useNavigate()
   const handleProductDetail = useCallback(() => {
-    console.log(`/${userTenant}/product/details/${item.id}`)
     navigate(`/${userTenant}/product/details/${item.id}`)
     navigate(0)
   }, [userTenant, item.id])
