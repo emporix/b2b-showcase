@@ -16,6 +16,7 @@ import {
 } from '../../../services/product/category.service'
 import { StoryblokComponent, storyblokEditable } from '@storyblok/react'
 import { LoadingCircleProgress1 } from '../../Utilities/progress'
+import _ from 'lodash'
 
 const PdpPage = ({ blok }) => {
 
@@ -25,16 +26,39 @@ const PdpPage = ({ blok }) => {
     data: null,
   })
   const availability = useSelector(availabilityDataSelector)
-  const { getProduct } = useProducts()
+  const { getProduct, getVariantChildren } = useProducts()
   const { activeCurrency } = useCurrency()
   const { currentLanguage } = useLanguage()
   const { currentSite } = useSites()
 
-  console.log(product)
-
   useEffect(() => {
     ;(async () => {
+
+      const defaultProductVariantAttributes = (variantAttributes) => {
+        const result = Object.entries(variantAttributes).map(([k, v]) =>
+          ({ [k]: v[0].key }))
+        return Object.assign({}, ...result)
+      }
+
+      const getProductId = async () => {
+        const newProduct = await getProduct(productId)
+        if (newProduct.productType === 'PARENT_VARIANT') {
+          const newVariantAttributes = newProduct.variantAttributes
+          const childProduct = await getVariantChildren(productId).then((childProducts) => {
+            return childProducts.find(child =>
+              _.isEqual(child.mixins.productVariantAttributes,
+                defaultProductVariantAttributes(newVariantAttributes),
+              )
+            )
+          })
+          return childProduct.id
+         } else {
+          return productId
+        }
+      }
+
       try {
+        const productId = await getProductId()
         let res = await getProduct(productId)
         res.src = res.media[0] === undefined ? '' : res.media[0]['url']
         let stock,

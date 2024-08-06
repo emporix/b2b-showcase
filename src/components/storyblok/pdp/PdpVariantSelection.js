@@ -16,44 +16,24 @@ const PdpVariantSelection = ({ blok, ...restProps }) => {
   const navigate = useNavigate()
   const { userTenant } = useAuth()
 
-  const isVariant = (product) => product &&
-    ['PARENT_VARIANT', 'VARIANT'].includes(product.productType)
-
-  const defaultProductVariantAttributes = (variantAttributes) => {
-    const result = Object.entries(variantAttributes).map(([k, v]) =>
-      ({ [k]: v[0].key }))
-    return Object.assign({}, ...result)
-  }
-
-  if (isVariant(product)) {
-    if (product.productType === 'PARENT_VARIANT') {
-      const newVariantAttributes = product.variantAttributes
-      getVariantChildren(product.id).then((childProducts) => {
-        const childProduct = childProducts.find(child =>
-          _.isEqual(child.mixins.productVariantAttributes,
-            defaultProductVariantAttributes(newVariantAttributes),
-          ),
-        )
-        navigate(`/${userTenant}/product/details/${childProduct.id}`)
-      })
-    }
-  }
+  const isChildVariant = product.productType === 'VARIANT'
 
   useEffect(() => {
-    if (isVariant(product)) {
-      if (product.productType === 'VARIANT') {
-        getProduct(product.parentVariantId).
-          then(parentProduct => {
-            setTemplateAttributes(parentProduct.template.attributes.filter(
-              attribute => attribute.metadata.variantAttribute === true))
-            setProductVariantAttributes(product.mixins.productVariantAttributes)
-          })
-      }
+    if (isChildVariant) {
+      getProduct(product.parentVariantId).
+        then(parentProduct => {
+          setTemplateAttributes(parentProduct.template.attributes.filter(
+            attribute => attribute.metadata.variantAttribute === true))
+          setProductVariantAttributes(product.mixins.productVariantAttributes)
+        })
     }
   }, [product])
 
   const handleClick = (attribute, value) => {
-    const newProductVariantAttributes = { ...productVariantAttributes,  [attribute.key]: value.key}
+    const newProductVariantAttributes = {
+      ...productVariantAttributes,
+      [attribute.key]: value.key,
+    }
     getVariantChildren(product.parentVariantId).then((childProducts) => {
       const childProduct = childProducts.find(child =>
         _.isEqual(child.mixins.productVariantAttributes,
@@ -68,7 +48,7 @@ const PdpVariantSelection = ({ blok, ...restProps }) => {
     return productVariantAttributes[attribute.key] === value.key
   }
 
-  return (isVariant(product) &&
+  return (isChildVariant &&
     <div className="text-aldiBlue4" {...storyblokEditable(blok)}>
       {templateAttributes.map(attribute => <div className="mb-3"
                                                 key={'PdpVariantSelection_' +
