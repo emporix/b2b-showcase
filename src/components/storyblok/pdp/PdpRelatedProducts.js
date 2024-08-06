@@ -14,7 +14,8 @@ const PdpRelatedProducts = ({ blok, ...restProps }) => {
   const [relatedProducts, setRelatedProducts] = useState([])
   const { currentLanguage } = useLanguage()
   const availability = useSelector(availabilityDataSelector)
-  const available = (product) => availability['k' + product.id]?.available
+  const stockLevel = (product) => availability['k' + product.id]?.stockLevel
+  const available = (product) => stockLevel(product) > 0
 
   useEffect(() => {
     const productIds = product.relatedItems?.map(item => item.refId)
@@ -42,9 +43,9 @@ const PdpRelatedProducts = ({ blok, ...restProps }) => {
             {relatedProducts.map((item, index) => (
               <div className="w-fit" key={'PdpRelatedProducts' + index}>
                 <div className="mx-2 border rounded border-aldiGray2">
-                  <EachProduct item={item} available={available(product)}
-                               productCount={product.productCount}
-                               rating={product.rating} />
+                  <EachProduct item={item} available={available(item)}
+                               productCount={stockLevel(item)}
+                               rating={item.rating} />
                 </div>
               </div>
             ))}

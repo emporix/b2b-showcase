@@ -71,15 +71,15 @@ const EachProduct = ({ item, available, rating, productCount }) => {
           </div>
         )}
         <div className="flex h-5 float-right lg:float-none">
-          <ReactStars size={16} value={rating} color2={'#00B6ED'} />(
-          {productCount})
+          <ReactStars size={16} value={rating} color2={'#00B6ED'} />
+          {productCount && `(${productCount})`}
         </div>
       </div>
 
       <div className=" block float-right lg:hidden">
         <div className=" flex h-5  float-right">
-          <ReactStars size={16} value={rating} color2={'#00B6ED'} />(
-          {productCount})
+          <ReactStars size={16} value={rating} color2={'#00B6ED'} />
+          {productCount && `(${productCount})`}
         </div>
         <br />
         <div
