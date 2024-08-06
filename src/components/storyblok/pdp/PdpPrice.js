@@ -17,7 +17,7 @@ const PdpPrice = ({ blok, ...restProps }) => {
   return (
     <div className="flex flex-col text-aldiBlue4" {...storyblokEditable()}>
       {isDiscounted && <div
-        className="line-through font-aldiCondensed font-bold">{currentLanguage ===
+        className="line-through font-aldiCondensed font-bold text-xl">{currentLanguage ===
       'de' ? 'UVP' : 'USP'} {product.price.originalValue}</div>}
       <div className="mb-1 flex flex-row">
         <div
