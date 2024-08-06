@@ -52,7 +52,6 @@ const EachProduct = ({ item, available, rating, productCount }) => {
 
   const navigate = useNavigate()
   const handleProductDetail = useCallback(() => {
-    console.log(`/${userTenant}/product/details/${item.id}`)
     navigate(`/${userTenant}/product/details/${item.id}`)
     navigate(0)
   }, [userTenant, item.id])
@@ -72,15 +71,15 @@ const EachProduct = ({ item, available, rating, productCount }) => {
           </div>
         )}
         <div className="flex h-5 float-right lg:float-none">
-          <ReactStars size={16} value={rating} color2={'#00B6ED'} />(
-          {productCount})
+          <ReactStars size={16} value={rating} color2={'#00B6ED'} />
+          {productCount && `(${productCount})`}
         </div>
       </div>
 
       <div className=" block float-right lg:hidden">
         <div className=" flex h-5  float-right">
-          <ReactStars size={16} value={rating} color2={'#00B6ED'} />(
-          {productCount})
+          <ReactStars size={16} value={rating} color2={'#00B6ED'} />
+          {productCount && `(${productCount})`}
         </div>
         <br />
         <div
@@ -174,7 +173,7 @@ const EachProduct = ({ item, available, rating, productCount }) => {
           <LargePrimaryButton
             className="cta-button bg-aldiBlue1"
             sx={{ backgroundColor: '#FAC420 !important' }}
-            title={'VIEW VARIANTS'}
+            title={currentLanguage === 'de' ? 'VARIANTEN' : 'VIEW VARIANTS'}
             onClick={handleProductDetail}
           />
         </div>

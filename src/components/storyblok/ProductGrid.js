@@ -10,7 +10,8 @@ import { storyblokEditable } from '@storyblok/react'
 const ProductGrid = ({ blok }) => {
   const [products, setProducts] = useState([])
   const availability = useSelector(availabilityDataSelector)
-  const available = (item) => availability['k' + item.id]?.available
+  const stockLevel = (product) => availability['k' + product.id]?.stockLevel
+  const available = (product) => stockLevel(product) > 0
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -27,7 +28,7 @@ const ProductGrid = ({ blok }) => {
     {products.map(product => (
       <div className="border border-aldiGray2 rounded" key={product.id}>
         <EachProduct item={product} available={available(product)}
-                     productCount={8} rating={4} />
+                     productCount={stockLevel(product)} rating={product.productRating} />
       </div>
     ))}
   </div>

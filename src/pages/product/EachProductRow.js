@@ -12,7 +12,7 @@ import { useNavigate } from 'react-router-dom'
 import { useLanguage } from 'context/language-provider'
 
 const EachProductRow = ({ item, type, available, rating, productCount }) => {
-  const { getLocalizedValue } = useLanguage()
+  const { currentLanguage, getLocalizedValue } = useLanguage()
   const imageSrc = useMemo(() => {
     return item.media[0] === undefined ? '' : item.media[0]['url']
   }, [item])
@@ -42,7 +42,8 @@ const EachProductRow = ({ item, type, available, rating, productCount }) => {
     if (price) {
       return <CurrencyBeforeValue value={price} />
     } else {
-      return <span className="text-xs text-primaryBlue font-bold">No Price</span>
+      return <span
+        className="text-xs text-primaryBlue font-bold">No Price</span>
     }
   }
   return (
@@ -125,7 +126,7 @@ const EachProductRow = ({ item, type, available, rating, productCount }) => {
           ) : (
             <div>
               <LargePrimaryButton
-                title={'VIEW VARIANTS'}
+                title={currentLanguage === 'de' ? 'VARIANTEN' : 'VIEW VARIANTS'}
                 onClick={handleProductDetail}
                 className="cta-button bg-aldiBlue1"
                 sx={{ backgroundColor: '#FAC420 !important' }}

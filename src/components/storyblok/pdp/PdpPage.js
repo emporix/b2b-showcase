@@ -16,6 +16,7 @@ import {
 } from '../../../services/product/category.service'
 import { StoryblokComponent, storyblokEditable } from '@storyblok/react'
 import { LoadingCircleProgress1 } from '../../Utilities/progress'
+import _ from 'lodash'
 
 const PdpPage = ({ blok }) => {
 
@@ -25,17 +26,39 @@ const PdpPage = ({ blok }) => {
     data: null,
   })
   const availability = useSelector(availabilityDataSelector)
-  const { getProduct } = useProducts()
+  const { getProduct, getVariantChildren } = useProducts()
   const { activeCurrency } = useCurrency()
   const { currentLanguage } = useLanguage()
   const { currentSite } = useSites()
 
-  console.log(product)
-
   useEffect(() => {
     ;(async () => {
+
+      const defaultProductVariantAttributes = (variantAttributes) => {
+        const result = Object.entries(variantAttributes).map(([k, v]) =>
+          ({ [k]: v[0].key }))
+        return Object.assign({}, ...result)
+      }
+
+      const evaluateProduct = async () => {
+        return getProduct(productId).then(newProduct => {
+          if (newProduct.productType === 'PARENT_VARIANT') {
+            const newVariantAttributes = newProduct.variantAttributes
+            return getVariantChildren(productId).then((childProducts) => {
+              return childProducts.find(child =>
+                _.isEqual(child.mixins.productVariantAttributes,
+                  defaultProductVariantAttributes(newVariantAttributes),
+                ),
+              )
+            })
+          } else {
+            return newProduct
+          }
+        })
+      }
+
       try {
-        let res = await getProduct(productId)
+        let res = await evaluateProduct()
         res.src = res.media[0] === undefined ? '' : res.media[0]['url']
         let stock,
           stockLevel = 0
@@ -73,9 +96,10 @@ const PdpPage = ({ blok }) => {
           productId,
         )
         if (category.length > 0) {
-          let { data: categories } = await getAllParentCategories(
+          let parentCategories = await getAllParentCategories(
             category[0]['id'],
           )
+          const categories = parentCategories ? parentCategories.data : []
           categories.push(category[0])
           let rootCategory, subCategory
           let childCategories = {}
@@ -90,7 +114,7 @@ const PdpPage = ({ blok }) => {
           subCategory = childCategories[rootCategory.id]
 
           rootCategory = subCategory
-          productCategory.push(subCategory.name)
+          subCategory && productCategory.push(subCategory.name)
 
           res.category = productCategory
           setProduct((prev) => ({ ...prev, data: res }))
@@ -101,12 +125,17 @@ const PdpPage = ({ blok }) => {
     })()
   }, [productId, currentSite, currentLanguage, activeCurrency])
 
+  useEffect(() => {
+    console.log(product)
+  }, [product])
+
   return product.loading ? (
     <LoadingCircleProgress1 />
   ) : (<main {...storyblokEditable(blok)}>
     {blok.body && blok.body.map((blok, index) => {
       return index !== 1 ?
-        <StoryblokComponent blok={blok} key={blok._uid} product={product.data} /> :
+        <StoryblokComponent blok={blok} key={blok._uid}
+                            product={product.data} /> :
         <Fragment key={blok._uid}>
           <div className="h-[80px] md:h-[136px]" />
           <StoryblokComponent blok={blok} product={product.data} />

@@ -116,7 +116,8 @@ export const ProductListItems = ({ products, auth, displayType }) => {
   let available
   if (displayType) {
     products.forEach((item, i) => {
-      available = availability['k' + item.id]?.available
+      const stockLevel = availability['k' + item.id]?.stockLevel
+      available = stockLevel > 0
 
       switch ((i + 1) % 3) {
         case 1:
@@ -124,9 +125,9 @@ export const ProductListItems = ({ products, auth, displayType }) => {
             <div key={i} className="w-1/3 mr-2 border border-quartz rounded">
               <EachProduct
                 key={item.id}
-                available={available}
-                rating={4}
-                productCount={8}
+                available={stockLevel > 0}
+                rating={item.rating}
+                productCount={stockLevel}
                 item={item}
               />
             </div>
@@ -140,9 +141,9 @@ export const ProductListItems = ({ products, auth, displayType }) => {
             >
               <EachProduct
                 key={item.id}
-                available={available}
-                rating={4}
-                productCount={8}
+                available={stockLevel > 0}
+                rating={item.rating}
+                productCount={stockLevel}
                 item={item}
               />
             </div>
@@ -156,9 +157,9 @@ export const ProductListItems = ({ products, auth, displayType }) => {
             >
               <EachProduct
                 key={item.id}
-                available={available}
-                rating={4}
-                productCount={8}
+                available={stockLevel > 0}
+                rating={item.rating}
+                productCount={stockLevel}
                 item={item}
               />
             </div>
@@ -193,15 +194,16 @@ export const ProductListItems = ({ products, auth, displayType }) => {
     }
 
     products.forEach((item, i) => {
+      const stockLevel = availability['k' + item.id]?.stockLevel
       switch ((i + 1) % 2) {
         case 1:
           subItemArr.push(
             <div key={i} className="w-1/2 p-2">
               <EachProduct
                 key={item.id}
-                available={available}
-                rating={4}
-                productCount={8}
+                available={stockLevel > 0}
+                rating={item.rating}
+                productCount={stockLevel}
                 item={item}
               />
             </div>
@@ -215,9 +217,9 @@ export const ProductListItems = ({ products, auth, displayType }) => {
             >
               <EachProduct
                 key={item.id}
-                available={available}
-                rating={4}
-                productCount={8}
+                available={stockLevel > 0}
+                rating={item.rating}
+                productCount={stockLevel}
                 item={item}
               />
             </div>
@@ -252,12 +254,12 @@ export const ProductListItems = ({ products, auth, displayType }) => {
     }
   } else {
     products.forEach((item, i) => {
-      available = availability['k' + item.id]?.available
+      const stockLevel = availability['k' + item.id]?.stockLevel
       itemArr.push(
         <div key={i} className="w-full my-4 items-center">
           <EachProductRow
             key={item.id}
-            available={available}
+            available={stockLevel}
             item={item}
           />
         </div>
