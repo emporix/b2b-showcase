@@ -1,0 +1,17 @@
+.video-container {
+    position: relative;
+}
+
+.product-mini-container {
+    display: flex;
+    flex-wrap: wrap;
+    max-width: 80%;
+    max-height: 80%;
+    overflow: auto;
+    gap: 10px;
+}
+
+.product-mini-container > * {
+    max-width: 50px;
+    max-height: 50px;
+}
