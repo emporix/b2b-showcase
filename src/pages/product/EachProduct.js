@@ -174,7 +174,7 @@ const EachProduct = ({ item, available, rating, productCount }) => {
           <LargePrimaryButton
             className="cta-button bg-aldiBlue1"
             sx={{ backgroundColor: '#FAC420 !important' }}
-            title={'VIEW VARIANTS'}
+            title={currentLanguage === 'de' ? 'VARIANTEN' : 'VIEW VARIANTS'}
             onClick={handleProductDetail}
           />
         </div>
