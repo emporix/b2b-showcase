@@ -91,7 +91,10 @@ const PdpPage = ({ blok }) => {
         let prices = await priceService.getPriceWithProductIds([productId])
 
         // Set price...
-        if (prices.length > 0) res.price = prices[0]
+        if (prices.length > 0) {
+          res.price = prices[0]
+          res.prices = prices
+        }
         const category = await getRetrieveAllCategoriesWithResoureceId(
           productId,
         )
@@ -109,13 +112,10 @@ const PdpPage = ({ blok }) => {
             else childCategories[categories[c].parentId] = categories[c]
           }
           let productCategory = []
-          productCategory.push(rootCategory.name)
-
+          productCategory.push(rootCategory)
           subCategory = childCategories[rootCategory.id]
 
-          rootCategory = subCategory
-          subCategory && productCategory.push(subCategory.name)
-
+          subCategory && productCategory.push(subCategory)
           res.category = productCategory
           setProduct((prev) => ({ ...prev, data: res }))
         }

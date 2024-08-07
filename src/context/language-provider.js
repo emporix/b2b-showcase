@@ -23,6 +23,14 @@ export const LanguageProvider = ({ children }) => {
     localStorage.setItem(CURRENT_LANGUAGE_KEY, lang)
   }
 
+  const getLanguage = () => {
+    return localStorage.getItem(CURRENT_LANGUAGE_KEY)
+  }
+  const isLanguageSet = () => {
+    const language = getLanguage()
+    return language && language !== 'null' ? language.length > 0 : false
+  }
+
   const getLocalizedValue = (value) => {
     if (!value) return value
     if (typeof value === 'string' || value instanceof String) return value
@@ -36,21 +44,21 @@ export const LanguageProvider = ({ children }) => {
 
       if (currentSiteObject && currentSiteObject.languages) {
         setLanguages(currentSiteObject.languages)
-        if (currentSiteObject.defaultLanguage) {
-          console.log("1", currentSiteObject.defaultLanguage)
-          setLanguage(currentSiteObject.defaultLanguage)
+
+        if (window.location.pathname.startsWith('/en/')) {
+          setLanguage('en')
+        } else if (window.location.pathname.startsWith('/de/')) {
+          setLanguage('de')
+        } else if (isLanguageSet()) {
+          setLanguage(getLanguage())
+        } else {
+          if (currentSiteObject.defaultLanguage) {
+            setLanguage(currentSiteObject.defaultLanguage)
+          }
         }
       }
     }
 
-    if (window.location.pathname.startsWith('/en/')) {
-      console.log("en")
-      setLanguage('en')
-    }
-    if (window.location.pathname.startsWith('/de/')) {
-      console.log("de")
-      setLanguage('de')
-    }
   }, [currentSite, sites.length])
 
   if (!currentLanguage) {

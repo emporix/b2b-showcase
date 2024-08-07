@@ -10,6 +10,7 @@ import { formatPrice } from 'helpers/price'
 import { LargePrimaryButton } from 'components/Utilities/button'
 import { useNavigate } from 'react-router-dom'
 import { useLanguage } from 'context/language-provider'
+import HtmlTextBox from '../../components/storyblok/HtmlTextBox'
 
 const EachProductRow = ({ item, type, available, rating, productCount }) => {
   const { currentLanguage, getLocalizedValue } = useLanguage()
@@ -56,21 +57,22 @@ const EachProductRow = ({ item, type, available, rating, productCount }) => {
               : 'text-primaryBlue  font-bold text-xs float-right mb-14'
           }
         >
-          {available ? 'In Stock' : 'Out Of Stock'}
+          {item.productType !== 'PARENT_VARIANT' ?
+            (available ? 'In Stock' : 'Out Of Stock') :
+            ''}
         </div>
         <img src={trimImage(`${imageSrc}`, 200, 150)} className="self-center" />
       </div>
       <div className="flex-auto w-[55%]">
         <div className="text-xs font-bold text-gray">{item.code}</div>
-        <div className="text-2xl mt-4 font-semibold text-black h-16">
+        <div className="text-2xl mt-4 font-semibold text-aldiBlue4 h-16">
           {getLocalizedValue(item.name)}
         </div>
         <div className="text-sm mt-4  text-black flex">
-          <ReactStars size={16} value={rating} color2={'#00B6ED'} />(
-          {productCount})
+          <ReactStars size={16} value={rating} color2={'#00B6ED'} />{productCount && `(${productCount})`}
         </div>
-        <div className="text-sm mt-4  text-gray text-normal">
-          <span>${trimmedDescription}</span>
+        <div className="text-sm mt-4 text-aldiGray4 text-normal">
+          <HtmlTextBox text={trimmedDescription} />
         </div>
       </div>
       <div className="flex flex-col justify-between flex-auto w-[30%]">
