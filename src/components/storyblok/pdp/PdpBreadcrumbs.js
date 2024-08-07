@@ -3,16 +3,23 @@ import Breadcrumbs from '@mui/material/Breadcrumbs'
 import Link from '@mui/material/Link'
 import React from 'react'
 import { useAuth } from '../../../context/auth-provider'
+import { useLanguage } from '../../../context/language-provider'
 
 const PdpBreadcrumbs = ({ blok, ...restProps }) => {
   const category = restProps.product.category
   const { userTenant } = useAuth()
+  const { currentLanguage } = useLanguage()
 
-  const categoryTree = [{ caption: 'Startseite', link: '/' + userTenant }]
+  const categoryTree = [
+    {
+      caption: currentLanguage === 'de' ?
+        'Startseite' :
+        'Home', link: '/' + userTenant,
+    }]
   let lnk = productUrl()
   for (let c in category) {
-    lnk = `${lnk}/${category[c].toLowerCase().replaceAll(' ', '_')}`
-    categoryTree.push({ caption: category[c], link: lnk })
+    lnk = `${lnk}/${category[c].name.toLowerCase().replaceAll(' ', '_')}`
+    categoryTree.push({ caption: category[c].localizedName[currentLanguage], link: lnk })
   }
   return (
     <div className="uppercase">
@@ -39,13 +46,14 @@ const PdpBreadcrumbs = ({ blok, ...restProps }) => {
               {index !== categoryTree.length - 1 ? (
                 <p className="text-xs text-aldiBlue4">{row.caption}</p>
               ) : (
-                <p className="text-xs font-bold text-aldiBlue4">{row.caption}</p>
+                <p
+                  className="text-xs font-bold text-aldiBlue4">{row.caption}</p>
               )}
             </Link>
           )
         })}
       </Breadcrumbs>
-     </div>
+    </div>
   )
 }
 
