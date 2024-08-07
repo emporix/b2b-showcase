@@ -1,10 +1,7 @@
 import React, { useCallback, useMemo } from 'react'
 import ReactStars from 'react-stars'
 import { useNavigate } from 'react-router-dom'
-import {
-  CurrencyBeforeComponent,
-  CurrencyBeforeValue,
-} from 'components/Utilities/common'
+import { CurrencyBeforeValue } from 'components/Utilities/common'
 import { LargePrimaryButton } from '../../components/Utilities/button'
 import { trimImage } from '../../helpers/images'
 import { useAuth } from 'context/auth-provider'
@@ -33,9 +30,9 @@ export const getVAT = (language, included) => {
 export const getShipment = (language) => {
   switch (language) {
     case 'de':
-      return "zzgl. Versand"
+      return 'zzgl. Versand'
     case 'en':
-      return "excl. Shipping costs"
+      return 'excl. Shipping costs'
   }
 }
 
@@ -122,10 +119,10 @@ const EachProduct = ({ item, available, rating, productCount }) => {
                 className="text-[30px] font-aldiCondensed font-normal text-aldiBlue4 w-[200px] text-left">
                 {price !== null ? (
                   <>
-                    {isLoggedIn ? 'Your negotiated price' : 'List Price'}
-                    <CurrencyBeforeComponent>
-                      <del>{price} </del>
-                    </CurrencyBeforeComponent>
+                    <CurrencyBeforeValue value={price} />
+                    <span className="text-xs font-normal text-manatee">
+                    {' '}({getVAT(currentLanguage, true)})
+                  </span>
                   </>
                 ) : (
                   <span className="text-xs text-aldiBlue1 font-bold">

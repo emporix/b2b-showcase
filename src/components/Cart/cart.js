@@ -149,7 +149,7 @@ export const CartMobileItem = ({ cartItem }) => {
         <span className="">Est. delivery time: 3 days</span>
       </div>
       <LayoutBetween className="items-center">
-        <div className="w-[67px]">
+        <div className="w-[146px]">
           <Quantity
             value={cartItem.quantity}
             increase={() => incrementCartItemQty(cartItem.id)}
@@ -181,12 +181,14 @@ const CartProductImageAndQuantity = ({ cartItem }) => {
     <div className="cart-product-image-and-quantity">
       <GridLayout className="gap-11">
         {cartItem?.product?.src && (<CartProductImage src={cartItem?.product?.src} />) }
+        <div className="w-[146px]">
         <Quantity
           value={cartItem.quantity}
           increase={() => incrementCartItemQty(cartItem.id)}
           decrease={() => decrementCartItemQty(cartItem.id)}
           onChange={(value) => setCartItemQty(cartItem.id, value)}
         />
+        </div>
       </GridLayout>
     </div>
   )
@@ -511,7 +513,7 @@ export const CartActionPanel = ({ action, showShipping }) => {
         </CartActionRow>
 
         {(action === undefined || action === true) && !localStorage.getItem(PROCUREMENT_SYSTEM_URL) ? (
-            
+
             <>
                 <CartGoCheckout />
                 {!user && <CartGoGuestCheckout />}
@@ -522,7 +524,7 @@ export const CartActionPanel = ({ action, showShipping }) => {
           <></>
         )}
         {(action === undefined || action === true) && localStorage.getItem(PROCUREMENT_SYSTEM_URL) ? (
-            
+
             <>
                 <CartGoProcurementSystem/>
             </>
