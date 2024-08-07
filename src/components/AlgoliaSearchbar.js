@@ -23,6 +23,7 @@ const ProductDisplay = ({ hit }) => {
       )}`,
       { replace: true }
     )
+    navigate(0)
   }
 
   return (
@@ -80,6 +81,7 @@ const AlgoliaSearchbar = () => {
       )}`,
       { replace: true }
     )
+    navigate(0)
   }
 
   const ProductDisplay = ({ hit }) => {
