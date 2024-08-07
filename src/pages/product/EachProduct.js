@@ -116,7 +116,7 @@ const EachProduct = ({ item, available, rating, productCount }) => {
           {isLoggedIn ? (
             <>
               <div
-                className="text-[30px] font-aldiCondensed font-normal text-aldiBlue4 w-[200px] text-left">
+                className="text-[30px] font-aldiCondensed text-aldiBlue4 font-bold">
                 {price !== null ? (
                   <>
                     <CurrencyBeforeValue value={price} />
@@ -129,22 +129,6 @@ const EachProduct = ({ item, available, rating, productCount }) => {
                     No Price
                   </span>
                 )}
-              </div>
-              <div className="flex">
-                {price !== null ? (
-                  <>
-                    {/* <img src="/products/pencil.png" className="w-4 h-4 mt-1" /> */}
-                    <div
-                      className="text-[30px] font-aldiCondensed text-aldiBlue4 lg:text-xl leading-[24px] font-bold ml-1">
-                      <div className="flex flex-col">
-                        <CurrencyBeforeValue value={price} />
-                        <span className="text-xs font-normal text-manatee">
-                            {' '}({getVAT(currentLanguage, false)})
-                          </span>
-                      </div>
-                    </div>
-                  </>
-                ) : null}
               </div>
             </>
           ) : (
