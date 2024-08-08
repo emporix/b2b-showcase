@@ -8,6 +8,7 @@ import {
   availabilityDataSelector,
 } from '../../../redux/slices/availabilityReducer'
 import priceService from '../../../services/product/price.service'
+import { getProductData } from '../../../context/product-list-context'
 
 const PdpRelatedProducts = ({ blok, ...restProps }) => {
   const product = restProps.product
@@ -18,16 +19,10 @@ const PdpRelatedProducts = ({ blok, ...restProps }) => {
   const available = (product) => stockLevel(product) > 0
 
   useEffect(() => {
-    const productIds = product.relatedItems?.map(item => item.refId)
-    productService.getProductsWithIds(productIds).
-      then(result => {
-        priceService.getPriceWithProductIds(result.map(item => item.id)).then((prices) => {
-          const newRelatedProducts = result.map((pi, index) => {
-            return {...result[index], price: prices[index]}
-          })
-          setRelatedProducts(newRelatedProducts)
-        })
-      })
+    const productIds = product.relatedItems?.map(item => item.refId) ?? []
+    getProductData(productIds, 1, 100000).then(products => {
+      setRelatedProducts(products)
+    })
   }, [product])
 
   return (
