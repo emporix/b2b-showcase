@@ -13,7 +13,7 @@ import Dialog from '../../Utilities/Dialog'
 import { getBrand } from '../../../services/product/brand.service'
 import FormattedTextBox from '../FormattedTextBox'
 import { api } from '../../../services/axios'
-import { formatPrice, priceValid } from '../../../helpers/price'
+import { formatPrice, isPriceValid } from '../../../helpers/price'
 
 const PdpAddToCart = ({ blok, ...restProps }) => {
   const product = restProps.product
@@ -40,13 +40,12 @@ const PdpAddToCart = ({ blok, ...restProps }) => {
     })
   }, [product])
 
-  const available = availability['k' + product.id]?.available
   const stockLevel = availability['k' + product.id]?.stockLevel
 
   const ePrice = formatPrice(product)
   const inStock = stockLevel > 0
 
-  const canPurchase = inStock && priceValid(product)
+  const canPurchase = inStock && isPriceValid(product)
 
   const increaseQty = () => {
     setQuantity((prevState) => prevState + 1)
@@ -91,7 +90,7 @@ const PdpAddToCart = ({ blok, ...restProps }) => {
       catch(error => console.log("sendForm", error))
   }
 
-  const evaluatedType = !priceValid(product) ? "aktion" : "nicht-verfugbar"
+  const evaluatedType = !isPriceValid(product) ? "aktion" : "nicht-verfugbar"
 
   const handleOnSubmit = (event) => {
     event.preventDefault()
@@ -138,7 +137,7 @@ const PdpAddToCart = ({ blok, ...restProps }) => {
       </div>) :
       <button
         disabled={!product.price}
-        className="flex flex-row w-full max-w-[448px] h-[50px] place-items-center place-content-center border border-aldiGray3 bg-white hover:border-aldiBlue6 rounded text-aldiBlue6 uppercase font-bold"
+        className="flex flex-row w-full h-[50px] place-items-center place-content-center border border-aldiGray3 bg-white hover:border-aldiBlue6 rounded text-aldiBlue6 uppercase font-bold"
         onClick={() =>
           handleRemindMe()
         }
