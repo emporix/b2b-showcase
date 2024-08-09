@@ -23,7 +23,7 @@ const ProductsDescriptionFSContents = ({ components }) => {
   const { sectionType, data } = components
 
   // console.log(components)
-  console.log(sectionType !== 'text' && sectionType !== 'headline' ? { sectionType, ...data } : null)
+  // console.log(sectionType !== 'text' && sectionType !== 'headline' ? { sectionType, ...data } : null)
   // console.log(sectionType === 'headline' ? { sectionType, ...data } : '')
 
   switch (sectionType) {
@@ -74,7 +74,7 @@ const ProductsDescriptionFSContents = ({ components }) => {
 
     case 'teaser':
     case 'text_picture':
-      console.log(data)
+      // console.log(data)
       return (
         <>
           {data?.st_headline ? (

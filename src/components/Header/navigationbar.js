@@ -60,7 +60,6 @@ const Navbar = () => {
 
       let contentEntries = cmsNavigation
         .filter((i) => i.seoRoute?.startsWith('/Inhalt') || i.seoRoute?.startsWith('/Content'))
-        .filter((i) => !i.label.toLowerCase().startsWith('inhalt') && !i.label.toLowerCase().startsWith('content'))
         .map((i) => {
           return {
             title: i.label,
@@ -68,8 +67,6 @@ const Navbar = () => {
             key: i.caasDocumentId,
           }
         })
-
-      contentEntries.push({ title: t('glossary'), url: 'glossary' })
 
       dispatch(
         putCmsNavigation([
@@ -121,9 +118,6 @@ const Navbar = () => {
                     ) : (
                       <AiOutlineShoppingCart size={24} />
                     )}
-                    {/* <div id="cart-value" className="pl-3 text-gray flex">
-                    <CurrencyBeforeValue value={cartTotalPrice} />
-                  </div> */}
                   </div>
                 </div>
               </div>

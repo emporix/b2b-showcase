@@ -66,6 +66,7 @@ import GlossaryPage from './pages/glossary/GlossaryPage'
 i18n.use(initReactI18next).init({
   resources: {
     en: {
+      homepage: {},
       page: {
         news: 'News',
         content: 'Content',
@@ -104,6 +105,9 @@ i18n.use(initReactI18next).init({
         glossary: 'Glossary',
         glossary_term: 'Begriff',
         glossary_descr: 'Beschreibung',
+        quantity: 'Quantity',
+        unit_price: 'Unit Price',
+        quantity_discount: 'Quantity Discount',
         description: 'Product Description',
       },
       account: {
@@ -175,6 +179,7 @@ i18n.use(initReactI18next).init({
       },
     },
     de: {
+      homepage: {},
       page: {
         news: 'Neuigkeiten',
         content: 'Inhalt',
@@ -192,7 +197,7 @@ i18n.use(initReactI18next).init({
         rose_wine: 'Rosé',
         website: 'Webseite besuchen',
         mailto: 'Email anschreiben',
-        negotiated: 'Ausgehandelte Preis',
+        negotiated: 'Ausgehandelter Preis',
         public: 'Katalogpreis',
         excl_vat: 'Exkl. MwSt.',
         incl_vat: 'Inkl. MwSt.',
@@ -213,6 +218,9 @@ i18n.use(initReactI18next).init({
         glossary: 'Glossar',
         glossary_term: 'Begriff',
         glossary_descr: 'Beschreibung',
+        quantity: 'Menge',
+        unit_price: 'Preis pro Einheit',
+        quantity_discount: 'Mengenrabatt',
         description: 'Produktbeschreibung',
       },
       account: {
