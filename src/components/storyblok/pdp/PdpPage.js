@@ -88,12 +88,15 @@ const PdpPage = ({ blok }) => {
           loading: true,
           data: res,
         })
+
+        const completePrices = await priceService.getCompletePriceInfoForProducts([productId])
+        res.completePrices = completePrices[0]
+
         let prices = await priceService.getPriceWithProductIds([productId])
 
         // Set price...
         if (prices.length > 0) {
           res.price = prices[0]
-          res.prices = prices
         }
         const category = await getRetrieveAllCategoriesWithResoureceId(
           productId,

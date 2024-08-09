@@ -1,7 +1,6 @@
 import { TENANT } from 'constants/localstorage'
 import React, {
   createContext,
-  useCallback,
   useContext,
   useEffect,
   useMemo,
@@ -21,6 +20,7 @@ import priceService from '../services/product/price.service'
 import productService from '../services/product/product.service'
 import { useCurrency } from './currency-context'
 import { useLanguage } from './language-provider'
+
 export const ProductListContext = createContext({})
 
 export const useProductList = () => useContext(ProductListContext)
@@ -28,10 +28,11 @@ export const useProductList = () => useContext(ProductListContext)
 export const getProductData = async (productIds, pageNumber, itemsPerPage) => {
   const ids = productIds.slice(
     itemsPerPage * (pageNumber - 1),
-    itemsPerPage * pageNumber
+    itemsPerPage * pageNumber,
   )
   const products = await productService.getProductsWithIds(ids)
   const prices = await priceService.getPriceWithProductIds(ids)
+  const completePrices = await priceService.getCompletePriceInfoForProducts(ids)
   const prices_obj = {}
   prices.forEach((p) => {
     prices_obj[`p${p.itemId.id}`] = p
@@ -39,8 +40,12 @@ export const getProductData = async (productIds, pageNumber, itemsPerPage) => {
   let price_id
   for (let i = 0; i < products.length; i++) {
     price_id = `p${products[i]['id']}`
-    if (prices_obj[price_id] !== undefined)
+    if (prices_obj[price_id] !== undefined) {
       products[i]['price'] = prices_obj[price_id]
+    }
+    products[i]['completePrices'] = completePrices.find(cp =>
+      cp[0].itemId.id === products[i].id,
+    )
   }
   return products
 }
@@ -56,7 +61,7 @@ const ProductListProvider = ({ children, id }) => {
   const [products, setProducts] = useState([])
   const [productIds, setProductIds] = useState([])
   const [productsPerPage, setProductsPerPage] = useState(
-    productListCountsPerPage[0]
+    productListCountsPerPage[0],
   )
 
   const { currentSite } = useSites()
@@ -74,7 +79,7 @@ const ProductListProvider = ({ children, id }) => {
       })
       const category = await getProductCategoryTrees(
         [...new Set(rootCategoryIds)],
-        currentLanguage
+        currentLanguage,
       )
       setCategory(category)
       dispatch(putShopItems(category))
@@ -99,7 +104,7 @@ const ProductListProvider = ({ children, id }) => {
         const newProducts = await getProductData(
           productIds,
           pageNumber,
-          productsPerPage
+          productsPerPage,
         )
         setProducts(newProducts)
       } catch (e) {

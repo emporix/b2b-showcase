@@ -255,7 +255,7 @@ const Navbar = ({blok}) => {
           <span className="world-icon"></span>
           {blok.countryLabel}:
           <select
-            className="bg-aldiBlue2 w-38 mr-[22px]"
+            className="bg-aldiBlue2 w-38 mr-[22px] border-0 focus:ring-0"
             onChange={handleSiteChange}
             value={currentSite}
           >
@@ -273,7 +273,7 @@ const Navbar = ({blok}) => {
         <div>
           {blok.languageLabel}:
           <select
-            className="bg-aldiBlue2"
+            className="bg-aldiBlue2 border-0 focus:ring-0"
             onChange={(event) => setLanguage(event.target.value)}
             value={currentLanguage}
           >
@@ -294,7 +294,7 @@ const Navbar = ({blok}) => {
             onChange={(e) =>
               currencyChangeHandler(e.target.value, currentSiteObject)
             }
-            className="bg-aldiBlue2"
+            className="bg-aldiBlue2 border-0 focus:ring-0"
           >
             {currencyList.map((currency) => {
               return (

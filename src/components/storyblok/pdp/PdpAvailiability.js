@@ -5,18 +5,20 @@ import {
   availabilityDataSelector
 } from '../../../redux/slices/availabilityReducer'
 import { cn } from '../../cssUtils'
+import { isPriceValid } from '../../../helpers/price'
 
 const PdpAvailiability = ({blok, ...restProps} ) => {
   const product = restProps.product
   const { currentLanguage } = useLanguage()
   const availability = useSelector(availabilityDataSelector)
-
-  const available = availability['k' + product.id]?.available
   const stockLevel = availability['k' + product.id]?.stockLevel
-
   const productAvailable = stockLevel > 0
+  const priceValid = isPriceValid(product)
 
   const availabilityText = () => {
+    if (!priceValid) {
+      return currentLanguage === "de" ? "Nur so lange der Vorrat reicht" : "Only while stocks last"
+    }
     if (productAvailable) {
       return currentLanguage === "de" ? "Verfügbar" : "Available"
     } else {
@@ -26,9 +28,9 @@ const PdpAvailiability = ({blok, ...restProps} ) => {
 
   return (<div className={cn('text-aldiBlue4 font-bold', {
     "text-aldiRed1": !productAvailable,
-    "text-limeGreen": productAvailable
+    "text-limeGreen": productAvailable && priceValid
   })} {...storyblokEditable(blok)}>
-    {availabilityText()} {productAvailable && blok.showAvailableAmount && ` (${stockLevel})`}
+    {availabilityText()} {productAvailable && blok.showAvailableAmount && (priceValid && ` (${stockLevel})`)}
   </div>)
 }
 
