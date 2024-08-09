@@ -66,6 +66,7 @@ import GlossaryPage from './pages/glossary/GlossaryPage'
 i18n.use(initReactI18next).init({
   resources: {
     en: {
+      homepage: {},
       page: {
         news: 'News',
         content: 'Content',
@@ -178,6 +179,7 @@ i18n.use(initReactI18next).init({
       },
     },
     de: {
+      homepage: {},
       page: {
         news: 'Neuigkeiten',
         content: 'Inhalt',
