@@ -10,16 +10,11 @@ const ContentOverview = () => {
   const [content, setContent] = useState([])
   let { currentLanguage } = useLanguage()
   const navigate = useNavigate()
-  const {t} = useTranslation("page")
+  const { t } = useTranslation('page')
   const getData = async () => {
     let data = await getLocalizedCmsNavigation(currentLanguage)
     data = data.data.cmsNavigation.filter((item) => {
-      return (
-        (item.seoRoute?.startsWith('/Content') ||
-          item.seoRoute?.startsWith('/Inhalt')) &&
-        item.label !== 'Content' &&
-        item.label !== 'Inhalt'
-      )
+      return item.seoRoute?.startsWith('/Content') || item.seoRoute?.startsWith('/Inhalt')
     })
 
     setContent(data)
@@ -30,20 +25,13 @@ const ContentOverview = () => {
   }, [currentLanguage])
 
   return (
-    <Layout title={t("content")}>
+    <Layout title={t('content')}>
       <div className="fs-content-wrapper">
         {content.map((item, index) => (
           <div key={index}>
-            <button onClick={() => navigate('/n11showcase' + item.seoRoute)}>
-              {item.label}
-            </button>
+            <button onClick={() => navigate('/n11showcase' + item.seoRoute)}>{item.label}</button>
           </div>
         ))}
-        <div>
-          <button onClick={() => navigate('/n11showcase/glossary')}>
-            {t('glossary')}
-          </button>
-        </div>
       </div>
     </Layout>
   )

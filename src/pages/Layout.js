@@ -30,7 +30,7 @@ const Layout = ({ children, title }) => {
     <>
       {userTenant ? (
         <LayoutContext.Provider value={{ showCart, setShowCart }}>
-          <GridLayout className="min-w-[375px]">
+          <GridLayout className="min-w-[375px] min-h-screen">
             <Topbar title={title} />
             <Drawer>
               <Cart />

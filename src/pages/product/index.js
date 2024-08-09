@@ -20,7 +20,7 @@ import { getLabel } from 'services/product/labels'
 import { useCurrency } from 'context/currency-context'
 
 const ProductList = () => {
-  console.log('Producte')
+  // console.log('Producte')
   return (
     <Layout title="Weine">
       <ProductPage />

@@ -79,7 +79,13 @@ const FsGenericComponent = ({ data }) => {
   switch (componentLayout) {
     case 'footer':
       const Component = firstSpiritComponentMap[componentLayout]
-      return Component && <Component props={normalizeFooterStructure(Object.values(componentData))} />
+      return (
+        Component && (
+          <div className="flex h-full w-full">
+            <Component props={normalizeFooterStructure(Object.values(componentData))} />
+          </div>
+        )
+      )
 
     case 'homepage':
     case 'content_page':

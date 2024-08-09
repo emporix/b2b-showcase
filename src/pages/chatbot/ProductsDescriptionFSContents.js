@@ -74,7 +74,7 @@ const ProductsDescriptionFSContents = ({ components }) => {
 
     case 'teaser':
     case 'text_picture':
-      console.log(data)
+      // console.log(data)
       return (
         <>
           {data?.st_headline ? (
