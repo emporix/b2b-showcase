@@ -18,7 +18,12 @@ export const initialState = {
     {
       title: 'Storefinder',
       items: [],
-      url: 'storefinder',
+      url: 'storefinder'
+    },
+    {
+      title: 'technical',
+      items: [],
+      url: 'technical',
     },
   ],
   tenantList: [],

@@ -57,11 +57,13 @@ import StoreFinder from 'pages/storefinder'
 import ContentOverview from './pages/content/ContentOverview'
 import ContentPage from './pages/content/ContentPage'
 import ProductsDescription from 'pages/chatbot/ProductsDescription'
+import NewsPage from './pages/news/NewsPage'
+import GlossaryPage from './pages/glossary/GlossaryPage'
+import TechnicalPage from './pages/technical/TechnicalPage'
 
 import i18n from 'i18next'
 import { initReactI18next } from 'react-i18next'
-import NewsPage from './pages/news/NewsPage'
-import GlossaryPage from './pages/glossary/GlossaryPage'
+
 
 i18n.use(initReactI18next).init({
   resources: {
@@ -69,6 +71,7 @@ i18n.use(initReactI18next).init({
       homepage: {},
       page: {
         news: 'News',
+        technical: 'Technical Page',
         content: 'Content',
         catalog: 'Catalog',
         about_us: 'About Us',
@@ -182,6 +185,7 @@ i18n.use(initReactI18next).init({
       homepage: {},
       page: {
         news: 'Neuigkeiten',
+        technical: 'Technische Seite',
         content: 'Inhalt',
         catalog: 'Katalog',
         about_us: 'Über uns',
@@ -388,6 +392,8 @@ function App() {
 
           <Route path="News" element={<NewsPage />} />
           <Route path="Neuigkeiten" element={<NewsPage />} />
+
+          <Route path="Technical" element={<TechnicalPage/>} />
 
           <Route path="Glossary" element={<GlossaryPage />} />
           <Route path="Glossar" element={<GlossaryPage />} />
