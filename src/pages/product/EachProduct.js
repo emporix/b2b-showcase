@@ -6,8 +6,9 @@ import { useAuth } from 'context/auth-provider'
 import { formatPrice } from 'helpers/price'
 import { useLanguage } from 'context/language-provider'
 import { useTranslation } from 'react-i18next'
+import { StockLevel } from '../../components/Product/availability'
 
-const EachProduct = ({ item, available, rating }) => {
+const EachProduct = ({ item, stockLevel, rating }) => {
   const { t } = useTranslation('page')
   const { isLoggedIn, userTenant } = useAuth()
   const { getLocalizedValue } = useLanguage()
@@ -30,6 +31,12 @@ const EachProduct = ({ item, available, rating }) => {
   )
 
   return (
+  <a
+      href={`/${userTenant}/product/details/${item.id}`}
+      target="_blank"
+      rel="noopener noreferrer"
+      className="no-underline"
+  >
     <div
       className="p-4 bg-aliceBlue standard_box_shadow rounded-xl h-full flex flex-col gap-4  cursor-pointer"
       onClick={() => handleProductDetail(item)}
@@ -37,9 +44,7 @@ const EachProduct = ({ item, available, rating }) => {
       <div className="flex flex-col gap-4">
         <div className="w-full flex flex-col-reverse justify-start items-end md:flex-row md:items-end">
           {item.productType !== 'PARENT_VARIANT' && (
-            <div className={available ? 'text-limeGreen' : 'text-red-500'}>
-              {available ? t('in_stock') : t('out_stock')}
-            </div>
+           <StockLevel stockLevel={stockLevel} />
           )}
           <div className="flex ml-auto">
             <ReactStars size={16} value={rating} color2={'#FBB13C'} />({rating})
@@ -106,6 +111,7 @@ const EachProduct = ({ item, available, rating }) => {
         </div>
       )}
     </div>
+</a>
   )
 }
 
