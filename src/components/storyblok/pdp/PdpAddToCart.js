@@ -90,7 +90,7 @@ const PdpAddToCart = ({ blok, ...restProps }) => {
       catch(error => console.log("sendForm", error))
   }
 
-  const evaluatedType = !isPriceValid(product) ? "aktion" : "nicht-verfugbar"
+  const evaluatedType = !isPriceValid(product) ? "promotion" : "availability"
 
   const handleOnSubmit = (event) => {
     event.preventDefault()
