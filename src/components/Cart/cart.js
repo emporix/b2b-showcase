@@ -10,10 +10,10 @@ import { PROCUREMENT_SYSTEM_URL } from 'constants/localstorage'
 import { useLanguage } from 'context/language-provider'
 import { useSelector } from 'react-redux'
 import { availabilityDataSelector } from 'redux/slices/availabilityReducer'
-import { useTranslation } from 'react-i18next'
 
 import LayoutContext from '../../pages/context'
 import { HiOutlineArrowCircleLeft, HiOutlineXCircle } from 'react-icons/hi'
+import { StockLevel } from '../Product/availability'
 
 export const CartProductCaption = () => {
   return <div className="h-10 border-bottom cart-product-caption">Products</div>
@@ -50,11 +50,10 @@ export const PriceExcludeVAT1 = ({ price, caption }) => {
 export const CartMobileItem = ({ cartItem }) => {
   const { incrementCartItemQty, decrementCartItemQty, setCartItemQty } = useCart()
   const { getLocalizedValue } = useLanguage()
-  const { t } = useTranslation('page')
   const availability = useSelector(availabilityDataSelector)
   const { removeCartItem } = useCart()
 
-  const available = availability?.['k' + cartItem.product.id]?.available
+  const stockLevel = availability['k' + cartItem.id]?.stockLevel || 0
 
   return (
     <GridLayout className="gap-4 cart-for-mobile">
@@ -101,14 +100,7 @@ export const CartMobileItem = ({ cartItem }) => {
         </div>
       </div>
       <div className="cart-product-stock-wrapper flex">
-        <span
-          className={
-            ' text-brightGreen font-bold cart-product-stock w-[80px] ' +
-            (available ? 'text-limeGreen' : 'text-primaryBlue')
-          }
-        >
-          {available ? t('in_stock') : t('out_stock')}
-        </span>
+        <StockLevel stockLevel={stockLevel} />
         <span className="">Est. delivery time: 3 days</span>
       </div>
       <LayoutBetween className="items-center">
@@ -160,28 +152,16 @@ export const CartProductImageAndReadOnlyQuantity = ({ cartItem }) => {
 }
 
 export const CartProductBasicInfo = ({ cart }) => {
-  const { t } = useTranslation('page')
   const { getLocalizedValue } = useLanguage()
   const availability = useSelector(availabilityDataSelector)
-  const available = availability?.['k' + cart.product.id]?.available
+  const stocklevel = availability['k' + cart.product.id]?.stockLevel || 0
 
   return (
     <div className="cart-product-basic-info">
       <GridLayout className="gap-2">
         <div className="cart-product-name">{getLocalizedValue(cart.product.name)}</div>
-        {/* <div className="cart-product-sku-wrapper">
-          SKU:&nbsp;
-          <span className="cart-product-sku">{cart.product.code}</span>
-        </div> */}
         <div className="cart-product-stock-wrapper">
-          <span
-            className={
-              ' text-brightGreen font-bold cart-product-stock ' + (available ? 'text-limeGreen' : 'text-primaryBlue')
-            }
-          >
-            {available ? t('in_stock') : t('out_stock')}
-          </span>
-          {/* <span className="cart-product-lead-time">Lead Time: 1 week</span> */}
+        <StockLevel stockLevel={stocklevel} />
         </div>
       </GridLayout>
     </div>

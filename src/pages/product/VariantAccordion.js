@@ -14,6 +14,7 @@ import { useCart } from 'context/cart-provider'
 import { useCurrency } from 'context/currency-context'
 import { useAuth } from 'context/auth-provider'
 import { useLanguage } from 'context/language-provider';
+import { useTranslation } from 'react-i18next'
 
 function VariantAttributes({attributes}) {
     return (
@@ -109,6 +110,7 @@ const VariantSummary = ({ variant, setQuantity, quantity, price }) => {
 
 export const PriceTierValues = ({price, quantity}) => {
     const {isLoggedIn} = useAuth()
+    const {t} = useTranslation("page");
     const formattedPrice = useCallback(
         (price, tierId) => {
             return formatCurrency(
@@ -140,13 +142,13 @@ export const PriceTierValues = ({price, quantity}) => {
                 flexWrap={'nowrap'}
             >
                 <Grid item xs={6}>
-                    <b>Qty</b>
+                    <b>{t("quantity")}</b>
                 </Grid>
                 {/*<Grid item xs={4}>*/}
                 {/*  <b>Discount</b>*/}
                 {/*</Grid>*/}
                 <Grid item xs={6}>
-                    <b>Unit Price</b>
+                    <b>{t("unit_price")}</b>
                 </Grid>
             </Grid>
             {price
