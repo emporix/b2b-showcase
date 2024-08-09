@@ -36,6 +36,7 @@ import ApiRequest from '../../services'
 import i18next from 'i18next'
 import { useSelector } from 'react-redux'
 import { availabilityDataSelector } from '../../redux/slices/availabilityReducer'
+import { StockLevel } from '../../components/Product/availability'
 
 const ProductContext = createContext()
 export const i18nProductCustomAttributesNS = 'productCustomAttributes'
@@ -153,7 +154,7 @@ const ProductTitle = ({ name }) => {
   const { getLocalizedValue } = useLanguage()
   return <div className="mt-6 product-title text-left w-full text-eerieBlack font-light">{getLocalizedValue(name)}</div>
 }
-const ProductPriceAndAmount = ({ price, available, estimatedDelivery }) => {
+const ProductPriceAndAmount = ({ price, stockLevel, estimatedDelivery }) => {
   const { t } = useTranslation('page')
   const { isLoggedIn } = useAuth()
 
@@ -165,14 +166,14 @@ const ProductPriceAndAmount = ({ price, available, estimatedDelivery }) => {
             <div className="product-price">
               <CurrencyBeforeValue value={price} />
             </div>
-            <div className="vat-caption">{isLoggedIn ? 'Excl. VAT' : 'Incl. VAT'}</div>
+            <div className="vat-caption">{isLoggedIn ? t('excl_vat') : t('incl_vat')}</div>
           </>
         ) : (
           <></>
         )}
         {price !== null ? (
           <div className="list-price desktop-sm">
-            {isLoggedIn ? 'Your negotiated price' : 'List Price'}{' '}
+            {isLoggedIn ? t('negotiated') : t('public')}{' '}
             <CurrencyBeforeComponent>
               <del>{price}</del>
             </CurrencyBeforeComponent>
@@ -183,15 +184,14 @@ const ProductPriceAndAmount = ({ price, available, estimatedDelivery }) => {
       </div>
 
       <div className="product-amount-wrapper flex mt-6 space-x-6 items-center">
-        <span className="product-number">{available ? t('in_stock') : t('out_stock')}</span>
-        <span className="delivery-date">Estimated Delivery {estimatedDelivery}</span>
+        <StockLevel stockLevel={stockLevel} />
       </div>
     </div>
   )
 }
 const ProductBasicInfo = ({ product }) => {
   const availability = useSelector(availabilityDataSelector)
-  const available = availability['k' + product.id]?.available
+  const stockLevel = availability['k' + product.id]?.stockLevel || 0
   const { isLoggedIn } = useAuth()
   const price = useMemo(() => {
     return formatPrice(product, isLoggedIn)
@@ -201,7 +201,7 @@ const ProductBasicInfo = ({ product }) => {
       <ProductSkuAndReview product={product} />
       <ProductTitle name={product.name} />
       {product.productType !== 'PARENT_VARIANT' && (
-        <ProductPriceAndAmount available={available} price={price} estimatedCelivery={product.estimated_delivery} />
+        <ProductPriceAndAmount stockLevel={stockLevel} price={price} estimatedCelivery={product.estimated_delivery} />
       )}
     </div>
   )
@@ -282,6 +282,7 @@ const ProductBundleInfo = ({ product }) => {
 const ProductAddToCart = () => {
   const product = useContext(ProductContext)
   const { setShowCart } = useContext(LayoutContext)
+  const {t} = useTranslation("page");
   const [quantity, setQuantity] = useState(1)
   const { syncCart, putCartProduct } = useCart()
   const HandleProductAddToCart1 = useCallback((product, action, quantitiy) => {
@@ -303,7 +304,7 @@ const ProductAddToCart = () => {
   return (
     <div className="product-add-to-cart-wrapper lg:py-12">
       <div className="quantity">
-        Quantity
+        {t("quantity")}
         <Quantity
           value={quantity}
           increase={increaseQty}
@@ -326,9 +327,10 @@ const ProductAddToCart = () => {
   )
 }
 const ProductDiscount = ({ price, quantity }) => {
+  const {t} = useTranslation("page");
   return (
     <div className="product-discount-wrapper pt-12 gap-6 ">
-      <div className="product-discount-caption">Quantity Discount</div>
+      <div className="product-discount-caption">{t("quantity_discount")}</div>
       <PriceTierValues sx={{ borderRight: '1px solid #DFE1E5' }} price={price} quantity={quantity}></PriceTierValues>
     </div>
   )
@@ -348,6 +350,9 @@ const ProductInfo = ({ product }) => {
 }
 
 const ProductContent = ({ product, brand, labels }) => {
+  const availability = useSelector(availabilityDataSelector)
+  const stockLevel = availability['k' + product.id]?.stockLevel || 0
+
   let price = '',
     listPrice = ''
   if (product.price !== undefined) {
@@ -392,6 +397,7 @@ const ProductContent = ({ product, brand, labels }) => {
           <ProductPriceAndAmount
             price={price}
             listPrice={listPrice}
+            stockLevel = {stockLevel}
             product_count={product.product_count}
             estimated_delivery={product.estimated_delivery}
           />
