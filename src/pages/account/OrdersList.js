@@ -197,7 +197,6 @@ export const OrderList = (props) => {
                   {renderStatus(row.status)}
                 </TableCell>
                 <TableCell align="center" className="!py-6">
-                  <button onClick={() => {console.log(row)}}>TEST</button>
                   <CurrencyAfterValue
                     value={row.subTotalPrice + getTaxValue(row.entries) + row.shipping?.total?.amount - getDiscountValue(row)}
                     currency={row.currency}
