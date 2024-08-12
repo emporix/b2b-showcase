@@ -8,8 +8,7 @@ const ignoreMixins = [
   'productCustomAttributes',
   'productAdditionalInformation',
   'productVariantAttributes',
-  'Zus\u0061\u0308tzlicheProduktinformationen',
-  'ZustzlicheInformationen',
+  'WeitereProduktinformationen',
 ]
 
 const PdpMixins = ({ blok, ...restProps }) => {
@@ -20,10 +19,10 @@ const PdpMixins = ({ blok, ...restProps }) => {
       return !ignoreMixins.includes(entry[0])
     })
 
-  const additionalDocument = product.mixins?.['Zus\u0061\u0308tzlicheProduktinformationen']?.additionalDocument
+  const additionalDocument = product.mixins?.WeitereProduktinformationen?.additionalDocument
   if (additionalDocument !== undefined) {
     const fieldName = currentLanguage === 'de' ? 'Dokumente' : 'Documents'
-    const documents = product.mixins?.['Zus\u0061\u0308tzlicheProduktinformationen']?.additionalDocument.map(
+    const documents = product.mixins?.WeitereProduktinformationen?.additionalDocument.map(
       item => {
         const parts = item.split(',')
         const title = parts[0]

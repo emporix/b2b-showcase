@@ -5,8 +5,8 @@ import { cn } from '../../cssUtils'
 const PdpTitle = ({ blok, ...restProps }) => {
   const product = restProps.product
   const { currentLanguage, getLocalizedValue } = useLanguage()
-  const color = product.mixins?.['Zus\u0061\u0308tzlicheProduktinformationen']?.ProductColorHighlighting
-  const specialInformation = product.mixins?.['Zus\u0061\u0308tzlicheProduktinformationen']?.productSpecialInformation
+  const color = product.mixins?.WeitereProduktinformationen?.productColorHighlighting
+  const specialInformation = product.mixins?.WeitereProduktinformationen?.productSpecialInformation
 
   const getLocalizedSpecialInformation = () => specialInformation && specialInformation.find(item => item.language === currentLanguage).value
 

@@ -8,7 +8,7 @@ const PdpLabels = ({ blok, ...restProps }) => {
   const product = restProps.product
   const [labels, setLabels] = useState([])
   const evaluatedPriceValidDate = priceValidDate(product)
-  const newDeliveryTime = product.mixins?.ZustzlicheInformationen?.deliveryTimeDayRange
+  const newDeliveryTime = product.mixins?.WeitereProduktinformationen?.deliveryTimeDayRange
   const adjustDeliveryTime = (text) => {
     return newDeliveryTime ? text.replace("1 - 3", newDeliveryTime) : text
   }
