@@ -441,7 +441,7 @@ export const getTaxWithDiscounts = (items) => {
 export const CartActionPanel = ({ action, showShipping }) => {
   const { cartAccount, shippingMethod } = useCart()
   const user = JSON.parse(localStorage.getItem(USER))
-  const shippingCost = showShipping ? getShippingCost(shippingMethod, cartAccount) : 0
+  const shippingCost = getShippingCost(shippingMethod, cartAccount)
   const netValueWithDiscount = cartAccount?.subtotalAggregate?.netValue - cartAccount?.totalDiscount?.amount
   const taxWithDiscounts = getTaxWithDiscounts(cartAccount?.items)
   return (
