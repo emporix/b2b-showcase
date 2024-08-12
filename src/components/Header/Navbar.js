@@ -228,6 +228,8 @@ const Navbar = ({blok}) => {
   const [cartTotal, setCartTotal] = useState(0)
   const [cartTotalPrice, setCartTotalPrice] = useState(0)
   const [cartCurrency, setCartCurrency] = useState('-')
+  const { fields } = useContentful()
+  const grossValueWithDiscount = cartAccount.subtotalAggregate?.grossValue - (Math.trunc(cartAccount?.totalDiscount?.amount * 100) / 100)
 
   useEffect(() => {
     setCartTotal(cartAccount.items.length || 0)
@@ -236,9 +238,7 @@ const Navbar = ({blok}) => {
       cartAccount.subtotalAggregate &&
       cartAccount.subtotalAggregate.grossValue
     ) {
-      setCartTotalPrice(cartAccount.totalPrice.amount +
-        +cartAccount.totalPrice.amount *
-        cartAccount?.taxAggregate.lines[0].rate / 100)
+      setCartTotalPrice(grossValueWithDiscount)
     } else {
       setCartTotalPrice(0)
     }
