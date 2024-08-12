@@ -8,6 +8,10 @@ const PdpLabels = ({ blok, ...restProps }) => {
   const product = restProps.product
   const [labels, setLabels] = useState([])
   const evaluatedPriceValidDate = priceValidDate(product)
+  const newDeliveryTime = product.mixins?.ZustzlicheInformationen?.deliveryTimeDayRange
+  const adjustDeliveryTime = (text) => {
+    return newDeliveryTime ? text.replace("1 - 3", newDeliveryTime) : text
+  }
 
   useEffect(() => {
     const labelIds = product?.mixins?.productCustomAttributes?.labels
@@ -20,7 +24,7 @@ const PdpLabels = ({ blok, ...restProps }) => {
     {evaluatedPriceValidDate > new Date() && <CounDownLabel targetDate={evaluatedPriceValidDate} />}
     {labels.map((label) => <Fragment key={label.id}>
       <img className="justify-self-center" src={label.image} alt="" />
-      <div className="ml-2 text-aldiBlue4">{label.name}</div>
+      <div className="ml-2 text-aldiBlue4">{adjustDeliveryTime(label.name)}</div>
     </Fragment>)}
   </div>)
 }
