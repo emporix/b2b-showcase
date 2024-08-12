@@ -23,7 +23,7 @@ const PdpPrice = ({ blok, ...restProps }) => {
       'de' ? 'UVP' : 'USP'} {product.price.originalValue}</div>}
       <div className="mb-1 flex flex-row">
         <div
-          className="text-4xl font-aldiCondensed font-bold">{ePrice}</div>
+          className="text-4xl font-aldiCondensed font-bold">{ePrice.toFixed(2)}</div>
         <div>*</div>
         {isDiscounted && <div
           className="ml-5 self-center bg-aldiRed1 h-8 text-white font-aldiCondensed px-1 font-bold text-[30px] leading-[30px]">{`-${discount} %`}</div>}
