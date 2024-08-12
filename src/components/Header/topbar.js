@@ -15,7 +15,7 @@ const MegaNav = ({ showMegaMenuContent, setShowMegaMenuContent }) => {
   const [subMenuItems, setSubMenuItems] = useState([])
   const [showMegaMenuRightContent, setShowMegaMenuRightContent] = useState(false)
   const [subMenuMegaContent, setSubMenuMegaContent] = useState([])
-  const {t} = useTranslation("page")
+  const { t } = useTranslation('page')
 
   const onShowMegaMenu = () => setShowMegaMenuContent(true)
 
@@ -54,9 +54,7 @@ const MegaNav = ({ showMegaMenuContent, setShowMegaMenuContent }) => {
           }}
         >
           <Link to={!item.items?.length ? addTenantToUrl(item.url) : homeUrl}>
-            <div className="whitespace-nowrap">
-              {t(item.title)}
-            </div>
+            <div className="whitespace-nowrap">{t(item.title)}</div>
           </Link>
 
           <HiChevronDown size={20} className={item.items?.length ? 'ml-2 mt-1 h-5 w-5' : 'hidden'} aria-hidden="true" />
@@ -129,7 +127,7 @@ const TopNav = ({ title }) => {
           : 'w-full z-10 mb-20 md:mb-0'
       }
     >
-      <div className="desktop_only_flex px-4 pt-[76px] pb-8 w-full xl:px-24">
+      <div className="desktop_only_flex px-4 pt-[76px] pb-8 w-full xl:px-24 xxl:px-[20%]">
         <div
           className="menu-wrapper flex w-full"
           onMouseLeave={() => {

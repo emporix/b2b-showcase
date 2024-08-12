@@ -63,7 +63,7 @@ const CMS_MOBILE_FOOTER = (props) => {
 
 const COPYRIGHT_FOOTER = (props) => {
   return (
-    <div className="p-4 bg-primary text-manatee flex justify-between align-center">
+    <div className="p-4 bg-primary text-manatee flex justify-between align-center xxl:px-[20%]">
       <p className="text-bgWhite font-bold ">{props.content.copyright.copy}</p>
       <div className="flex">
         <div className="flex pl-6 pt-[-2px] text-bgWhite">
