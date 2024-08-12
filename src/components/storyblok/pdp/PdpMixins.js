@@ -2,16 +2,40 @@ import { storyblokEditable } from '@storyblok/react'
 import { AccordionItem } from '../../Utilities/accordion'
 import React, { Fragment } from 'react'
 import HtmlTextBox from '../HtmlTextBox'
+import { useLanguage } from '../../../context/language-provider'
 
 const ignoreMixins = [
   'productCustomAttributes',
   'productAdditionalInformation',
-  'productVariantAttributes']
+  'productVariantAttributes',
+  'WeitereProduktinformationen',
+]
 
 const PdpMixins = ({ blok, ...restProps }) => {
   const product = restProps.product
+  const { currentLanguage } = useLanguage()
   const mixins = product.mixins && Object.entries(product.mixins).
-    filter(entry => !ignoreMixins.includes(entry[0]))
+    filter(entry => {
+      return !ignoreMixins.includes(entry[0])
+    })
+
+  const additionalDocument = product.mixins?.WeitereProduktinformationen?.additionalDocument
+  if (additionalDocument !== undefined) {
+    const fieldName = currentLanguage === 'de' ? 'Dokumente' : 'Documents'
+    const documents = product.mixins?.WeitereProduktinformationen?.additionalDocument.map(
+      item => {
+        const parts = item.split(',')
+        const title = parts[0]
+        const url = parts[1]
+        return `<a href="${url}">${title}</a>`
+      })
+    const documentMixin = [
+      fieldName, {
+        [fieldName]: documents,
+      },
+    ]
+    mixins.push(documentMixin)
+  }
 
   return (<Fragment {...storyblokEditable}>
     {mixins && mixins.map((mixin, index) => (
