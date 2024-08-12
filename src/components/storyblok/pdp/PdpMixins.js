@@ -9,6 +9,7 @@ const ignoreMixins = [
   'productAdditionalInformation',
   'productVariantAttributes',
   'Zus\u0061\u0308tzlicheProduktinformationen',
+  'ZustzlicheInformationen',
 ]
 
 const PdpMixins = ({ blok, ...restProps }) => {
@@ -36,8 +37,6 @@ const PdpMixins = ({ blok, ...restProps }) => {
     ]
     mixins.push(documentMixin)
   }
-
-  console.log(mixins)
 
   return (<Fragment {...storyblokEditable}>
     {mixins && mixins.map((mixin, index) => (
