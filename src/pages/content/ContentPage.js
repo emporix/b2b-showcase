@@ -3,6 +3,7 @@ import { useNavigate, useParams } from 'react-router-dom'
 import MainContent from '../home/MainContent'
 import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
+import { HiChevronLeft } from 'react-icons/hi'
 
 const ContentPage = () => {
   const navigate = useNavigate()
@@ -19,7 +20,10 @@ const ContentPage = () => {
     <Layout title="inhalt">
       <div className="pb-12">
         <div className="fs-content-wrapper">
-          <button onClick={() => navigate(t('contentPath'))}>{t('back_to_overview')}</button>
+          <button onClick={() => navigate(t('contentPath'))} className="flex items-center">
+            <HiChevronLeft size={20} className="h-12 w-8 pr-1" />
+            {t('back_to_overview')}
+          </button>
         </div>
         <MainContent page={route} />
       </div>

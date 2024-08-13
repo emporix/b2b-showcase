@@ -57,17 +57,21 @@ import StoreFinder from 'pages/storefinder'
 import ContentOverview from './pages/content/ContentOverview'
 import ContentPage from './pages/content/ContentPage'
 import ProductsDescription from 'pages/chatbot/ProductsDescription'
+import NewsPage from './pages/news/NewsPage'
+import GlossaryPage from './pages/glossary/GlossaryPage'
+import TechnicalPage from './pages/technical/TechnicalPage'
 
 import i18n from 'i18next'
 import { initReactI18next } from 'react-i18next'
-import NewsPage from './pages/news/NewsPage'
-import GlossaryPage from './pages/glossary/GlossaryPage'
+
 
 i18n.use(initReactI18next).init({
   resources: {
     en: {
+      homepage: {},
       page: {
         news: 'News',
+        technical: 'Technical Page',
         content: 'Content',
         catalog: 'Catalog',
         about_us: 'About Us',
@@ -104,6 +108,9 @@ i18n.use(initReactI18next).init({
         glossary: 'Glossary',
         glossary_term: 'Begriff',
         glossary_descr: 'Beschreibung',
+        quantity: 'Quantity',
+        unit_price: 'Unit Price',
+        quantity_discount: 'Quantity Discount',
         description: 'Product Description',
       },
       account: {
@@ -175,8 +182,10 @@ i18n.use(initReactI18next).init({
       },
     },
     de: {
+      homepage: {},
       page: {
         news: 'Neuigkeiten',
+        technical: 'Technische Seite',
         content: 'Inhalt',
         catalog: 'Katalog',
         about_us: 'Über uns',
@@ -192,7 +201,7 @@ i18n.use(initReactI18next).init({
         rose_wine: 'Rosé',
         website: 'Webseite besuchen',
         mailto: 'Email anschreiben',
-        negotiated: 'Ausgehandelte Preis',
+        negotiated: 'Ausgehandelter Preis',
         public: 'Katalogpreis',
         excl_vat: 'Exkl. MwSt.',
         incl_vat: 'Inkl. MwSt.',
@@ -213,6 +222,9 @@ i18n.use(initReactI18next).init({
         glossary: 'Glossar',
         glossary_term: 'Begriff',
         glossary_descr: 'Beschreibung',
+        quantity: 'Menge',
+        unit_price: 'Preis pro Einheit',
+        quantity_discount: 'Mengenrabatt',
         description: 'Produktbeschreibung',
       },
       account: {
@@ -380,6 +392,8 @@ function App() {
 
           <Route path="News" element={<NewsPage />} />
           <Route path="Neuigkeiten" element={<NewsPage />} />
+
+          <Route path="Technical" element={<TechnicalPage/>} />
 
           <Route path="Glossary" element={<GlossaryPage />} />
           <Route path="Glossar" element={<GlossaryPage />} />

@@ -1,0 +1,12 @@
+.technical-logo {
+    border-radius: 5px;
+}
+
+.technical-wrapper {
+    justify-content: center;
+    display: flex;
+}
+
+.technical-element {
+ padding: 1rem;
+}

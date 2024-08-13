@@ -74,38 +74,34 @@ const FsGenericComponent = ({ data }) => {
   if (!page) return null
 
   const componentLayout = page?.layout || ''
-  const {data: componentData, children: pageBody} = page
+  const { data: componentData, children: pageBody } = page
 
   switch (componentLayout) {
     case 'footer':
       const Component = firstSpiritComponentMap[componentLayout]
       return (
-        <div data-preview-id = {page?.previewId}>
-          {Component && <Component props={normalizeFooterStructure(Object.values(componentData))}/>}
+        <div data-preview-id={page?.previewId}>
+          {Component && <Component props={normalizeFooterStructure(Object.values(componentData))} />}
         </div>
       )
     case 'homepage':
     case 'content_page':
-      const {pt_title, pt_keywords, pt_description} = componentData
+      const { pt_title, pt_keywords, pt_description } = componentData
 
       return (
-          <>
-            <Helmet>
-              {pt_title ? <title>{pt_title}</title> : null}
-              {pt_keywords ? <meta name="keyword" content={pt_keywords}/> : null}
-              {pt_description ? <meta name="description" content={pt_description}/> : null}
-            </Helmet>
-            {pageBody?.[0]?.children ? <FsGenericComponentList componentData={pageBody[0].children}/> : null}
-          </>
+        <>
+          <Helmet>
+            {pt_title ? <title>{pt_title}</title> : null}
+            {pt_keywords ? <meta name="keyword" content={pt_keywords} /> : null}
+            {pt_description ? <meta name="description" content={pt_description} /> : null}
+          </Helmet>
+          {pageBody?.[0]?.children ? <FsGenericComponentList componentData={pageBody[0].children} /> : null}
+        </>
       )
 
     case 'productpage':
     default:
-      return (
-          <>
-            {pageBody?.[0]?.children ? <FsGenericComponentList componentData={pageBody[0].children} /> : null}
-          </>
-      )
+      return <>{pageBody?.[0]?.children ? <FsGenericComponentList componentData={pageBody[0].children} /> : null}</>
   }
 }
 export default FsGenericComponent
