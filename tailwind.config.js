@@ -13,6 +13,7 @@ module.exports = {
       screens: {
         xs: '480px',
         sm: '640px',
+        xxl: '1640px',
       },
       colors: {
         white: '#FFFFFF',

@@ -11,6 +11,7 @@ import { TextBanner } from 'components/Cms/textBanner'
 import { CMS_Accordion } from '../components/Cms/accordion'
 import CMS_List from 'components/Cms/cms_list'
 import CMS_Footer from 'components/Cms/footer'
+import { ShoppableVideo } from 'components/Cms/shoppableVideo'
 import React from 'react'
 import { Helmet } from 'react-helmet-async'
 
@@ -29,6 +30,7 @@ const firstSpiritComponentMap = {
   slider: TeaserSlider,
   simple_text_list_faq: SimpleList,
   text_banner: TextBanner,
+  shoppable_video: ShoppableVideo
 }
 
 export const normalizeFsStructure = (content) => {

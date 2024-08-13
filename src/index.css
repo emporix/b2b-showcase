@@ -16,7 +16,7 @@ code {
 }
 
 .header {
-  @apply w-full h-fit md:h-14 z-20 fixed md:bg-primary sm:pb-2 md:px-4 xl:px-24  flex justify-between items-center;
+  @apply w-full h-fit md:h-14 z-20 fixed md:bg-primary sm:pb-2 md:px-4 xl:px-24  flex justify-between items-center xxl:px-[20%];
 }
 
 .home_category {
@@ -65,6 +65,10 @@ code {
 }
 
 @layer components {
+  .fs-content-wrapper,
+  .fs-content-product {
+    @apply xxl:px-[20%];
+  }
   .fs-content-wrapper > * {
     @apply mt-6 mx-4 md:mx-24;
   }
