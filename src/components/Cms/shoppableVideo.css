@@ -6,7 +6,6 @@
 
 video {
   min-width: 100%;
-  /* height: auto; */
   z-index: 1;
 }
 
@@ -19,22 +18,11 @@ video {
   animation-duration: 0.5s;
   animation-fill-mode: backwards;
 }
-.product-container.visible {
-  left: 0;
-}
 @keyframes slideIn {
   from {
-    left: -50rem;
+    top: -10rem;
   }
   to {
-    right: 50rem;
-  }
-}
-@keyframes slideBack {
-  from {
-    left: 50rem;
-  }
-  to {
-    right: -50rem;
+    top: 0;
   }
 }

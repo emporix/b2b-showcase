@@ -41,11 +41,11 @@ export const ShoppableVideo = (props) => {
 
   return (
     <div className="video-container flex-col">
-      <video muted autoPlay={true} loop onClick={handleVideoClick}>
+      <video className="cursor-pointer" muted autoPlay={true} loop onClick={handleVideoClick}>
         <source src={video?.url} type="video/mp4" />
       </video>
       {isOverlayVisible && (
-        <div className={`product-container ${isOverlayVisible ? 'visible' : 'invisible'} mx-width: max-xl:`}>
+        <div className={`product-container mx-width: max-xl:`}>
           {products.map((product, idx) => (
             <EachProductRow key={idx} item={product} available={product?.availability?.available} rating={4} />
           ))}
