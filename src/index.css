@@ -65,6 +65,7 @@ code {
 }
 
 @layer components {
+  /*.fs-content-wrapper > div > *,*/
   .fs-content-wrapper > * {
     @apply mt-6 mx-4 md:mx-24;
   }

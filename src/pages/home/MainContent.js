@@ -31,7 +31,7 @@ const MainContent = ({ page }) => {
   }, [currentLanguage, page])
 
   return (
-    <div className="fs-content-wrapper">
+    <div data-preview-id={content?.data?.cmsFilteredPage?.page?.previewId} className="fs-content-wrapper">
       <FsGenericComponent data={content?.data} />
     </div>
   )
