@@ -82,13 +82,10 @@ const FsGenericComponent = ({ data }) => {
     case 'footer':
       const Component = firstSpiritComponentMap[componentLayout]
       return (
-        Component && (
-          <div className="flex h-full w-full">
-            <Component props={normalizeFooterStructure(Object.values(componentData))} />
-          </div>
-        )
+        <div data-preview-id={page?.previewId}>
+          {Component && <Component props={normalizeFooterStructure(Object.values(componentData))} />}
+        </div>
       )
-
     case 'homepage':
     case 'content_page':
       const { pt_title, pt_keywords, pt_description } = componentData
@@ -109,7 +106,6 @@ const FsGenericComponent = ({ data }) => {
       return <>{pageBody?.[0]?.children ? <FsGenericComponentList componentData={pageBody[0].children} /> : null}</>
   }
 }
-
 export default FsGenericComponent
 
 export const FsGenericComponentList = ({ componentData }) => {

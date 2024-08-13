@@ -49,7 +49,7 @@ export const ProductCarousel = (props) => {
   }
 
   return (
-    <>
+    <div data-preview-id={props?.props?.previewId}>
       <Slider ref={productSlider} {...settings} className="product-carousel">
         {products.map((p) => {
           return (
@@ -75,6 +75,6 @@ export const ProductCarousel = (props) => {
             )
           })}
       </Slider>
-    </>
+    </div>
   )
 }

@@ -25,11 +25,15 @@ const Elements = ({ type, content, data }) => {
 }
 
 export const Text = ({ props }) => {
-  const { type, data } = props
+  const { type, data, previewId } = props
 
   switch (type) {
     case 'Section':
-      return data?.st_text?.map((entry) => <Text props={{ type: 'Element', data: entry }} key={nanoid()} />)
+      return (
+          <div data-preview-id={previewId}>
+            {data?.st_text?.map((entry) => <Text props={{ type: 'Element', data: entry }} key={nanoid()} />)}
+          </div>
+      )
     case 'Element':
       return <Elements type={data?.type} content={data?.content} key={nanoid()} />
     default:

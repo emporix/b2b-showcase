@@ -30,7 +30,7 @@ export const SimpleList = ({ props }) => {
   const classId = props?.sectionType || ''
 
   return (
-    <div>
+    <div data-preview-id={props?.previewId}>
       <ul className={`fs-${classId}`}>
         {listEntries.map((entry) => {
           const sectionId = entry?.sectionType || 'text'
