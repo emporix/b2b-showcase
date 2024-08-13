@@ -27,7 +27,7 @@ const PdpMixins = ({ blok, ...restProps }) => {
         const parts = item.split(',')
         const title = parts[0]
         const url = parts[1]
-        return `<a href="${url}">${title}</a>`
+        return `<a href="${url}" target="_blank">${title}</a>`
       })
     const documentMixin = [
       fieldName, {
