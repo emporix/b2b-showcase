@@ -130,7 +130,7 @@ const EachProductRow = ({ item, stockLevel, rating }) => {
                 />
                 <button
                   className="cta-primary w-full text-sm md:w-auto"
-                  onClick={() => handleAddToCart(item, quantity)}
+                  onClick={(e) => handleAddToCart(e, item, quantity)}
                 >
                   {t('add_cart')}
                 </button>

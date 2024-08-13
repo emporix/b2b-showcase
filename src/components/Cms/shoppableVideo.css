@@ -1,0 +1,28 @@
+.video-container {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+}
+
+video {
+  min-width: 100%;
+  z-index: 1;
+}
+
+.product-container {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 10px;
+  position: relative;
+  animation-name: slideIn;
+  animation-duration: 0.5s;
+  animation-fill-mode: backwards;
+}
+@keyframes slideIn {
+  from {
+    top: -10rem;
+  }
+  to {
+    top: 0;
+  }
+}
