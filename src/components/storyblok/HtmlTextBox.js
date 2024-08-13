@@ -70,6 +70,7 @@ const HtmlTextBox = (props) => {
               "frameborder",
               "scrolling",
               "sandbox",
+              "target"
             ],
           }),
         }}
