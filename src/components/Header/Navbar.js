@@ -228,7 +228,6 @@ const Navbar = ({blok}) => {
   const [cartTotal, setCartTotal] = useState(0)
   const [cartTotalPrice, setCartTotalPrice] = useState(0)
   const [cartCurrency, setCartCurrency] = useState('-')
-  const { fields } = useContentful()
   const grossValueWithDiscount = cartAccount.subtotalAggregate?.grossValue - (Math.trunc(cartAccount?.totalDiscount?.amount * 100) / 100)
 
   useEffect(() => {
