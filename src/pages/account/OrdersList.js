@@ -126,14 +126,17 @@ export const OrderList = (props) => {
     [returns]
   )
 
-  const getPriceWithoutShipping = (row) => {
-    return row?.totalPrice - row?.shipping.total.amount
+  const getDiscountValue = (row) => {
+    const totalDiscount = row.discounts?.find(discount => discount.code === "TOTAL")
+    return totalDiscount ? totalDiscount.amount : 0
   }
 
-  const getTaxValue = (row) => {
-    const taxRate = row?.tax.lines.reduce((sum, el) => sum + el.rate, 0)
-    const taxValue = (getPriceWithoutShipping(row) * (taxRate / 100)).toFixed(2)
-    return Number(taxValue)
+  const getTaxValue = (entries) => {
+    return entries.reduce((totalTax, el) => {
+      const hasIncludedTax = el.tax?.lines[0]?.inclusive
+      const itemTaxValue = ((el.totalPrice - el.totalDiscount?.amount) * (el.tax?.lines[0]?.rate / 100)).toFixed(2)
+      return !hasIncludedTax ? Number(itemTaxValue) + Number(totalTax) : Number(totalTax)
+    }, 0)
   }
 
   return (
@@ -195,7 +198,7 @@ export const OrderList = (props) => {
                 </TableCell>
                 <TableCell align="center" className="!py-6">
                   <CurrencyAfterValue
-                    value={row.totalPrice + getTaxValue(row)}
+                    value={row.subTotalPrice + getTaxValue(row.entries) + row.shipping?.total?.amount - getDiscountValue(row)}
                     currency={row.currency}
                   />
                 </TableCell>
