@@ -10,8 +10,9 @@ import { useNavigate } from 'react-router-dom'
 import { useLanguage } from 'context/language-provider'
 import { useTranslation } from 'react-i18next'
 import { HiChevronDoubleRight } from 'react-icons/hi'
+import { StockLevel } from '../../components/Product/availability'
 
-const EachProductRow = ({ item, available, rating }) => {
+const EachProductRow = ({ item, stockLevel, rating }) => {
   const { getLocalizedValue } = useLanguage()
   const { putCartProduct } = useCart()
   const navigate = useNavigate()
@@ -64,9 +65,7 @@ const EachProductRow = ({ item, available, rating }) => {
 
       <div className="flex flex-col gap-4">
         <div className="flex flex-row gap-4 cursor-pointer" onClick={() => handleProductDetail(item)}>
-          <div className={`${available > 0 ? 'text-limeGreen' : 'text-red-500'} font-medium float-right lg:float-none`}>
-            {available > 0 ? t('in_stock') : t('out_stock')}
-          </div>
+          <StockLevel stockLevel={stockLevel} />
           <div className="flex flex-col justify-end ml-auto">
             {item.productType !== 'PARENT_VARIANT' && (
               <>
