@@ -46,7 +46,7 @@ export const ShoppableVideo = (props) => {
       </video>
       <div className={`product-container ${isOverlayVisible ? 'showOverlay' : 'hideOverlay'}`}>
         {products.map((product, idx) => (
-          <EachProductRow key={idx} item={product} available={product?.availability?.available} rating={4} />
+          <EachProductRow key={idx} item={product} stockLevel={product?.availability?.stockLevel} available={product?.availability?.available} rating={4} />
         ))}
       </div>
     </div>
