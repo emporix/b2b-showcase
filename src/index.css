@@ -65,15 +65,14 @@ code {
 }
 
 @layer components {
-  .fs-content-wrapper,
-  .fs-content-product {
+  .fs-content-wrapper {
     @apply xxl:px-[20%];
   }
   .fs-content-wrapper > * {
-    @apply mt-6 mx-4 md:mx-24 xxl:mx-[20%];
+    @apply mt-6 mx-4 md:mx-24;
   }
   .fs-content-wrapper .mx-adjust {
-    @apply md:mx-24 xxl:mx-[20%];
+    @apply md:mx-24;
   }
   .fs-content-product > * {
     @apply mt-6;

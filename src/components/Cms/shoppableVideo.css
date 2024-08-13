@@ -18,11 +18,19 @@ video {
   animation-duration: 0.5s;
   animation-fill-mode: backwards;
 }
-@keyframes slideIn {
-  from {
-    top: -10rem;
-  }
-  to {
-    top: 0;
-  }
+
+.product-container.showOverlay {
+  visibility: visible;
+  opacity: 1;
+  height: 100%;
+  top: 0;
+  transition: all 0.5s;
+}
+
+.product-container.hideOverlay {
+  visibility: hidden;
+  opacity: 0;
+  height: 0;
+  top: -10rem;
+  transition: all 0.5s;
 }
