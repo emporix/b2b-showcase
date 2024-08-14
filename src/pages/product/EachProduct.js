@@ -24,8 +24,11 @@ const EachProduct = ({ item, stockLevel, rating }) => {
   const navigate = useNavigate()
 
   const handleProductDetail = useCallback(
-    (item) => {
-      navigate(`/${userTenant}/product/details/${item.id}`)
+    (item, event) => {
+      if (event.button === 0) {
+        event.preventDefault();
+        navigate(`/${userTenant}/product/details/${item.id}`);
+      }
     },
     [userTenant, navigate]
   )
@@ -39,7 +42,7 @@ const EachProduct = ({ item, stockLevel, rating }) => {
   >
     <div
       className="p-4 bg-aliceBlue standard_box_shadow rounded-xl h-full flex flex-col gap-4  cursor-pointer"
-      onClick={() => handleProductDetail(item)}
+      onClick={(e) => handleProductDetail(item, e)}
     >
       <div className="flex flex-col gap-4">
         <div className="w-full flex flex-col-reverse justify-start items-end md:flex-row md:items-end">
