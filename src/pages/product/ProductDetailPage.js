@@ -320,7 +320,7 @@ const ProductAddToCart = () => {
           disabled={!product.price}
           className="product-add-to-cart-btn cta-button bg-yellow !text-aliceBlue !text-lg"
           onClick={() => HandleProductAddToCart1(product, setShowCart, quantity)}
-          title="ADD TO CART"
+          title={t("add_cart")}
         />
       </div>
     </div>
@@ -508,7 +508,7 @@ const ProductDetailsTabContent = ({ product }) => {
 
 const ProductDetailTabContent = ({ product }) => {
   const [tab, setTab] = React.useState(0)
-
+  const {t} = useTranslation("products");
   const handleChange = (event, tab) => {
     setTab(tab)
   }
@@ -540,9 +540,9 @@ const ProductDetailTabContent = ({ product }) => {
     <Box>
       <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
         <Tabs variant="fullWidth" value={tab} onChange={handleChange} aria-label="">
-          <Tab sx={tabStyle} label="Details" {...a11yProps(0)} />
-          <Tab sx={tabStyle} label="Additional Information" {...a11yProps(1)} />
-          <Tab sx={tabStyle} label="Reviews" {...a11yProps(2)} />
+          <Tab sx={tabStyle} label={t('details')} {...a11yProps(0)} />
+          <Tab sx={tabStyle} label={t('additional_information')} {...a11yProps(1)} />
+          <Tab sx={tabStyle} label={t('reviews')} {...a11yProps(2)} />
         </Tabs>
       </Box>
       <TabPanel value={tab} index={0}>
@@ -609,14 +609,14 @@ const ProductDetailInfo = ({ product }) => {
         </div>
         <div className="mobile-lg">
           <Accordion>
-            <AccordionItem index={0} title="Details">
+            <AccordionItem index={0} title={t('details')}>
               <ProductDetailsTabContent product={product} />
             </AccordionItem>
-            <AccordionItem index={1} title="Additional Information">
+            <AccordionItem index={1} title={t('additional_information')}>
               <div className="product-details-tab-content-wrapper">{getLocalizedValue(product.description)}</div>
             </AccordionItem>
-            <AccordionItem index={2} title="Reviews" className="product-details-tab-content-wrapper">
-              <div className="product-details-tab-content-wrapper">Reviews</div>
+            <AccordionItem index={2} title={t('reviews')} className="product-details-tab-content-wrapper">
+              <div className="product-details-tab-content-wrapper">{t('reviews')}</div>
             </AccordionItem>
           </Accordion>
         </div>
@@ -625,7 +625,7 @@ const ProductDetailInfo = ({ product }) => {
     </div>
   )
 }
-
+/*
 const products = [
   {
     stock: 'Low',
@@ -679,7 +679,7 @@ const products = [
     listPrice: '59.99',
   },
 ]
-
+*/
 const getRelatedProducts = async (language, product) => {
   let productIds = []
   const relatedItems = product.relatedItems
@@ -716,6 +716,7 @@ const getRelatedProducts = async (language, product) => {
 const ProductMatchItems = ({ productInput }) => {
   const [products, setProducts] = useState([])
   const { currentLanguage } = useLanguage()
+  const {t} = useTranslation("products");
 
   const navigate = useNavigate()
   const { userTenant } = useAuth()
@@ -727,7 +728,7 @@ const ProductMatchItems = ({ productInput }) => {
   }, [currentLanguage, productInput])
   return (
     <div className="product-match-items-wrapper grid grid-cols-1">
-      <div className="product-match-caption mx-auto font-light w-full lg:w-1/3 border-b-2 pb-2">Related products</div>
+      <div className="product-match-caption mx-auto font-light w-full lg:w-1/3 border-b-2 pb-2">{t("related_products")}</div>
       {products.length > 0 ? (
         <div className="product-match-items-content w-full">
           <SliderComponent>
@@ -752,7 +753,7 @@ const ProductMatchItems = ({ productInput }) => {
           </SliderComponent>
         </div>
       ) : (
-        <div className="w-full text-center text-lg font-light">No matching products</div>
+        <div className="w-full text-center text-lg font-light">{t("no_matching_products")}</div>
       )}
     </div>
   )

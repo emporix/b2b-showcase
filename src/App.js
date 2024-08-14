@@ -111,7 +111,6 @@ i18n.use(initReactI18next).init({
         quantity: 'Quantity',
         unit_price: 'Unit Price',
         quantity_discount: 'Quantity Discount',
-        description: 'Product Description',
       },
       account: {
         account: 'My Account',
@@ -144,6 +143,11 @@ i18n.use(initReactI18next).init({
       },
       products: {
         description: 'Product Description',
+        details: 'Details',
+        additional_information: 'Additional Information',
+        reviews: 'Reviews',
+        related_products: 'Related products',
+        no_matching_products: 'No matching products'
       },
       signup: {
         heading2: 'Register as a New User',
@@ -225,7 +229,6 @@ i18n.use(initReactI18next).init({
         quantity: 'Menge',
         unit_price: 'Preis pro Einheit',
         quantity_discount: 'Mengenrabatt',
-        description: 'Produktbeschreibung',
       },
       account: {
         account: 'Mein Konto',
@@ -258,6 +261,11 @@ i18n.use(initReactI18next).init({
       },
       products: {
         description: 'Produktbeschreibung',
+        details: 'Details',
+        additional_information: 'Zusätzliche Informationen',
+        reviews: 'Bewertungen',
+        related_products: 'Verwandte Produkte',
+        no_matching_products: 'Keine passenden Produkte'
       },
       signup: {
         heading2: 'Register as a New User',
