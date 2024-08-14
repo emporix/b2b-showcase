@@ -1,20 +1,13 @@
 import Layout from '../Layout'
-import { useNavigate, useParams } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import MainContent from '../home/MainContent'
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import { useTranslation } from 'react-i18next'
 import { HiChevronLeft } from 'react-icons/hi'
 
 const ContentPage = () => {
   const navigate = useNavigate()
-  const param = useParams()
   const { t } = useTranslation('page')
-
-  const [route, setRoute] = useState(window.location.pathname.substring('/n11showcase'.length))
-
-  useEffect(() => {
-    setRoute(`/${t('content')}/${param.contentName}/`)
-  }, [param, t])
 
   return (
     <Layout title="inhalt">
@@ -25,7 +18,7 @@ const ContentPage = () => {
             {t('back_to_overview')}
           </button>
         </div>
-        <MainContent page={route} />
+        <MainContent />
       </div>
     </Layout>
   )

@@ -9,12 +9,12 @@ const Content = ({ type, page, classList, title }) => {
   const { currentLanguage } = useLanguage()
 
   useEffect(() => {
-    const getData = async (currentLang) => {
-      const pageData = await getCmsFilteredPage(page, type, currentLang)
+    const getData = async () => {
+      const pageData = await getCmsFilteredPage(page, type, currentLanguage)
       setContent(pageData)
     }
 
-    getData(currentLanguage)
+    getData()
   }, [currentLanguage, page, type])
 
   return (
