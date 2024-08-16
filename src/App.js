@@ -68,7 +68,25 @@ import { initReactI18next } from 'react-i18next'
 i18n.use(initReactI18next).init({
   resources: {
     en: {
-      homepage: {},
+      homepage: {
+        experience: 'Experience',
+        luxury: 'luxury',
+        neteleven: 'with neteleven',
+        wine: 'Wine',
+        intro: 'Our exquisite, hand-picked wines reflect the elegance and quality you expect from neteleven',
+        start_shopping: 'Start shopping',
+        delivery_header: 'Free delivery',
+        delivery_description: 'Free delivery on orders over €50',
+        fast_delivery_header: 'Express delivery',
+        fast_delivery_description: 'Express delivery for quick wine enjoyment.',
+        fidelity_header: 'Loyalty bonus',
+        fidelity_description: 'Collect and save with our loyalty program.',
+        warranty_header: 'Extend warranty',
+        warranty_description: 'Secure your purchase with an extended warranty.',
+        newsletter: 'Subscribe to our newsletter and receive the latest news and offers',
+        subscribe: 'subscribe now',
+        name: 'First name',
+      },
       page: {
         news: 'News',
         technical: 'Technical Page',
@@ -206,7 +224,25 @@ i18n.use(initReactI18next).init({
       },
     },
     de: {
-      homepage: {},
+      homepage: {
+        experience: 'Erleben Sie den',
+        luxury: 'Luxus',
+        neteleven: 'mit neteleven',
+        wine: 'Wein',
+        intro: 'Unsere exquisiten, handverlesenen Weine spiegeln die Eleganz und Qualität wider, die Sie von neteleven erwarten',
+        start_shopping: 'Beginn mit dem Einkauf',
+        delivery_header: 'Kostenlose Lieferung',
+        delivery_description: 'Kostenlose Lieferung ab einem Bestellwert von 50 €',
+        fast_delivery_header: 'Schnelle Lieferung',
+        fast_delivery_description: 'Expresslieferung für schnellen Weingenuss.',
+        fidelity_header: 'Treueprämie',
+        fidelity_description: 'Sammeln und sparen mit unserem Treueprogramm.',
+        warranty_header: 'Garantie verlängern',
+        warranty_description: 'Sichern Sie Ihren Kauf mit erweiterter Garantie.',
+        newsletter: 'Abonnieren Sie unseren Newsletter und erhalten sie die neuesten Nachrichten und Angebote',
+        subscribe: 'Jetzt Abonnieren',
+        name: 'Vorname',
+      },
       page: {
         news: 'Neuigkeiten',
         technical: 'Technische Seite',

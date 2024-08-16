@@ -3,6 +3,7 @@ import logo from '../../assets/local_shipping.svg'
 import electricBolt from '../../assets/electric_bolt.svg'
 import star from '../../assets/stars.svg'
 import verifiedUser from '../../assets/verified_user.svg'
+import {useTranslation} from "react-i18next";
 
 const EachService = (props) => {
   return (
@@ -16,19 +17,21 @@ const EachService = (props) => {
   )
 }
 const Service = () => {
-  return (
+    const { t } = useTranslation('homepage')
+
+    return (
     <div className="w-full bg-black grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 py-14 px-4 md:px-6 xl:px-36 gap-y-12 md:gap-14 lg:gap-x-4 xl:gap-12">
       <EachService
         src={logo}
-        title="Kostenlose Lieferung"
-        content="Kostenlose Lieferung ab einem Bestellwert von 50 €"
+        title={t('delivery_header')}
+        content={t('delivery_description')}
       />
-      <EachService src={electricBolt} title="Schnelle Lieferung" content="Expresslieferung für schnellen Weingenuss." />
-      <EachService src={star} title="Treueprämie" content="Sammeln und sparen mit unserem Treueprogramm." />
+      <EachService src={electricBolt} title={t('fast_delivery_header')} content={t('fast_delivery_description')} />
+      <EachService src={star} title={t('fidelity_header')} content={t('fidelity_description')} />
       <EachService
         src={verifiedUser}
-        title="Garantie verlängern"
-        content="Sichern Sie Ihren Kauf mit erweiterter Garantie."
+        title={t('warranty_header')}
+        content={t('warranty_description')}
       />
     </div>
   )
