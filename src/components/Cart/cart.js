@@ -18,7 +18,8 @@ import {useTranslation} from "react-i18next";
 
 
 export const CartProductCaption = () => {
-  return <div className="h-10 border-bottom cart-product-caption">Products</div>
+    const {t} = useTranslation("cart");
+    return <div className="h-10 border-bottom cart-product-caption">{t("products")}</div>
 }
 export const CartProductImage = ({ src, className }) => {
   return (
@@ -28,23 +29,25 @@ export const CartProductImage = ({ src, className }) => {
   )
 }
 export const PriceExcludeVAT = ({ price, caption }) => {
+  const {t} = useTranslation("cart");
   return (
     <div className="price-exclude-vat">
       <div className="">
         <CurrencyBeforeValue value={price} />
       </div>
-      <div className="caption">{caption === undefined ? 'ex. VAT' : caption}</div>
+      <div className="caption">{caption === undefined ? t("excluding_short") : caption}</div>
     </div>
   )
 }
 
 export const PriceExcludeVAT1 = ({ price, caption }) => {
-  return (
+    const {t} = useTranslation("cart");
+    return (
     <div className="price-exclude-vat1">
       <div className="price">
         <CurrencyBeforeValue value={price} />
       </div>
-      <div className="caption">{caption === undefined ? 'ex. VAT' : caption}</div>
+      <div className="caption">{caption === undefined ? t("excluding_short") : caption}</div>
     </div>
   )
 }
@@ -54,6 +57,7 @@ export const CartMobileItem = ({ cartItem }) => {
   const { getLocalizedValue } = useLanguage()
   const availability = useSelector(availabilityDataSelector)
   const { removeCartItem } = useCart()
+  const {t} = useTranslation("cart");
 
   const stockLevel = availability['k' + cartItem.id]?.stockLevel || 0
 
@@ -117,7 +121,7 @@ export const CartMobileItem = ({ cartItem }) => {
         <div className="!font-bold">
           <PriceExcludeVAT1
             price={Math.trunc(cartItem.quantity * cartItem.product.price.originalAmount * 1.2 * 100) / 100}
-            caption="incl. VAT"
+            caption={t("including")}
           />
         </div>
       </LayoutBetween>
@@ -313,7 +317,7 @@ const CartGoCart = () => {
   return (
     <Link to={cartUrl()} className="w-full">
       <button className="cart-go-cart-btn py-[12px] px-[14px] bg-transparent rounded text-eerieBlack  border border-gray80 hover:text-highlight hover:border-highlight">
-          {t("cart").toUpperCase()}
+          {t("goto_cart").toUpperCase()}
       </button>
     </Link>
   )
@@ -341,7 +345,10 @@ export const getTotalPrice = (cartAccount, shippingCost) => {
 export const CartActionPanel = ({ action, showShipping, hideGoCart }) => {
   const { cartAccount, shippingMethod } = useCart()
   const shippingCost = showShipping !== false ? getShippingCost(shippingMethod) : 0
-  return (
+  const {t} = useTranslation("cart");
+
+
+    return (
     <div className="cart-action-panel standard_box_shadow">
       <GridLayout className="gap-4">
         <CartActionRow>
@@ -355,7 +362,7 @@ export const CartActionPanel = ({ action, showShipping, hideGoCart }) => {
         {cartAccount.totalDiscount?.amount > 0 && (
           <CartActionRow>
             <LayoutBetween>
-              <span className="font-semibold text-green-600">Discount amount</span>
+              <span className="font-semibold text-green-600">{t("discount")}</span>
               <span className="font-semibold text-green-600">
                 <CurrencyBeforeValue
                   value={Math.trunc(cartAccount.totalDiscount.amount * 100) / 100}
@@ -432,6 +439,7 @@ export const CartActionPanel = ({ action, showShipping, hideGoCart }) => {
 const Cart = () => {
   const { cartAccount } = useCart()
   const { setShowCart } = useContext(LayoutContext)
+  const {t} = useTranslation("cart");
 
   return (
     <>
@@ -442,8 +450,8 @@ const Cart = () => {
         >
           <HiOutlineArrowCircleLeft size="2rem" />
         </span>
-        <span className="cart-caption-font ml-4">My Cart</span>
-        <span className="cart-caption-font ml-auto">{cartAccount?.items.length || 0} items</span>
+        <span className="cart-caption-font ml-4">{t("mycart")}</span>
+        <span className="cart-caption-font ml-auto">{cartAccount?.items.length || 0} {t("items")}</span>
       </LayoutFlexStart>
       <GridLayout className="gap-4">
         {cartAccount?.items.map((cartItem, idx) => (

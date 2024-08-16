@@ -133,7 +133,7 @@ i18n.use(initReactI18next).init({
         mycart: 'My Cart',
         items: 'Items',
         checkout: 'go to checkout',
-        cart: 'go to cart',
+        goto_cart: 'go to cart',
         quote: 'request quote',
         total_price: 'Total Price',
         subtotal_vat: 'Subtotal with VAT',
@@ -141,9 +141,13 @@ i18n.use(initReactI18next).init({
         vat: 'VAT',
         of: 'of',
         excluding: 'Excluding VAT',
+        including: 'Including VAT',
+        excluding_short: 'ex. VAT',
         shipping_costs: 'Shipping Costs',
         procurement: 'Transfer to Procurementsystem',
-        quantity: 'Quantity'
+        quantity: 'Quantity',
+        discount: 'Discount amount',
+        products: 'Products'
       },
       address: {
         contact: 'Contact Name',
@@ -267,7 +271,7 @@ i18n.use(initReactI18next).init({
         mycart: 'Mein Warenkorb',
         items: 'Produkte',
         checkout: 'Zur Kasse gehen',
-        cart: 'Gehe zum Warenkorb',
+        goto_cart: 'Gehe zum Warenkorb',
         quote: 'Angebot anfordern',
         total_price: 'Gesamtpreis',
         subtotal_vat: 'Zwischensumme mit Mehrwertsteuer',
@@ -275,9 +279,14 @@ i18n.use(initReactI18next).init({
         vat: 'Mehrwertsteuer',
         of: 'von',
         excluding: 'ohne Mehrwertsteuer',
+        including: 'mit Mehrwertsteuer',
+        excluding_short: 'ohne MwSt.',
         shipping_costs: 'Lieferkosten',
         procurement: 'Übertragung zum Beschaffungssystem',
-        quantity: 'Menge'
+        quantity: 'Menge',
+        discount: 'Rabattbetrag',
+        products: 'Produkte'
+
       },
       address: {
         contact: 'Kontakte',
