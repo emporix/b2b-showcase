@@ -42,6 +42,7 @@ export const PriceExcludeVAT = ({ price, caption }) => {
 
 export const PriceExcludeVAT1 = ({ price, caption }) => {
     const {t} = useTranslation("cart");
+    console.log(price)
     return (
     <div className="price-exclude-vat1">
       <div className="price">
@@ -59,7 +60,7 @@ export const CartMobileItem = ({ cartItem }) => {
   const { removeCartItem } = useCart()
   const {t} = useTranslation("cart");
 
-  const stockLevel = availability['k' + cartItem.id]?.stockLevel || 0
+  const stockLevel = availability['k' + cartItem?.product?.id]?.stockLevel || 0
 
   return (
     <GridLayout className="gap-4 cart-for-mobile">
@@ -87,27 +88,27 @@ export const CartMobileItem = ({ cartItem }) => {
           </LayoutBetween>
           <GridLayout className="gap-2 mt-4">
             <span className="cart-product-mobile-info-wrapper">
-              <span className="font-bold">Unit Price: </span>
+              <span className="font-bold">{t('unit_price')}: </span>
               <CurrencyBeforeValue value={cartItem.product.price.effectiveAmount} />
             </span>
             <span className="cart-product-mobile-info-wrapper">
-              <span className="font-bold">Subtotal: : </span>
+              <span className="font-bold">{t('subtotal_short')}: </span>
               <CurrencyBeforeValue value={cartItem.product.price.effectiveAmount * cartItem.quantity} />
             </span>
             <span className="cart-product-mobile-info-wrapper">
-              <span className="font-bold">Discount: </span>
+              <span className="font-bold">{t('discount')}: </span>
               <CurrencyBeforeValue value={0.0} />
             </span>
             <span className="cart-product-mobile-info-wrapper">
-              <span className="font-bold">VAT: </span>
-              <CurrencyBeforeValue value={Math.trunc(cartItem.product.price.originalAmount * 0.2 * 100) / 100} />
+              <span className="font-bold">{t('vat')}: </span>
+              <CurrencyBeforeValue value={Math.trunc((cartItem.product.price.effectiveAmount - cartItem.product.price.effectiveAmount / 1.19) * 100) / 100} />
             </span>
           </GridLayout>
         </div>
       </div>
       <div className="cart-product-stock-wrapper flex">
         <StockLevel stockLevel={stockLevel} />
-        <span className="">Est. delivery time: 3 days</span>
+        <span className="">{t('delivery_time')} 3 {t('days')}</span>
       </div>
       <LayoutBetween className="items-center">
         <div className="w-[67px]">
@@ -120,7 +121,7 @@ export const CartMobileItem = ({ cartItem }) => {
         </div>
         <div className="!font-bold">
           <PriceExcludeVAT1
-            price={Math.trunc(cartItem.quantity * cartItem.product.price.originalAmount * 1.2 * 100) / 100}
+            price={Math.trunc(cartItem.quantity * cartItem.product.price.effectiveAmount * 100) / 100}
             caption={t("including")}
           />
         </div>
@@ -162,7 +163,6 @@ export const CartProductBasicInfo = ({ cart }) => {
   const { getLocalizedValue } = useLanguage()
   const availability = useSelector(availabilityDataSelector)
   const stocklevel = availability['k' + cart.product.id]?.stockLevel || 0
-
   return (
     <div className="cart-product-basic-info">
       <GridLayout className="gap-2">
@@ -346,7 +346,6 @@ export const CartActionPanel = ({ action, showShipping, hideGoCart }) => {
   const { cartAccount, shippingMethod } = useCart()
   const shippingCost = showShipping !== false ? getShippingCost(shippingMethod) : 0
   const {t} = useTranslation("cart");
-
 
     return (
     <div className="cart-action-panel standard_box_shadow">

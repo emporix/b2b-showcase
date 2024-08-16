@@ -1,5 +1,6 @@
 import React from 'react'
 import './cart.css'
+import {useTranslation} from "react-i18next";
 
 const CartActionItem = ({ title, children }) => {
   return (
@@ -10,9 +11,10 @@ const CartActionItem = ({ title, children }) => {
   )
 }
 const CartActionContent = ({ view }) => {
-  return (
+    const { t } = useTranslation('cart')
+    return (
     <ul className={'cart-action-content ' + (view ? 'flex' : 'grid')}>
-      <CartActionItem title="Save cart">
+      <CartActionItem title={t('save_cart')}>
         <svg
           width="16"
           height="16"
@@ -27,7 +29,7 @@ const CartActionContent = ({ view }) => {
         </svg>
       </CartActionItem>
 
-      <CartActionItem title="Load cart">
+      <CartActionItem title={t('load_cart')}>
         <svg
           width="15"
           height="15"
@@ -42,7 +44,7 @@ const CartActionContent = ({ view }) => {
         </svg>
       </CartActionItem>
 
-      <CartActionItem title="Empty shopping cart">
+      <CartActionItem title={t('empty_cart')}>
         <svg
           width="14"
           height="15"
@@ -57,7 +59,7 @@ const CartActionContent = ({ view }) => {
         </svg>
       </CartActionItem>
 
-      <CartActionItem title="Create Auto-Replenish Orders">
+      <CartActionItem title={t('auto_replenish')}>
         <svg
           width="18"
           height="18"
@@ -74,7 +76,7 @@ const CartActionContent = ({ view }) => {
         </svg>
       </CartActionItem>
 
-      <CartActionItem title="Share Cart">
+      <CartActionItem title={t('share_cart')}>
         <svg
           width="16"
           height="16"
