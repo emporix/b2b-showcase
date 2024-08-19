@@ -421,7 +421,13 @@ function App() {
     history.listen((location) => {
       dispatch(clearMessage())
     })
+    if (window.DqmHeadlessConnector || top.WE_API) {
+      const dqmConnector = new window.DqmHeadlessConnector();
+      dqmConnector.refreshDqmReport();
+    }
   }, [dispatch])
+
+
 
   return (
     <Router>
