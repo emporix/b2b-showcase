@@ -22,7 +22,7 @@ const MainContent = ({ page }) => {
   const currentPage = useRef()
 
   useEffect(() => {
-    const requestPath = removeTenant({ path: location?.pathname || '/', tenant: param?.tenant || '' })
+    const requestPath = pathWithoutTenant({ path: location?.pathname || '/', tenant: param?.tenant || '' })
 
     const getData = async () => {
       const isSamePage = currentPage.current === requestPath
