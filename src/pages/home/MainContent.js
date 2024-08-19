@@ -5,7 +5,7 @@ import { useLanguage } from '../../context/language-provider'
 import { CMSFilterType, getCmsFilteredPage } from 'services/content/filteredPage.service'
 import './content.css'
 
-const removeTenant = ({ path, tenant }) => {
+const pathWithoutTenant = ({ path, tenant }) => {
   const target = path
     .split('/')
     .filter((a) => a !== tenant)
