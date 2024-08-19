@@ -14,6 +14,7 @@ import {
 
 import './cart.css'
 import { useCart } from 'context/cart-provider'
+import {useTranslation} from "react-i18next";
 
 const CartProductInfo = ({ cart }) => {
   return (
@@ -34,6 +35,7 @@ const CartProductInfo = ({ cart }) => {
 const CartTable = ({ cartList, classname }) => {
   const { removeCartItem, incrementCartItemQty, decrementCartItemQty, setCartItemQty } =
     useCart()
+  const { t } = useTranslation('cart')
   return (
     <TableContainer className={classname}>
     {/* <div className="shopping-cart_table-title">Your products</div> */}
@@ -41,25 +43,26 @@ const CartTable = ({ cartList, classname }) => {
         <TableHead>
           <TableRow className="!py-6">
             <TableCell align="left" className="cart-head-item">
-              Product
+              {t('product')}
+
             </TableCell>
             <TableCell align="left" className="cart-head-item">
-              Price
+              {t('price')}
             </TableCell>
             <TableCell align="left" className="cart-head-item">
-              Quantity
+              {t('quantity')}
             </TableCell>
             <TableCell align="left" className="cart-head-item">
-              Subtotal
+              {t('subtotal_short')}
             </TableCell>
             <TableCell align="left" className="cart-head-item">
-              Discount
+              {t('discount_short')}
             </TableCell>
             <TableCell align="left" className="cart-head-item">
-              VAT
+              {t('vat')}
             </TableCell>
             <TableCell align="left" className="cart-head-item">
-              Total Price
+              {t('total_price')}
             </TableCell>
             <TableCell align="left" className="cart-head-item"></TableCell>
           </TableRow>

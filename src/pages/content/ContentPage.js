@@ -10,7 +10,7 @@ const ContentPage = () => {
   const { t } = useTranslation('page')
 
   return (
-    <Layout title="inhalt">
+    <Layout title={t('content')}>
       <div className="pb-12">
         <div className="fs-content-wrapper">
           <button onClick={() => navigate(t('contentPath'))} className="flex items-center">

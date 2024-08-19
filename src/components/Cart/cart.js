@@ -14,9 +14,12 @@ import { availabilityDataSelector } from 'redux/slices/availabilityReducer'
 import LayoutContext from '../../pages/context'
 import { HiOutlineArrowCircleLeft, HiOutlineXCircle } from 'react-icons/hi'
 import { StockLevel } from '../Product/availability'
+import {useTranslation} from "react-i18next";
+
 
 export const CartProductCaption = () => {
-  return <div className="h-10 border-bottom cart-product-caption">Products</div>
+    const {t} = useTranslation("cart");
+    return <div className="h-10 border-bottom cart-product-caption">{t("products")}</div>
 }
 export const CartProductImage = ({ src, className }) => {
   return (
@@ -26,23 +29,26 @@ export const CartProductImage = ({ src, className }) => {
   )
 }
 export const PriceExcludeVAT = ({ price, caption }) => {
+  const {t} = useTranslation("cart");
   return (
     <div className="price-exclude-vat">
       <div className="">
         <CurrencyBeforeValue value={price} />
       </div>
-      <div className="caption">{caption === undefined ? 'ex. VAT' : caption}</div>
+      <div className="caption">{caption === undefined ? t("excluding_short") : caption}</div>
     </div>
   )
 }
 
 export const PriceExcludeVAT1 = ({ price, caption }) => {
-  return (
+    const {t} = useTranslation("cart");
+    console.log(price)
+    return (
     <div className="price-exclude-vat1">
       <div className="price">
         <CurrencyBeforeValue value={price} />
       </div>
-      <div className="caption">{caption === undefined ? 'ex. VAT' : caption}</div>
+      <div className="caption">{caption === undefined ? t("excluding_short") : caption}</div>
     </div>
   )
 }
@@ -52,8 +58,9 @@ export const CartMobileItem = ({ cartItem }) => {
   const { getLocalizedValue } = useLanguage()
   const availability = useSelector(availabilityDataSelector)
   const { removeCartItem } = useCart()
+  const {t} = useTranslation("cart");
 
-  const stockLevel = availability['k' + cartItem.id]?.stockLevel || 0
+  const stockLevel = availability['k' + cartItem?.product?.id]?.stockLevel || 0
 
   return (
     <GridLayout className="gap-4 cart-for-mobile">
@@ -81,27 +88,27 @@ export const CartMobileItem = ({ cartItem }) => {
           </LayoutBetween>
           <GridLayout className="gap-2 mt-4">
             <span className="cart-product-mobile-info-wrapper">
-              <span className="font-bold">Unit Price: </span>
+              <span className="font-bold">{t('unit_price')}: </span>
               <CurrencyBeforeValue value={cartItem.product.price.effectiveAmount} />
             </span>
             <span className="cart-product-mobile-info-wrapper">
-              <span className="font-bold">Subtotal: : </span>
+              <span className="font-bold">{t('subtotal_short')}: </span>
               <CurrencyBeforeValue value={cartItem.product.price.effectiveAmount * cartItem.quantity} />
             </span>
             <span className="cart-product-mobile-info-wrapper">
-              <span className="font-bold">Discount: </span>
+              <span className="font-bold">{t('discount')}: </span>
               <CurrencyBeforeValue value={0.0} />
             </span>
             <span className="cart-product-mobile-info-wrapper">
-              <span className="font-bold">VAT: </span>
-              <CurrencyBeforeValue value={Math.trunc(cartItem.product.price.originalAmount * 0.2 * 100) / 100} />
+              <span className="font-bold">{t('vat')}: </span>
+              <CurrencyBeforeValue value={Math.trunc((cartItem.product.price.effectiveAmount - cartItem.product.price.effectiveAmount / 1.19) * 100) / 100} />
             </span>
           </GridLayout>
         </div>
       </div>
       <div className="cart-product-stock-wrapper flex">
         <StockLevel stockLevel={stockLevel} />
-        <span className="">Est. delivery time: 3 days</span>
+        <span className="">{t('delivery_time')} 3 {t('days')}</span>
       </div>
       <LayoutBetween className="items-center">
         <div className="w-[67px]">
@@ -114,8 +121,8 @@ export const CartMobileItem = ({ cartItem }) => {
         </div>
         <div className="!font-bold">
           <PriceExcludeVAT1
-            price={Math.trunc(cartItem.quantity * cartItem.product.price.originalAmount * 1.2 * 100) / 100}
-            caption="incl. VAT"
+            price={Math.trunc(cartItem.quantity * cartItem.product.price.effectiveAmount * 100) / 100}
+            caption={t("including")}
           />
         </div>
       </LayoutBetween>
@@ -141,11 +148,12 @@ const CartProductImageAndQuantity = ({ cartItem }) => {
 }
 
 export const CartProductImageAndReadOnlyQuantity = ({ cartItem }) => {
-  return (
+    const {t} = useTranslation("cart");
+    return (
     <div className="cart-product-image-and-quantity">
       <GridLayout className="gap-11">
         <CartProductImage src={cartItem.product.src} />
-        <div className="cart-product-sku-wrapper">Quantity: {cartItem.quantity}</div>
+        <div className="cart-product-sku-wrapper">{t("quantity")}: {cartItem.quantity}</div>
       </GridLayout>
     </div>
   )
@@ -155,7 +163,6 @@ export const CartProductBasicInfo = ({ cart }) => {
   const { getLocalizedValue } = useLanguage()
   const availability = useSelector(availabilityDataSelector)
   const stocklevel = availability['k' + cart.product.id]?.stockLevel || 0
-
   return (
     <div className="cart-product-basic-info">
       <GridLayout className="gap-2">
@@ -168,13 +175,14 @@ export const CartProductBasicInfo = ({ cart }) => {
   )
 }
 export const CartProductPriceExcludeVat = ({ price, currency }) => {
-  return (
+    const {t} = useTranslation("cart");
+    return (
     <div className="text-right">
       <GridLayout>
         <div className="cart-product-price-except-vat">
           <CurrencyBeforeValue value={price} currency={currency} />
         </div>
-        <div>Exclu. VAT</div>
+        <div>{t("excluding")}</div>
       </GridLayout>
     </div>
   )
@@ -226,9 +234,10 @@ export const CartActionRow = ({ children }) => {
   return <div className="cart-action-row">{children}</div>
 }
 export const CartSubTotalExcludeVat = ({ value, currency }) => {
-  return (
+    const {t} = useTranslation("cart");
+    return (
     <>
-      <span className="font-semibold">Subtotal without VAT</span>
+      <span className="font-semibold">{t("subtotal")}</span>
       <span className="font-semibold whitespace-nowrap">
         <CurrencyBeforeValue value={value} currency={currency} />
       </span>
@@ -236,9 +245,10 @@ export const CartSubTotalExcludeVat = ({ value, currency }) => {
   )
 }
 export const CartSubTotalIncludeVat = ({ grossValue, currency }) => {
+  const {t} = useTranslation("cart");
   return (
     <>
-      <span className="font-semibold">Subtotal with VAT</span>
+      <span className="font-semibold"> {t("subtotal_vat")}</span>
       <span className="font-semibold whitespace-nowrap">
         <CurrencyBeforeValue value={grossValue} currency={currency} />
       </span>
@@ -247,11 +257,12 @@ export const CartSubTotalIncludeVat = ({ grossValue, currency }) => {
 }
 
 export const CartVat = ({ value, taxPercentage, currency, taxValue }) => {
+  const {t} = useTranslation("cart");
   const effectiveTaxValue = taxValue ? taxValue : (value * (taxPercentage / 100)).toFixed(2)
   return (
     <>
       <span>
-        VAT {taxPercentage}% of <CurrencyBeforeValue value={value} currency={currency} />
+         {t("vat")} {taxPercentage}% {t("of")} <CurrencyBeforeValue value={value} currency={currency} />
       </span>
       <span className="whitespace-nowrap">
         <CurrencyBeforeValue value={effectiveTaxValue} currency={currency} />
@@ -260,18 +271,20 @@ export const CartVat = ({ value, taxPercentage, currency, taxValue }) => {
   )
 }
 export const CartShipingCost = ({ shippingCost, currency }) => {
-  return (
+    const {t} = useTranslation("cart");
+    return (
     <>
-      <span>Shipping Costs</span>
+      <span>{t("shipping_costs")}</span>
       <CurrencyBeforeValue value={shippingCost} currency={currency} />
     </>
   )
 }
 
 export const CartTotalPrice = ({ totalValue, currency }) => {
-  return (
+    const {t} = useTranslation("cart");
+    return (
     <>
-      <span className="font-bold ">Total Price</span>
+      <span className="font-bold ">{t("total_price")}</span>
       <span className="font-bold  whitespace-nowrap">
         <CurrencyBeforeValue value={totalValue} currency={currency} />
       </span>
@@ -280,38 +293,42 @@ export const CartTotalPrice = ({ totalValue, currency }) => {
 }
 
 const CartRequestQuote = () => {
+  const {t} = useTranslation("cart");
   return (
     <Link to={quoteUrl()} className="w-full">
       <button className="cart-request-quote-btn py-[12px] px-[14px] bg-transparent rounded text-eerieBlack border border-gray80 hover:text-highlight hover:border-highlight">
-        REQUEST QUOTE
+          {t("quote").toUpperCase()}
       </button>
     </Link>
   )
 }
 const CartGoCheckout = () => {
+  const {t} = useTranslation("cart");
   return (
     <Link to={checkoutUrl()} className="w-full">
       <button className="cart-go-checkout-btn py-[12px] px-[14px] bg-primary hover:bg-highlight rounded-xl !text-aliceBlue !text-lg">
-        GO TO CHECKOUT
+          {t("checkout").toUpperCase()}
       </button>
     </Link>
   )
 }
 const CartGoCart = () => {
+  const {t} = useTranslation("cart");
   return (
     <Link to={cartUrl()} className="w-full">
       <button className="cart-go-cart-btn py-[12px] px-[14px] bg-transparent rounded text-eerieBlack  border border-gray80 hover:text-highlight hover:border-highlight">
-        GO TO CART
+          {t("goto_cart").toUpperCase()}
       </button>
     </Link>
   )
 }
 
 const CartGoProcurementSystem = () => {
-  return (
+    const {t} = useTranslation("cart");
+    return (
     <Link to={localStorage.getItem(PROCUREMENT_SYSTEM_URL)} className="w-full">
       <button className="cart-go-checkout-btn py-[12px] px-[14px] bg-yellow rounded text-eerieBlack">
-        TRANSFER TO PROCUREMENT SYSTEM
+          {t("procurement")}
       </button>
     </Link>
   )
@@ -328,7 +345,9 @@ export const getTotalPrice = (cartAccount, shippingCost) => {
 export const CartActionPanel = ({ action, showShipping, hideGoCart }) => {
   const { cartAccount, shippingMethod } = useCart()
   const shippingCost = showShipping !== false ? getShippingCost(shippingMethod) : 0
-  return (
+  const {t} = useTranslation("cart");
+
+    return (
     <div className="cart-action-panel standard_box_shadow">
       <GridLayout className="gap-4">
         <CartActionRow>
@@ -342,7 +361,7 @@ export const CartActionPanel = ({ action, showShipping, hideGoCart }) => {
         {cartAccount.totalDiscount?.amount > 0 && (
           <CartActionRow>
             <LayoutBetween>
-              <span className="font-semibold text-green-600">Discount amount</span>
+              <span className="font-semibold text-green-600">{t("discount")}</span>
               <span className="font-semibold text-green-600">
                 <CurrencyBeforeValue
                   value={Math.trunc(cartAccount.totalDiscount.amount * 100) / 100}
@@ -419,6 +438,7 @@ export const CartActionPanel = ({ action, showShipping, hideGoCart }) => {
 const Cart = () => {
   const { cartAccount } = useCart()
   const { setShowCart } = useContext(LayoutContext)
+  const {t} = useTranslation("cart");
 
   return (
     <>
@@ -429,8 +449,8 @@ const Cart = () => {
         >
           <HiOutlineArrowCircleLeft size="2rem" />
         </span>
-        <span className="cart-caption-font ml-4">My Cart</span>
-        <span className="cart-caption-font ml-auto">{cartAccount?.items.length || 0} items</span>
+        <span className="cart-caption-font ml-4">{t("mycart")}</span>
+        <span className="cart-caption-font ml-auto">{cartAccount?.items.length || 0} {t("items")}</span>
       </LayoutFlexStart>
       <GridLayout className="gap-4">
         {cartAccount?.items.map((cartItem, idx) => (
