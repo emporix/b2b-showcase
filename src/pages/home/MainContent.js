@@ -53,7 +53,7 @@ const MainContent = ({ page }) => {
         content.data?.cmsFilteredPage ? (
           <FsGenericComponent data={content?.data} />
         ) : (
-          <p>Sorry we could not found the page.</p>
+          <p>Sorry we could not find the page.</p>
         )
       ) : null}
     </div>
