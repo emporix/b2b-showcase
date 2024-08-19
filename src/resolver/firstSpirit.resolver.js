@@ -30,7 +30,7 @@ const firstSpiritComponentMap = {
   slider: TeaserSlider,
   simple_text_list_faq: SimpleList,
   text_banner: TextBanner,
-  shoppable_video: ShoppableVideo
+  shoppable_video: ShoppableVideo,
 }
 
 export const normalizeFsStructure = (content) => {
@@ -82,7 +82,7 @@ const FsGenericComponent = ({ data }) => {
     case 'footer':
       const Component = firstSpiritComponentMap[componentLayout]
       return (
-        <div data-preview-id={page?.previewId}>
+        <div data-preview-id={page?.previewId} className="flex h-full">
           {Component && <Component props={normalizeFooterStructure(Object.values(componentData))} />}
         </div>
       )
