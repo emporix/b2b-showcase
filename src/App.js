@@ -427,8 +427,6 @@ function App() {
     }
   }, [dispatch])
 
-
-
   return (
     <Router>
       <Routes>
