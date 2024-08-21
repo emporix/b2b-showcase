@@ -18,6 +18,7 @@ import { getClient } from 'graphql/utils/fetch-graphql-api'
 import { CLIENT_ID, TENANT } from './constants/localstorage'
 import MUIThemeContextProvider from 'context/mui-context'
 import { HelmetProvider } from 'react-helmet-async'
+import {SearchProvider} from "./context/search-context";
 
 const client = getClient()
 
@@ -42,9 +43,11 @@ root.render(
                     <QuotesProvider>
                       <LanguageProvider>
                         <ContentfulProvider>
-                          <ProductListProvider>
-                            <App />
-                          </ProductListProvider>
+                          <SearchProvider>
+                            <ProductListProvider>
+                              <App />
+                            </ProductListProvider>
+                          </SearchProvider>
                         </ContentfulProvider>
                       </LanguageProvider>
                     </QuotesProvider>

@@ -6,7 +6,7 @@ import { useSelector } from 'react-redux'
 import { pageMenuSelector } from '../../redux/slices/pageReducer'
 import './topbar.css'
 import { addTenantToUrl, homeUrl } from '../../services/service.config'
-import AlgoliaSearchbar from '../AlgoliaSearchbar'
+import FredhopperSearchbar from '../FredhopperSearchbar'
 import { useContentful } from '../../context/contentful-provider'
 import { Logo } from '../Logo'
 import { useTranslation } from 'react-i18next'
@@ -140,7 +140,7 @@ const TopNav = ({ title }) => {
             <MegaNav showMegaMenuContent={showMegaMenuContent} setShowMegaMenuContent={setShowMegaMenuContent} />
 
             <div className="hidden lg:flex" onMouseOver={() => setShowMegaMenuContent(false)}>
-              <AlgoliaSearchbar />
+               <FredhopperSearchbar />
             </div>
           </div>
         </div>

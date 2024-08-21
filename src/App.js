@@ -60,6 +60,7 @@ import ProductsDescription from 'pages/chatbot/ProductsDescription'
 import NewsPage from './pages/news/NewsPage'
 import GlossaryPage from './pages/glossary/GlossaryPage'
 import TechnicalPage from './pages/technical/TechnicalPage'
+import SearchResultPage from './pages/search/SearchResultPage'
 
 import i18n from 'i18next'
 import { initReactI18next } from 'react-i18next'
@@ -236,6 +237,9 @@ i18n.use(initReactI18next).init({
         address_bill_err: 'Correct billing address must be provided',
         signup: 'Sign Up',
       },
+      search: {
+        label: 'Search mach11.de'
+      }
     },
     de: {
       homepage: {
@@ -406,6 +410,9 @@ i18n.use(initReactI18next).init({
         address_bill_err: 'Correct billing address must be provided',
         signup: 'Sign Up',
       },
+      search: {
+        label: 'Durchsuche mach11.de'
+      }
     },
   },
   lng: 'de',
@@ -509,6 +516,8 @@ function App() {
 
           <Route path="Glossary" element={<GlossaryPage />} />
           <Route path="Glossar" element={<GlossaryPage />} />
+
+          <Route path="search/result" element={<SearchResultPage /> }/>
 
           <Route path="products-description/:maincategory" element={<ProductsDescription lang="en" />} />
           <Route path="produkte-beschreibung/:maincategory" element={<ProductsDescription lang="de" />} />
