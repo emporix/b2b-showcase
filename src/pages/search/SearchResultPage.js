@@ -8,9 +8,7 @@ const SearchResultPage = () => {
         <div>
             <h1>Search Results</h1>
             <ul>
-                {searchResults.map((result, index) => (
-                    <li key={index}>{result.name}</li>
-                ))}
+                {searchResults}
             </ul>
         </div>
     );

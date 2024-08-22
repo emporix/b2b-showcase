@@ -1,6 +1,5 @@
 import { fetchGraphqlApi } from '../../graphql/utils/fetch-graphql-api'
-import {CURRENT_LANGUAGE_KEY} from "../../context/language-provider";
-
+import { CURRENT_LANGUAGE_KEY } from '../../context/language-provider'
 
 const SearchResultQuery = `query SearchResultQuery($language: String, $query: String, $filter: String) {
   searchResults(language: $language, query: $query, filter: $filter) {
@@ -21,7 +20,8 @@ export class FredhopperClient {
             variables.query = query;
         }
 
-        return await fetchGraphqlApi(SearchResultQuery, variables);
+        const data =await fetchGraphqlApi(SearchResultQuery, variables);
+        return data?.data?.searchResults?.info
 
     }
 }
