@@ -1,28 +1,27 @@
-import { CURRENT_LANGUAGE } from '../../constants/localstorage'
 import { fetchGraphqlApi } from '../../graphql/utils/fetch-graphql-api'
+import {CURRENT_LANGUAGE_KEY} from "../../context/language-provider";
 
-const baseUrl = 'https://fdppartner3-config-live1.fas.eu-west-1.fdp-sales.fredhopperservices.com/fredhopper/query'
 
-const SearchResultQuery = `query SearchResultQuery($url: Url) {
-  searchResult(url: $url) {
-    
+const SearchResultQuery = `query SearchResultQuery($language: String, $query: String, $filter: String) {
+  searchResults(language: $language, query: $query, filter: $filter) {
+    info
   }
 }`
 export class FredhopperClient {
 
-    currentLanguageKey = localStorage.getItem(CURRENT_LANGUAGE)
+    query = async (query, filter) => {
 
-    languageMap = {
-        de: 'de_DE',
-        en: 'en_GB'
+        const language = localStorage.getItem(CURRENT_LANGUAGE_KEY)
+
+        const variables = { language };
+        if (filter) {
+            variables.filter = filter;
+        }
+        if (query) {
+            variables.query = query;
+        }
+
+        return await fetchGraphqlApi(SearchResultQuery, variables);
+
     }
-
-
-    query = async (query) => {
-        const url = `${baseUrl}?fh_location=//catalog01/${this.languageMap[this.currentLanguageKey]}/$s=${query}`
-
-        return await fetchGraphqlApi(SearchResultQuery, {url: url})
-
-    }
-
 }
