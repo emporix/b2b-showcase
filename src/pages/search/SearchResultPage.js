@@ -15,8 +15,15 @@ import Layout from "../Layout";
 const SearchResultPage = () => {
 
     const {searchResults} = useSearch();
+    const {query} = useFredhopperClient()
 
-    useEffect(()=>{
+    useEffect( () => {
+        if (!searchResults || searchResults.length === 0) {
+            async function getInitData() {
+                await query({});
+            }
+            getInitData();
+        }
     },[searchResults])
     return (
         <Layout title='Search Results'>
