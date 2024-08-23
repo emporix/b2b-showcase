@@ -1,12 +1,22 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import {Checkbox} from "@mui/material";
 import {useFredhopperClient} from "../../services/search/fredhopper.service";
+import {useTranslation} from "react-i18next";
+import {CurrencyBeforeValue} from "../../components/Utilities/common";
+import {StockLevel} from "../../components/Product/availability";
+import {getLanguageFromLocalStorage} from "../../context/language-provider";
+import {ACCESS_TOKEN} from "../../constants/localstorage";
+import ApiRequest from "../../services";
+import {productApi} from "../../services/service.config";
+import {useSearch} from "../../context/search-context";
 
 
 const SearchResultPage = () => {
 
-    const searchResults = demo //useSearch();
+    const {searchResults} = useSearch();
 
+    useEffect(()=>{
+    },[searchResults])
     return (
         <div>
             <h1>Search Results</h1>
@@ -14,7 +24,7 @@ const SearchResultPage = () => {
                 <div className='mt-8 w-auto relative'>
                     <div className='flex gap-4 xl:gap-12'>
                         <FilterPanel props={searchResults}/>
-                        {/*<ResultPanel props={searchResults}/>*/}
+                        <ResultPanel props={searchResults}/>
                     </div>
                 </div>
             </div>
@@ -23,47 +33,63 @@ const SearchResultPage = () => {
 }
 
 const FilterPanel = ({props}) => {
-
     return (
         <div id='filterdrawer' className='flex-auto lg:w-[23%] bg-aliceBlue p-4 rounded-xl hidden lg:block'>
             <div className='relative'>
-                <ul>
-                    {props.breadcrumbs?.map((breadcrumb, index) => (
-                        <li key={index}>
-                            <span className='category_pan_title'>{breadcrumb?.name}</span>
-                            <div className='flex'>
-                                <div className='flex'>
-                                    <FilterPanelCheckbox checked = {true} filter={breadcrumb["url-params"]} removeFilter={breadcrumb["remove-params"]}/>
-                                    <div className='category_pan_field'>
-                                        <label className='category_pan_field cursor-pointer' title={breadcrumb?.value}>{breadcrumb?.value}</label>
-                                    </div>
-                                </div>
-                            </div>
-                        </li>
-                    ))}
-                </ul>
-
-                <ul>
-                    {props.filter?.map((filterSection, index) => (
-                        <li key={index}>
-                            <span className='category_pan_title'>{filterSection?.title}</span>
-                            <div className='flex'>
-                                <div className='flex'>
-                                    <FilterPanelCheckbox checked = {false} filter={filterSection['url-params']}/>
-                                    <div className='category_pan_field'>
-                                        <label className='category_pan_field cursor-pointer' title={filterSection?.value}>{filterSection?.value}</label>
-                                        <div className='text-manatee pl-3 cursor-pointer'>{filterSection?.nr}</div>
-                                    </div>
-                                </div>
-                            </div>
-                        </li>
-                    ))}
-                </ul>
+                <BreadcrumbsPanel props={props || []}/>
+                <FacetsPanel props={props || []}/>
             </div>
         </div>
     )
 }
 
+const BreadcrumbsPanel = ({props}) => {
+    const breadcrumbs = props?.breadcrumbs
+    return (
+        <ul>
+            {breadcrumbs?.map((breadcrumb, index) => (
+                <li key={index}>
+                    <span className='category_pan_title'>{breadcrumb?.attributeType}</span>
+                    <div className='flex'>
+                        <div className='flex'>
+                            <FilterPanelCheckbox checked = {true} removeFilter={breadcrumb.removeBreadcrumbParams}/>
+                            <div className='category_pan_field'>
+                                <label className='category_pan_field cursor-pointer' title={breadcrumb?.name}>{breadcrumb?.name}</label>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+            ))}
+        </ul>
+    )
+}
+
+const FacetsPanel = ({props}) => {
+    const facets = props?.facet
+    return (
+        <ul>
+            {facets?.map((filter, index) => (
+                <li key={index}>
+                    <span className='category_pan_title'>{filter?.title}</span>
+                    <ul>
+                        {filter?.facetSections?.map((facetsection) => (
+                            <div className='flex'>
+                                <div className='flex'>
+                                    <FilterPanelCheckbox checked = {false} filter={facetsection.urlParams}/>
+                                    <div className='category_pan_field'>
+                                        <label className='category_pan_field cursor-pointer' title={facetsection?.name}>{facetsection?.name}</label>
+                                        <div className='text-manatee pl-3 cursor-pointer'>{facetsection?.availableHits}</div>
+                                    </div>
+                                </div>
+                            </div>
+                        ))}
+                    </ul>
+
+                </li>
+            ))}
+        </ul>
+    )
+}
 const FilterPanelCheckbox = (props) => {
 
     const [checked, setChecked] = useState(props.checked || false);
@@ -92,15 +118,16 @@ const FilterPanelCheckbox = (props) => {
     )
 }
 
-const ResultPanel = (props) => {
+const ResultPanel = ({props}) => {
+
     return (
         <div className='flex-auto lg:w-[77%] w-full gap-y-4 xl:gap-y-12'>
-            <SortingPanel/>
-            <ProductGrid/>
+            {/*<SortingPanel props={props}/>*/}
+            <ProductGrid props={props?.items}/>
         </div>
     )
 }
-const SortingPanel = (props) => {
+const SortingPanel = ({props}) => {
     return (
         <div className='box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px'>
             <div className='view-setting-bar'>
@@ -199,27 +226,29 @@ const SortingPanel = (props) => {
     )
 }
 
-const ProductGrid = (props) => {
+const ProductGrid = ({props}) => {
     return (
         <div className='grid gap-4 md:gap-8 auto-cols-max grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 mb-4 xl:mb-12'>
-            <ProductCard/>
+            {props?.map((product) => (
+                <ProductCard key={product?.id} props={product} />
+            ))}
         </div>
     )
 }
-const ProductCard = (props) => {
+const ProductCard = ({ props }) => {
     return (
-        <div className='hover:scale-[1.01] transition-all duration-150 ease-in'>
-            <a href="/n11showcase/product/details/productid" target="_blank" className='no-underline'>
-                <ProductDetails/>
+        <div className="hover:scale-[1.01] transition-all duration-150 ease-in">
+            <a href={`/n11showcase/product/details/${props?.id}`} target="_blank" className="no-underline">
+                <ProductDetails props={props} />
             </a>
         </div>
     )
 }
-const ProductInformation = (props) => {
+const ProductInformation = ({props}) => {
     return (
         <div className='flex flex-col gap-4'>
             <div className='w-full flex flex-col-reverse justify-start items-end md:flex-row md:items-end'>
-                <span className='product-available'></span>
+                <StockLevel stockLevel={props?.stockLevel} />
                 <div className='flex ml-auto'>
                     <div className='overflow: hidden; position: relative;'></div>
                 </div>
@@ -227,85 +256,225 @@ const ProductInformation = (props) => {
         </div>
     )
 }
-const ProductPrice = (props) => {
+const ProductPrice = ({props}) => {
+    const { t } = useTranslation('page')
+
     return (
         <div className='flex flex-col w-full gap-2 mt-auto'>
             <div className='text-xl flex items-center'>
-                <span className='text-sm text-darkGray'></span>
+                <span className='text-sm text-darkGray'>{t('negotiated')}</span>
             </div>
             <div className='flex'>
                 <div className='text-[22px]/[22px] lg:text-xl leading-[24px] font-bold ml-1'>
                     <div className='flex flex-col'>
-                        <span className='whitespace-nowrap'></span>
-                        <span className='text-xs font-normal text-manatee'></span>
+                        <CurrencyBeforeValue value={props?.price} />
+                        <span className='text-xs font-normal text-manatee'>{t('excl_vat')}</span>
                     </div>
                 </div>
             </div>
         </div>
     )
 }
-const ProductImage = (props) => {
+const ProductImage = ({props}) => {
     return (
         <div className='items-center mx-auto'>
-            <img src={props.link} className='w-full rounded-xl' alt=''/>
+            <img src={props} className='w-full rounded-xl' alt='product image'/>
         </div>
     )
 }
-const ProductDetails = (props) => {
-    const {item} = props
+const ProductDetails = ({props}) => {
     return (
         <div className='p-4 bg-aliceBlue standard_box_shadow rounded-xl h-full flex flex-col gap-4  cursor-pointer'>
-            <ProductInformation/>
+            <ProductInformation props={props}/>
             <div className='flex flex-col gap-4'>
-                <ProductImage />
-                <div className="text-left w-full text-2xl text-eerieBlack font-light">Château Margaux</div>
+                <ProductImage props={props?.thumbUrl}/>
+                <div className="text-left w-full text-2xl text-eerieBlack font-light">{props?.name}</div>
             </div>
-            <ProductPrice/>
+            <ProductPrice props={props}/>
         </div>
     )
 }
 
+const getAdditionalProductInformation = async (ids) => {
+    const params = {
+        q: 'id:(' + ids.join(',') + ')',
+    }
+    const accessToken = localStorage.getItem(ACCESS_TOKEN)
+    const headers = {
+        'X-Version': 'v2',
+        Authorization: `Bearer ${accessToken}`,
+        'Accept-Language': getLanguageFromLocalStorage(),
+    }
+    const res = await ApiRequest(productApi(), 'get', {}, headers, params)
+    return res.data
+}
+
 const demo = {
-        "breadcrumbs": [
-            {
-                "url-params": "fh_location=%2f%2fcatalog01%2fde_DE%2fvintage%3d2020",
-                "name": "Vintage",
-                "value": "2020",
-                "remove-params": "fh_location=%2f%2fcatalog01%2fde_DE",
-            }
-        ],
-        "filter": [
-            {
-                "title": "Country",
-                "value": "Argentinien",
-                "url-params": "fh_refpath=fd189808-71b1-4c53-a707-ede2d11346d8&fh_refview=lister&fh_reffacet=country&fh_location=%2f%2fcatalog01%2fde_DE%2fvintage%3d2020%2fcountry%3e%7bargentina%7d",
-                "nr": 38
-            }
-        ],
+
     "items": [
         {
-            "winery": "Winery A",
-            "region": "Region A",
-            "flavor": "Flavor A",
-            "country": "Country A",
-            "color": "Color A",
-            "thumbUrl": "https://res.cloudinary.com/saas-ag/image/upload/v1723817032/n11showcase/media/66bf5c477a19f46878c8c685",
-            "name": "Item A",
-            "price": 20.0,
-            "id": "itemA"
+            "country": "Frankreich",
+            "stock": 11,
+            "price": 34,
+            "flavor": "Trocken",
+            "id": "6c1da68a-3c2f-4e85-8a14-fb6b",
+            "name": "Chablis",
+            "region": "Burgund",
+            "thumbUrl": "http://res.cloudinary.com/saas-ag/image/upload/v1723816839/n11showcase/media/66bf5b86f44d95309ddf8633",
+            "winery": "Domaine William Fèvre",
+            "__typename": "Item"
         },
         {
-            "winery": "Winery B",
-            "region": "Region B",
-            "flavor": "Flavor B",
-            "country": "Country B",
-            "color": "Color B",
-            "thumbUrl": "https://res.cloudinary.com/saas-ag/image/upload/v1723817630/n11showcase/media/66bf5e9ef44d95309ddf8687",
-            "name": "Item B",
-            "price": 30.0,
-            "id": "itemB"
+            "country": "USA",
+            "stock": 7,
+            "price": 63.75,
+            "flavor": "Trocken",
+            "id": "83dbf80d-8d92-40dc-b7d2-9ebe",
+            "name": "Chardonnay",
+            "region": "Kalifornien",
+            "thumbUrl": "http://res.cloudinary.com/saas-ag/image/upload/v1723816721/n11showcase/media/66bf5b119a444337eaa3557d",
+            "winery": "Kistler Vineyards",
+            "__typename": "Item"
+        },
+        {
+            "country": "Südafrika",
+            "stock": 20,
+            "price": 25.5,
+            "flavor": "Halbtrocken",
+            "id": "95cfa679-968c-43ee-8a53-763d",
+            "name": "Chenin Weiß",
+            "region": "Swartland",
+            "thumbUrl": "http://res.cloudinary.com/saas-ag/image/upload/v1723816610/n11showcase/media/66bf5aa1f44d95309ddf8613",
+            "winery": "Sadie Family Wines",
+            "__typename": "Item"
+        },
+        {
+            "country": "Deutschland",
+            "stock": 20,
+            "price": 21.25,
+            "flavor": "Halbtrocken",
+            "id": "059f13a7-29a1-47c2-b901-1d3a",
+            "name": "Grüner Silvaner",
+            "region": "Franken",
+            "thumbUrl": "http://res.cloudinary.com/saas-ag/image/upload/v1723816786/n11showcase/media/66bf5b529a444337eaa35585",
+            "winery": "Fürst",
+            "__typename": "Item"
+        },
+        {
+            "country": "Frankreich",
+            "stock": 18,
+            "price": 42.5,
+            "flavor": "Trocken",
+            "id": "b30a0d50-4439-4699-9ee9-cc98",
+            "name": "Chardonnay",
+            "region": "Burgund",
+            "thumbUrl": "http://res.cloudinary.com/saas-ag/image/upload/v1723817002/n11showcase/media/66bf5c29f44d95309ddf8649",
+            "winery": "Domaine Leflaive",
+            "__typename": "Item"
+        },
+        {
+            "country": "Italien",
+            "stock": 11,
+            "price": 15.3,
+            "flavor": "Halbtrocken",
+            "id": "f2b2c5e5-7555-4aa5-9db5-5e5d",
+            "name": "Weißer Burgunder",
+            "region": "Südtirol",
+            "thumbUrl": "http://res.cloudinary.com/saas-ag/image/upload/v1723816946/n11showcase/media/66bf5bf17a19f46878c8c678",
+            "winery": "Tramin",
+            "__typename": "Item"
+        },
+        {
+            "country": "USA",
+            "stock": 7,
+            "price": 25.5,
+            "flavor": "Halbtrocken",
+            "id": "b46f9bb2-1d5a-4bfc-9684-4b4a",
+            "name": "Pinot Gris",
+            "region": "Oregon",
+            "thumbUrl": "http://res.cloudinary.com/saas-ag/image/upload/v1723816827/n11showcase/media/66bf5b7af44d95309ddf8632",
+            "winery": "Elk Cove Vineyards",
+            "__typename": "Item"
         }
-    ]
+    ],
+    "breadcrumbs": [
+        {
+            "attributeType": null,
+            "name": "",
+            "removeBreadcrumbParams": "fh_location=%2f%2fcatalog01%2fde_DE",
+            "__typename": "Crumb"
+        }
+],
+    "filter": [
+        {
+            "filtersection": [
+                {
+                    "name": "Weiß",
+                    "availableHits": 7,
+                    "urlParams": "fh_refpath=f3372b11-12f0-4a1d-bfdd-d83f72ed7572&fh_refview=search&fh_reffacet=color&fh_location=%2f%2fcatalog01%2fde_DE%2f%24s%3da%2fcolor%3e%7bwhite%7d",
+                    "__typename": "FilterSection"
+                }
+            ],
+            "title": "Farbe",
+            "__typename": "Filter"
+        },
+        {
+            "filtersection": [
+                {
+                    "name": "Halbtrocken",
+                    "availableHits": 4,
+                    "urlParams": "fh_refpath=4d21cebe-9cd4-4982-96ec-c14852a700c9&fh_refview=search&fh_reffacet=flavor&fh_location=%2f%2fcatalog01%2fde_DE%2f%24s%3da%2fflavor%3e%7bsemidry%7d",
+                    "__typename": "FilterSection"
+                },
+                {
+                    "name": "Trocken",
+                    "availableHits": 3,
+                    "urlParams": "fh_refpath=4d21cebe-9cd4-4982-96ec-c14852a700c9&fh_refview=search&fh_reffacet=flavor&fh_location=%2f%2fcatalog01%2fde_DE%2f%24s%3da%2fflavor%3e%7bdry%7d",
+                    "__typename": "FilterSection"
+                }
+            ],
+            "title": "Geschmack",
+            "__typename": "Filter"
+        },
+        {
+            "filtersection": [
+                {
+                    "name": "Deutschland",
+                    "availableHits": 1,
+                    "urlParams": "fh_refpath=fd189808-71b1-4c53-a707-ede2d11346d8&fh_refview=search&fh_reffacet=country&fh_location=%2f%2fcatalog01%2fde_DE%2f%24s%3da%2fcountry%3e%7bgermany%7d",
+                    "__typename": "FilterSection"
+                },
+                {
+                    "name": "Frankreich",
+                    "availableHits": 2,
+                    "urlParams": "fh_refpath=fd189808-71b1-4c53-a707-ede2d11346d8&fh_refview=search&fh_reffacet=country&fh_location=%2f%2fcatalog01%2fde_DE%2f%24s%3da%2fcountry%3e%7bfrance%7d",
+                    "__typename": "FilterSection"
+                },
+                {
+                    "name": "Italien",
+                    "availableHits": 1,
+                    "urlParams": "fh_refpath=fd189808-71b1-4c53-a707-ede2d11346d8&fh_refview=search&fh_reffacet=country&fh_location=%2f%2fcatalog01%2fde_DE%2f%24s%3da%2fcountry%3e%7bitaly%7d",
+                    "__typename": "FilterSection"
+                },
+                {
+                    "name": "Südafrika",
+                    "availableHits": 1,
+                    "urlParams": "fh_refpath=fd189808-71b1-4c53-a707-ede2d11346d8&fh_refview=search&fh_reffacet=country&fh_location=%2f%2fcatalog01%2fde_DE%2f%24s%3da%2fcountry%3e%7bsouthafrica%7d",
+                    "__typename": "FilterSection"
+                },
+                {
+                    "name": "USA",
+                    "availableHits": 2,
+                    "urlParams": "fh_refpath=fd189808-71b1-4c53-a707-ede2d11346d8&fh_refview=search&fh_reffacet=country&fh_location=%2f%2fcatalog01%2fde_DE%2f%24s%3da%2fcountry%3e%7busa%7d",
+                    "__typename": "FilterSection"
+                }
+            ],
+            "title": "Land",
+            "__typename": "Filter"
+        }
+    ],
+    "__typename": "SearchResult"
+
 }
 
 export default SearchResultPage

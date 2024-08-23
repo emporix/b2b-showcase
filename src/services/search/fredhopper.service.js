@@ -2,9 +2,33 @@ import { fetchGraphqlApi } from '../../graphql/utils/fetch-graphql-api';
 import { CURRENT_LANGUAGE_KEY } from '../../context/language-provider';
 import {useSearch} from "../../context/search-context";
 
-const SearchResultQuery = `query SearchResultQuery($language: String, $query: String, $filter: String) {
-  searchResults(language: $language, query: $query, filter: $filter) {
-    info
+const SearchResultQuery = `query SearchResultQuery($filter: String, $query: String, $language: String) {
+  searchResults(filter: $filter, query: $query, language: $language) {
+    breadcrumbs {
+      attributeType
+      name
+      removeBreadcrumbParams
+    }
+    facet {
+      facetSections {
+        name
+        urlParams
+        availableHits
+      }
+      title
+    }
+    items {
+      winery
+      region
+      flavor
+      country
+      color
+      thumbUrl
+      name
+      price
+      id
+      stock
+    }
   }
 }`;
 
@@ -24,7 +48,7 @@ export const useFredhopperClient = () => {
             }
 
             const data = await fetchGraphqlApi(SearchResultQuery, variables);
-            const hits = data?.data?.searchResults?.info;
+            const hits = data?.data?.searchResults;
 
             if (setSearchResults) {
                 setSearchResults(hits);
