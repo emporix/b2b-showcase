@@ -9,6 +9,7 @@ import {ACCESS_TOKEN} from "../../constants/localstorage";
 import ApiRequest from "../../services";
 import {productApi} from "../../services/service.config";
 import {useSearch} from "../../context/search-context";
+import Layout from "../Layout";
 
 
 const SearchResultPage = () => {
@@ -18,17 +19,18 @@ const SearchResultPage = () => {
     useEffect(()=>{
     },[searchResults])
     return (
-        <div>
-            <h1>Search Results</h1>
-            <div className='px-4 md:px-24 pb-12'>
-                <div className='mt-8 w-auto relative'>
-                    <div className='flex gap-4 xl:gap-12'>
-                        <FilterPanel props={searchResults}/>
-                        <ResultPanel props={searchResults}/>
+        <Layout title='Search Results'>
+            <div>
+                <div className='px-4 md:px-24 pb-12'>
+                    <div className='mt-8 w-auto relative'>
+                        <div className='flex gap-4 xl:gap-12'>
+                            <FilterPanel props={searchResults}/>
+                            <ResultPanel props={searchResults}/>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
+        </Layout>
     );
 }
 
