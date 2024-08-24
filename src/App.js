@@ -130,6 +130,7 @@ i18n.use(initReactI18next).init({
         quantity: 'Quantity',
         unit_price: 'Unit Price',
         quantity_discount: 'Quantity Discount',
+        wines: 'Wines'
       },
       account: {
         account: 'My Account',
@@ -303,6 +304,7 @@ i18n.use(initReactI18next).init({
         quantity: 'Menge',
         unit_price: 'Preis pro Einheit',
         quantity_discount: 'Mengenrabatt',
+        wines: 'Weine'
       },
       account: {
         account: 'Mein Konto',

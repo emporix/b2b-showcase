@@ -1,4 +1,4 @@
-import React, {useEffect} from "react";
+import React, {useEffect, useState} from "react";
 import {Checkbox} from "@mui/material";
 import {useFredhopperClient} from "../../services/search/fredhopper.service";
 import {useTranslation} from "react-i18next";
@@ -10,12 +10,14 @@ import ApiRequest from "../../services";
 import {productApi} from "../../services/service.config";
 import {useSearch} from "../../context/search-context";
 import Layout from "../Layout";
+import {HiOutlineArrowLeft, HiOutlineArrowRight} from "react-icons/hi";
 
 
 const SearchResultPage = () => {
 
     const {searchResults} = useSearch();
     const {query} = useFredhopperClient()
+    const { t } = useTranslation('page')
 
     useEffect( () => {
         if (!searchResults || searchResults.length === 0) {
@@ -26,7 +28,7 @@ const SearchResultPage = () => {
         }
     },[searchResults])
     return (
-        <Layout title='Search Results'>
+        <Layout title={t('wines')}>
             <div>
                 <div className='px-4 md:px-24 pb-12'>
                     <div className='mt-8 w-auto relative'>
@@ -46,11 +48,9 @@ const FilterPanel = ({props}) => {
     return  (
         <div id='filterdrawer' className='flex-auto lg:w-[23%] bg-aliceBlue p-4 rounded-xl hidden lg:block'>
             <div className='relative'>
-                <span>GESETZTE FILTER</span>
                 <BreadcrumbsPanel
                     breadcrumbs={props.breadcrumbs}
                 />
-                <span>FILTER</span>
                 <FacetsPanel
                     facet={props.facet}
                 />
@@ -143,13 +143,123 @@ const FilterPanelCheckbox = (props) => {
 }
 
 const ResultPanel = ({props}) => {
+    const [pageNumber, setPageNumber] = useState(1)
+    const [countPerPage, setCountPerPage] = useState(props?.results?.viewSize);
+    const [totalItems, setTotalItems] = useState(props?.results?.totalItems);
+    const queryString = props?.queryString
+    const {query} = useFredhopperClient()
+
+    useEffect(() => {
+        if (props?.results) {
+            setCountPerPage(props?.results?.viewSize || 6);
+            setTotalItems(props?.results?.totalItems || 0);
+        }
+    }, [props.results]);
+
+    const changePage = async (pageNumber) => {
+        const newQueryString = updateQueryString(queryString, 'fh_start_index', `${(pageNumber-1) * countPerPage}`)
+
+        const result = await query({filter: `${newQueryString}`})
+
+    }
+    const updateQueryString = (queryString, key, value) => {
+        const params = new URLSearchParams(queryString)
+        params.set(key,value)
+        return params.toString()
+    }
 
     return (
         <div className='flex-auto lg:w-[77%] w-full gap-y-4 xl:gap-y-12'>
             <ProductGrid props={props?.items}/>
+            <ProductListPagination totalCount={totalItems} viewSize={countPerPage} pageNumber={pageNumber} setPageNumber={setPageNumber} changePageNumber={changePage}/>
         </div>
     )
 }
+
+const ProductListPagination = ({
+                                   setPageNumber,
+                                   viewSize = 6,
+                                   totalCount = 0,
+                                   pageNumber = 1,
+                                   changePageNumber,
+                               }) => {
+    let totalPage = Math.ceil(totalCount / viewSize);
+    if (isNaN(totalPage) || totalPage <= 0) return null;
+
+    const handlePageChange = (pageNumber) => {
+        if (pageNumber >= 1 && pageNumber <= totalPage) {
+            changePageNumber(pageNumber);
+            setPageNumber(pageNumber);
+        }
+    };
+
+    const pages = [];
+
+    for (let i = Math.max(1, pageNumber - 2); i < pageNumber; i++) {
+        pages.push(i);
+    }
+
+    pages.push(pageNumber);
+
+    for (let i = pageNumber + 1; i <= Math.min(totalPage, pageNumber + 2); i++) {
+        pages.push(i);
+    }
+
+    return (
+        <div className="product-list-pagination items-center h-[24px] text-center w-full mx-auto">
+            <div className="text-center items-center flex">
+                <ul className="select-none gap-6 mx-auto items-center flex text-[18px] leading-[26px] font-inter text-gray">
+                    <li
+                        className={pageNumber === 1 ? '' : 'cursor-pointer'}
+                        onClick={() => {
+                            if (pageNumber > 1) handlePageChange(pageNumber - 1);
+                        }}
+                    >
+                        <HiOutlineArrowLeft size={24} color={pageNumber === 1 ? '#ACAEB2' : 'black'} />
+                    </li>
+
+                    {pageNumber > 3 && (
+                        <>
+                            <li className="cursor-pointer" onClick={() => handlePageChange(1)}>
+                                1
+                            </li>
+                            <li>...</li>
+                        </>
+                    )}
+
+                    {pages.map((page) => (
+                        <li
+                            key={page}
+                            className={`cursor-pointer ${page === pageNumber ? 'font-bold text-black' : ''}`}
+                            onClick={() => handlePageChange(page)}
+                        >
+                            {page}
+                        </li>
+                    ))}
+
+                    {pageNumber + 2 < totalPage && (
+                        <>
+                            <li>...</li>
+                            <li className="cursor-pointer" onClick={() => handlePageChange(totalPage)}>
+                                {totalPage}
+                            </li>
+                        </>
+                    )}
+
+                    <li
+                        className={pageNumber === totalPage ? '' : 'cursor-pointer'}
+                        onClick={() => {
+                            if (pageNumber < totalPage) handlePageChange(pageNumber + 1);
+                        }}
+                    >
+                        <HiOutlineArrowRight size={24} color={pageNumber === totalPage ? '#ACAEB2' : 'black'} />
+                    </li>
+                </ul>
+            </div>
+        </div>
+    );
+};
+
 const ProductGrid = ({props}) => {
     return (
         <div className='grid gap-4 md:gap-8 auto-cols-max grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 mb-4 xl:mb-12'>

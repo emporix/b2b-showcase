@@ -29,7 +29,12 @@ const SearchResultQuery = `query SearchResultQuery($filter: String, $query: Stri
       id
       stock
     }
-    totalResults
+    results {
+      totalItems
+      startIndex
+      viewSize
+    }
+    queryString
   }
 }`;
 
