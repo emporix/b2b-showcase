@@ -272,7 +272,7 @@ const ProductGrid = ({props}) => {
 const ProductCard = ({ props }) => {
     return (
         <div className="hover:scale-[1.01] transition-all duration-150 ease-in">
-            <a href={`/n11showcase/product/details/${props?.id}`} target="_blank" className="no-underline">
+            <a href={`/n11showcase/product/details/${props?.id}`} className="no-underline">
                 <ProductDetails props={props} />
             </a>
         </div>
