@@ -30,7 +30,7 @@ const FredhopperSearchbar = () => {
             <form ref={searchBar} onSubmit={handleSubmit}>
                 <input
                     id="search-input"
-                    className="lg:w-60 xl:w-72 relative !bg-aliceBlue"
+                    className="nosubmit lg:w-60 xl:w-72 relative !bg-aliceBlue"
                     type="search"
                     placeholder={t('label')}
 
