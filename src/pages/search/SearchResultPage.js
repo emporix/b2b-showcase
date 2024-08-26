@@ -282,7 +282,7 @@ const ProductInformation = ({props}) => {
     return (
         <div className='flex flex-col gap-4'>
             <div className='w-full flex flex-col-reverse justify-start items-end md:flex-row md:items-end'>
-                <StockLevel stockLevel={props?.stockLevel} />
+                <StockLevel stockLevel={props?.stock} />
                 <div className='flex ml-auto'>
                     <div className='overflow: hidden; position: relative;'></div>
                 </div>
