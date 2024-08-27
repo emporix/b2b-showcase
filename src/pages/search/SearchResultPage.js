@@ -61,7 +61,7 @@ const FilterPanel = ({props}) => {
 const BreadcrumbsPanel = ({ props }) => {
     const {query} = useFredhopperClient()
     const handleClick = async (alternative) => {
-        const result = await query({query:`${alternative?.value}`})
+        await query({query:`${alternative?.value}`})
     }
 
     return (
@@ -158,9 +158,9 @@ const FilterPanelCheckbox = (props) => {
     const {query} = useFredhopperClient()
     const handleChange = async () => {
         if (props?.checked) {
-            const result = await query({filter: props?.removeFilter})
+            await query({filter: props?.removeFilter})
         } else {
-            const result = await query({filter: props?.filter})
+            await query({filter: props?.filter})
         }
     };
     return (
@@ -195,7 +195,7 @@ const ResultPanel = ({props}) => {
     const changePage = async (pageNumber) => {
         const newQueryString = updateQueryString(queryString, 'fh_start_index', `${(pageNumber-1) * countPerPage}`)
 
-        const result = await query({filter: `${newQueryString}`})
+        await query({filter: `${newQueryString}`})
 
     }
     const updateQueryString = (queryString, key, value) => {
