@@ -18,6 +18,7 @@ const SearchResultPage = () => {
     const {searchResults} = useSearch();
     const {query} = useFredhopperClient()
     const { t } = useTranslation('page')
+    const {currentLanguage} = useLanguage()
     useEffect( () => {
         if (!searchResults || searchResults.length === 0) {
             async function getInitData() {
@@ -26,7 +27,30 @@ const SearchResultPage = () => {
             getInitData();
         }
 
-    },[searchResults])
+        if (searchResults) {
+            async function getInitDataWithFilter() {
+                const urlParams = new URLSearchParams(searchResults.queryString);
+                let location = urlParams.get('fh_location');
+                if (location){
+                    const result = location?.match(/\/(\w{2}_\w{2})/); //matches a string in the form of /xx_xx e.g. /de_DE or /en_GB
+
+                    const locale = result[1];
+                    if (locale === 'de_DE' && currentLanguage === 'en') {
+                        location = location.replace('/de_DE', '/en_GB');
+                        urlParams.set('fh_location', location);
+                        const filter = urlParams.toString()
+                        await query({ filter: filter });
+                    } else if (locale === 'en_GB' && currentLanguage === 'de') {
+                        location = location.replace('/en_GB', '/de_DE');
+                        urlParams.set('fh_location', location);
+                        const filter = urlParams.toString()
+                        await query({ filter: filter });
+                    }
+                }
+            }
+            getInitDataWithFilter();
+        }
+    },[searchResults, currentLanguage])
     return (
         <Layout title={t('wines')}>
             <div>
@@ -199,7 +223,7 @@ const ResultPanel = ({props}) => {
 
     }
     const updateQueryString = (queryString, key, value) => {
-        const params = new URLSearchParams(queryString)
+        const params =  new URLSearchParams(queryString)
         params.set(key,value)
         return params.toString()
     }
