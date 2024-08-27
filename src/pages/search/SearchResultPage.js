@@ -4,7 +4,7 @@ import {useFredhopperClient} from "../../services/search/fredhopper.service";
 import {useTranslation} from "react-i18next";
 import {CurrencyBeforeValue} from "../../components/Utilities/common";
 import {StockLevel} from "../../components/Product/availability";
-import {getLanguageFromLocalStorage} from "../../context/language-provider";
+import {getLanguageFromLocalStorage, useLanguage} from "../../context/language-provider";
 import {ACCESS_TOKEN} from "../../constants/localstorage";
 import ApiRequest from "../../services";
 import {productApi} from "../../services/service.config";
@@ -17,16 +17,17 @@ const SearchResultPage = () => {
 
     const {searchResults} = useSearch();
     const {query} = useFredhopperClient()
+    const {currentLanguage} = useLanguage()
     const { t } = useTranslation('page')
-
     useEffect( () => {
-        if (!searchResults || searchResults.length === 0) {
+        if (!searchResults || searchResults.length === 0 || currentLanguage) {
             async function getInitData() {
                 await query({});
             }
             getInitData();
         }
-    },[searchResults])
+
+    },[searchResults, currentLanguage])
     return (
         <Layout title={t('wines')}>
             <div>

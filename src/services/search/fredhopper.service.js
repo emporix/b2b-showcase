@@ -1,5 +1,5 @@
 import { fetchGraphqlApi } from '../../graphql/utils/fetch-graphql-api';
-import { CURRENT_LANGUAGE_KEY } from '../../context/language-provider';
+import {CURRENT_LANGUAGE_KEY, useLanguage} from '../../context/language-provider';
 import {useSearch} from "../../context/search-context";
 
 const SearchResultQuery = `query SearchResultQuery($filter: String, $query: String, $language: String) {
@@ -47,12 +47,12 @@ const SearchResultQuery = `query SearchResultQuery($filter: String, $query: Stri
 
 export const useFredhopperClient = () => {
     const { setSearchResults } = useSearch();
+    const {currentLanguage} = useLanguage()
     const query = async ({ query = '', filter = null }) => {
 
         try {
-            const language = localStorage.getItem(CURRENT_LANGUAGE_KEY);
 
-            const variables = { language };
+            const variables = { language: currentLanguage };
             if (filter) {
                 variables.filter = filter;
             }
