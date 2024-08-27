@@ -35,6 +35,13 @@ const SearchResultQuery = `query SearchResultQuery($filter: String, $query: Stri
       viewSize
     }
     queryString
+    queryAlternatives {
+      alternatives {
+        value
+        original
+        estimatedResult
+      }
+    }
   }
 }`;
 

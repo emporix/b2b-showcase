@@ -44,12 +44,11 @@ const SearchResultPage = () => {
 }
 
 const FilterPanel = ({props}) => {
-
     return  (
         <div id='filterdrawer' className='flex-auto lg:w-[23%] bg-aliceBlue p-4 rounded-xl hidden lg:block'>
             <div className='relative'>
                 <BreadcrumbsPanel
-                    breadcrumbs={props.breadcrumbs}
+                    props={props}
                 />
                 <FacetsPanel
                     facet={props.facet}
@@ -59,27 +58,64 @@ const FilterPanel = ({props}) => {
     )
 }
 
-const BreadcrumbsPanel = ({breadcrumbs}) => {
+const BreadcrumbsPanel = ({ props }) => {
+    const {query} = useFredhopperClient()
+    const handleClick = async (alternative) => {
+        const result = await query({query:`${alternative?.value}`})
+    }
+
     return (
-        <ul>
-            {breadcrumbs?.map((breadcrumb, index) => (
-                <li key={index}>
-                    <span className='category_pan_title'>{breadcrumb?.attributeType}</span>
-                    <div className='flex'>
-                        <div className='flex'>
-                            <FilterPanelCheckbox checked={true}
-                                                 filter={breadcrumb.urlParams}
-                                                 removeFilter={breadcrumb.removeBreadcrumbParams}/>
-                            <div className='category_pan_field'>
-                                <label className='category_pan_field cursor-pointer' title={breadcrumb?.name}>{breadcrumb?.name}</label>
+        <ul className="list-none p-0 m-0">
+            {props?.breadcrumbs?.map((breadcrumb, index) => {
+                const isSearchBreadcrumb = breadcrumb?.attributeType === "Search" || breadcrumb?.attributeType === "Suche";
+
+                return (
+                    <li key={index} className={isSearchBreadcrumb ? 'mb-2' : ''}>
+                        <span className='font-semibold'>{breadcrumb?.attributeType}</span>
+                        <div className='flex flex-wrap items-center'>
+                            <div className='flex items-center mr-2'>
+                                <FilterPanelCheckbox
+                                    checked={true}
+                                    filter={breadcrumb.urlParams}
+                                    removeFilter={breadcrumb.removeBreadcrumbParams}
+                                />
+                                <div className={`ml-2 ${isSearchBreadcrumb ? 'ml-2' : ''}`}>
+                                    <label className='cursor-pointer' title={breadcrumb?.name}>
+                                        {breadcrumb?.name}
+                                    </label>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                </li>
-            ))}
+                        {isSearchBreadcrumb && props?.queryAlternatives?.alternatives?.length > 0 && (
+
+                            <div className='flex flex-wrap ml-2'>
+                                <div className='flex flex-col'>
+                                    {props.queryAlternatives.alternatives.map((alternative, index) => (
+                                        <div key={index} className='flex items-center mb-2'>
+                                            <span className='text-manatee'>{"->"}</span>
+                                            <div className='flex items-center' onClick={handleClick}>
+                                                <label
+                                                    className='text-manatee pl-3 cursor-pointer'
+                                                    title={alternative?.value}
+                                                >
+                                                    "{alternative?.value}"
+                                                </label>
+                                                <div className='text-manatee pl-3 cursor-pointer'>
+                                                    ({alternative?.estimatedResult})
+                                                </div>
+                                            </div>
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
+                        )}
+                    </li>
+                );
+            })}
         </ul>
-    )
-}
+    );
+};
+
 
 const FacetsPanel = ({facet}) => {
     return (
