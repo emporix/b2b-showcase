@@ -46,7 +46,6 @@
     "react-stars": "^2.2.5",
     "redux": "^4.2.0",
     "redux-thunk": "^2.4.1",
-    "serve": "^14.2.3",
     "slick-carousel": "^1.8.1"
   },
   "resolutions": {
