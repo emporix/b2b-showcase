@@ -17,17 +17,16 @@ const SearchResultPage = () => {
 
     const {searchResults} = useSearch();
     const {query} = useFredhopperClient()
-    const {currentLanguage} = useLanguage()
     const { t } = useTranslation('page')
     useEffect( () => {
-        if (!searchResults || searchResults.length === 0 || currentLanguage) {
+        if (!searchResults || searchResults.length === 0) {
             async function getInitData() {
                 await query({});
             }
             getInitData();
         }
 
-    },[searchResults, currentLanguage])
+    },[searchResults])
     return (
         <Layout title={t('wines')}>
             <div>
