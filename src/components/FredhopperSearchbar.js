@@ -18,7 +18,7 @@ const FredhopperSearchbar = () => {
 
             query({query: queryString}).then((hits) => {
                 if (hits) {
-                    navigate(`/${tenant}/search/result`);
+                    navigate(`/${tenant}/catalog`);
                 }
             }).catch((err) => {
                 console.log('Search error: ', err)

@@ -439,9 +439,9 @@ function App() {
         <Route path="/:tenant">
           <Route index exact element={<Home />} />
 
-          <Route path="product/:maincategory" exact element={<ProductList />} />
-          <Route path="product/:maincategory/:subcategory/" exact element={<ProductList />} />
-          <Route path="product/:maincategory/:subcategory/:category" exact element={<ProductList />} />
+          {/*<Route path="product/:maincategory" exact element={<ProductList />} />*/}
+          {/*<Route path="product/:maincategory/:subcategory/" exact element={<ProductList />} />*/}
+          {/*<Route path="product/:maincategory/:subcategory/:category" exact element={<ProductList />} />*/}
           <Route path="product/details/:productId" element={<ProductDetails />} />
 
           <Route path="login" exact element={<Login />} />
@@ -519,7 +519,7 @@ function App() {
           <Route path="Glossary" element={<GlossaryPage />} />
           <Route path="Glossar" element={<GlossaryPage />} />
 
-          <Route path="search/result" element={<SearchResultPage /> }/>
+          <Route path="catalog" element={<SearchResultPage /> }/>
 
           <Route path="products-description/:maincategory" element={<ProductsDescription lang="en" />} />
           <Route path="produkte-beschreibung/:maincategory" element={<ProductsDescription lang="de" />} />

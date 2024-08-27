@@ -2,6 +2,11 @@ import React from 'react'
 import {Link} from 'react-router-dom'
 import {addTenantToUrl} from '../../services/service.config'
 import { useTranslation } from 'react-i18next'
+import {useNavigate} from "react-router";
+import {TENANT} from "../../constants/localstorage";
+import {useFredhopperClient} from "../../services/search/fredhopper.service";
+import {Button} from "@mui/material";
+import {CURRENT_LANGUAGE_KEY} from "../../context/language-provider";
 
 const EachCategory = (props) => {
     return (
@@ -21,36 +26,62 @@ const EachCategory = (props) => {
 
 const Category = () => {
     const {t} = useTranslation("page")
+    const navigate = useNavigate()
+    const tenant = localStorage.getItem(TENANT)
+    let language=localStorage.getItem(CURRENT_LANGUAGE_KEY)
+    const {query} = useFredhopperClient()
+    if(language==='de'){
+        language='de_DE'
+    } else{
+        language='en_GB'
+    }
+
     return (
         <div className="home_category">
             <div className=" desktop_only teaser__headline mx-auto">
               {t("categories")}
             </div>
             <div className="home_cat_content">
-                <Link to={addTenantToUrl(`product/wein/rotwein`)} >
+                <button onClick={async () => {
+                    await query({filter: `fh_refpath=0039dd2d-8560-48a1-822c-c9e286a46ba3&fh_refview=lister&fh_reffacet=categories&fh_location=%2f%2fcatalog01%2f${language}%2fcategories%3c%7bcatalog01_catalog01_wine_catalog01_wine_red%7d`})
+                    navigate(`/${tenant}/catalog`)
+                }}>
+
+                    {/*<Link to={addTenantToUrl(`product/wein/rotwein`)} >*/}
                     <EachCategory
                         src="/category/red-wine-category-image.png"
-                        title=  {t("red_wine")}
+                        title={t("red_wine")}
                         content="in vino rosso veritas"
                     />
-                </Link>
-                <Link preventScrollReset={false} to={addTenantToUrl(`product/wein/weißwein`)}>
+                </button>
+                <button onClick={async () => {
+                    await query({filter: `fh_refpath=0039dd2d-8560-48a1-822c-c9e286a46ba3&fh_refview=lister&fh_reffacet=categories&fh_location=%2f%2fcatalog01%2f${language}%2fcategories%3c%7bcatalog01_catalog01_wine_catalog01_wine_white%7d`})
+                    navigate(`/${tenant}/catalog`)
+                }}>
+                    {/*</Link>*/}
+                    {/*<Link preventScrollReset={false} to={addTenantToUrl(`product/wein/weißwein`)}>*/}
                     <EachCategory
                         src="/category/white-wine-category-image.png"
-                        title=  {t("white_wine")}
+                        title={t("white_wine")}
                         content="in vino blanco veritas"
                     />
-                </Link>
-                <Link to={addTenantToUrl(`product/wein/roséwein`)}>
+                </button>
+                <button onClick={async () => {
+                    await query({filter: `fh_refpath=0039dd2d-8560-48a1-822c-c9e286a46ba3&fh_refview=lister&fh_reffacet=categories&fh_location=%2f%2fcatalog01%2f${language}%2fcategories%3c%7bcatalog01_catalog01_wine_catalog01_wine_rose%7d`})
+                    navigate(`/${tenant}/catalog`)
+                }}>
+                    {/*</Link>*/}
+                    {/*<Link to={addTenantToUrl(`product/wein/roséwein`)}>*/}
                     <EachCategory
                         src="/category/white-wine-category-image.png"
-                        title=  {t("rose_wine")}
+                        title={t("rose_wine")}
                         content="in rosé vino veritas"
                     />
-                </Link>
+                </button>
+                    {/*</Link>*/}
             </div>
         </div>
-    )
+)
 }
 
 export default Category
