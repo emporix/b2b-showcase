@@ -281,7 +281,7 @@ const SortingBar = ({ props, onSortChange, currentSortIndex }) => {
 
         const sortDirection = attribute.sortDirection
         const separator = sortDirection === 'ascending' ? '+' : '-';
-        const filter = attribute.urlParams
+        const filter = attribute.urlParams;
         const regex = /fh_sort_by=([^&]*)/;
         const match = filter.match(regex);
         let newFilter;
@@ -292,10 +292,12 @@ const SortingBar = ({ props, onSortChange, currentSortIndex }) => {
         } else {
             newFilter = filter + (filter.includes('?') ? '&' : '?') + `fh_sort_by=${separator}`;
         }
-        query({filter: newFilter})
-        toggleDropDown()
-        onSortChange(index)
-    }
+
+        query({ filter: newFilter });
+        onSortChange(index);
+        setDropDownOpen(false);
+    };
+
     return (
         <div className='view-setting-wrapper h-fit px-0 md:px-4 py-2 bg-aliceBlue rounded-xl mb-4'>
             <div className='view-setting-bar'>
@@ -303,42 +305,41 @@ const SortingBar = ({ props, onSortChange, currentSortIndex }) => {
                     <ul>
                         <li>
                             <div className='relative max-w-fit inline-block text-left whitespace-nowrap'>
-                                <button onClick={toggleDropDown} className='flex flex-row items-center'>
-                                <span className='flex flex-row items-center text-sm'>
-                                    <span className='hidden lg:inline-block pl-2 text-sm'>
-                                        {t('sortBy')}
+                                <button onClick={() => setDropDownOpen(!isDropDownOpen)} className='flex flex-row items-center'>
+                                    <span className='flex flex-row items-center text-sm'>
+                                        <span className='hidden lg:inline-block pl-2 text-sm'>
+                                            {t('sortBy')}
+                                        </span>
+                                        <span className='inline-block pl-2'>
+                                            {doubleSortingAttributes[currentSortIndex]?.name} {t(`${doubleSortingAttributes[currentSortIndex]?.sortDirection}`)}
+                                        </span>
+                                        <svg
+                                            xmlns="http://www.w3.org/2000/svg"
+                                            viewBox="0 0 20 20"
+                                            fill="currentColor"
+                                            className="-mr-1 ml-1 h-5 w-5 transform translate-y-[1px]"
+                                            aria-hidden="true"
+                                            strokeWidth="0"
+                                            height="20"
+                                            width="20"
+                                        >
+                                            <path
+                                                fillRule="evenodd"
+                                                d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+                                                clipRule="evenodd"
+                                            />
+                                        </svg>
                                     </span>
-                                    <span className='inline-block pl-2'>
-                                        {doubleSortingAttributes[currentSortIndex]?.name} {t(`${doubleSortingAttributes[currentSortIndex]?.sortDirection}`)}
-                                    </span>
-                                    <svg
-                                        xmlns="http://www.w3.org/2000/svg"
-                                        viewBox="0 0 20 20"
-                                        fill="currentColor"
-                                        className="-mr-1 ml-1 h-5 w-5 transform translate-y-[1px]"
-                                        aria-hidden="true"
-                                        strokeWidth="0"
-                                        height="20"
-                                        width="20"
-                                    >
-                                        <path
-                                            fillRule="evenodd"
-                                            d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
-                                            clipRule="evenodd"
-                                        />
-                                    </svg>
-                                </span>
                                 </button>
                                 {isDropDownOpen && (
                                     <div
                                         className="opacity-100 absolute mt-1 min-w-full origin-top-right right-0 rounded-md shadow-lg bg-white ring-black ring-opacity-5 focus:outline-none transition-opacity duration-600 z-20"
                                     >
                                         <div className="py-1">
-                                            {doubleSortingAttributes?.map((attribute, index) => (
+                                            {doubleSortingAttributes.map((attribute, index) => (
                                                 <button
-                                                    onClick={() => handleSortClick(attribute, doubleSortingAttributes.indexOf(attribute))}
+                                                    onClick={() => handleSortClick(attribute, index)}
                                                     key={index}
-                                                    value={doubleSortingAttributes.indexOf(attribute)}
                                                     className='text-black hover:text-darkGray bg-white block w-full text-left px-4 py-2 text-sm whitespace-nowrap'
                                                 >
                                                     {attribute.name} {t(`${attribute.sortDirection}`)}
@@ -354,7 +355,7 @@ const SortingBar = ({ props, onSortChange, currentSortIndex }) => {
             </div>
         </div>
     );
-}
+};
 const ProductListPagination = ({
                                    setPageNumber,
                                    viewSize = 6,
@@ -506,19 +507,5 @@ const ProductDetails = ({props}) => {
             <ProductPrice props={props}/>
         </div>
     )
-}
-
-const getAdditionalProductInformation = async (ids) => {
-    const params = {
-        q: 'id:(' + ids.join(',') + ')',
-    }
-    const accessToken = localStorage.getItem(ACCESS_TOKEN)
-    const headers = {
-        'X-Version': 'v2',
-        Authorization: `Bearer ${accessToken}`,
-        'Accept-Language': getLanguageFromLocalStorage(),
-    }
-    const res = await ApiRequest(productApi(), 'get', {}, headers, params)
-    return res.data
 }
 export default SearchResultPage
