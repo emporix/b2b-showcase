@@ -42,6 +42,10 @@ const SearchResultQuery = `query SearchResultQuery($filter: String, $query: Stri
         estimatedResult
       }
     }
+ 	sortParams {
+  	  name
+  	  urlParams
+    }
   }
 }`;
 
