@@ -18,11 +18,6 @@ const SearchResultQuery = `query SearchResultQuery($filter: String, $query: Stri
       title
     }
     items {
-      winery
-      region
-      flavor
-      country
-      color
       thumbUrl
       name
       price

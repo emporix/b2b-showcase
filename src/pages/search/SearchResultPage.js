@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react";
+import React, {useEffect, useMemo, useState} from "react";
 import {Checkbox} from "@mui/material";
 import {useFredhopperClient} from "../../services/search/fredhopper.service";
 import {useTranslation} from "react-i18next";
@@ -10,7 +10,8 @@ import ApiRequest from "../../services";
 import {productApi} from "../../services/service.config";
 import {useSearch} from "../../context/search-context";
 import Layout from "../Layout";
-import {HiOutlineArrowLeft, HiOutlineArrowRight} from "react-icons/hi";
+import {HiOutlineArrowLeft, HiOutlineArrowRight, HiViewGrid, HiViewList} from "react-icons/hi";
+import NavDropdown from "../../components/Utilities/dropdown/NavDropdown";
 
 
 const SearchResultPage = () => {
@@ -206,6 +207,7 @@ const ResultPanel = ({props}) => {
     const [pageNumber, setPageNumber] = useState(1)
     const [countPerPage, setCountPerPage] = useState(props?.results?.viewSize);
     const [totalItems, setTotalItems] = useState(props?.results?.totalItems);
+    const [sortAttributeIndex, setSortAttributeIndex] = useState(0);
     const queryString = props?.queryString
     const {query} = useFredhopperClient()
 
@@ -228,14 +230,131 @@ const ResultPanel = ({props}) => {
         return params.toString()
     }
 
+    const handleSortChange = (index) => {
+        setSortAttributeIndex(index);
+    };
+
     return (
         <div className='flex-auto lg:w-[77%] w-full gap-y-4 xl:gap-y-12'>
+            <SortingBar
+                props={props?.sortParams}
+                onSortChange={handleSortChange}
+                currentSortIndex={sortAttributeIndex}
+            />
             <ProductGrid props={props?.items}/>
             <ProductListPagination totalCount={totalItems} viewSize={countPerPage} pageNumber={pageNumber} setPageNumber={setPageNumber} changePageNumber={changePage}/>
         </div>
     )
 }
 
+const SortingBar = ({ props, onSortChange, currentSortIndex }) => {
+
+
+    const {t} = useTranslation('search')
+    const [isDropDownOpen, setDropDownOpen] = useState(false)
+    const {query} = useFredhopperClient()
+
+
+
+    const toggleDropDown = () => {
+        setDropDownOpen(!isDropDownOpen)
+    }
+    const doubleSortingAttributes = useMemo(() => {
+        if (!props) return [];
+
+        return props.flatMap(attribute => [
+            { ...attribute, sortDirection: 'ascending' },
+            { ...attribute, sortDirection: 'descending' }
+        ]);
+    }, [props]);
+
+    useEffect(() => {
+        if (doubleSortingAttributes.length > 0) {
+            handleSortClick(doubleSortingAttributes[currentSortIndex], currentSortIndex);
+        }
+    }, [doubleSortingAttributes, currentSortIndex]);
+
+    if(!props){
+        return null
+    }
+    const handleSortClick = (attribute, index) => {
+
+        const sortDirection = attribute.sortDirection
+        const separator = sortDirection === 'ascending' ? '+' : '-';
+        const filter = attribute.urlParams
+        const regex = /fh_sort_by=([^&]*)/;
+        const match = filter.match(regex);
+        let newFilter;
+        if (match) {
+            const oldSortBy = match[0];
+            const newSortBy = `fh_sort_by=${separator}${match[1]}}`;
+            newFilter = filter.replace(oldSortBy, newSortBy);
+        } else {
+            newFilter = filter + (filter.includes('?') ? '&' : '?') + `fh_sort_by=${separator}`;
+        }
+        query({filter: newFilter})
+        toggleDropDown()
+        onSortChange(index)
+    }
+    return (
+        <div className='view-setting-wrapper h-fit px-0 md:px-4 py-2 bg-aliceBlue rounded-xl mb-4'>
+            <div className='view-setting-bar'>
+                <div>
+                    <ul>
+                        <li>
+                            <div className='relative max-w-fit inline-block text-left whitespace-nowrap'>
+                                <button onClick={toggleDropDown} className='flex flex-row items-center'>
+                                <span className='flex flex-row items-center text-sm'>
+                                    <span className='hidden lg:inline-block pl-2 text-sm'>
+                                        {t('sortBy')}
+                                    </span>
+                                    <span className='inline-block pl-2'>
+                                        {doubleSortingAttributes[currentSortIndex]?.name} {t(`${doubleSortingAttributes[currentSortIndex]?.sortDirection}`)}
+                                    </span>
+                                    <svg
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        viewBox="0 0 20 20"
+                                        fill="currentColor"
+                                        className="-mr-1 ml-1 h-5 w-5 transform translate-y-[1px]"
+                                        aria-hidden="true"
+                                        strokeWidth="0"
+                                        height="20"
+                                        width="20"
+                                    >
+                                        <path
+                                            fillRule="evenodd"
+                                            d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+                                            clipRule="evenodd"
+                                        />
+                                    </svg>
+                                </span>
+                                </button>
+                                {isDropDownOpen && (
+                                    <div
+                                        className="opacity-100 absolute mt-1 min-w-full origin-top-right right-0 rounded-md shadow-lg bg-white ring-black ring-opacity-5 focus:outline-none transition-opacity duration-600 z-20"
+                                    >
+                                        <div className="py-1">
+                                            {doubleSortingAttributes?.map((attribute, index) => (
+                                                <button
+                                                    onClick={() => handleSortClick(attribute, doubleSortingAttributes.indexOf(attribute))}
+                                                    key={index}
+                                                    value={doubleSortingAttributes.indexOf(attribute)}
+                                                    className='text-black hover:text-darkGray bg-white block w-full text-left px-4 py-2 text-sm whitespace-nowrap'
+                                                >
+                                                    {attribute.name} {t(`${attribute.sortDirection}`)}
+                                                </button>
+                                            ))}
+                                        </div>
+                                    </div>
+                                )}
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    );
+}
 const ProductListPagination = ({
                                    setPageNumber,
                                    viewSize = 6,
@@ -323,8 +442,8 @@ const ProductListPagination = ({
 const ProductGrid = ({props}) => {
     return (
         <div className='grid gap-4 md:gap-8 auto-cols-max grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 mb-4 xl:mb-12'>
-            {props?.map((product) => (
-                <ProductCard key={product?.id} props={product} />
+            {props?.map((product, index) => (
+                <ProductCard key={index} props={product} />
             ))}
         </div>
     )
