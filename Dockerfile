@@ -10,4 +10,4 @@ RUN apk add --no-cache libc6-compat
 WORKDIR /app
 COPY --from=builder /app .
 EXPOSE 3000
-CMD yarn start
+CMD ["sh", "-c", "yarn build && yarn serve -s build -p 3000"]
