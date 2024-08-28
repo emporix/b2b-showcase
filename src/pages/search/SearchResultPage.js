@@ -237,7 +237,8 @@ const ResultPanel = ({props}) => {
     return (
         <div className='flex-auto lg:w-[77%] w-full gap-y-4 xl:gap-y-12'>
             <SortingBar
-                props={props?.sortParams}
+                props={props}
+                sortParams = {props?.sortParams}
                 onSortChange={handleSortChange}
                 currentSortIndex={sortAttributeIndex}
             />
@@ -247,53 +248,56 @@ const ResultPanel = ({props}) => {
     )
 }
 
-const SortingBar = ({ props, onSortChange, currentSortIndex }) => {
+const SortingBar = ({ props, sortParams, onSortChange, currentSortIndex }) => {
 
 
     const {t} = useTranslation('search')
     const [isDropDownOpen, setDropDownOpen] = useState(false)
     const {query} = useFredhopperClient()
 
-
+    const queryString = props?.queryString
 
     const toggleDropDown = () => {
         setDropDownOpen(!isDropDownOpen)
     }
     const doubleSortingAttributes = useMemo(() => {
-        if (!props) return [];
+        if (!sortParams) return [];
 
-        return props.flatMap(attribute => [
+        return sortParams.flatMap(attribute => [
             { ...attribute, sortDirection: 'ascending' },
             { ...attribute, sortDirection: 'descending' }
         ]);
-    }, [props]);
+    }, [sortParams]);
 
     useEffect(() => {
         if (doubleSortingAttributes.length > 0) {
-            handleSortClick(doubleSortingAttributes[currentSortIndex], currentSortIndex);
+            handleSortClick(doubleSortingAttributes[currentSortIndex], currentSortIndex, queryString);
         }
-    }, [doubleSortingAttributes, currentSortIndex]);
+    }, [ currentSortIndex]);
 
-    if(!props){
+    if(!sortParams){
         return null
     }
-    const handleSortClick = (attribute, index) => {
+    const handleSortClick = (attribute, index, queryFilter) => {
 
-        const sortDirection = attribute.sortDirection
+        const queryString = queryFilter;
+        const sortDirection = attribute.sortDirection;
         const separator = sortDirection === 'ascending' ? '+' : '-';
         const filter = attribute.urlParams;
-        const regex = /fh_sort_by=([^&]*)/;
-        const match = filter.match(regex);
-        let newFilter;
-        if (match) {
-            const oldSortBy = match[0];
-            const newSortBy = `fh_sort_by=${separator}${match[1]}}`;
-            newFilter = filter.replace(oldSortBy, newSortBy);
+        const regex = /fh_sort_by=[^&]*/;
+        const match = filter?.match(regex)
+        console.log(match)
+        const split = match[0]?.split('=')
+        console.log(split)
+        let updatedQueryString;
+
+        if (queryString.match(regex)) {
+            updatedQueryString = queryString.replace(regex, `&${split[0]}=${separator}${split[1]}`);
         } else {
-            newFilter = filter + (filter.includes('?') ? '&' : '?') + `fh_sort_by=${separator}`;
+            updatedQueryString = `${queryString}&${split[0]}=${separator}${split[1]}`;
         }
 
-        query({ filter: newFilter });
+        query({ filter: updatedQueryString });
         onSortChange(index);
         setDropDownOpen(false);
     };
@@ -338,7 +342,7 @@ const SortingBar = ({ props, onSortChange, currentSortIndex }) => {
                                         <div className="py-1">
                                             {doubleSortingAttributes.map((attribute, index) => (
                                                 <button
-                                                    onClick={() => handleSortClick(attribute, index)}
+                                                    onClick={() => handleSortClick(attribute, index, queryString)}
                                                     key={index}
                                                     className='text-black hover:text-darkGray bg-white block w-full text-left px-4 py-2 text-sm whitespace-nowrap'
                                                 >

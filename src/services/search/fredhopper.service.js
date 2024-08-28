@@ -16,6 +16,10 @@ const SearchResultQuery = `query SearchResultQuery($filter: String, $query: Stri
         availableHits
       }
       title
+      expandedFacet {
+        type
+        urlParams
+      }
     }
     items {
       thumbUrl
@@ -41,6 +45,7 @@ const SearchResultQuery = `query SearchResultQuery($filter: String, $query: Stri
   	  name
   	  urlParams
     }
+    
   }
 }`;
 
