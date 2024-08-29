@@ -238,6 +238,7 @@ const ResultPanel = ({props, pageNumber, setPageNumber}) => {
 
     const handleSortChange = (index) => {
         setSortAttributeIndex(index);
+        setPageNumber(1)
     };
 
     return (
@@ -299,6 +300,16 @@ const SortingBar = ({ props, sortParams, onSortChange, currentSortIndex }) => {
             updatedQueryString = queryString.replace(regex, `&${split[0]}=${separator}${split[1]}`);
         } else {
             updatedQueryString = `${queryString}&${split[0]}=${separator}${split[1]}`;
+        }
+
+        const param = 'fh_start_index=';
+        const newParam = 'fh_start_index=0';
+
+        if (updatedQueryString.includes(param)) {
+            const regex = new RegExp(`${param}\\d+`);
+            updatedQueryString = updatedQueryString.replace(regex, newParam);
+        } else {
+            updatedQueryString = updatedQueryString + '&' + newParam;
         }
 
         query({ filter: updatedQueryString });
