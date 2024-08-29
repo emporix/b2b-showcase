@@ -19,6 +19,7 @@ const SearchResultQuery = `query SearchResultQuery($filter: String, $query: Stri
       expandedFacet {
         type
         urlParams
+        nr
       }
     }
     items {

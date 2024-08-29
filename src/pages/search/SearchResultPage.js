@@ -20,6 +20,8 @@ const SearchResultPage = () => {
     const {query} = useFredhopperClient()
     const { t } = useTranslation('page')
     const {currentLanguage} = useLanguage()
+    const [pageNumber, setPageNumber] = useState(1)
+
     useEffect( () => {
         if (!searchResults || searchResults.length === 0) {
             async function getInitData() {
@@ -51,15 +53,15 @@ const SearchResultPage = () => {
             }
             getInitDataWithFilter();
         }
-    },[searchResults, currentLanguage])
+    },[searchResults, currentLanguage, pageNumber])
     return (
         <Layout title={t('wines')}>
             <div>
                 <div className='px-4 md:px-24 pb-12'>
                     <div className='mt-8 w-auto relative'>
                         <div className='flex gap-4 xl:gap-12'>
-                            <FilterPanel props={searchResults}/>
-                            <ResultPanel props={searchResults}/>
+                            <FilterPanel props={searchResults} setPageNumber={setPageNumber}/>
+                            <ResultPanel props={searchResults} pageNumber={pageNumber} setPageNumber={setPageNumber}/>
                         </div>
                     </div>
                 </div>
@@ -68,22 +70,24 @@ const SearchResultPage = () => {
     );
 }
 
-const FilterPanel = ({props}) => {
+const FilterPanel = ({props, setPageNumber}) => {
     return  (
         <div id='filterdrawer' className='flex-auto lg:w-[23%] bg-aliceBlue p-4 rounded-xl hidden lg:block'>
             <div className='relative'>
                 <BreadcrumbsPanel
                     props={props}
+                    setPageNumber={setPageNumber}
                 />
                 <FacetsPanel
                     facet={props.facet}
+                    setPageNumber={setPageNumber}
                 />
             </div>
         </div>
     )
 }
 
-const BreadcrumbsPanel = ({ props }) => {
+const BreadcrumbsPanel = ({ props, setPageNumber }) => {
     const {query} = useFredhopperClient()
     const handleClick = async (alternative) => {
         await query({query:`${alternative?.value}`})
@@ -103,6 +107,7 @@ const BreadcrumbsPanel = ({ props }) => {
                                     checked={true}
                                     filter={breadcrumb.urlParams}
                                     removeFilter={breadcrumb.removeBreadcrumbParams}
+                                    setPageNumber={setPageNumber}
                                 />
                                 <div className={`ml-2 ${isSearchBreadcrumb ? 'ml-2' : ''}`}>
                                     <label className='cursor-pointer' title={breadcrumb?.name}>
@@ -142,7 +147,7 @@ const BreadcrumbsPanel = ({ props }) => {
 };
 
 
-const FacetsPanel = ({facet}) => {
+const FacetsPanel = ({facet, setPageNumber}) => {
     return (
         <ul>
             {facet?.map((filter, index) => (
@@ -155,6 +160,7 @@ const FacetsPanel = ({facet}) => {
                                     <div className='flex'>
                                         <FilterPanelCheckbox checked={false}
                                                              filter={facetsection.urlParams}
+                                                             setPageNumber={setPageNumber}
                                                              />
                                         <div className='category_pan_field'>
                                             <label
@@ -183,10 +189,11 @@ const FilterPanelCheckbox = (props) => {
     const {query} = useFredhopperClient()
     const handleChange = async () => {
         if (props?.checked) {
-            await query({filter: props?.removeFilter})
+            await query({filter: `${props?.removeFilter}&fh_start_index=0`})
         } else {
-            await query({filter: props?.filter})
+            await query({filter: `${props?.filter}&fh_start_index=0`})
         }
+        props?.setPageNumber(1)
     };
     return (
         <Checkbox
@@ -203,8 +210,7 @@ const FilterPanelCheckbox = (props) => {
     )
 }
 
-const ResultPanel = ({props}) => {
-    const [pageNumber, setPageNumber] = useState(1)
+const ResultPanel = ({props, pageNumber, setPageNumber}) => {
     const [countPerPage, setCountPerPage] = useState(props?.results?.viewSize);
     const [totalItems, setTotalItems] = useState(props?.results?.totalItems);
     const [sortAttributeIndex, setSortAttributeIndex] = useState(0);
@@ -286,9 +292,7 @@ const SortingBar = ({ props, sortParams, onSortChange, currentSortIndex }) => {
         const filter = attribute.urlParams;
         const regex = /fh_sort_by=[^&]*/;
         const match = filter?.match(regex)
-        console.log(match)
         const split = match[0]?.split('=')
-        console.log(split)
         let updatedQueryString;
 
         if (queryString.match(regex)) {
@@ -367,7 +371,11 @@ const ProductListPagination = ({
                                    pageNumber = 1,
                                    changePageNumber,
                                }) => {
-    let totalPage = Math.ceil(totalCount / viewSize);
+    const [totalPage, setTotalPage] = useState(1)
+    useEffect(() => {
+        const calculatedTotalPage = Math.ceil(totalCount / viewSize);
+        setTotalPage(calculatedTotalPage);
+    }, [totalCount, viewSize]);
     if (isNaN(totalPage) || totalPage <= 0) return null;
 
     const handlePageChange = (pageNumber) => {
