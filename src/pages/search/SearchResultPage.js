@@ -213,7 +213,7 @@ const FilterPanelCheckbox = (props) => {
 const ResultPanel = ({props, pageNumber, setPageNumber}) => {
     const [countPerPage, setCountPerPage] = useState(props?.results?.viewSize);
     const [totalItems, setTotalItems] = useState(props?.results?.totalItems);
-    const [sortAttributeIndex, setSortAttributeIndex] = useState(0);
+    const [sortAttributeIndex, setSortAttributeIndex] = useState(4);
     const queryString = props?.queryString
     const {query} = useFredhopperClient()
 
@@ -280,7 +280,7 @@ const SortingBar = ({ props, sortParams, onSortChange, currentSortIndex }) => {
         if (doubleSortingAttributes.length > 0) {
             handleSortClick(doubleSortingAttributes[currentSortIndex], currentSortIndex, queryString);
         }
-    }, [ currentSortIndex]);
+    }, [ currentSortIndex , doubleSortingAttributes, queryString]);
 
     if(!sortParams){
         return null
