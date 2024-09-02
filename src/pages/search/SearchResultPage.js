@@ -49,7 +49,9 @@ const SearchResultPage = () => {
 				}
 			}
 
-			getInitDataWithFilter();
+			if (currentLanguage && searchResults){
+				getInitDataWithFilter();
+			}
 		}
 	}, [searchResults, currentLanguage, pageNumber])
 	return (
@@ -246,9 +248,8 @@ const ResultPanel = ({props, pageNumber, setPageNumber}) => {
 
 	const changePage = async (pageNumber) => {
 		const newQueryString = updateQueryString(queryString, 'fh_start_index', `${(pageNumber - 1) * countPerPage}`)
-
 		await query({filter: `${newQueryString}`})
-
+		setPageNumber(pageNumber)
 	}
 	const updateQueryString = (queryString, key, value) => {
 		const params = new URLSearchParams(queryString)
@@ -285,9 +286,6 @@ const SortingBar = ({props, sortParams, onSortChange, currentSortIndex}) => {
 
 	const queryString = props?.queryString
 
-	const toggleDropDown = () => {
-		setDropDownOpen(!isDropDownOpen)
-	}
 	const doubleSortingAttributes = useMemo(() => {
 		if (!sortParams) return [];
 
@@ -298,10 +296,10 @@ const SortingBar = ({props, sortParams, onSortChange, currentSortIndex}) => {
 	}, [sortParams]);
 
 	useEffect(() => {
-		if (doubleSortingAttributes.length > 0) {
+		if (doubleSortingAttributes.length > 0 && currentSortIndex) {
 			handleSortClick(doubleSortingAttributes[currentSortIndex], currentSortIndex, queryString);
 		}
-	}, [currentSortIndex, doubleSortingAttributes, queryString]);
+	}, []);
 
 	if (!sortParams) {
 		return null
