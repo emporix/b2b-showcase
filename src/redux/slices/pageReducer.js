@@ -5,6 +5,7 @@ export const initialState = {
     {
       title: 'catalog',
       items: [],
+      url:'catalog'
     },
     {
       title: 'Inhalt',
@@ -20,11 +21,6 @@ export const initialState = {
       items: [],
       url: 'storefinder'
     },
-    {
-      title: 'technical',
-      items: [],
-      url: 'technical',
-    },
   ],
   tenantList: [],
 }
@@ -34,7 +30,7 @@ const pageSlice = createSlice({
   initialState,
   reducers: {
     setShopItems: (state, action) => {
-      state.menu[0]['items'] = action.payload
+      // state.menu[0]['items'] = action.payload
     },
     setTenantList: (state, action) => {
       state.tenantList[action.payload.tenant] = action.payload.tenant
