@@ -121,7 +121,7 @@ const BreadcrumbsPanel = ({props, setPageNumber}) => {
 									{props.queryAlternatives.alternatives.map((alternative, index) => (
 										<div key={index} className='flex items-center mb-2'>
 											<span className='text-manatee'>{"->"}</span>
-											<div className='flex items-center' onClick={handleClick}>
+											<div className='flex items-center' onClick={() => handleClick(alternative)}>
 												<label
 													className='text-manatee pl-3 cursor-pointer'
 													title={alternative?.value}
