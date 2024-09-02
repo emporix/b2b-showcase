@@ -235,7 +235,7 @@ const FilterPanelCheckbox = (props) => {
 const ResultPanel = ({props, pageNumber, setPageNumber}) => {
 	const [countPerPage, setCountPerPage] = useState(props?.results?.viewSize);
 	const [totalItems, setTotalItems] = useState(props?.results?.totalItems);
-	const [sortAttributeIndex, setSortAttributeIndex] = useState(4);
+	const [sortAttributeIndex, setSortAttributeIndex] = useState(0);
 	const queryString = props?.queryString
 	const {query} = useFredhopperClient()
 
@@ -289,10 +289,16 @@ const SortingBar = ({props, sortParams, onSortChange, currentSortIndex}) => {
 	const doubleSortingAttributes = useMemo(() => {
 		if (!sortParams) return [];
 
-		return sortParams.flatMap(attribute => [
-			{...attribute, sortDirection: 'ascending'},
-			{...attribute, sortDirection: 'descending'}
-		]);
+		return sortParams.flatMap(attribute => {
+			if (attribute.name === 'Relevanz' || attribute.name === 'Relevance') {
+				return [{ ...attribute }];
+			}
+
+			return [
+				{ ...attribute, sortDirection: 'ascending' },
+				{ ...attribute, sortDirection: 'descending' }
+			];
+		});
 	}, [sortParams]);
 
 	useEffect(() => {
@@ -350,8 +356,11 @@ const SortingBar = ({props, sortParams, onSortChange, currentSortIndex}) => {
                                             {t('sortBy')}
                                         </span>
                                         <span className='inline-block pl-2'>
-                                            {doubleSortingAttributes[currentSortIndex]?.name} {t(`${doubleSortingAttributes[currentSortIndex]?.sortDirection}`)}
-                                        </span>
+											{doubleSortingAttributes[currentSortIndex]?.name}
+											{doubleSortingAttributes[currentSortIndex]?.sortDirection && (
+												` ${t(`${doubleSortingAttributes[currentSortIndex]?.sortDirection}`)}`
+											)}
+										</span>
                                         <svg
 											xmlns="http://www.w3.org/2000/svg"
 											viewBox="0 0 20 20"
@@ -381,7 +390,9 @@ const SortingBar = ({props, sortParams, onSortChange, currentSortIndex}) => {
 													key={index}
 													className='text-black hover:text-darkGray bg-white block w-full text-left px-4 py-2 text-sm whitespace-nowrap'
 												>
-													{attribute.name} {t(`${attribute.sortDirection}`)}
+													{attribute.name} {attribute.sortDirection && (
+													` ${t(`${attribute.sortDirection}`)}`
+													)}
 												</button>
 											))}
 										</div>
