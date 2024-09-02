@@ -190,13 +190,13 @@ const FacetsPanel = ({facet, setPageNumber}) => {
 };
 
 const ExpandedFacet = ({filter}) => {
-	const{t}=useTranslation('search')
+	const {t} = useTranslation('search')
 	const {query} = useFredhopperClient()
 	const expandFacet = async () => {
 		await query({filter: filter.expandedFacet.urlParams})
 	}
 	return (
-		<div>
+		<div className='category_pan_field'>
 			<button onClick={expandFacet} className='text underline'>
 				{t(filter.expandedFacet.type)} ({filter.expandedFacet.nr})
 			</button>
