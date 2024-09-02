@@ -421,6 +421,10 @@ function App() {
     history.listen((location) => {
       dispatch(clearMessage())
     })
+    if (window.DqmHeadlessConnector && window.WE_API) {
+      const dqmConnector = new window.DqmHeadlessConnector();
+      dqmConnector.refreshDqmReport();
+    }
   }, [dispatch])
 
   return (
