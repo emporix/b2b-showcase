@@ -435,12 +435,18 @@ i18n.use(initReactI18next).init({
 })
 
 function App() {
-	const dispatch = useDispatch()
-	useEffect(() => {
-		history.listen((location) => {
-			dispatch(clearMessage())
-		})
-	}, [dispatch])
+
+
+  const dispatch = useDispatch()
+  useEffect(() => {
+    history.listen((location) => {
+      dispatch(clearMessage())
+    })
+    if (window.DqmHeadlessConnector && window.WE_API) {
+      const dqmConnector = new window.DqmHeadlessConnector();
+      dqmConnector.refreshDqmReport();
+    }
+  }, [dispatch])
 
 	return (
 		<Router>
