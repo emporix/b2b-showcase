@@ -31,6 +31,11 @@ const TechnicalPage = () => {
                         <img className='technical-logo' src='/img/logos/zendesk.webp' alt='zendesk logo'/>
                     </Link>
                 </button>
+                <button key="cockpit" className="technical-element">
+                    <Link to="https://cockpit.mach11.de/" target="_blank">
+                        <img className='technical-logo' src='/img/logos/cockpit.webp' alt='technical logo'/>
+                    </Link>
+                </button>
             </div>
         </Layout>
     )
