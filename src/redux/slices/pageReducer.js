@@ -21,11 +21,6 @@ export const initialState = {
       items: [],
       url: 'storefinder'
     },
-    {
-      title: 'technical',
-      items: [],
-      url: 'technical',
-    },
   ],
   tenantList: [],
 }
