@@ -130,7 +130,11 @@ i18n.use(initReactI18next).init({
 				quantity: 'Quantity',
 				unit_price: 'Unit Price',
 				quantity_discount: 'Quantity Discount',
-				wines: 'Wines'
+				wines: 'Wines',
+				Wein:'Wine',
+				Weißwein:'White wine',
+				Rotwein:'Red Wine',
+				Roséwein:'Rosé wine'
 			},
 			account: {
 				account: 'My Account',
@@ -245,6 +249,11 @@ i18n.use(initReactI18next).init({
 				sortBy: 'Sort by:',
 				more: 'Show more',
 				less: 'Show less',
+			},
+			query:{
+				Rotwein:'wine_red',
+				Weißwein:'wine_white',
+				Roséwein:'wine_rose'
 			}
 		},
 		de: {
@@ -424,6 +433,11 @@ i18n.use(initReactI18next).init({
 				sortBy: 'Sortieren nach:',
 				more: 'Mehr anzeigen',
 				less: 'Weniger anzeigen',
+			},
+			query:{
+				Rotwein:'wine_red',
+				Weißwein:'wine_white',
+				Roséwein:'wine_rose'
 			}
 		},
 	},
@@ -442,10 +456,7 @@ function App() {
     history.listen((location) => {
       dispatch(clearMessage())
     })
-    if (window.DqmHeadlessConnector && window.WE_API) {
-      const dqmConnector = new window.DqmHeadlessConnector();
-      dqmConnector.refreshDqmReport();
-    }
+
   }, [dispatch])
 
 	return (
