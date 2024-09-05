@@ -32,7 +32,7 @@ const TechnicalPage = () => {
                     </Link>
                 </button>
                 <button key="cockpit" className="technical-element">
-                    <Link to="https://cockpit.mach11.de/" target="_blank">
+                    <Link to="https://cockpit.cxc.neteleven.de/" target="_blank">
                         <img className='technical-logo' src='/img/logos/cockpit.webp' alt='technical logo'/>
                     </Link>
                 </button>

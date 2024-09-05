@@ -25,9 +25,9 @@
       Learn how to configure a non-root public URL by running `npm run build`.
     -->
     <title>Emporix-Storefront</title>
-    <script id="ze-snippet" src="https://static.zdassets.com/ekr/snippet.js?key=bd548733-0e7f-4ef4-ac1d-bbcf6358484c"> </script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/fs-tpp-api/2.4.8/snap.min.js"></script>
-    <script src="https://partner.e-spirit.hosting/fs5webedit/dqm-connector/dqm-headless-connector.min.js"></script>
+    <script id="ze-snippet" src="https://static.zdassets.com/ekr/snippet.js?key=bd548733-0e7f-4ef4-ac1d-bbcf6358484c"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fs-tpp-api/2.4.8/snap.min.js" defer data-firstspirit-origin="https://partner.e-spirit.hosting"></script>
+    <script src="https://partner.e-spirit.hosting/fs5webedit/dqm-connector/dqm-headless-connector.min.js" defer></script>
     <style>#launcher {z-index: 9 !important;}</style>
     <script src="https://core.spreedly.com/iframe/express-3.min.js" id="express-script"></script>
     <link id="spreedly-express-css-file" rel="stylesheet" type="text/css" href="https://core.spreedly.com/stylesheets/express-3.0.0.min.css">
@@ -41,6 +41,10 @@
         // prevent the browser's console error message
         e.preventDefault();
       });
+      if (DqmHeadlessConnector && WE_API) {
+        const dqmConnector = new DqmHeadlessConnector();
+        dqmConnector.refreshDqmReport();
+      }
 </script>
   </head>
   <body>
