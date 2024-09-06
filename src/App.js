@@ -456,7 +456,6 @@ function App() {
     history.listen((location) => {
       dispatch(clearMessage())
     })
-
   }, [dispatch])
 
 	return (

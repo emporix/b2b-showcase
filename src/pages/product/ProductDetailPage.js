@@ -532,60 +532,62 @@ const ProductDetailsTabContent = ({product}) => {
 	)
 }
 
-const ProductDetailTabContent = ({product}) => {
-	const [tab, setTab] = React.useState(0)
-	const {t} = useTranslation("products");
-	const handleChange = (event, tab) => {
-		setTab(tab)
-	}
+const ProductDetailTabContent = ({ product }) => {
+  const [tab, setTab] = React.useState(0)
+  const {t} = useTranslation("products");
+  const handleChange = (event, tab) => {
+    setTab(tab)
+  }
 
-	function a11yProps(index) {
-		return {
-			id: `simple-tab-${index}`,
-			'aria-controls': `simple-tabpanel-${index}`,
-		}
-	}
+  function a11yProps(index) {
+    return {
+      id: `simple-tab-${index}`,
+      'aria-controls': `simple-tabpanel-${index}`,
+    }
+  }
 
-	TabPanel.propTypes = {
-		children: PropTypes.node,
-		index: PropTypes.number.isRequired,
-		value: PropTypes.number.isRequired,
-	}
+  TabPanel.propTypes = {
+    children: PropTypes.node,
+    index: PropTypes.number.isRequired,
+    value: PropTypes.number.isRequired,
+  }
 
-	const tabStyle = {
-		color: '#ACAEB2',
-		fontSize: '20px',
-		lineHeight: '32px',
-		fontHeight: 500,
-		paddingTop: '0px',
-		paddingLeft: '0px',
-		paddingRight: '0px',
-		paddingBottom: '8px',
-	}
-	return (
-		<Box>
-			<Box sx={{borderBottom: 1, borderColor: 'divider'}}>
-				<Tabs variant="fullWidth" value={tab} onChange={handleChange} aria-label="">
-					<Tab sx={tabStyle} label={t('details')} {...a11yProps(0)} />
-					<Tab sx={tabStyle} label={t('additional_information')} {...a11yProps(1)} />
-					<Tab sx={tabStyle} label={t('reviews')} {...a11yProps(2)} />
-				</Tabs>
-			</Box>
-			<TabPanel value={tab} index={0}>
-				<ProductDetailsTabContent product={product}/>
-			</TabPanel>
-			<TabPanel value={tab} index={1}>
-				<div
-					dangerouslySetInnerHTML={{__html: product.description}}
-					className="product-details-tab-content-wrapper text-lg font-light"
-				/>
-				{/* <Content type={CMSFilterType.PRODUCT} page={product.id} /> */}
-			</TabPanel>
-			<TabPanel value={tab} index={2}>
-				<div className="product-details-tab-content-wrapper font-light">Reviews</div>
-			</TabPanel>
-		</Box>
-	)
+  const tabStyle = {
+    color: '#ACAEB2',
+    fontSize: '20px',
+    lineHeight: '32px',
+    fontHeight: 500,
+    paddingTop: '0px',
+    paddingLeft: '0px',
+    paddingRight: '0px',
+    paddingBottom: '8px',
+  }
+  return (
+    <Box>
+      <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
+        <Tabs variant="fullWidth" value={tab} onChange={handleChange} aria-label="">
+          <Tab sx={tabStyle} label={t('details')} {...a11yProps(0)} />
+          <Tab sx={tabStyle} label={t('additional_information')} {...a11yProps(1)} />
+          <Tab sx={tabStyle} label={t('reviews')} {...a11yProps(2)} />
+        </Tabs>
+      </Box>
+      <TabPanel value={tab} index={0}>
+        <ProductDetailsTabContent product={product} />
+      </TabPanel>
+      <TabPanel value={tab} index={1}>
+        <div className="product-details-tab-content-wrapper">
+          <Content
+            type={CMSFilterType.PRODUCT}
+            page={product.id}
+          />
+        </div>
+        {/* <Content type={CMSFilterType.PRODUCT} page={product.id} /> */}
+      </TabPanel>
+      <TabPanel value={tab} index={2}>
+        <div className="product-details-tab-content-wrapper font-light">Reviews</div>
+      </TabPanel>
+    </Box>
+  )
 }
 const ProductInfoPortal = ({caption, items}) => {
 	const {t} = useTranslation(i18nProductCustomAttributesNS)
@@ -614,43 +616,45 @@ const ProductInfoPortal = ({caption, items}) => {
 	)
 }
 
-const ProductDetailInfo = ({product}) => {
-	const {getLocalizedValue} = useLanguage()
-	const {t} = useTranslation('products')
+const ProductDetailInfo = ({ product }) => {
+  const { t } = useTranslation('products')
+  const title = t('description')
 
-	// console.log(product)
-	return (
-		<div className="product-detail-page-info-wrapper pb-12">
-			<div className="product-detail-content">
-				<div className="mb-16">
-					<Content
-						type={CMSFilterType.PRODUCT}
-						page={product.id}
-						title={t('description')}
-						classList={'fs-content-product'}
-					/>
-				</div>
-				<div className="desktop-lg">
-					<ProductDetailTabContent product={product}/>
-				</div>
-				<div className="mobile-lg">
-					<Accordion>
-						<AccordionItem index={0} title={t('details')}>
-							<ProductDetailsTabContent product={product}/>
-						</AccordionItem>
-						<AccordionItem index={1} title={t('additional_information')}>
-							<div
-								className="product-details-tab-content-wrapper">{getLocalizedValue(product.description)}</div>
-						</AccordionItem>
-						<AccordionItem index={2} title={t('reviews')} className="product-details-tab-content-wrapper">
-							<div className="product-details-tab-content-wrapper">{t('reviews')}</div>
-						</AccordionItem>
-					</Accordion>
-				</div>
-				<div className="desktop-lg mt-4"></div>
-			</div>
-		</div>
-	)
+  // console.log(product)
+  return (
+    <div className="product-detail-page-info-wrapper pb-12">
+      <div className="product-detail-content">
+        <div className="mb-16">
+          {title ? <h2 className="font-bold text-2xl text-center lg:text-left pb-2 border-b-2">{title}</h2> : null}
+          <p className="text-lg font-light mt-6"
+             dangerouslySetInnerHTML={{__html: product.description}}>
+          </p>
+        </div>
+        <div className="desktop-lg">
+          <ProductDetailTabContent product={product} />
+        </div>
+        <div className="mobile-lg">
+          <Accordion>
+            <AccordionItem index={0} title={t('details')}>
+              <ProductDetailsTabContent product={product} />
+            </AccordionItem>
+            <AccordionItem index={1} title={t('additional_information')}>
+              <div className="product-details-tab-content-wrapper">
+                <Content
+                  type={CMSFilterType.PRODUCT}
+                  page={product.id}
+                />
+              </div>
+            </AccordionItem>
+            <AccordionItem index={2} title={t('reviews')} className="product-details-tab-content-wrapper">
+              <div className="product-details-tab-content-wrapper">{t('reviews')}</div>
+            </AccordionItem>
+          </Accordion>
+        </div>
+        <div className="desktop-lg mt-4"></div>
+      </div>
+    </div>
+  )
 }
 /*
 const products = [
