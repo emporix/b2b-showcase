@@ -549,10 +549,12 @@ const ProductDetailTabContent = ({ product }) => {
         <ProductDetailsTabContent product={product} />
       </TabPanel>
       <TabPanel value={tab} index={1}>
-        <div
-          dangerouslySetInnerHTML={{ __html: product.description }}
-          className="product-details-tab-content-wrapper text-lg font-light"
-        />
+        <div className="product-details-tab-content-wrapper">
+          <Content
+            type={CMSFilterType.PRODUCT}
+            page={product.id}
+          />
+        </div>
         {/* <Content type={CMSFilterType.PRODUCT} page={product.id} /> */}
       </TabPanel>
       <TabPanel value={tab} index={2}>
@@ -589,20 +591,18 @@ const ProductInfoPortal = ({ caption, items }) => {
 }
 
 const ProductDetailInfo = ({ product }) => {
-  const { getLocalizedValue } = useLanguage()
   const { t } = useTranslation('products')
+  const title = t('description')
 
   // console.log(product)
   return (
     <div className="product-detail-page-info-wrapper pb-12">
       <div className="product-detail-content">
         <div className="mb-16">
-          <Content
-            type={CMSFilterType.PRODUCT}
-            page={product.id}
-            title={t('description')}
-            classList={'fs-content-product'}
-          />
+          {title ? <h2 className="font-bold text-2xl text-center lg:text-left pb-2 border-b-2">{title}</h2> : null}
+          <p className="text-lg font-light mt-6"
+             dangerouslySetInnerHTML={{__html: product.description}}>
+          </p>
         </div>
         <div className="desktop-lg">
           <ProductDetailTabContent product={product} />
@@ -613,7 +613,12 @@ const ProductDetailInfo = ({ product }) => {
               <ProductDetailsTabContent product={product} />
             </AccordionItem>
             <AccordionItem index={1} title={t('additional_information')}>
-              <div className="product-details-tab-content-wrapper">{getLocalizedValue(product.description)}</div>
+              <div className="product-details-tab-content-wrapper">
+                <Content
+                  type={CMSFilterType.PRODUCT}
+                  page={product.id}
+                />
+              </div>
             </AccordionItem>
             <AccordionItem index={2} title={t('reviews')} className="product-details-tab-content-wrapper">
               <div className="product-details-tab-content-wrapper">{t('reviews')}</div>
