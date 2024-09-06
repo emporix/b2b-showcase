@@ -22,7 +22,7 @@ import { PriceTierValues } from './VariantAccordion'
 import { useCart } from 'context/cart-provider'
 import { useAuth } from 'context/auth-provider'
 import { formatPrice } from 'helpers/price'
-import { useLanguage } from 'context/language-provider'
+import { CURRENT_LANGUAGE_KEY, useLanguage } from 'context/language-provider'
 import productService from '../../services/product/product.service'
 import priceService from '../../services/product/price.service'
 import { useNavigate } from 'react-router-dom'
@@ -37,6 +37,7 @@ import i18next from 'i18next'
 import { useSelector } from 'react-redux'
 import { availabilityDataSelector } from '../../redux/slices/availabilityReducer'
 import { StockLevel } from '../../components/Product/availability'
+import { useFredhopperClient } from "../../services/search/fredhopper.service";
 
 const ProductContext = createContext()
 export const i18nProductCustomAttributesNS = 'productCustomAttributes'
