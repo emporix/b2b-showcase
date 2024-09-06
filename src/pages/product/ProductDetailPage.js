@@ -74,7 +74,7 @@ const ProductDetailCategoryCaptionBar = ({category}) => {
 							{row.caption}
 						</Typography>
 					) : (
-						<button
+						<button key={index}
 							onClick={async () => {
 								const urlParam= row.query==='Wein'? `fh_location=//catalog01/${language}` :`fh_refpath=0039dd2d-8560-48a1-822c-c9e286a46ba3&fh_refview=lister&fh_reffacet=categories&fh_location=%2f%2fcatalog01%2f${language}%2fcategories%3c%7bcatalog01_catalog01_wine_catalog01_${row.query}%7d`
 								await query({filter: urlParam})
@@ -411,8 +411,8 @@ const ProductContent = ({product, brand, labels}) => {
 						<div className="flex flex-col">
 							<div className="flex gap-2">
 								{labels && labels.length > 0 && <div>Labels</div>}
-								{labels.map((label) => {
-									return <img src={label.image} alt={label.name} className="w-fit h-8"/>
+								{labels.map((label,index) => {
+									return <img key={index} src={label.image} alt={label.name} className="w-fit h-8"/>
 								})}
 							</div>
 						</div>

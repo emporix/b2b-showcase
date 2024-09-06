@@ -8,6 +8,7 @@ import {useLanguage} from "../../context/language-provider";
 import {useSearch} from "../../context/search-context";
 import Layout from "../Layout";
 import {HiOutlineArrowLeft, HiOutlineArrowRight} from "react-icons/hi";
+import {Link} from "react-router-dom";
 
 
 const SearchResultPage = () => {
@@ -506,9 +507,9 @@ const ProductGrid = ({props}) => {
 const ProductCard = ({props}) => {
 	return (
 		<div className="hover:scale-[1.01] transition-all duration-150 ease-in">
-			<a href={`/n11showcase/product/details/${props?.id}`} className="no-underline">
+			<Link to={`/n11showcase/product/details/${props?.id}`} className="no-underline">
 				<ProductDetails props={props}/>
-			</a>
+			</Link>
 		</div>
 	)
 }

@@ -78,7 +78,7 @@ const MegaNav = ({showMegaMenuContent, setShowMegaMenuContent}) => {
 			))}
 
 			<button key="zendesk" className="mega_menu_dropbtn">
-				<Link to="https://mach11.zendesk.com/hc/de-de" target="_blank">
+				<Link to="https://cxc.neteleven.zendesk.com/hc/de-de" target="_blank">
 					<div className="whitespace-nowrap">Help Center</div>
 				</Link>
 			</button>

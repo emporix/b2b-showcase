@@ -243,7 +243,7 @@ i18n.use(initReactI18next).init({
 				signup: 'Sign Up',
 			},
 			search: {
-				label: 'Search mach11.de',
+				label: 'Search cxc.neteleven.de',
 				ascending: 'Ascending',
 				descending: 'Descending',
 				sortBy: 'Sort by:',
@@ -427,7 +427,7 @@ i18n.use(initReactI18next).init({
 				signup: 'Sign Up',
 			},
 			search: {
-				label: 'Durchsuche mach11.de',
+				label: 'Durchsuche cxc.neteleven.de',
 				ascending: 'Aufsteigend',
 				descending: 'Absteigend',
 				sortBy: 'Sortieren nach:',

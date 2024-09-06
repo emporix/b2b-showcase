@@ -19,7 +19,6 @@ export const LanguageProvider = ({ children }) => {
   const [languages, setLanguages] = useState([])
   const { currentSite, sites } = useSites()
   const [currentLanguage, setCurrentLanguage] = useState()
-
   const setLanguage = (lang) => {
     setCurrentLanguage(lang)
     i18n.changeLanguage(lang)
@@ -36,10 +35,12 @@ export const LanguageProvider = ({ children }) => {
   useEffect(() => {
     if (currentSite && sites.length > 0) {
       let currentSiteObject = sites.find((site) => site.code === currentSite)
-
       if (currentSiteObject && currentSiteObject.languages) {
         setLanguages(currentSiteObject.languages)
-        if (currentSiteObject.defaultLanguage) {
+        if (localStorage.getItem(CURRENT_LANGUAGE_KEY) && currentSiteObject.languages.includes(localStorage.getItem(CURRENT_LANGUAGE_KEY)) ) {
+          setLanguage(localStorage.getItem(CURRENT_LANGUAGE_KEY))
+        }
+        else if (currentSiteObject.defaultLanguage){
           setLanguage(currentSiteObject.defaultLanguage)
         }
       }
