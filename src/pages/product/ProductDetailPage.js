@@ -49,7 +49,6 @@ const Bold = ({children}) => {
 const ProductDetailCategoryCaptionBar = ({category}) => {
 	const categoryTree = [{caption: 'Home', link: homeUrl()}]
 	let lnk = productUrl()
-	// const {t} = useTranslation("query")
 	const {t} = useTranslation(['page','query'])
 	for (let c in category) {
 		lnk = `${homeUrl()}/catalog`
