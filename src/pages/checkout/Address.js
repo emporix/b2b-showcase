@@ -15,6 +15,8 @@ const Address = ({ data }) => {
       <img className="home-pin" src={homePin} alt="homePin" />
       <>
         <TextRegular1>
+          {data.companyName} {data.shipTo ?? ''}
+          <br/>
           {data.streetAppending} {data.street} {data.streetNumber}
           {/* </TextRegular1> */}
           {/* <TextRegular1> */}

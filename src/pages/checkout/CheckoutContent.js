@@ -38,6 +38,7 @@ import PaymentSpreedly from 'components/Checkout/PaymentSpreedly'
 import { CartProductImageAndReadOnlyQuantity, CartProductInfo, } from 'components/Cart/cart'
 import GuestShippingContent from './GuestShippingContent'
 import { GuestPaymentContent } from './GuestPaymentContent'
+import Company from "./Company";
 
 const ShippingContent = () => {
   const { setShippingMethod } = useCart()
@@ -45,10 +46,15 @@ const ShippingContent = () => {
 
   const {
     locations,
+    companies,
+    availableCompanies,
     addresses,
     selectedAddress,
+    selectedCompany,
     setSelectedAddress,
+    setSelectedCompany,
     defaultAddress,
+    defaultCompany,
     shippingMethods,
     setSelectedDeliveryMethod,
   } = useUserAddress()
@@ -56,7 +62,7 @@ const ShippingContent = () => {
   useEffect(() => {
     setShippingMethod(null)
   }, [])
- 
+
   const onShippingChange = (value) => {
     const selectedShippingMethod = shippingMethods.filter(
       (method) => method.id === value
@@ -66,8 +72,47 @@ const ShippingContent = () => {
   }
 
   return (
-  user ? 
+  user ?
     (<>
+            <GridLayout className="gap-10 border rounded border-quartz p-6">
+                <GridLayout className="gap-4">
+                    <DesktopMDContainer>
+                        <LayoutBetween className="items-center">
+                            <Heading3>Company Details</Heading3>
+                        </LayoutBetween>
+                    </DesktopMDContainer>
+                    <MobileMDContainer>
+                        <GridLayout className="gap-6  border rounded border-quartz p-6">
+                            <Heading3>Company Details</Heading3>
+                        </GridLayout>
+                    </MobileMDContainer>
+                </GridLayout>
+
+                <GridLayout className="gap-6">
+                    <DropdownWithLabel
+                        label="Company"
+                        options={companies}
+                        defaultValue={defaultCompany}
+                        onChange={(e) => {
+                            const companyId = e[0].value
+                            const company = availableCompanies.find(
+                                (cmp) => cmp.id === companyId
+                            )
+                            if (company !== undefined) {
+                                setSelectedCompany(company)
+                            }
+                        }}
+                    />
+                    {availableCompanies.length === 0 && (
+                        <GridLayout className="text-xs text-red-600 text-center">
+                            Please check assigned Companies
+                        </GridLayout>
+                    )}
+                    <GridLayout className="location-info">
+                        {selectedCompany && <Company data={selectedCompany} />}
+                    </GridLayout>
+                </GridLayout>
+            </GridLayout>
       <GridLayout className="gap-10 border rounded border-quartz p-6">
         <GridLayout className="gap-4">
           <DesktopMDContainer>
@@ -87,8 +132,9 @@ const ShippingContent = () => {
             </GridLayout>
           </MobileMDContainer>
         </GridLayout>
-
+          {selectedCompany && (
         <GridLayout className="gap-6">
+
           <DropdownWithLabel
             label="Location"
             options={locations}
@@ -111,7 +157,8 @@ const ShippingContent = () => {
           <GridLayout className="location-info">
             {selectedAddress && <Address data={selectedAddress} />}
           </GridLayout>
-        </GridLayout>
+
+        </GridLayout>)}
       </GridLayout>
 
       <GridLayout className="gap-10 border rounded border-quartz p-6">
@@ -142,7 +189,7 @@ const ShippingContent = () => {
             )
           })}
         </RadioGroup>
-        </GridLayout>  
+        </GridLayout>
       </GridLayout>
     </>
     ) : <GuestShippingContent/>
@@ -349,7 +396,7 @@ const ReviewOrderContent = (cart) => {
                     <CartProductImageAndReadOnlyQuantity cartItem={cartItem} />
                     <CartProductInfo key={cartItem.id + idx} cartItem={cartItem} />
                   </div>
-                </> 
+                </>
               ))}
             </GridLayout>
           </Container>
@@ -370,9 +417,9 @@ const ReviewOrderContent = (cart) => {
                     <CartProductImageAndReadOnlyQuantity cartItem={cartItem} />
                     <CartProductInfo key={cartItem.id + idx} cartItem={cartItem} />
                   </div>
-                </> 
+                </>
               ))}
-            </GridLayout>  
+            </GridLayout>
         </GridLayout>
       </MobileLGContainer>
     </>

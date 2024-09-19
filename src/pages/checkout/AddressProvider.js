@@ -4,7 +4,13 @@ import { useCart } from 'context/cart-provider'
 import { getShippingMethods } from 'services/shipping.service'
 import { getActualDeliveryWindows } from 'services/shipping.service'
 import { calculateTax } from 'services/product/tax.service'
-import { mapAddressToLocations, getShippingAddressesForCheckout, getBillingAddressesForCheckout } from 'services/addresses.service'
+import {
+  mapAddressToLocations,
+  getShippingAddressesForCheckout,
+  getBillingAddressesForCheckout,
+  mapCompany, getCompanyShippingAddressesForCheckout
+} from 'services/addresses.service'
+import {getCompanies} from "../../services/legal-entities.service";
 
 
 const AddressContext = createContext({})
@@ -14,16 +20,22 @@ export const AddressProvider = ({ children }) => {
   const [addresses, setAddresses] = useState([])
   const [billingAddresses, setBillingAddresses] = useState([])
   const [selectedAddress, setSelectedAddressState] = useState(null)
+  const [selectedCompany, setSelectedCompanyState] = useState(null)
   const [selectedDeliveryWindow, setSelectedDeliveryWindow] = useState(null)
   const [selectedDeliveryMethod, setSelectedDeliveryMethod] = useState(null)
   const [defaultAddress, setDefaultAddress] = useState(null)
+  const [defaultCompany, setDefaultCompany] = useState(null)
   const [billingAddress, setBillingAddressState] = useState(null)
   const [locations, setLocations] = useState([])
+  const [companies, setCompanies] = useState([])
+  const [availableCompanies, setAvailableCompanies] = useState([])
   const [billingLocations, setBillingLocations] = useState([])
   const [shippingMethods, setShippingMethods] = useState([])
   const [deliveryWindows, setDeliveryWindows] = useState([])
   const { cartAccount } = useCart()
-
+  const setSelectedCompany = (company) => {
+      setSelectedCompanyState({ ...company })
+  }
   const setSelectedAddress = (address) => {
     setSelectedAddressState({ ...address, type: 'SHIPPING' })
   }
@@ -35,6 +47,7 @@ export const AddressProvider = ({ children }) => {
   useEffect(() => {
     setBillingAddress(selectedAddress)
     fetchShippingMethods(cartAccount, selectedAddress)
+
     if(selectedAddress) {
       fetchDeliveryWindows(selectedAddress.zipCode, selectedAddress.country)
     }
@@ -45,11 +58,24 @@ export const AddressProvider = ({ children }) => {
     if (!user) {
       return
     }
-    initAddresses()
+    initCompanies();
   }, [])
 
+  useEffect(() => {
+    if(selectedCompany){
+      initAddresses()
+    }
+  }, [selectedCompany])
+
+  const initCompanies = useCallback(async () => {
+    const companiesFetched = await getCompanies();
+    setAvailableCompanies(companiesFetched);
+    setCompanies(companiesFetched.map((company)=>mapCompany(company)))
+  },[])
+
   const initAddresses = useCallback(async () => {
-    const addresses = await getShippingAddressesForCheckout()
+    const addresses = getCompanyShippingAddressesForCheckout(selectedCompany)
+
     setAddresses(addresses)
     const locations = addresses.map((address) => mapAddressToLocations(address))
     const billingAddresses = await getBillingAddressesForCheckout()
@@ -65,8 +91,8 @@ export const AddressProvider = ({ children }) => {
     }
     setLocations(locations)
     setBillingLocations(billingLocations)
-  }, [])
-  
+  }, [selectedCompany])
+
 
   const fetchShippingMethods = useCallback(async (cart, address) => {
     const methods = await getShippingMethods(cart.siteCode)
@@ -107,13 +133,18 @@ export const AddressProvider = ({ children }) => {
       value={{
         addresses,
         selectedAddress,
+        selectedCompany,
+        setSelectedCompany,
         setSelectedAddress,
         billingAddress,
         billingLocations,
         billingAddresses,
         setBillingAddress,
         defaultAddress,
+        defaultCompany,
         locations,
+        availableCompanies,
+        companies,
         shippingMethods,
         setShippingMethods,
         deliveryWindows,

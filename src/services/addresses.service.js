@@ -1,18 +1,25 @@
-import { getCompanyAddresses } from './legal-entities.service'
+import { getCompanies, getCompanyAddresses } from './legal-entities.service'
 import { USER } from 'constants/localstorage'
 
 export const getShippingAddressesForCheckout = async () => {
   let addresses = await getFilteredAddresses('SHIPPING')
-  if (addresses.length === 0) {
+  if(addresses.length === 0) {
     const user = localStorage.getItem(USER)
     addresses = JSON.parse(user).addresses
   }
   return addresses
 }
 
+export function getCompanyShippingAddressesForCheckout(company) {
+  const addresses = company.addresses?.map(address => {
+    return {...address, companyName: company.name}
+  });
+  return filterAddresses(addresses, 'SHIPPING')
+}
+
 export const getBillingAddressesForCheckout = async () => {
   let addresses = await getFilteredAddresses('BILLING')
-  if (addresses.length === 0) {
+  if(addresses.length === 0) {
     const user = localStorage.getItem(USER)
     addresses = JSON.parse(user).addresses
   }
@@ -36,12 +43,23 @@ export const mapAddressToLocations = (address) => {
   }
 }
 
+export const mapCompany = (company) => {
+  return {
+    label: `${company.name} ${company.erpData?.soldTo ?? ''}`,
+    value: company.id,
+  }
+}
+
 export function isValidEmail(email) {
   return /\S+@\S+\.\S+/.test(email)
 }
 
 const getFilteredAddresses = async (addressType) => {
-  let addresses = (await getCompanyAddresses())
+  return filterAddresses(await getCompanyAddresses(), addressType);
+}
+
+function filterAddresses(companyAddresses, addressType) {
+  return companyAddresses
     .filter((location) =>
       location?.contactDetails?.tags?.find(
         (tag) => tag.toUpperCase() === addressType
@@ -61,5 +79,4 @@ const getFilteredAddresses = async (addressType) => {
         id: location?.id,
       }
     })
-  return addresses
 }
