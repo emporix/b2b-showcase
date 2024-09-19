@@ -36,6 +36,14 @@
   grid-template-columns: 50px 1fr !important;
   align-items: center;
 }
+.company-grid{
+  display: grid;
+  grid-template-columns: 50px 1fr !important;
+  align-items: center;
+}
+.company-grid li {
+   font-size:small
+ }
 .billing-information{
   @apply p-6 border border-quartz rounded
 }
