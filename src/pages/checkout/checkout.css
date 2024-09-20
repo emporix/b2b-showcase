@@ -44,6 +44,9 @@
 .company-grid li {
    font-size:small
  }
+.company-information{
+  @apply p-6 border border-quartz rounded
+}
 .billing-information{
   @apply p-6 border border-quartz rounded
 }

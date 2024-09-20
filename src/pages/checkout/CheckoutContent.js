@@ -305,12 +305,35 @@ const ShipmentContent = () => {
 }
 
 const ReviewOrderContent = (cart) => {
-  const { billingAddress } = useUserAddress()
+  const { billingAddress, selectedCompany } = useUserAddress()
   const { payment } = usePayment()
   const { cartAccount } = useCart()
 
   return (
     <>
+
+      <DesktopLGContainer>
+        <LayoutBetween className="company-information">
+          <Container className="gap-8">
+            <div className="property-wrapper">
+              <TextBold3>Company Information</TextBold3>
+            </div>
+            <Company data={selectedCompany} />
+          </Container>
+        </LayoutBetween>
+      </DesktopLGContainer>
+
+      <MobileLGContainer>
+        <GridLayout className="company-information gap-6">
+          <LayoutBetween className="gap-8">
+            <div className="property-wrapper">
+              <TextBold3>Company Information</TextBold3>
+            </div>
+          </LayoutBetween>
+          <Company data={selectedCompany} />
+        </GridLayout>
+      </MobileLGContainer>
+
       <DesktopLGContainer>
       <LayoutBetween className="billing-information">
           <Container className="gap-8">
