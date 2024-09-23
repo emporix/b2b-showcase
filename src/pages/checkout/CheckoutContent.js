@@ -41,7 +41,7 @@ import { GuestPaymentContent } from './GuestPaymentContent'
 import Company from "./Company";
 
 const ShippingContent = () => {
-  const { setShippingMethod } = useCart()
+  const {setShippingMethod} = useCart()
   const user = JSON.parse(localStorage.getItem(USER))
 
   const {
@@ -57,6 +57,8 @@ const ShippingContent = () => {
     defaultCompany,
     shippingMethods,
     setSelectedDeliveryMethod,
+    selectedAddressItem,
+    setSelectedAddressItem
   } = useUserAddress()
 
   useEffect(() => {
@@ -72,127 +74,131 @@ const ShippingContent = () => {
   }
 
   return (
-  user ?
-    (<>
-            <GridLayout className="gap-10 border rounded border-quartz p-6">
-                <GridLayout className="gap-4">
-                    <DesktopMDContainer>
-                        <LayoutBetween className="items-center">
-                            <Heading3>Company Details</Heading3>
-                        </LayoutBetween>
-                    </DesktopMDContainer>
-                    <MobileMDContainer>
-                        <GridLayout className="gap-6  border rounded border-quartz p-6">
-                            <Heading3>Company Details</Heading3>
-                        </GridLayout>
-                    </MobileMDContainer>
+    user ?
+      (<>
+          <GridLayout className="gap-10 border rounded border-quartz p-6">
+            <GridLayout className="gap-4">
+              <DesktopMDContainer>
+                <LayoutBetween className="items-center">
+                  <Heading3>Company Details</Heading3>
+                </LayoutBetween>
+              </DesktopMDContainer>
+              <MobileMDContainer>
+                <GridLayout className="gap-6  border rounded border-quartz p-6">
+                  <Heading3>Company Details</Heading3>
                 </GridLayout>
+              </MobileMDContainer>
+            </GridLayout>
 
-                <GridLayout className="gap-6">
-                    <DropdownWithLabel
-                        label="Company"
-                        options={companies}
-                        defaultValue={defaultCompany}
-                        onChange={(e) => {
-                            const companyId = e[0].value
-                            const company = availableCompanies.find(
-                                (cmp) => cmp.id === companyId
-                            )
-                            if (company !== undefined) {
-                                setSelectedCompany(company)
-                            }
-                        }}
+            <GridLayout className="gap-6">
+              <DropdownWithLabel
+                label="Company"
+                options={companies}
+                defaultValue={defaultCompany}
+                onChange={(e) => {
+                  const companyId = e[0].value
+                  const company = availableCompanies.find(
+                    (cmp) => cmp.id === companyId
+                  )
+                  if(company !== undefined) {
+                    setSelectedCompany(company)
+                  }
+                }}
+              />
+              {availableCompanies.length === 0 && (
+                <GridLayout className="text-xs text-red-600 text-center">
+                  Please check assigned Companies
+                </GridLayout>
+              )}
+              <GridLayout className="location-info">
+                {selectedCompany && <Company data={selectedCompany}/>}
+              </GridLayout>
+            </GridLayout>
+          </GridLayout>
+          <GridLayout className="gap-10 border rounded border-quartz p-6">
+            <GridLayout className="gap-4">
+              <DesktopMDContainer>
+                <LayoutBetween className="items-center">
+                  <Heading3>Shipping Details</Heading3>
+                  <TextRegular3>
+                    <Underline>Ship to multiple addresses</Underline>
+                  </TextRegular3>
+                </LayoutBetween>
+              </DesktopMDContainer>
+              <MobileMDContainer>
+                <GridLayout className="gap-6  border rounded border-quartz p-6">
+                  <Heading3>Shipping Details</Heading3>
+                  <TextRegular3>
+                    <Underline>Ship to multiple addresses</Underline>
+                  </TextRegular3>
+                </GridLayout>
+              </MobileMDContainer>
+            </GridLayout>
+            {selectedCompany && (
+              <GridLayout className="gap-6">
+
+                <DropdownWithLabel
+                  label="Location"
+                  options={locations}
+                  defaultValue={selectedAddressItem||defaultAddress}
+                  onChange={(e) => {
+                    if(Array.isArray(e) && e.length > 0) {
+                      const addressId = e[0].value
+                      setSelectedAddressItem(e[0])
+
+                      const address = addresses.find(
+                        (address) => address.id === addressId
+                      )
+                      if(address !== undefined) {
+                        setSelectedAddress(address)
+                      }
+                    }
+                  }}
                     />
-                    {availableCompanies.length === 0 && (
-                        <GridLayout className="text-xs text-red-600 text-center">
-                            Please check assigned Companies
-                        </GridLayout>
+                  {addresses.length === 0 && (
+                    <GridLayout className="text-xs text-red-600 text-center">
+                    Please check shipping address for your Company / User
+                    </GridLayout>
                     )}
                     <GridLayout className="location-info">
-                        {selectedCompany && <Company data={selectedCompany} />}
-                    </GridLayout>
-                </GridLayout>
-            </GridLayout>
-      <GridLayout className="gap-10 border rounded border-quartz p-6">
-        <GridLayout className="gap-4">
-          <DesktopMDContainer>
-            <LayoutBetween className="items-center">
-              <Heading3>Shipping Details</Heading3>
-              <TextRegular3>
-                <Underline>Ship to multiple addresses</Underline>
-              </TextRegular3>
-            </LayoutBetween>
-          </DesktopMDContainer>
-          <MobileMDContainer>
-          <GridLayout className="gap-6  border rounded border-quartz p-6">
-              <Heading3>Shipping Details</Heading3>
-              <TextRegular3>
-                <Underline>Ship to multiple addresses</Underline>
-              </TextRegular3>
-            </GridLayout>
-          </MobileMDContainer>
-        </GridLayout>
-          {selectedCompany && (
-        <GridLayout className="gap-6">
+                  {selectedAddress && <Address data={selectedAddress}/>}
+              </GridLayout>
 
-          <DropdownWithLabel
-            label="Location"
-            options={locations}
-            defaultValue={defaultAddress}
-            onChange={(e) => {
-              const addressId = e[0].value
-              const address = addresses.find(
-                (address) => address.id === addressId
-              )
-              if (address !== undefined) {
-                setSelectedAddress(address)
-              }
-            }}
-          />
-          {addresses.length === 0 && (
-            <GridLayout className="text-xs text-red-600 text-center">
-              Please check shipping address for your Company / User
-            </GridLayout>
-          )}
-          <GridLayout className="location-info">
-            {selectedAddress && <Address data={selectedAddress} />}
+              </GridLayout>)}
           </GridLayout>
 
-        </GridLayout>)}
-      </GridLayout>
-
-      <GridLayout className="gap-10 border rounded border-quartz p-6">
-        <GridLayout className="gap-6">
-          <Heading3>Shipping Method</Heading3>
-          <MobileMDContainer>
-            <TextRegular3>
-              <Underline>Ship to multiple addresses</Underline>
-            </TextRegular3>
-          </MobileMDContainer>
-          <RadioGroup>
-          {shippingMethods.map((method) => {
-            return (
-              <ShippingMethod
-                key={method.id}
-                radioKey={method.id}
-                shippingmode={method.id}
-                date="Monday, June 6 - Tuesday June 7"
-                price={
-                  method.fee === 0 ? (
-                    'Free'
-                  ) : (
-                    <CurrencyBeforeValue value={method.grossFee} />
+          <GridLayout className="gap-10 border rounded border-quartz p-6">
+            <GridLayout className="gap-6">
+              <Heading3>Shipping Method</Heading3>
+              <MobileMDContainer>
+                <TextRegular3>
+                  <Underline>Ship to multiple addresses</Underline>
+                </TextRegular3>
+              </MobileMDContainer>
+              <RadioGroup>
+                {shippingMethods.map((method) => {
+                  return (
+                    <ShippingMethod
+                      key={method.id}
+                      radioKey={method.id}
+                      shippingmode={method.id}
+                      date="Monday, June 6 - Tuesday June 7"
+                      price={
+                        method.fee === 0 ? (
+                          'Free'
+                        ) : (
+                          <CurrencyBeforeValue value={method.grossFee}/>
+                        )
+                      }
+                      onClick={onShippingChange}
+                    />
                   )
-                }
-                onClick={onShippingChange}
-              />
-            )
-          })}
-        </RadioGroup>
-        </GridLayout>
-      </GridLayout>
-    </>
-    ) : <GuestShippingContent/>
+                })}
+              </RadioGroup>
+            </GridLayout>
+          </GridLayout>
+        </>
+      ) : <GuestShippingContent/>
   )
 }
 
@@ -208,7 +214,7 @@ const PaymentContent = ({cart}) => {
   const [isCustomAddressEnabled, setIsCustomAddressEnabled] = useState(true)
 
   useEffect(() => {
-    if (selectedAddress && !isCustomAddressEnabled) {
+    if(selectedAddress && !isCustomAddressEnabled) {
       setBillingAddress(selectedAddress)
     }
   }, [isCustomAddressEnabled, selectedAddress])
@@ -219,7 +225,11 @@ const PaymentContent = ({cart}) => {
         <TextBold1>Payment Methods</TextBold1>
         <RadioGroup active="radio1">
           <GridLayout className="gap-4 border border-quartz rounded p-6">
-            <PaymentSpreedly props={{customerId : cart.customerId, grossValue : cart.subtotalAggregate.grossValue, currency: cart.subtotalAggregate.currency}} />
+            <PaymentSpreedly props={{
+              customerId: cart.customerId,
+              grossValue: cart.subtotalAggregate.grossValue,
+              currency: cart.subtotalAggregate.currency
+            }}/>
           </GridLayout>
         </RadioGroup>
       </GridLayout>
@@ -250,7 +260,7 @@ const PaymentContent = ({cart}) => {
               />
             </div>
 
-            <Address data={billingAddress} />
+            <Address data={billingAddress}/>
           </GridLayout>
         )}
       </GridLayout>}
@@ -259,28 +269,30 @@ const PaymentContent = ({cart}) => {
 }
 
 const ShipmentAddressContent = () => {
-  const { selectedAddress } = useUserAddress()
-  const { products } = useCart()
+  const {selectedAddress} = useUserAddress()
+  const {products} = useCart()
   return (
     <GridLayout>
       <div className="mb-3">
         <Heading4>Shipment</Heading4>
       </div>
-      <Address data={selectedAddress} />
+      <Address data={selectedAddress}/>
     </GridLayout>
   )
 }
 const ShipmentDeliveryContent = () => {
-  const { selectedDeliveryWindow, selectedDeliveryMethod } = useUserAddress()
+  const {selectedDeliveryWindow, selectedDeliveryMethod} = useUserAddress()
 
   return (
     <GridLayout className="gap-6 !h-18">
       <div>
         <div className="mb-6">
-          <TextBold3>Estimated Delivery:</TextBold3> {selectedDeliveryWindow && (<TextRegular>{selectedDeliveryWindow.deliveryDayLabel} {selectedDeliveryWindow.deliveryTimeLabel}</TextRegular>)}
+          <TextBold3>Estimated Delivery:</TextBold3> {selectedDeliveryWindow && (
+          <TextRegular>{selectedDeliveryWindow.deliveryDayLabel} {selectedDeliveryWindow.deliveryTimeLabel}</TextRegular>)}
         </div>
 
-        <TextBold3>Delivery Method:</TextBold3> {selectedDeliveryMethod && (<TextRegular>{selectedDeliveryMethod.id}</TextRegular>)}
+        <TextBold3>Delivery Method:</TextBold3> {selectedDeliveryMethod && (
+        <TextRegular>{selectedDeliveryMethod.id}</TextRegular>)}
       </div>
     </GridLayout>
   )
@@ -290,14 +302,14 @@ const ShipmentContent = () => {
     <GridLayout className="gap-6">
       <DesktopXLContainer>
         <Container className="gap-12">
-          <ShipmentAddressContent />
-          <ShipmentDeliveryContent />
+          <ShipmentAddressContent/>
+          <ShipmentDeliveryContent/>
         </Container>
       </DesktopXLContainer>
       <MobileXLContainer>
         <GridLayout className="gap-6">
-          <ShipmentAddressContent />
-          <ShipmentDeliveryContent />
+          <ShipmentAddressContent/>
+          <ShipmentDeliveryContent/>
         </GridLayout>
       </MobileXLContainer>
     </GridLayout>
@@ -305,9 +317,9 @@ const ShipmentContent = () => {
 }
 
 const ReviewOrderContent = (cart) => {
-  const { billingAddress, selectedCompany } = useUserAddress()
-  const { payment } = usePayment()
-  const { cartAccount } = useCart()
+  const {billingAddress, selectedCompany} = useUserAddress()
+  const {payment} = usePayment()
+  const {cartAccount} = useCart()
 
   return (
     <>
@@ -318,7 +330,7 @@ const ReviewOrderContent = (cart) => {
             <div className="property-wrapper">
               <TextBold3>Company Information</TextBold3>
             </div>
-            <Company data={selectedCompany} />
+            <Company data={selectedCompany}/>
           </Container>
         </LayoutBetween>
       </DesktopLGContainer>
@@ -330,40 +342,40 @@ const ReviewOrderContent = (cart) => {
               <TextBold3>Company Information</TextBold3>
             </div>
           </LayoutBetween>
-          <Company data={selectedCompany} />
+          <Company data={selectedCompany}/>
         </GridLayout>
       </MobileLGContainer>
 
       <DesktopLGContainer>
-      <LayoutBetween className="billing-information">
+        <LayoutBetween className="billing-information">
           <Container className="gap-8">
             <div className="property-wrapper">
               <TextBold3>Billing Information</TextBold3>
             </div>
-            <Address data={billingAddress} />
+            <Address data={billingAddress}/>
           </Container>
         </LayoutBetween>
       </DesktopLGContainer>
 
       <MobileLGContainer>
-      <GridLayout className="billing-information gap-6">
+        <GridLayout className="billing-information gap-6">
           <LayoutBetween className="gap-8">
             <div className="property-wrapper">
               <TextBold3>Billing Information</TextBold3>
             </div>
           </LayoutBetween>
-          <Address data={billingAddress} />
+          <Address data={billingAddress}/>
         </GridLayout>
       </MobileLGContainer>
 
       <MobileLGContainer>
-      <GridLayout className="billing-information gap-6 ">
+        <GridLayout className="billing-information gap-6 ">
           <LayoutBetween className="gap-8">
             <div className="property-wrapper">
               <TextBold3>Shipping Information</TextBold3>
             </div>
           </LayoutBetween>
-          <ShipmentContent />
+          <ShipmentContent/>
         </GridLayout>
       </MobileLGContainer>
 
@@ -373,7 +385,7 @@ const ReviewOrderContent = (cart) => {
             <div className="property-wrapper">
               <TextBold3>Shipping Information</TextBold3>
             </div>
-            <ShipmentContent />
+            <ShipmentContent/>
           </Container>
         </LayoutBetween>
       </DesktopLGContainer>
@@ -416,8 +428,8 @@ const ReviewOrderContent = (cart) => {
               {cartAccount?.items.map((cartItem, idx) => (
                 <>
                   <div className="cart-product-item p-2">
-                    <CartProductImageAndReadOnlyQuantity cartItem={cartItem} />
-                    <CartProductInfo key={cartItem.id + idx} cartItem={cartItem} />
+                    <CartProductImageAndReadOnlyQuantity cartItem={cartItem}/>
+                    <CartProductInfo key={cartItem.id + idx} cartItem={cartItem}/>
                   </div>
                 </>
               ))}
@@ -433,37 +445,37 @@ const ReviewOrderContent = (cart) => {
               <TextBold3>Your Products</TextBold3>
             </div>
           </LayoutBetween>
-            <GridLayout className="gap-4">
-              {cartAccount?.items.map((cartItem, idx) => (
-                <>
-                  <div className="cart-product-item p-2">
-                    <CartProductImageAndReadOnlyQuantity cartItem={cartItem} />
-                    <CartProductInfo key={cartItem.id + idx} cartItem={cartItem} />
-                  </div>
-                </>
-              ))}
-            </GridLayout>
+          <GridLayout className="gap-4">
+            {cartAccount?.items.map((cartItem, idx) => (
+              <>
+                <div className="cart-product-item p-2">
+                  <CartProductImageAndReadOnlyQuantity cartItem={cartItem}/>
+                  <CartProductInfo key={cartItem.id + idx} cartItem={cartItem}/>
+                </div>
+              </>
+            ))}
+          </GridLayout>
         </GridLayout>
       </MobileLGContainer>
     </>
   )
 }
 
-const CheckoutContent = ({ status, cart, user }) => {
+const CheckoutContent = ({status, cart, user}) => {
   return (
     <div className="checkout-content-wrapper">
       <GridLayout className="gap-8">
         <ProgressBar active={status} className="">
-          <ProgressBarItem activeTab={status} status="shipping" title="Shipping" />
-          <ProgressBarItem activeTab={status} status="payment" title="Payment" />
-          <ProgressBarItem activeTab={status} status="review_order" title="Review Order" />
+          <ProgressBarItem activeTab={status} status="shipping" title="Shipping"/>
+          <ProgressBarItem activeTab={status} status="payment" title="Payment"/>
+          <ProgressBarItem activeTab={status} status="review_order" title="Review Order"/>
         </ProgressBar>
         {status === 'shipping' ? (
-          <ShippingContent />
+          <ShippingContent/>
         ) : status === 'payment' ? (
           user ? <PaymentContent cart={cart}/> : <GuestPaymentContent cart={cart}/>
         ) : (
-          <ReviewOrderContent cart={cart} />
+          <ReviewOrderContent cart={cart}/>
         )}
       </GridLayout>
     </div>
