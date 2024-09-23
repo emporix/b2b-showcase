@@ -11,8 +11,9 @@ const Address = ({ data }) => {
       sx={{
         gridTemplateColumns: '50px 1fr !important',
       }}
-    >
-      <img className="home-pin" src={homePin} alt="homePin" />
+    > {data.street &&
+      (<>
+        <img className="home-pin" src={homePin} alt="homePin" />
       <>
         <TextRegular1>
           {data.companyName} {data.shipTo ?? ''}
@@ -24,7 +25,9 @@ const Address = ({ data }) => {
           {data.zipCode} - {data.city}
         </TextRegular1>
         <TextRegular1>{data.coutry}</TextRegular1>
-      </>
+
+      </></>)}
+
     </div>
   )
 }

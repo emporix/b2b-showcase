@@ -20,6 +20,7 @@ export const useUserAddress = () => useContext(AddressContext)
 export const AddressProvider = ({ children }) => {
   const [addresses, setAddresses] = useState([])
   const [billingAddresses, setBillingAddresses] = useState([])
+  const [selectedAddressItem, setSelectedAddressItemState] = useState([])
   const [selectedAddress, setSelectedAddressState] = useState(null)
   const [selectedCompany, setSelectedCompanyState] = useState(null)
   const [selectedDeliveryWindow, setSelectedDeliveryWindow] = useState(null)
@@ -40,6 +41,8 @@ export const AddressProvider = ({ children }) => {
   const setSelectedAddress = (address) => {
     setSelectedAddressState({ ...address, type: 'SHIPPING' })
   }
+
+  const setSelectedAddressItem = (address) => {setSelectedAddressItemState(address)}
 
   const setBillingAddress = (address) => {
     setBillingAddressState({ ...address, type: 'BILLING' })
@@ -64,6 +67,9 @@ export const AddressProvider = ({ children }) => {
 
   useEffect(() => {
     if(selectedCompany){
+      setSelectedAddress(null);
+      setSelectedDeliveryWindow(null);
+      setSelectedAddressItem(null)
       initAddresses()
     }
   }, [selectedCompany])
@@ -83,12 +89,15 @@ export const AddressProvider = ({ children }) => {
     setBillingAddresses(billingAddresses)
     const billingLocations = billingAddresses.map((address) => mapAddressToLocations(address))
     const defaultAddress = addresses.find((address) => address.isDefault)
+
     if (defaultAddress) {
       setDefaultAddress(mapAddressToLocations(defaultAddress))
       setSelectedAddress(mapAddressToLocations(defaultAddress))
       setBillingAddress(defaultAddress)
       fetchShippingMethods(cartAccount, defaultAddress)
       fetchDeliveryWindows(defaultAddress.zipCode, defaultAddress.country)
+    }else {
+      setDefaultAddress(null)
     }
     setLocations(locations)
     setBillingLocations(billingLocations)
@@ -137,6 +146,8 @@ export const AddressProvider = ({ children }) => {
         selectedCompany,
         setSelectedCompany,
         setSelectedAddress,
+        setSelectedAddressItem,
+        selectedAddressItem,
         billingAddress,
         billingLocations,
         billingAddresses,
