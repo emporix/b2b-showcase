@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { Navigate, Link, useNavigate, useSearchParams } from 'react-router-dom'
 import { login } from '../services/user/auth.service'
 import Snackbar from '@mui/material/Snackbar'
-import { guestCheckoutUrl } from 'services/service.config'
+import { forgotPasswordUrl, guestCheckoutUrl } from 'services/service.config'
 import MuiAlert from '@mui/material/Alert'
 import CircularProgress from '@mui/material/CircularProgress'
 import {
@@ -164,9 +164,11 @@ const Login = () => {
                 <input type="checkbox" className="w-[18px] h-[18px]" />
                 <label className="pl-2 text-[14px]/[22px]">Remember me</label>
               </div>
-              <a className="text-[16px]/[24px] text-dodgerBlue cursor-pointer">
+              <Link to={forgotPasswordUrl()}>
+                <span className="text-[16px]/[24px] text-dodgerBlue cursor-pointer font-medium hover:text-yellow">
                 Forgot Password
-              </a>
+                </span>
+              </Link>
             </LayoutBetween>
             <Box className="w-full !pt-8">
               <button

@@ -52,3 +52,20 @@ export const resetPassword = async (userTenant, password, token) => {
   )
   return data
 }
+
+export const requestPasswordReset = async (userTenant, email) => {
+  const anonymousToken = localStorage.getItem(ANONYMOUS_TOKEN)
+  const { data } = await axios.post(
+    API_URL + `/customer/${userTenant}/password/reset/`,
+    {
+      email: email,
+    },
+    {
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: 'Bearer ' + anonymousToken,
+      },
+    }
+  )
+  return data
+}

@@ -52,6 +52,7 @@ import ApprovalCheckout from 'pages/approval'
 import ApprovalOrderCreated from 'pages/approval/ApprovalOrderCreated'
 import AccountManageUsers from 'pages/account/AccountManageUsers'
 import ResetPassword from 'pages/ResetPassword'
+import ForgotPassword from 'pages/ForgotPassword'
 import SocialLoginCallback from 'pages/SocialLoginCallback'
 
 function App() {
@@ -95,6 +96,7 @@ function App() {
           />
           <Route path="login" exact element={<Login />} />
           <Route path="reset-password" exact element={<ResetPassword />} />
+          <Route path="forgot-password" exact element={<ForgotPassword />} />
           <Route path="signup" exact element={<Signup />} />
           <Route path="brand" exact element={<Brand />} />
           <Route path="cart" exact element={<Cart />} />

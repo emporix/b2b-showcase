@@ -10,7 +10,7 @@ import {
   getActualDeliveryWindows,
   fetchFilteredShippingMethods,
 } from 'services/shipping.service'
-import { getShippingAddressesForCheckout, mapAddressToLocations } from 'services/addresses.service'
+import { getAddressesForCheckout, mapAddressToLocations } from 'services/addresses.service'
 const ApprovalAddressContext = createContext({})
 export const useApprovalAddress = () => useContext(ApprovalAddressContext)
 
@@ -60,7 +60,7 @@ export const ApprovalAddressProvider = (props) => {
   }, [approval])
 
   const initAddresses = useCallback(async () => {
-    const addresses = await getShippingAddressesForCheckout()
+    const addresses = await getAddressesForCheckout('SHIPPING')
     setAddresses(addresses)
     const locations = addresses.map((address) => mapAddressToLocations(address))
     const shipping = approval.details.addresses.find(

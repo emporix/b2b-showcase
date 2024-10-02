@@ -1,20 +1,17 @@
 import { getCompanyAddresses } from './legal-entities.service'
 import { USER } from 'constants/localstorage'
 
-export const getShippingAddressesForCheckout = async () => {
-  let addresses = await getFilteredAddresses('SHIPPING')
+export const getAddressesForCheckout = async (addressType) => {
+  let addresses = await getFilteredAddresses(addressType)
   if (addresses.length === 0) {
     const user = localStorage.getItem(USER)
     addresses = JSON.parse(user).addresses
-  }
-  return addresses
-}
-
-export const getBillingAddressesForCheckout = async () => {
-  let addresses = await getFilteredAddresses('BILLING')
-  if (addresses.length === 0) {
-    const user = localStorage.getItem(USER)
-    addresses = JSON.parse(user).addresses
+    const userAddressesByType = addresses?.filter((address) =>
+      address.tags?.find((tag) => tag.toUpperCase() === addressType)
+    )
+    if (userAddressesByType?.length !== 0) {
+      return userAddressesByType
+    }
   }
   return addresses
 }

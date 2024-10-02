@@ -19,7 +19,7 @@ const EachProductRow = ({ item, type, available, rating, productCount }) => {
   const { putCartProduct } = useCart()
   const trimmedDescription = useMemo(() => {
     const desc = getLocalizedValue(item.description)
-    return desc.length > maxProductDescriptionLength
+    return desc !== undefined && desc.length > maxProductDescriptionLength
       ? `${desc.substr(0, maxProductDescriptionLength)} ...`
       : desc
   }, [item.description])

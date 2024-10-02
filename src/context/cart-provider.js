@@ -61,7 +61,7 @@ const getCartAccount = async ({ customerId, sessionId }) => {
 }
 
 const getCartList = async (items) => {
-  const productYrns = items.map((cart) => cart.itemYrn)
+  const productYrns = items.map((cart) => cart.itemYrn !== undefined ? cart.itemYrn : ('urn:yaas:saasag:caasproduct:product:'+localStorage.getItem("tenant")+';'+cart.product.id))
   const products = await productService.getProductsWithYrns(productYrns)
   const cartListWithProduct = items.map((entry) => {
     const matchProduct = products.find(
