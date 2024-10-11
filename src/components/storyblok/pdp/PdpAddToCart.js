@@ -152,7 +152,7 @@ const PdpAddToCart = ({ blok, ...restProps }) => {
             onClose={() => {
               setFormVisible(false)
             }}>
-      <div className="flex flex-col text-demoFontHighlightColor p-3">
+      <div className="flex flex-col text-demoHeadlines p-3">
         <div
           className="text-xl font-bold border-b border-demoGray pb-1 mb-4">{blok.title}</div>
         <div className="flex flex-row mb-2">
@@ -208,7 +208,7 @@ const PdpAddToCart = ({ blok, ...restProps }) => {
             onClose={() => {
               setConfirmationVisible(false)
             }}>
-      <div className="flex flex-col text-demoFontHighlightColor p-3">
+      <div className="flex flex-col text-demoHeadlines p-3">
         <div
           className="text-xl font-bold border-b border-demoGray pb-1 mb-4">{blok.confirmationTitle}</div>
         <div className="flex flex-row pl-8">

@@ -248,7 +248,7 @@ const Navbar = ({blok}) => {
   }, [cartAccount])
 
   return (
-    <header className="header">
+    <header className="header bg-demoTopNavColor border-b border-demoGrayDarker">
       {/* Dektop language and currency selection */}
       <div className="desktop_only_flex  text-sm text-demoGrayDarkest">
         <div className="flex items-center">
@@ -397,7 +397,7 @@ const Navbar = ({blok}) => {
               ' text-black absolute top-0 left-0 w-full  h-screen bg-white px-6 py-12  text-center font-medium overflow-y-auto'
           }
         >
-          <div className="h-12 py-1 pl-1  justify-between flex bg-demoFontHighlightColor">
+          <div className="h-12 py-1 pl-1  justify-between flex bg-demoHeadlines">
             <div className="flex">
               <Link to={loginUrl()} className="flex">
                 <img src={logo} alt=""></img>

@@ -42,12 +42,16 @@ module.exports = {
         'titleOrange': '#FF6D0A',
         'titlePurple': '#AC0AFF',
 
-        demoActionColor: '#323434', //'#ff0000', // company-accent-bright (buttons, Checkout button)
+        demoTopNavColor: '#FFFFFF',
+        demoMainNavRightColor: '#ffffff',
+        demoMainNavLeftColor: '#f2f5f8',
+        demoActionColor: '#eb0000', // company main accent color (primary-buttons, Highlights, ...)
         demoSecondaryDimmed: '#C60000', // company-accent-bright-dimmed (navbar top)
-        demoFontHighlightColor: '#C60000', // company-accent-dark (fonts/headlines/logo-background)
-        demoGrayBrightest: '#f3f5f8', // footer/form/... background etc.
-        demoGray: '#D5DCE7', // Borders
-        demoGrayDarker: '#A6B4CA', // Darker borders
+        demoHeadlines: '#C60000', // company-accent-dark (fonts/headlines/logo-background)
+        demoFontColor: '#323434', // company-accent-dark-dimmed (body text)
+        demoGrayBrightest: '#FFFFFF', // footer/form/... background etc.
+        demoGray: '#FCFCFD', //'#D5DCE7', // Borders
+        demoGrayDarker: '#F3F5F8', // Darker borders
         demoGrayDarkest: '#323434', // Gray texts
         demoAlerting: '#C51718', // Alerting accents like error borders or offer badges
       },

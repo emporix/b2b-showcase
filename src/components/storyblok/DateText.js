@@ -21,7 +21,7 @@ const DateText = ({ blok }) => {
       className="mx-4 xl:mx-auto max-w-screen-xl my-4 flex flex-row" {...storyblokEditable(
       blok)}>
       <img className="mt-[-1px] ml-[-10px]" src={calendar} alt="" />
-      <h5 className="ml-2 text-xl font-bold text-demoFontHighlightColor">{starting} {dateText}</h5>
+      <h5 className="ml-2 text-xl font-bold text-demoHeadlines">{starting} {dateText}</h5>
     </div>)
 
 }

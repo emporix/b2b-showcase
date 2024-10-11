@@ -26,7 +26,7 @@ const PdpAvailiability = ({blok, ...restProps} ) => {
     }
   }
 
-  return (<div className={cn('text-demoFontHighlightColor font-bold', {
+  return (<div className={cn('text-demoHeadlines font-bold', {
     "text-demoAlerting": !productAvailable,
     "text-limeGreen": productAvailable && priceValid
   })} {...storyblokEditable(blok)}>
