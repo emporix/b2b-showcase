@@ -205,31 +205,31 @@ const DesktopContent = () => {
               <TableRow className="!py-2">
                 <TableCell
                   align="left"
-                  className="font-inter !font-normal text-[14px]/[22px] !text-manatee"
+                  className=" !font-normal text-[14px]/[22px] !text-manatee"
                 >
                   Code
                 </TableCell>
                 <TableCell
                   align="left"
-                  className="font-inter !font-normal text-[14px]/[22px] !text-manatee"
+                  className=" !font-normal text-[14px]/[22px] !text-manatee"
                 >
                   Item
                 </TableCell>
                 <TableCell
                   align="left"
-                  className="font-inter !font-normal text-[14px]/[22px] !text-manatee"
+                  className=" !font-normal text-[14px]/[22px] !text-manatee"
                 >
                   Quantity
                 </TableCell>
                 <TableCell
                   align="left"
-                  className="font-inter !font-normal text-[14px]/[22px] !text-manatee"
+                  className=" !font-normal text-[14px]/[22px] !text-manatee"
                 >
                   Unit Price
                 </TableCell>
                 <TableCell
                   align="left"
-                  className="font-inter !font-normal text-[14px]/[22px] !text-manatee"
+                  className=" !font-normal text-[14px]/[22px] !text-manatee"
                 >
                   Total
                 </TableCell>
@@ -255,7 +255,7 @@ const DesktopContent = () => {
                   <TableCell
                     colSpan={6}
                     align="center"
-                    className="font-inter !font-bold text-[14px]"
+                    className=" !font-bold text-[14px]"
                   >
                     Empty Cart List
                   </TableCell>
@@ -309,7 +309,7 @@ const DesktopContent = () => {
           <MediumPrimaryButton
             title={'Add'}
             onClick={handleAddItem}
-            className="w-auto cta-button bg-yellow"
+            className="w-auto cta-button bg-demoActionColor"
           />
         </div>
       </div>

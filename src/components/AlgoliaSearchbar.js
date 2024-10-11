@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import algoliasearch from 'algoliasearch'
 import {
   APPLICATION_ID,
@@ -9,6 +9,7 @@ import {
 import { extractProductIDfromObjectID } from '../helpers/algolia'
 import { useNavigate } from 'react-router-dom'
 import { useContentful } from '../context/contentful-provider'
+import { useLanguage } from '../context/language-provider'
 
 const tenant = localStorage.getItem(TENANT)
 
@@ -22,6 +23,7 @@ const ProductDisplay = ({ hit }) => {
       )}`,
       { replace: true }
     )
+    navigate(0)
   }
 
   return (
@@ -79,9 +81,16 @@ const AlgoliaSearchbar = () => {
       )}`,
       { replace: true }
     )
+    navigate(0)
   }
 
   const ProductDisplay = ({ hit }) => {
+    const { currentLanguage } = useLanguage()
+
+    const getLocalized = (field) => {
+      return field[currentLanguage]
+    }
+
     return (
       <div
         className="flex flex-initial p-2 cursor-pointer hover:bg-gray-50 rounded"
@@ -90,10 +99,10 @@ const AlgoliaSearchbar = () => {
         <img
           className="w-3/12 object-contain p-1 "
           src={hit.image}
-          alt={hit.name}
+          alt={getLocalized(hit.localizedName)}
         />
         <div className="pl-2">
-          <p className="font-bold text-base lg:text-sm">{hit.name}</p>
+          <p className="font-bold text-base lg:text-sm">{getLocalized(hit.localizedName)}</p>
           {hit.categories && (
             <p className="text-sm lg:text-xs">{hit.categories.join(' / ')}</p>
           )}
@@ -107,7 +116,7 @@ const AlgoliaSearchbar = () => {
       <form ref={searchBar} className="nosubmit">
         <input
           id="search-input"
-          className="nosubmit lg:w-[250px] xl:w-[360px] relative !bg-white"
+          className="nosubmit lg:w-[250px] xl:w-[360px] relative !bg-white placeholder:text-demoGrayDarkest"
           type="search"
           placeholder={fields.searchHelpLabel}
           onChange={handleSearch}

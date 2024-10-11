@@ -50,7 +50,7 @@ const FilterItem = ({ item, handleItem }) => {
   const selectItems = item.items
   return (
     <div>
-      <div className="font-inter font-medium pt-4 pb-6"> {item.title} </div>
+      <div className=" font-medium pt-4 pb-6"> {item.title} </div>
       {selectItems.map((item, index) => (
         <SelectionFilterItem
           category={title}
@@ -94,12 +94,12 @@ const RatingFilterItem = ({ rating, total }) => {
           <ReactStars
             size={30}
             value={rating}
-            color2={'#FBB13C'}
+            color2={'#00B6ED'}
             edit={false}
           />
         </label>
       </div>
-      <div className="font-inter font-medium text-base text-lightGray pt-4">
+      <div className=" font-medium text-base text-lightGray pt-4">
         {total}
       </div>
     </div>
@@ -109,7 +109,7 @@ const RatingFilterItem = ({ rating, total }) => {
 const PriceRangeFilter = () => {
   return (
     <div className="pt-6">
-      <div className="font-inter font-medium pb-8">Price Range</div>
+      <div className=" font-medium pb-8">Price Range</div>
       <div className="content">
         <div className="flex justify-between text-black">
           <input
@@ -141,7 +141,7 @@ const PriceRangeFilter = () => {
 const RatingFilter = () => {
   return (
     <div className="pt-6">
-      <div className="font-inter font-medium pb-8">Filters Group</div>
+      <div className=" font-medium pb-8">Filters Group</div>
       <div className="content">
         {ratingFilterList.map((item, index) => (
           <RatingFilterItem
@@ -182,7 +182,7 @@ const SideFilterContent = (props) => {
         <RatingFilter />
       </div>
 
-      <div className="mt-12 font-inter font-bold">
+      <div className="mt-12  font-bold">
         <div
           className="w-full h-12 bg-tinBlue text-white  flex items-center "
           onClick={() => {

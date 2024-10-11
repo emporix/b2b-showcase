@@ -41,6 +41,8 @@ export const cartItemUrl = (cartId, itemId) => {
 }
 export const priceApi = () =>
   `${API_URL}/price/${getTenant()}/match-prices-by-context`
+export const completePriceApi = () =>
+  `${API_URL}/price/${getTenant()}/prices/`
 export const currencyApi = () => `${API_URL}/currency/${getTenant()}/currencies`
 export const triggerCheckoutApi = () =>
   `${API_URL}/checkout/${getTenant()}/checkouts/order`
@@ -84,7 +86,6 @@ export const cartUrl = () => `/${getTenant()}/cart`
 export const loginUrl = () => `/${getTenant()}/login`
 export const homeUrl = () => `/${getTenant()}`
 export const signupUrl = () => `/${getTenant()}/signup`
-export const forgotPasswordUrl = () => `/${getTenant()}/forgot-password`
 export const productUrl = () => `/${getTenant()}/product`
 export const addTenantToUrl = (url) => `/${getTenant()}/${url}`
 

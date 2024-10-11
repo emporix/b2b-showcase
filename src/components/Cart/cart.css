@@ -1,5 +1,5 @@
 .cart-caption-font {
-  @apply text-[20px] leading-[22px] font-bold font-inter;
+  @apply text-[20px] leading-[22px] font-bold ;
 }
 .cart-product-content {
   /* @apply pr-[33px]; */

@@ -197,7 +197,7 @@ const CreateReturnModal = (orderObj) => {
         </div>
         <div className="flex centered">
           <LargePrimaryButton 
-            className="bg-yellow rounded text-eerieBlack w-8rem"
+            className="bg-demoActionColor rounded text-eerieBlack w-8rem"
             title="SUBMIT"
             onClick={submitReturn}
           ></LargePrimaryButton>

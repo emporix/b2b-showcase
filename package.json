@@ -8,18 +8,23 @@
     "@material-ui/core": "^4.12.4",
     "@mui/material": "^5.10.4",
     "@reduxjs/toolkit": "^1.8.5",
-    "@sentry/react": "^8.33.0",
+    "@sentry/react": "^7.77.0",
+    "@storyblok/react": "^3.0.10",
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^13.3.0",
     "@testing-library/user-event": "^13.5.0",
     "algoliasearch": "^4.14.3",
-    "axios": "^1.7.7",
+    "axios": "^0.28.0",
+    "caniuse-lite": "^1.0.30001643",
     "classnames": "^2.3.1",
-    "contentful": "^9.3.7",
+    "clsx": "^2.1.1",
+    "contentful": "^9.3.2",
     "currency-symbol-map": "^5.1.0",
     "env-cmd": "^10.1.0",
     "history": "^5.3.0",
     "html-react-parser": "^3.0.4",
+    "isomorphic-dompurify": "^2.14.0",
+    "lodash": "^4.17.21",
     "react": "^18.2.0",
     "react-animated-slider": "^1.1.4",
     "react-async": "^10.0.1",
@@ -37,7 +42,9 @@
     "react-stars": "^2.2.5",
     "redux": "^4.2.0",
     "redux-thunk": "^2.4.1",
-    "slick-carousel": "^1.8.1"
+    "slick-carousel": "^1.8.1",
+    "storyblok-rich-text-react-renderer": "^2.9.2",
+    "tailwind-merge": "^2.4.0"
   },
   "resolutions": {
     "nth-check": "^2.0.1",
@@ -47,14 +54,15 @@
     "start": "react-scripts start",
     "start:prod": "env-cmd -f .env.prod npm run-script start",
     "start:stage": "env-cmd -f .env.stage npm run-script start",
-    "start:develop": "env-cmd -f .env.develop npm run-script start",
+    "start:develop": "env-cmd -f .env.local npm run-script start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "build:prod": "env-cmd -f .env.prod react-scripts build",
     "build:stage": "env-cmd -f .env.stage react-scripts build",
-    "build:develop": "env-cmd -f .env.develop react-scripts build",
-    "deploy:auth0": "npm run build && firebase deploy --only hosting:b2b-showcase-auth0 --config firebase.json --project b2b-showcase-stage"
+    "build:develop": "env-cmd -f .env.local react-scripts build",
+    "deploy:auth0": "npm run build && firebase deploy --only hosting:b2b-showcase-auth0 --config firebase.json --project b2b-showcase-stage",
+    "proxy": "sh -c \"set TRUST_STORES=system && mkcert -install && mkcert localhost && local-ssl-proxy --source 3010 --target 3000 --cert localhost.pem --key localhost-key.pem\""
   },
   "eslintConfig": {
     "extends": [
@@ -75,11 +83,16 @@
     ]
   },
   "devDependencies": {
+    "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
+    "@tailwindcss/forms": "^0.5.7",
+    "@tailwindcss/typography": "^0.5.13",
     "autoprefixer": "^10.4.8",
+    "local-ssl-proxy": "^2.0.5",
     "postcss": "^8.4.31",
     "prettier": "2.8.2",
     "redux-devtools-extension": "^2.13.9",
     "tailwindcss": "^3.1.8",
     "tailwindcss-font-inter": "^3.0.1"
-  }
+  },
+  "packageManager": "yarn@1.22.21+sha1.1959a18351b811cdeedbd484a8f86c3cc3bbaf72"
 }

@@ -5,7 +5,7 @@ import { Heading3, TextRegular5 } from '../../components/Utilities/typography'
 const AccountSubTitle = ({ title, detail, className }) => {
   return (
     <Container
-      className={`${className} font-inter font-bold text-2xl text-tinBlue pb-6 border-b border-lightGray`}
+      className={`${className}  font-bold text-2xl text-tinBlue pb-6 border-b border-lightGray`}
     >
       <Heading3>{title} &nbsp;</Heading3>
       {detail !== undefined ? (

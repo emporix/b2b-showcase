@@ -22,7 +22,7 @@ const ProductListViewSettingBar = ({
     <div className="view-setting-wrapper h-6">
       <div className="view-setting-bar gap-6">
         <div className="gap-2">
-          <ul className="setting gap-6 flex justify-between h-[24px] font-inter text-base font-normal">
+          <ul className="setting gap-6 flex justify-between h-[24px]  text-base font-normal">
           <li className="per-page hidden xl:block">
               <div id="products-per-page" className="products-filter-name">
                 Products Per Page: &nbsp;
@@ -74,7 +74,7 @@ const ProductListViewSettingBar = ({
                   <IconContext.Provider
                     value={{
                       size: 20,
-                      color: displayType ? '#FAC420' : 'black',
+                      color: displayType ? '#00B6ED' : 'black',
                     }}
                   >
                     <>
@@ -90,7 +90,7 @@ const ProductListViewSettingBar = ({
                   <IconContext.Provider
                     value={{
                       size: 20,
-                      color: displayType ? 'black' : '#FAC420',
+                      color: displayType ? 'black' : '#00B6ED',
                     }}
                   >
                     <>
@@ -108,7 +108,7 @@ const ProductListViewSettingBar = ({
   )
 }
 
-const ProductListItems = ({ products, auth, displayType }) => {
+export const ProductListItems = ({ products, auth, displayType }) => {
   const availability = useSelector(availabilityDataSelector)
   let itemArr = []
   let subItemArr = []
@@ -116,7 +116,8 @@ const ProductListItems = ({ products, auth, displayType }) => {
   let available
   if (displayType) {
     products.forEach((item, i) => {
-      available = availability['k' + item.id]?.available
+      const stockLevel = availability['k' + item.id]?.stockLevel
+      available = stockLevel > 0
 
       switch ((i + 1) % 3) {
         case 1:
@@ -124,9 +125,9 @@ const ProductListItems = ({ products, auth, displayType }) => {
             <div key={i} className="w-1/3 mr-2 border border-quartz rounded">
               <EachProduct
                 key={item.id}
-                available={available}
-                rating={4}
-                productCount={8}
+                available={stockLevel > 0}
+                rating={item.rating}
+                productCount={stockLevel}
                 item={item}
               />
             </div>
@@ -140,9 +141,9 @@ const ProductListItems = ({ products, auth, displayType }) => {
             >
               <EachProduct
                 key={item.id}
-                available={available}
-                rating={4}
-                productCount={8}
+                available={stockLevel > 0}
+                rating={item.rating}
+                productCount={stockLevel}
                 item={item}
               />
             </div>
@@ -156,9 +157,9 @@ const ProductListItems = ({ products, auth, displayType }) => {
             >
               <EachProduct
                 key={item.id}
-                available={available}
-                rating={4}
-                productCount={8}
+                available={stockLevel > 0}
+                rating={item.rating}
+                productCount={stockLevel}
                 item={item}
               />
             </div>
@@ -193,15 +194,16 @@ const ProductListItems = ({ products, auth, displayType }) => {
     }
 
     products.forEach((item, i) => {
+      const stockLevel = availability['k' + item.id]?.stockLevel
       switch ((i + 1) % 2) {
         case 1:
           subItemArr.push(
             <div key={i} className="w-1/2 p-2">
               <EachProduct
                 key={item.id}
-                available={available}
-                rating={4}
-                productCount={8}
+                available={stockLevel > 0}
+                rating={item.rating}
+                productCount={stockLevel}
                 item={item}
               />
             </div>
@@ -215,9 +217,9 @@ const ProductListItems = ({ products, auth, displayType }) => {
             >
               <EachProduct
                 key={item.id}
-                available={available}
-                rating={4}
-                productCount={8}
+                available={stockLevel > 0}
+                rating={item.rating}
+                productCount={stockLevel}
                 item={item}
               />
             </div>
@@ -252,12 +254,12 @@ const ProductListItems = ({ products, auth, displayType }) => {
     }
   } else {
     products.forEach((item, i) => {
-      available = availability['k' + item.id]?.available
+      const stockLevel = availability['k' + item.id]?.stockLevel
       itemArr.push(
         <div key={i} className="w-full my-4 items-center">
           <EachProductRow
             key={item.id}
-            available={available}
+            available={stockLevel}
             item={item}
           />
         </div>
@@ -316,7 +318,7 @@ const ProductListPagination = ({
   return (
     <div className="product-list-pagination items-center h-[24px] text-center w-full mx-auto">
       <div className="text-center items-center flex">
-        <ul className="select-none gap-6 mx-auto items-center flex text-[18px] leading-[26px] font-inter text-gray">
+        <ul className="select-none gap-6 mx-auto items-center flex text-[18px] leading-[26px]  text-gray">
           <li
             className="cursor-pointer"
             onClick={() => {

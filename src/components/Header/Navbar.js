@@ -11,7 +11,11 @@ import { CgNotes } from 'react-icons/cg'
 import { useSelector } from 'react-redux'
 import Badge from '@mui/material/Badge'
 import AccountMenu from './accountmenu'
-import { HiOutlineUserCircle, HiChevronLeft, HiChevronRight } from 'react-icons/hi'
+import {
+  HiChevronLeft,
+  HiChevronRight,
+  HiOutlineUserCircle,
+} from 'react-icons/hi'
 import LayoutContext from '../../pages/context'
 import { LargePrimaryButton } from '../Utilities/button'
 import { pageMenuSelector } from '../../redux/slices/pageReducer'
@@ -26,11 +30,11 @@ import { useSites } from 'context/sites-provider'
 import { useAuth } from 'context/auth-provider'
 import { useLanguage } from '../../context/language-provider'
 import { useQuotes } from 'context/quotes-context'
-import { useContentful } from '../../context/contentful-provider'
 import { useCart } from 'context/cart-provider'
 import { useCurrency } from 'context/currency-context'
+import logo from '../../assets/demo-company-logo.svg'
 
-const Navbar = () => {
+const Navbar = ({blok}) => {
   const { userTenant: tenant } = useAuth()
   const { sites, onSiteChange, currentSite, currentSiteObject } = useSites()
   const { languages, currentLanguage, setLanguage } = useLanguage()
@@ -56,7 +60,8 @@ const Navbar = () => {
       <>
         <div className="pt-12 items-center ">
           {user ? (
-            <div className="h-[75px] border-y w-full justify-between flex text-gray text-center items-center font-inter ">
+            <div
+              className="h-[75px] border-y w-full justify-between flex text-gray text-center items-center  ">
               <div className="flex">
                 <HiOutlineUserCircle size={25} />
                 <div className="pl-2">{user.username}</div>
@@ -66,7 +71,8 @@ const Navbar = () => {
               </div>
             </div>
           ) : (
-            <div className="bg-tinBlue w-full h-12 text-sm  text-center items-center text-white">
+            <div
+              className="bg-tinBlue w-full h-12 text-sm  text-center items-center text-white">
               <Link to={loginUrl()}>
                 <LargePrimaryButton className="" title="LOGIN | REGISTER" />
               </Link>
@@ -81,11 +87,11 @@ const Navbar = () => {
           </ul>
         </div>
         {user && (
-          <div className="w-full h-[59px] border-y flex justify-between items-center mt-6 font-inter text-base">
+          <div
+            className="w-full h-[59px] border-y flex justify-between items-center mt-6  text-base">
             Site
             <select className="text-tinBlue appearance-none">
-              {sites
-                .filter((s) => s.active)
+              {sites.filter((s) => s.active)
                 .sort((a, b) => a.code.localeCompare(b.code))
                 .map((site) => {
                   return (
@@ -97,7 +103,8 @@ const Navbar = () => {
             </select>
           </div>
         )}
-        <div className="w-full h-[59px] border-y flex justify-between items-center mt-6 font-inter text-base">
+        <div
+          className="w-full h-[59px] border-y flex justify-between items-center mt-6  text-base">
           Language
           <select className="text-tinBlue appearance-none">
             <option value="Engish">English</option>
@@ -105,7 +112,8 @@ const Navbar = () => {
             <option value="French">French</option>
           </select>
         </div>
-        <div className="w-full h-[59px] border-y flex justify-between items-center">
+        <div
+          className="w-full h-[59px] border-y flex justify-between items-center">
           Currency
           <select
             value={activeCurrency.code !== undefined ? activeCurrency.code : ''}
@@ -137,7 +145,7 @@ const Navbar = () => {
       >
         {item.title}
         <HiChevronRight size={20}
-          className={item.items.length ? 'h-8 w-8' : 'hidden'}
+                        className={item.items.length ? 'h-8 w-8' : 'hidden'}
         />
       </li>
     )
@@ -220,8 +228,7 @@ const Navbar = () => {
   const [cartTotal, setCartTotal] = useState(0)
   const [cartTotalPrice, setCartTotalPrice] = useState(0)
   const [cartCurrency, setCartCurrency] = useState('-')
-  const { fields } = useContentful()
-  const grossValueWithDiscount = cartAccount.subtotalAggregate?.grossValue - (Math.trunc(cartAccount?.totalDiscount?.amount * 100) / 100)
+
   useEffect(() => {
     setCartTotal(cartAccount.items.length || 0)
     if (
@@ -229,7 +236,9 @@ const Navbar = () => {
       cartAccount.subtotalAggregate &&
       cartAccount.subtotalAggregate.grossValue
     ) {
-      setCartTotalPrice(grossValueWithDiscount)
+      setCartTotalPrice(cartAccount.totalPrice.amount +
+        +cartAccount.totalPrice.amount *
+        cartAccount?.taxAggregate.lines[0].rate / 100)
     } else {
       setCartTotalPrice(0)
     }
@@ -241,17 +250,16 @@ const Navbar = () => {
   return (
     <header className="header">
       {/* Dektop language and currency selection */}
-      <div className="desktop_only_flex font-inter text-sm text-white">
-        <div className='flex items-center'>
-          <span className='world-icon'></span>
-          {fields.siteLabel}:
+      <div className="desktop_only_flex  text-sm text-demoGrayDarkest">
+        <div className="flex items-center">
+          <span className="world-icon"></span>
+          {blok.countryLabel}:
           <select
-            className="bg-eerieBlack w-38 mr-[22px]"
+            className="bg-transparent w-38 mr-[22px] border-0 focus:ring-0"
             onChange={handleSiteChange}
             value={currentSite}
           >
-            {sites
-              .filter((s) => s.active)
+            {sites.filter((s) => s.active)
               .sort((a, b) => a.code.localeCompare(b.code))
               .map((site) => {
                 return (
@@ -263,32 +271,30 @@ const Navbar = () => {
           </select>
         </div>
         <div>
-          {fields.languageLabel}:
+          {blok.languageLabel}:
           <select
-            className="bg-eerieBlack"
+            className="bg-transparent border-0 focus:ring-0"
             onChange={(event) => setLanguage(event.target.value)}
             value={currentLanguage}
           >
-            {languages
-              .sort((a, b) => a.localeCompare(b))
-              .map((language) => {
-                return (
-                  <option key={language} value={language}>
-                    {language}
-                  </option>
-                )
-              })}
+            {languages.sort((a, b) => a.localeCompare(b)).map((language) => {
+              return (
+                <option key={language} value={language}>
+                  {language}
+                </option>
+              )
+            })}
           </select>
         </div>
         <div className="ml-[22px]">
-          {fields.currencyLabel}:
+          {blok.currencyLabel}:
           <select
             id="currency-select"
             value={activeCurrency.code !== undefined ? activeCurrency.code : ''}
             onChange={(e) =>
               currencyChangeHandler(e.target.value, currentSiteObject)
             }
-            className="bg-eerieBlack"
+            className="bg-transparent border-0 focus:ring-0"
           >
             {currencyList.map((currency) => {
               return (
@@ -302,7 +308,8 @@ const Navbar = () => {
       </div>
 
       {/* Dektop navigation selection */}
-      <div className="desktop_only_flex font-inter font-normal text-sm text-white">
+      <div
+        className="desktop_only_flex  font-normal text-sm text-demoGrayDarkest">
         {!user ? (
           <ul className="flex">
             <li className="px-4 flex">
@@ -313,19 +320,19 @@ const Navbar = () => {
               ) : (
                 <AiOutlineShoppingCart size={20} onClick={handleOpenCart} />
               )}
-              <div id="cart-value" className="pl-3 text-white flex">
+              <div id="cart-value" className="pl-3 text-demoGrayDarkest flex">
                 <CurrencyBeforeValue value={cartTotalPrice} />
               </div>
             </li>
             <li className="px-2">
               <a className="hover:text-emporixGold" href={`/${tenant}/login`}>
-                Login
+                {blok.loginLabel}
               </a>
             </li>
             |
             <li className="px-2">
               <a className="hover:text-emporixGold" href={`/${tenant}/signup`}>
-                Sign Up
+                {blok.signupLabel}
               </a>
             </li>
           </ul>
@@ -384,20 +391,20 @@ const Navbar = () => {
         <div
           className={
             !open
-              ? 'hidden'
-              : ' text-black absolute top-0 left-0 w-full  h-screen bg-white px-6 py-12  text-center font-medium overflow-y-auto'
+              ?
+              'hidden'
+              :
+              ' text-black absolute top-0 left-0 w-full  h-screen bg-white px-6 py-12  text-center font-medium overflow-y-auto'
           }
         >
-          <div className="h-10 justify-between flex">
+          <div className="h-12 py-1 pl-1  justify-between flex bg-demoFontHighlightColor">
             <div className="flex">
               <Link to={loginUrl()} className="flex">
-                <img src="/atom.png" className="w-[37px]"></img>
-                <div className="px-4 text-[25px] font-medium items-center">
-                  <span>{fields.companyNameLabel}</span>
-                </div>
+                <img src={logo} alt=""></img>
+                <div className="px-4 text-white text-[40px] mt-[-12px] font-normal font-aldiCondensed">ALDI</div>
               </Link>
             </div>
-            <div className="flex text-center pt-2" onClick={handleNavOpen}>
+            <div className="flex  text-white text-center pt-2" onClick={handleNavOpen}>
               <span className="pr-4">Close</span>
               <AiOutlineClose size={25} />
             </div>
@@ -406,11 +413,12 @@ const Navbar = () => {
         </div>
       </div>
 
+      {/*mobile nav bar*/}
       <div className="mobile_only_flex text-white">
         <Link to={homeUrl()} className="flex">
-          <img src="/atom.png"></img>
-          <p className="font-medium text-xl px-3 pt-1">
-            {fields.companyNameLabel}
+          <img src={logo} alt=""></img>
+          <p className="font-normal font-aldiCondensed pb-1.5 text-[40px] px-3 pt-1">
+            ALDI
           </p>
         </Link>
       </div>

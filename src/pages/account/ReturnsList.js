@@ -29,37 +29,37 @@ export const ReturnsList = ({ data }) => {
             <TableRow className="!py-6">
               <TableCell
                 align="left"
-                className="font-inter !font-bold text-base"
+                className=" !font-bold text-base"
               >
                 Return number
               </TableCell>
               <TableCell
                 align="left"
-                className="font-inter !font-bold text-base"
+                className=" !font-bold text-base"
               >
                 Return Date
               </TableCell>
               <TableCell
                 align="left"
-                className="font-inter !font-bold text-base"
+                className=" !font-bold text-base"
               >
                 Order Number
               </TableCell>
               <TableCell
                 align="left"
-                className="font-inter !font-bold text-base"
+                className=" !font-bold text-base"
               >
                 Status
               </TableCell>
               <TableCell
                 align="left"
-                className="font-inter !font-bold text-base"
+                className=" !font-bold text-base"
               >
                 Total
               </TableCell>
               <TableCell
                 align="left"
-                className="font-inter !font-bold text-base"
+                className=" !font-bold text-base"
               >
                 Status Date
               </TableCell>

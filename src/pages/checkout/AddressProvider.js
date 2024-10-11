@@ -4,7 +4,7 @@ import { useCart } from 'context/cart-provider'
 import { getShippingMethods } from 'services/shipping.service'
 import { getActualDeliveryWindows } from 'services/shipping.service'
 import { calculateTax } from 'services/product/tax.service'
-import { mapAddressToLocations, getAddressesForCheckout } from 'services/addresses.service'
+import { mapAddressToLocations, getShippingAddressesForCheckout, getBillingAddressesForCheckout } from 'services/addresses.service'
 
 
 const AddressContext = createContext({})
@@ -49,10 +49,10 @@ export const AddressProvider = ({ children }) => {
   }, [])
 
   const initAddresses = useCallback(async () => {
-    const addresses = await getAddressesForCheckout("SHIPPING")
+    const addresses = await getShippingAddressesForCheckout()
     setAddresses(addresses)
     const locations = addresses.map((address) => mapAddressToLocations(address))
-    const billingAddresses = await getAddressesForCheckout("BILLING")
+    const billingAddresses = await getBillingAddressesForCheckout()
     setBillingAddresses(billingAddresses)
     const billingLocations = billingAddresses.map((address) => mapAddressToLocations(address))
     const defaultAddress = addresses.find((address) => address.isDefault)

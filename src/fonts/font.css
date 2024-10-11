@@ -1,0 +1,40 @@
+@font-face {
+    font-weight: 400;
+    font-style: normal;
+    font-family: FFDINWebPro;
+    src: url("DINPro-Regular.woff2") format("woff2");
+    font-display: fallback;
+}
+
+@font-face {
+    font-weight: 400;
+    font-style: italic;
+    font-family: FFDINWebPro;
+    src: url("DINPro-Regular.woff2") format("woff2");
+    font-display: fallback;
+}
+
+@font-face {
+    font-weight: 500;
+    font-style: normal;
+    font-family: FFDINWebPro;
+    src: url("DINPro-Medium.woff2") format("woff2");
+    font-display: fallback;
+}
+
+@font-face {
+    font-weight: 400;
+    font-style: normal;
+    font-family: FFDINWebProCondensed;
+    src: url("35DBD5_5_0.woff2") format("woff");
+    font-display: fallback;
+}
+
+@font-face {
+    font-weight: 700;
+    font-style: normal;
+    font-family: FFDINWebProCondensed;
+    src: url("35DBD5_6_0.woff2") format("woff2");
+    font-display: fallback;
+}
+

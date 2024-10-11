@@ -1,14 +1,15 @@
-import React, { useState, useRef, useEffect } from 'react'
-import { HiChevronDown, HiChevronUp } from "react-icons/hi";
+import React, { Fragment, useEffect, useRef, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import { LoadingCircleProgress1 } from '../../components/Utilities/progress'
-import { getProductCategoryDetail } from '../../services/product/category.service'
+import {
+  getProductCategoryDetail,
+} from '../../services/product/category.service'
 import { useProductList } from 'context/product-list-context'
 import { Checkbox } from '@mui/material'
 
 const SelectedFilter = ({ title, val }) => {
   return (
-    <div className="flex font-inter pb-4">
+    <div className="flex  pb-4">
       <img src="/del_filter.png" className="w-6 h-6" alt="delete icon" />
       <span className="font-bold ml-2">{title}: &nbsp;</span>
       <span className="font-normal">{val}</span>
@@ -18,10 +19,11 @@ const SelectedFilter = ({ title, val }) => {
 
 const SelectionField = ({ title, total }) => {
   return (
-    // <div className="flex justify-between pb-4 font-inter font-medium text-base">
+    // <div className="flex justify-between pb-4  font-medium text-base">
     <div className="category_pan_field">
       {/* <div c> */}
-        <label className='category_pan_field_title' title={title.toLowerCase()}> {title.toLowerCase()}</label>
+      <label className="category_pan_field_title"
+             title={title.toLowerCase()}> {title.toLowerCase()}</label>
       {/* </div> */}
       <div className="text-manatee pl-3">{total}</div>
     </div>
@@ -57,39 +59,42 @@ const Category = ({ item }) => {
         //     : { height: '0px' }
         // }
       >
-      <div className="content content-center justify-center">
-          <div className="w-[90%] text-eerieBlack text-[14px]/[22px] font-normal flex items-center">
+        <div className="content content-center justify-center">
+          <div
+            className="w-[90%] text-eerieBlack text-[14px]/[22px] font-normal flex items-center">
             <Checkbox defaultChecked sx={{
-                  color: "#cccccc",
-                  '&.Mui-checked': {
-                    color:"#FAC420",
-                  },
-                  '& .MuiSvgIcon-root': { fontSize: 18 }
-                }} iconStyle={{fill: 'white'}} />
+              color: '#cccccc',
+              '&.Mui-checked': {
+                color: '#00B6ED',
+              },
+              '& .MuiSvgIcon-root': { fontSize: 18 },
+            }} iconstyle={{ fill: 'white' }} />
             <div>Select All</div>
           </div>
           {items.map((item, index) => (
+            <Fragment key={'PLFP_' + index}>
               <div className="flex">
-              <div className="flex">
-                <Checkbox
-                  defaultChecked
-                  sx={{
-                    color: "#cccccc",
-                    '&.Mui-checked': {
-                      color:"#FAC420",
-                    },
-                    '& .MuiSvgIcon-root': { fontSize: 18 }
-                  }}
-                />
-                <SelectionField
-                  key={index}
-                  title={item.title}
-                  total={item.total}
-                />
+                <div className="flex">
+                  <Checkbox
+                    defaultChecked
+                    sx={{
+                      color: '#cccccc',
+                      '&.Mui-checked': {
+                        color: '#00B6ED',
+                      },
+                      '& .MuiSvgIcon-root': { fontSize: 18 },
+                    }}
+                  />
+                  <SelectionField
+                    key={index}
+                    title={item.title}
+                    total={item.total}
+                  />
+                </div>
               </div>
-            </div>
-          ))}        
-      </div>
+            </Fragment>
+          ))}
+        </div>
       </div>
     </li>
   )
@@ -108,7 +113,7 @@ const FilterListPanel = ({ filterItems, handleSideFilterContent }) => {
           <span className="mr-2">Filters</span>({filterItems.length})
         </div>
         <div>
-          <a className="font-inter font-semibold font-[14px] text-manatee">
+          <a className=" font-semibold font-[14px] text-manatee">
             Clear Filters
           </a>
         </div>
@@ -132,14 +137,14 @@ const CategoryPanel = () => {
     categoryTree,
     maincategory,
     subcategory,
-    category
+    category,
   ) => {
     setIsLoading(true)
     const { categories, productIds } = await getProductCategoryDetail(
       maincategory,
       subcategory,
       category,
-      categoryTree
+      categoryTree,
     )
     setProductIds(productIds)
     setCategoryList(categories)
