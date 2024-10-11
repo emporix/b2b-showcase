@@ -178,6 +178,5 @@ export const getAllParentCategories = async (categoryId) => {
     'X-Total-Count': true,
   }
   const url = `${parentCategoriesApi()}/${categoryId}/parents`
-  const categories = await api.get(url, { headers })
-  return categories
+  return api.get(url, { headers }).catch(_error => undefined)
 }

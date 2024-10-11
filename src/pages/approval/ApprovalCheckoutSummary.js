@@ -35,7 +35,7 @@ const ReviewOrderAction = ({ action }) => {
     <>
       <DesktopMDContainer>
         <LargePrimaryButton
-          className="md:block hidden cta-button bg-yellow"
+          className="md:block hidden cta-button bg-demoActionColor"
           title="CONFIRM AND PAY"
           onClick={action}
         />
@@ -43,7 +43,7 @@ const ReviewOrderAction = ({ action }) => {
 
       <MobileMDContainer>
         <LargePrimaryButton
-          className="cta-button bg-yellow"
+          className="cta-button bg-demoActionColor"
           title="CONFIRM AND PAY"
           onClick={action}
         />
@@ -95,7 +95,7 @@ const DeclineAction = ({ approval }) => {
             </GridLayout>
             <div className="declineApprovalDialogFooter">
               <LargePrimaryButton
-                className="md:block hidden bg-yellow mt-[50px]"
+                className="md:block hidden bg-demoActionColor mt-[50px]"
                 title="SUBMIT"
                 onClick={handleDeclineApprovalRequest}
               />

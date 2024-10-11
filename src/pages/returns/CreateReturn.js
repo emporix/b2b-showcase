@@ -195,7 +195,7 @@ const CreateReturnPage = () => {
             </div>
             <div className="cart-action-panel-wrapper ml-auto">
               <LargePrimaryButton 
-                className="bg-yellow rounded text-eerieBlack"
+                className="bg-demoActionColor rounded text-eerieBlack"
                 title="Submit return"
                 onClick={submitReturn}
               ></LargePrimaryButton>

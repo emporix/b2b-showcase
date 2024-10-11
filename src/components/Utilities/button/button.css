@@ -1,5 +1,5 @@
 .large-primary-btn {
-  @apply h-12 px-6 bg-primaryBlue text-white font-bold text-[14px] leading-[14px] tracking-[1px] hover:bg-emporixGold active:bg-primaryBlue w-full;
+  @apply h-12 px-6 bg-demoActionColor text-white font-bold text-[14px] leading-[14px] tracking-[1px] hover:bg-demoSecondaryDimmed active:bg-demoActionColor w-full;
 }
 .large-primary-btn:disabled {
   @apply bg-bgWhite text-gray;
@@ -9,7 +9,7 @@
 }
 
 .medium-primary-btn {
-  @apply h-10 px-6 bg-primaryBlue text-white font-bold text-[14px] leading-[14px] tracking-[1px] hover:bg-emporixGold active:bg-primaryBlue;
+  @apply h-10 px-6 bg-demoActionColor text-white font-bold text-[14px] leading-[14px] tracking-[1px] hover:bg-demoSecondaryDimmed active:bg-demoActionColor;
 }
 
 .medium-secondary-btn {

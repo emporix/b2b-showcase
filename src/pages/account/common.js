@@ -227,7 +227,7 @@ const MobileCartItem = ({ date, name, items, total }) => {
         <div className="">{items} items</div>
       </div>
       <div className="flex justify-between pt-2">
-        <div className="font-inter font-bold">
+        <div className=" font-bold">
           <CurrencyBeforeValue value={total} />
         </div>
         <div className="">{date}</div>
@@ -296,8 +296,8 @@ export const SavedCarts = ({ actions }) => {
                         key={index}
                         className={
                           index > 0
-                            ? 'font-inter font-semibold text-[14px] underline ml-6'
-                            : 'font-inter font-semibold text-[14px] underline'
+                            ? ' font-semibold text-[14px] underline ml-6'
+                            : ' font-semibold text-[14px] underline'
                         }
                       >
                         {row.title}

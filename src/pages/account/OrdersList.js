@@ -38,21 +38,21 @@ const OrderListMobile = ({ orders }) => {
               color={row.status === 'SHIPPED' ? '#FFA800' : '#4BCB67'}
             />
             <div className="flex">
-              <div className="font-inter font-semibold text-[14px] underline">
+              <div className=" font-semibold text-[14px] underline">
                 <Link to={`${myAccountMyOrdersViewUrl()}${row.id}`}>View</Link>
               </div>
-              <div className="font-inter font-semibold text-[14px] underline ml-6">
+              <div className=" font-semibold text-[14px] underline ml-6">
                 <Link to={`${myAccountMyOrdersInvoiceUrl()}${row.id}`}>
                   Invoice
                 </Link>
               </div>
-              <div className="font-inter font-semibold text-[14px] underline ml-6">
+              <div className=" font-semibold text-[14px] underline ml-6">
                 <Link to={`${createReturnUrl()}${row.id}`}>Return</Link>
               </div>
             </div>
           </div>
           <div className="pt-2 font-bold">{row.id}</div>
-          <div className="font-inter pt-2">
+          <div className=" pt-2">
             <CurrencyAfterValue value={row.totalPrice} />
           </div>
           <div className="pt-2">{row.created}</div>
@@ -126,18 +126,14 @@ export const OrderList = (props) => {
     [returns]
   )
 
-  const getDiscountValue = (row) => {
-    const totalDiscount = row.discounts?.find(discount => discount.code === "TOTAL")
-    return totalDiscount ? totalDiscount.amount : 0
+  const getPriceWithoutShipping = (row) => {
+    return row?.totalPrice - row?.shipping.total.amount
   }
 
-  const getTaxValue = (entries) => {
-    const taxValue = entries.reduce((totalTax, el) => {
-      const hasIncludedTax = el.tax?.lines[0]?.inclusive
-      const itemTaxValue = ((el.totalPrice - el.totalDiscount?.amount) * (el.tax?.lines[0]?.rate / 100))
-      return !hasIncludedTax ? Number(itemTaxValue) + Number(totalTax) : Number(totalTax)
-    }, 0)
-    return Number(taxValue.toFixed(2))
+  const getTaxValue = (row) => {
+    const taxRate = row?.tax.lines.reduce((sum, el) => sum + el.rate, 0)
+    const taxValue = (getPriceWithoutShipping(row) * (taxRate / 100)).toFixed(2)
+    return Number(taxValue)
   }
 
   return (
@@ -199,7 +195,7 @@ export const OrderList = (props) => {
                 </TableCell>
                 <TableCell align="center" className="!py-6">
                   <CurrencyAfterValue
-                    value={row.subTotalPrice + getTaxValue(row.entries) + row.shipping?.total?.amount - getDiscountValue(row)}
+                    value={row.totalPrice + getTaxValue(row)}
                     currency={row.currency}
                   />
                 </TableCell>
@@ -211,12 +207,12 @@ export const OrderList = (props) => {
                 </TableCell>
                 <TableCell align="center" className="!py-6">
                   <div className="flex">
-                    <div className="font-inter font-semibold text-[14px] underline">
+                    <div className=" font-semibold text-[14px] underline">
                       <Link to={`${myAccountMyOrdersViewUrl()}${row.id}`}>
                         View
                       </Link>
                     </div>
-                    <div className="font-inter font-semibold text-[14px] underline ml-6">
+                    <div className=" font-semibold text-[14px] underline ml-6">
                       <span
                         onClick={() => handleCreateReturn(row.id)}
                         className="cursor-pointer"
@@ -225,7 +221,7 @@ export const OrderList = (props) => {
                       </span>
                     </div>
                     {invoiceAvailable && (
-                      <div className="font-inter font-semibold text-[14px] underline ml-6">
+                      <div className=" font-semibold text-[14px] underline ml-6">
                         {row?.mixins?.invoice?.invoiceDocument && (
                           <a
                             onClick={() => downloadInvoice(row)}

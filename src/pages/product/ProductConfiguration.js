@@ -83,7 +83,7 @@ export const ProductConfiguration = ({ product }) => {
   }
 
   const getClassnames = (attribute, value) => {
-    return selectedValues && selectedValues[attribute] === value ? 'rgb(250, 196, 32)' : 'rgb(255, 255, 255)'
+    return selectedValues && selectedValues[attribute] === value ? '#00B6ED' : 'rgb(255, 255, 255)'
   }
 
   return (
@@ -91,13 +91,13 @@ export const ProductConfiguration = ({ product }) => {
       <p className='information-caption'>Product configuration</p>
       <div key={renderKey}>
         {
-            product.template.attributes.filter(attr => attr.metadata.variantAttribute === true).map((attribute) => 
+            product.template.attributes.filter(attr => attr.metadata.variantAttribute === true).map((attribute) =>
               <>
               <div className='product-configuration-attribute'>
                   <div><b>{findAttributeName(attribute.key)}</b></div>
                   {attribute.values.map(attributeValue => {
                     return (
-                      <Button 
+                      <Button
                       disabled={isDisabled(attribute.key, attributeValue.key)}
                       onClick={() => {activateAttributeValue(attribute.key, attributeValue.key)}}
                       sx={{
@@ -109,14 +109,14 @@ export const ProductConfiguration = ({ product }) => {
                         margin: '5px',
                         'background-color': getClassnames(attribute.key, attributeValue.key),
                         '&:hover': {
-                          backgroundColor: 'rgb(250, 196, 32)',
+                          backgroundColor: '#00B6ED',
                         },
                       }}
                     >{attributeValue.key}</Button>
                     )
                   }
                   )}
-                </div> 
+                </div>
               </>
             )
         }

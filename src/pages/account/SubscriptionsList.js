@@ -34,42 +34,42 @@ export const SubscriptionsList = (props) => {
             <TableRow className="!py-6">
             <TableCell
                 align="left"
-                className="font-inter !font-bold text-base"
+                className=" !font-bold text-base"
               >
               </TableCell>
               <TableCell
                 align="left"
-                className="font-inter !font-bold text-base"
+                className=" !font-bold text-base"
               >
                 Product name
               </TableCell>
               <TableCell
                 align="left"
-                className="font-inter !font-bold text-base"
+                className=" !font-bold text-base"
               >
                 Start date
               </TableCell>
               <TableCell
                 align="left"
-                className="font-inter !font-bold text-base"
+                className=" !font-bold text-base"
               >
                 End date
               </TableCell>
               <TableCell
                 align="left"
-                className="font-inter !font-bold text-base"
+                className=" !font-bold text-base"
               >
                 Billing period
               </TableCell>
               <TableCell
                 align="left"
-                className="font-inter !font-bold text-base"
+                className=" !font-bold text-base"
               >
                 Duration
               </TableCell>
               <TableCell
                 align="left"
-                className="font-inter !font-bold text-base"
+                className=" !font-bold text-base"
               >
                 Status
               </TableCell>
@@ -115,7 +115,7 @@ export const SubscriptionsList = (props) => {
                 </TableCell>
                 <TableCell align="left" className="!py-6">
                   <div className="flex">
-                    <div className="font-inter font-semibold text-[14px] underline">
+                    <div className=" font-semibold text-[14px] underline">
                       <Link to={`${myAccountMySubscriptionsManage()}manage/${row.id}/${row.product.id}`}>
                         Manage 
                       </Link>
@@ -124,7 +124,7 @@ export const SubscriptionsList = (props) => {
                 </TableCell>
                 <TableCell align="left" className="!py-6">
                   <div className="flex">
-                    <div className="font-inter font-semibold text-[14px] underline">
+                    <div className=" font-semibold text-[14px] underline">
                     <Link to={`${myAccountMySubscriptionsManage()}view/${row.id}/${row.product.id}`}>
                          View
                       </Link>

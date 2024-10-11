@@ -1,5 +1,5 @@
 .cart-page-wrapper {
-  @apply w-full md:pt-60 pt-24 md:px-24 px-[16.5px] md:pb-24 pb-12 font-inter;
+  @apply w-full md:pt-60 pt-24 md:px-24 px-[16.5px] md:pb-24 pb-12 ;
 }
 .cart-page-content {
   @apply mx-auto grid grid-cols-1 md:gap-8 gap-8;
@@ -8,7 +8,7 @@
   @apply gap-6 text-[14px] leading-[18px] font-semibold text-dodgerBlue;
 }
 .cart-head-item {
-  @apply font-inter !font-bold !text-[14px] !leading-[20px];
+  @apply  !font-bold !text-[14px] !leading-[20px];
 }
 .cart-row-item {
   @apply !py-6 !border-none;

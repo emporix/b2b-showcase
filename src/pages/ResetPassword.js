@@ -101,7 +101,7 @@ const ResetPassword = () => {
             </Box>
             <Box className="w-full !pt-8">
               <LargePrimaryButton
-                className="w-full cta-button bg-yellow h-12"
+                className="w-full cta-button bg-demoActionColor h-12"
                 disabled={!token && !loading && !password || !confirmPassword || confirmPassword !== password}
                 title="Reset your Password"
               >

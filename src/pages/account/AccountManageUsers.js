@@ -279,7 +279,7 @@ export const CompanyCustomers = () => {
             </div>
             <div className="dialog-user-footer">
               <LargePrimaryButton
-                className="dialog-user-btn bg-yellow"
+                className="dialog-user-btn bg-demoActionColor"
                 title={mode === 'CREATE' ? 'CREATE NEW USER' : 'SAVE'}
                 disabled={
                   !(
@@ -371,7 +371,7 @@ export const CompanyCustomers = () => {
                 </TableCell>
                 <TableCell align="left" className="!py-6">
                   <div className="flex">
-                    <div className="font-inter font-semibold text-[14px] underline ml-6">
+                    <div className=" font-semibold text-[14px] underline ml-6">
                       <span
                         onClick={() => handleEditCustomer(row)}
                         className="cursor-pointer"
@@ -388,7 +388,7 @@ export const CompanyCustomers = () => {
       </TableContainer>
       <div className="create-customer-wrapper">
         <MediumPrimaryButton
-          className="cta-button bg-yellow"
+          className="cta-button bg-demoActionColor"
           title="CREATE NEW USER"
           onClick={handleCreateCustomer}
         />

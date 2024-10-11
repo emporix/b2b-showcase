@@ -79,7 +79,7 @@ const CartTable = ({ cartList, classname }) => {
                 />
               </TableCell>
               <TableCell align="center">
-                <div className="quantity-wrapper">
+                <div className="quantity-wrapper w-[146px]">
                   <Quantity
                     value={cartItem.quantity}
                     increase={() => incrementCartItemQty(cartItem.id)}

@@ -11,7 +11,7 @@ export const LargePrimaryButton = ({
   return (
     <button
       disabled={disabled}
-      className={'large-primary-btn ' + (className ? className : '')}
+      className={'large-primary-btn rounded ' + (className ? className : '')}
       onClick={onClick}
     >
       {title}
@@ -71,7 +71,7 @@ export const MediumSecondaryButton = ({ title, onClick, className }) => {
 
 export const BackButton = ({ link, title, className }) => {
   return (
-    <div className={`${className} font-inter font-semibold text-[14px]`}>
+    <div className={`${className}  font-semibold text-[14px]`}>
       <Link to={link}>
         <span>&#60;- </span>
         {title}

@@ -446,7 +446,7 @@ const Signup = (props) => {
             />
             <Box className="w-full !pt-12">
               <LargePrimaryButton
-                className="w-full cta-button bg-yellow h-12"
+                className="w-full cta-button bg-demoActionColor h-12"
                 disabled={isCreationBlocked()}
                 title="Sign Up"
               ></LargePrimaryButton>

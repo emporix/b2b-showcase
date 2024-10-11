@@ -19,17 +19,17 @@ const MobileCartItem = ({ date, name, items, total }) => {
       <div className="flex justify-between">
         <span>{name}</span>
         <div className="flex">
-          <div className="font-inter font-semibold text-[14px] underline">
+          <div className=" font-semibold text-[14px] underline">
             Edit
           </div>
-          <div className="font-inter font-semibold text-[14px] underline ml-6">
+          <div className=" font-semibold text-[14px] underline ml-6">
             Cancel
           </div>
         </div>
       </div>
       <div className="pt-2">{items} items</div>
       <div className="pt-2">{date}</div>
-      <div className="font-inter font-bold pt-2">{total}</div>
+      <div className=" font-bold pt-2">{total}</div>
     </div>
   )
 }

@@ -42,15 +42,6 @@ const PriceWithInfo = ({ price, includeVat = false, caption }) => {
   )
 }
 
-const calculateCartVat = (entry) => {
-  const hasIncludedTax = entry.tax?.lines[0].inclusive
-  if(hasIncludedTax) {
-    return (entry.totalPrice - entry.totalDiscount?.amount - ((entry.totalPrice - entry.totalDiscount?.amount) / (1 + entry.tax?.lines[0]?.rate / 100))).toFixed(2)
-  } else {
-    return (((entry.totalPrice - entry.totalDiscount?.amount) * entry.tax?.lines[0]?.rate) / 100).toFixed(2)
-  }
-}
-
 const OrderDetails = ({ order }) => {
   return (
     <TableContainer>
@@ -98,9 +89,9 @@ const OrderDetails = ({ order }) => {
                   {entry.tax && entry.tax.lines[0] ? (
                     <PriceWithInfo
                       price={
-                        entry.totalPrice / entry.effectiveQuantity
+                        (entry.totalPrice - entry.totalDiscount.amount) /
+                        entry.effectiveQuantity
                       }
-                      includeVat={entry.tax.total?.inclusive}
                     />
                   ) : (
                     '-'
@@ -110,8 +101,7 @@ const OrderDetails = ({ order }) => {
                 <TableCell className="cart-row-item">
                   {entry.tax && entry.tax.lines[0] ? (
                     <PriceWithInfo
-                      price={entry.totalPrice}
-                      includeVat={entry.tax.total?.inclusive}
+                      price={entry.totalPrice - entry.totalDiscount.amount}
                     />
                   ) : (
                     '-'
@@ -128,7 +118,11 @@ const OrderDetails = ({ order }) => {
                 <TableCell className="cart-row-item">
                   {entry.tax && entry.tax.lines[0] ? (
                     <PriceWithInfo
-                      price= {calculateCartVat(entry)}
+                    price={
+                      ((entry.totalPrice - entry.totalDiscount.amount) *
+                        entry.tax.lines[0].rate) /
+                      100
+                    }
                       caption={`${entry.tax.lines[0].rate}%`}
                     />
                   ) : (
@@ -140,7 +134,9 @@ const OrderDetails = ({ order }) => {
                     price={
                       entry.totalPrice -
                       entry.totalDiscount.amount +
-                      (!entry.tax.total?.inclusive ? (((entry.totalPrice - entry.totalDiscount.amount) * entry.tax.lines[0].rate) / 100) : 0)
+                      (+(entry.totalPrice - entry.totalDiscount.amount) *
+                        entry.tax.lines[0].rate) /
+                        100
                     }
                     includeVat={true}
                   />
