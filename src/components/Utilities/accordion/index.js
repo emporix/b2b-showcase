@@ -16,7 +16,7 @@ export const AccordionItem = ({ index, title, children }) => {
         }
       >
         <span
-          className={cn('w-full font-bold hover:text-demoSecondaryDimmed text-demoFontHighlightColor', {
+          className={cn('w-full font-bold hover:text-demoSecondaryDimmed text-demoHeadlines', {
             "pb-6": activeItem === index
           })}>{title}</span>
         <div className="stroke-demoSecondaryDimmed">

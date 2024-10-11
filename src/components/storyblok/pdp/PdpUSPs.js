@@ -8,7 +8,7 @@ const PdpUSPs = ({blok, ...restProps} ) => {
   const usps = product?.mixins?.productAdditionalInformation?.productHighlights
   const getLocalizedUSPs = () => usps.filter(usp => usp.language === currentLanguage)[0]?.value
 
-  return (usps && <div className="text-demoFontHighlightColor" {...storyblokEditable(blok)}>
+  return (usps && <div className="text-demoHeadlines" {...storyblokEditable(blok)}>
     <HtmlTextBox text={getLocalizedUSPs()} />
   </div>)
 }

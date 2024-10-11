@@ -41,10 +41,10 @@ const PdpBundle = ({ blok, ...restProps }) => {
   return (isBundle &&
     <div>
       <div
-        className="text-demoFontHighlightColor text-xl font-bold mb-6">{currentLanguage ===
+        className="text-demoHeadlines text-xl font-bold mb-6">{currentLanguage ===
       'de' ? 'Enthaltene Produkte' : 'Bundled products'}</div>
       <div
-        className="text-demoFontHighlightColor font-bold text-[14px] lg:text-base grid grid-cols-[60px,auto,80px,90px] lg:grid-cols-[100px,auto,auto,100px,100px,100px] grid-rows-1 auto-rows-[64px]" {...storyblokEditable(
+        className="text-demoHeadlines font-bold text-[14px] lg:text-base grid grid-cols-[60px,auto,80px,90px] lg:grid-cols-[100px,auto,auto,100px,100px,100px] grid-rows-1 auto-rows-[64px]" {...storyblokEditable(
         blok)}>
         <div className={headerClassName()}>Bild
         </div>

@@ -101,7 +101,7 @@ const EachProduct = ({ item, available, rating, productCount }) => {
           {item.code}
         </div>
         <div
-          className="mt-2 text-left max-w-[240px] min-h-[60px] lg:h-12 text-[20px] font-bold text-demoFontHighlightColor">
+          className="mt-2 text-left max-w-[240px] min-h-[60px] lg:h-12 text-[20px] font-bold text-demoHeadlines">
           {getLocalizedValue(item.name)}
         </div>
       </div>
@@ -116,7 +116,7 @@ const EachProduct = ({ item, available, rating, productCount }) => {
           {isLoggedIn ? (
             <>
               <div
-                className="text-[30px] font-aldiCondensed text-demoFontHighlightColor font-bold">
+                className="text-[30px] font-aldiCondensed text-demoHeadlines font-bold">
                 {price !== null ? (
                   <>
                     <CurrencyBeforeValue value={price} />
@@ -132,7 +132,7 @@ const EachProduct = ({ item, available, rating, productCount }) => {
               </div>
             </>
           ) : (
-            <div className="text-[30px] font-aldiCondensed text-demoFontHighlightColor pt-4">
+            <div className="text-[30px] font-aldiCondensed text-demoHeadlines pt-4">
               {price !== null ? (
                 <>
                   <CurrencyBeforeValue value={price} />
@@ -152,7 +152,7 @@ const EachProduct = ({ item, available, rating, productCount }) => {
       {item.productType === 'PARENT_VARIANT' && (
         <div>
           <LargePrimaryButton
-            className="cta-button bg-demoActionColor"
+            className="cta-button border-2 border-demoActionColor bg-transparent"
             sx={{ backgroundColor: '#FAC420 !important' }}
             title={currentLanguage === 'de' ? 'VARIANTEN' : 'VIEW VARIANTS'}
             onClick={handleProductDetail}

@@ -28,7 +28,7 @@ const PdpRelatedProducts = ({ blok, ...restProps }) => {
   return (
     <div className="grid grid-cols-1">
       <div
-        className="text-xl text-demoFontHighlightColor font-bold text-center w-full mb-10">{currentLanguage ===
+        className="text-xl text-demoHeadlines font-bold text-center w-full mb-10">{currentLanguage ===
       'de' ?
         'Das könnte dir auch gefallen' :
         'Related products'}</div>

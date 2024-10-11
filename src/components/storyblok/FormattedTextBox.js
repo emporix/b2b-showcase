@@ -18,10 +18,10 @@ const FormattedTextBox = (props) => {
       <div
         className={cn(
           'w-full md:max-w-none max-w-none',
-          'prose-headings:leading-none prose-headings:font-medium prose-headings:text-demoActionColor',
+          'prose-headings:leading-none prose-headings:font-medium prose-headings:text-demoHeadlines',
           'prose-ul:ml-2 prose-ul:mt-1 prose-ul:list-[disc]',
           'prose-ol:ml-2 prose-ol:mt-3',
-          'prose-li:m-3 prose-li:text-demoFontHighlightColor prose-li:marker:text-demoFontHighlightColor',
+          'prose-li:m-3 prose-li:text-demoHeadlines prose-li:marker:text-demoHeadlines',
           'prose-a:no-underline',
           'prose-p:tracking-[0px] prose-p:mb-2.5 prose-p:text-demoGrayDarkest',
         )}

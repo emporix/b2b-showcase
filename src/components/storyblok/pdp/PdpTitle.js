@@ -12,7 +12,7 @@ const PdpTitle = ({ blok, ...restProps }) => {
 
   return (
     <>
-      <h1 className={cn('text-demoFontHighlightColor font-bold text-4xl', {
+      <h1 className={cn('text-demoHeadlines font-bold text-4xl', {
         'text-titleBlack': color === 'Black',
         'text-titleRed': color === 'Red',
         'text-titleBlue': color === 'Blue',
@@ -23,7 +23,7 @@ const PdpTitle = ({ blok, ...restProps }) => {
       })} {...storyblokEditable(blok)}>
         {getLocalizedValue(product.name)}
       </h1>
-      {specialInformation && <p className="text-demoFontHighlightColor font-bold">{getLocalizedSpecialInformation()}</p>}
+      {specialInformation && <p className="text-demoHeadlines font-bold">{getLocalizedSpecialInformation()}</p>}
     </>
   )
 }

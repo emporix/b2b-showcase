@@ -15,7 +15,7 @@ const MobileFooter = ({ blok }) => {
             key={'Footer_1_' + index} {...storyblokEditable(
             blok.linkLists[index])}>
               <span
-                className="font-semibold text-xl mb-8">{linkList.title}</span>
+                className="font-semibold text-xl mb-8 text-demoHeadlines">{linkList.title}</span>
             {linkList.links.map((textLink, index) => (
               <a href={textLink.link.url} target="_self"
                  className="mb-2 leading-[23px]" key={'Footer_2_' + index}>
@@ -56,7 +56,7 @@ const DesktopFooter = ({ blok }) => {
                    key={'Footer_1_' + index} {...storyblokEditable(
                 blok.linkLists[index])}>
               <span
-                className="font-semibold text-xl mb-8">{linkList.title}</span>
+                className="font-semibold text-xl mb-8 text-demoHeadlines">{linkList.title}</span>
                 {linkList.links.map((textLink, index) => (
                   <a href={textLink.link.url} target="_self"
                      className="mb-2 leading-[23px]" key={'Footer_2_' + index}>

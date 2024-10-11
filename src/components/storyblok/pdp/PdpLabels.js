@@ -24,7 +24,7 @@ const PdpLabels = ({ blok, ...restProps }) => {
     {evaluatedPriceValidDate > new Date() && <CounDownLabel targetDate={evaluatedPriceValidDate} />}
     {labels.map((label) => <Fragment key={label.id}>
       <img className="justify-self-center" src={label.image} alt="" />
-      <div className="ml-2 text-demoFontHighlightColor">{adjustDeliveryTime(label.name)}</div>
+      <div className="ml-2 text-demoHeadlines">{adjustDeliveryTime(label.name)}</div>
     </Fragment>)}
   </div>)
 }

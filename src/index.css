@@ -18,7 +18,7 @@ code {
 }
 
 .header {
-  @apply w-full h-20  md:h-14 z-20 fixed  bg-demoGrayBrightest sm:px-5 md:px-7 lg:px-24 flex justify-between items-center;
+  @apply w-full h-20  md:h-14 z-20 fixed  bg-white sm:px-5 md:px-7 lg:px-24 flex justify-between items-center;
 }
 .home_category {
   @apply w-full h-[1752px] md:h-[682px]  text-eerieBlack;

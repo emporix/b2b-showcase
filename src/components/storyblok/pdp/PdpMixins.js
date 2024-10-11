@@ -42,7 +42,7 @@ const PdpMixins = ({ blok, ...restProps }) => {
       <AccordionItem index={index + restProps.startIndex} title={mixin[0]}
                      key={'PdpMixins' + index}>
         {mixin[1][mixin[0]]?.map((text, index) => (
-          <div className="text-demoFontHighlightColor" key={'PdpMixins-Item' + index}>
+          <div className="text-demoHeadlines" key={'PdpMixins-Item' + index}>
             <HtmlTextBox text={text} />
           </div>
         ))}

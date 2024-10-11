@@ -11,8 +11,8 @@ const CounDownLabel = ({ targetDate }) => {
 
   return values[0] >= 0 &&
     (<>
-      <AiOutlineHistory className="text-demoFontHighlightColor ml-2" size={30} />
-      <div className="text-demoFontHighlightColor font-bold"><span
+      <AiOutlineHistory className="text-demoHeadlines ml-2" size={30} />
+      <div className="text-demoHeadlines font-bold"><span
         className="mx-2">{text}</span>
         <span>{values[0]}</span><sup>{currentLanguage === 'de' ?
           't' :

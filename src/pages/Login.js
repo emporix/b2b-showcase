@@ -164,7 +164,7 @@ const Login = () => {
                 <input type="checkbox" className="w-[18px] h-[18px]" />
                 <label className="pl-2 text-[14px]/[22px]">Remember me</label>
               </div>
-              <a className="text-[16px]/[24px] text-demoFontHighlightColor cursor-pointer">
+              <a className="text-[16px]/[24px] text-demoHeadlines cursor-pointer">
                 Forgot Password
               </a>
             </LayoutBetween>

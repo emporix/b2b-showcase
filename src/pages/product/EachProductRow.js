@@ -65,7 +65,7 @@ const EachProductRow = ({ item, type, available, rating, productCount }) => {
       </div>
       <div className="flex-auto w-[55%]">
         <div className="text-xs font-bold text-gray">{item.code}</div>
-        <div className="text-2xl mt-4 font-semibold text-demoFontHighlightColor h-16">
+        <div className="text-2xl mt-4 font-semibold text-demoHeadlines h-16">
           {getLocalizedValue(item.name)}
         </div>
         <div className="text-sm mt-4  text-black flex">

@@ -49,7 +49,7 @@ const PdpVariantSelection = ({ blok, ...restProps }) => {
   }
 
   return (isChildVariant &&
-    <div className="text-demoFontHighlightColor" {...storyblokEditable(blok)}>
+    <div className="text-demoHeadlines" {...storyblokEditable(blok)}>
       {templateAttributes.map(attribute => <div className="mb-3"
                                                 key={'PdpVariantSelection_' +
                                                   attribute.key}>
@@ -57,7 +57,7 @@ const PdpVariantSelection = ({ blok, ...restProps }) => {
         <div className="flex gap-x-1">
           {attribute.values.map(
             value => <button className={cn('border rounded text-xs p-1', {
-              'bg-demoFontHighlightColor text-white font-bold': isSelected(attribute, value),
+              'bg-demoHeadlines text-white font-bold': isSelected(attribute, value),
             })}
                              key={'PdpVariantSelection_' + attribute.key +
                                value.key}
