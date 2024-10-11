@@ -27,3 +27,6 @@ yarn-debug.log*
 yarn-error.log*
 
 .vscode
+
+localhost.pem
+localhost-key.pem
