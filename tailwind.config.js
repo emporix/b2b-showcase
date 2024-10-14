@@ -5,7 +5,7 @@ module.exports = {
   theme: {
     extend: {
       fontFamily: {
-        'aldiCondensed': ['FFDINWebProCondensed'],
+        'demoCorporateFont': ['Helvetica Neue', 'Helvetica', 'Arial', 'sans-serif'],
       },
       colors: {
         white: '#FFFFFF',
@@ -42,16 +42,18 @@ module.exports = {
         'titleOrange': '#FF6D0A',
         'titlePurple': '#AC0AFF',
 
+        // When changing the corporate colors, make sure to also change the colors in the index.css file.
+        // Especially for button hover states etc.
         demoTopNavColor: '#FFFFFF',
         demoMainNavRightColor: '#ffffff',
         demoMainNavLeftColor: '#f2f5f8',
         demoActionColor: '#eb0000', // company main accent color (primary-buttons, Highlights, ...)
         demoSecondaryDimmed: '#C60000', // company-accent-bright-dimmed (navbar top)
-        demoHeadlines: '#C60000', // company-accent-dark (fonts/headlines/logo-background)
+        demoHeadlines: '#323434', // company-accent-dark (fonts/headlines/logo-background)
         demoFontColor: '#323434', // company-accent-dark-dimmed (body text)
-        demoGrayBrightest: '#FFFFFF', // footer/form/... background etc.
-        demoGray: '#FCFCFD', //'#D5DCE7', // Borders
-        demoGrayDarker: '#F3F5F8', // Darker borders
+        demoGrayBrightest: '#F3F5F8', // footer/form/... background etc.
+        demoGray: '#BCBDBD', //'#D5DCE7', // Borders
+        demoGrayDarker: '#6B6F6F', // Darker borders
         demoGrayDarkest: '#323434', // Gray texts
         demoAlerting: '#C51718', // Alerting accents like error borders or offer badges
       },

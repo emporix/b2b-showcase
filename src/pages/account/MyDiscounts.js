@@ -44,7 +44,7 @@ const MyDiscounts = () => {
         className={'account-page-content content-panel md:pl-6 flex flex-col'}
       >
         <div className="pb-4">
-          <div className=" font-bold text-xl text-tinBlue mb-2">
+          <div className=" font-bold text-xl text-demoActionColor mb-2">
             Available Coupons:
           </div>
         </div>
@@ -53,7 +53,7 @@ const MyDiscounts = () => {
               redeemOptions.map((card) => <Card key={card.id} {...card} />)}
         </div>
         <div className="mt-6">
-          <div className=" font-bold text-xl text-tinBlue">
+          <div className=" font-bold text-xl text-demoActionColor">
             Points:
           </div>
         </div>

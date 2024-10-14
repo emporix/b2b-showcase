@@ -56,7 +56,7 @@ export const Input = ({ label, value, action, className, placeholder }) => {
         onChange={(e) => action(e.target.value)}
         value={value}
         type="text"
-        className="border w-full px-3 py-2"
+        className="border w-full px-3 py-2 rounded"
       />
     </div>
   )

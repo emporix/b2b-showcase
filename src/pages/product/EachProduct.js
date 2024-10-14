@@ -58,8 +58,8 @@ const EachProduct = ({ item, available, rating, productCount }) => {
         {item.productType !== 'PARENT_VARIANT' && (
           <div
             className={
-              cn('text-[14px]/[20px] font-medium float-right lg:float-none', {
-                'text-limeGreen': available,
+              cn('text-[16px]/[20px] font-medium float-right lg:float-none', {
+                'text-green-600': available,
                 'text-red-500': !available,
               })
             }
@@ -68,21 +68,21 @@ const EachProduct = ({ item, available, rating, productCount }) => {
           </div>
         )}
         <div className="flex h-5 float-right lg:float-none">
-          <ReactStars size={16} value={rating} color2={'#00B6ED'} />
+          <ReactStars size={16} value={rating} color2={'#eb0000'} />
           {productCount && `(${productCount})`}
         </div>
       </div>
 
       <div className=" block float-right lg:hidden">
         <div className=" flex h-5  float-right">
-          <ReactStars size={16} value={rating} color2={'#00B6ED'} />
+          <ReactStars size={16} value={rating} color2={'#eb0000'} />
           {productCount && `(${productCount})`}
         </div>
         <br />
         <div
           className={
             cn('text-[14px]/[20px] font-medium float-right lg:float-none', {
-              'text-limeGreen': available,
+              'text-green-600': available,
               'text-red-500': !available,
             })
           }
@@ -116,7 +116,7 @@ const EachProduct = ({ item, available, rating, productCount }) => {
           {isLoggedIn ? (
             <>
               <div
-                className="text-[30px] font-aldiCondensed text-demoHeadlines font-bold">
+                className="text-[30px] font-demoCorporateFont text-demoActionColor font-bold">
                 {price !== null ? (
                   <>
                     <CurrencyBeforeValue value={price} />
@@ -132,7 +132,7 @@ const EachProduct = ({ item, available, rating, productCount }) => {
               </div>
             </>
           ) : (
-            <div className="text-[30px] font-aldiCondensed text-demoHeadlines pt-4">
+            <div className="text-[30px] font-demoCorporateFont text-demoHeadlines pt-4">
               {price !== null ? (
                 <>
                   <CurrencyBeforeValue value={price} />

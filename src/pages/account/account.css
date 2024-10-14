@@ -14,7 +14,7 @@ li.item-divide-line {
   @apply h-0 border-b border-lightGray mt-6 border-solid;
 }
 li.item-active {
-  @apply h-[44px] p-3 rounded bg-demoActionColor text-[16px]/[24px] font-normal;
+  @apply h-[44px] p-3 rounded bg-transparent border-2 border-demoActionColor text-demoGrayDarkest text-[16px]/[24px] font-bold;
 }
 li.index-item-active {
   @apply lg:font-bold lg:text-lightBlue;
@@ -206,10 +206,10 @@ li.index-item-active {
   @apply m-[3px];
 }
 .switch-item .Mui-checked .MuiSwitch-thumb {
-  @apply !bg-lightBlue;
+  @apply !bg-demoActionColor;
 }
 .switch-item:has(.Mui-checked) {
-  @apply !bg-gray !border-lightBlue;
+  @apply !bg-white !border-demoActionColor;
 }
 .account-recent-orders-wrapper{
   @apply p-6 border rounded border-quartz;

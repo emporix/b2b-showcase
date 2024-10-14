@@ -388,7 +388,6 @@ export const CompanyCustomers = () => {
       </TableContainer>
       <div className="create-customer-wrapper">
         <MediumPrimaryButton
-          className="cta-button bg-demoActionColor"
           title="CREATE NEW USER"
           onClick={handleCreateCustomer}
         />

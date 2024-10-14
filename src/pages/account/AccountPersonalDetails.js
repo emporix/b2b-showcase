@@ -5,6 +5,7 @@ import AccountLayout from './AccountLayout'
 import { loginUrl } from '../../services/service.config'
 import AddressForm from 'components/addresses/AddressesForm'
 import { useAuth } from 'context/auth-provider'
+import { MediumPrimaryButton } from '../../components/Utilities/button'
 
 export const FromInputItem = ({ label, value }) => {
   const [val, setVal] = useState(value)
@@ -37,7 +38,7 @@ const PersonalInfo = ({ user }) => {
           <div className="personal-photo-wrapper">
             {user.photoUrl ? (<img className="personal-photo" src={user.photoUrl} />) : (<img className="personal-photo" src="/photo.png" />)}
             <div className="add-photo-wrapper mt-2">
-              <a href={''} className="add-new-photo">
+              <a href={''} className="add-new-photo !text-demoActionColor hover:!text-demoGrayDarkest">
                 Add New Photo
               </a>
             </div>
@@ -92,11 +93,11 @@ const AccountPersonalSave = () => {
 }
 
 const ActionSaveButton = ({ caption }) => {
-  return <button className="action-save-button">{caption}</button>
+  return <MediumPrimaryButton title={caption} />
 }
 
 const ActionDiscardButton = ({ caption }) => {
-  return <button className="action-discard-button">{caption}</button>
+  return <MediumPrimaryButton title={caption} />
 }
 
 const PersonalDetails = () => {

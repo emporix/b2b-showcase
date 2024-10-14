@@ -15,7 +15,7 @@ export const TextInput = ({ label, value, placeholder, action, className, id }) 
           }}
           placeholder={placeholder}
           className={
-            'text-input-normal ' + (className !== undefined ? className : '')
+            'text-input-normal border-demoGrayDarkest rounded' + (className !== undefined ? className : '')
           }
         />
       </GridLayout>
@@ -52,7 +52,7 @@ export const TextInputOnly = ({
       }}
       placeholder={placeholder}
       className={
-        'text-input-normal ' + (className !== undefined ? className : '')
+        'text-input-normal' + (className !== undefined ? className : '')
       }
     />
   )

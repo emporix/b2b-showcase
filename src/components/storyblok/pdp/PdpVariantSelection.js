@@ -56,8 +56,8 @@ const PdpVariantSelection = ({ blok, ...restProps }) => {
         <div className="font-bold pb-2">{attribute.name[currentLanguage]}</div>
         <div className="flex gap-x-1">
           {attribute.values.map(
-            value => <button className={cn('border rounded text-xs p-1', {
-              'bg-demoHeadlines text-white font-bold': isSelected(attribute, value),
+            value => <button className={cn('border rounded text-s px-2 py-1 text-demoGrayDarkest', {
+              'bg-demoHeadlines text-white font-bold pt-2': isSelected(attribute, value),
             })}
                              key={'PdpVariantSelection_' + attribute.key +
                                value.key}

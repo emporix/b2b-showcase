@@ -32,7 +32,7 @@ const MegaNav = ({ blok, showMegaMenuContent, setShowMegaMenuContent }) => {
           }
         >
           <Link to={!item.items.length ? addTenantToUrl(item.url) : homeUrl}>
-            <div className="text-demoGrayDarkest font-bold text-4xl font-aldiCondensed">
+            <div className="text-demoGrayDarkest font-bold tracking-tight text-4xl mt-[3px]">
               {blok.catalogLabel}
             </div>
           </Link>

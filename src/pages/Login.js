@@ -100,7 +100,7 @@ const Login = () => {
   }
 
   return (
-    <GridLayout className="login_container bg-aliceBlue">
+    <GridLayout className="login_container bg-demoGrayBrightest h-screen">
       <Snackbar
         open={openNotification}
         autoHideDuration={3000}
@@ -114,7 +114,7 @@ const Login = () => {
       <GridLayout className="md:w-[540px] w-[95%] mx-auto h-[740px]">
         <Container className="w-full items-center text-center text-eerieBlack font-bold text-7xl ">
           <Container className="mx-auto">
-            <a href={homeUrl} className="flex">
+            <a href={homeUrl} className="flex my-8">
               <Logo
                 size={'w-[78px] h-[86px] mr-5'}
                 text={'px-4 flex text-eerieBlack text-[48px]'}
@@ -142,7 +142,7 @@ const Login = () => {
                 value={userEmail}
                 type="email"
                 required
-                className="border rounded border-gray80 w-full px-3 py-2 mt-2"
+                className="border rounded border-demoGray w-full px-3 py-2 mt-2 focus:ring-demoActionColor focus:border-transparent"
               />
               {emailMessage && <h6 style={{ color: 'red' }}>{emailMessage}</h6>}
             </Box>
@@ -156,21 +156,22 @@ const Login = () => {
                 value={password}
                 type="password"
                 required
-                className="border rounded border-gray80 w-full px-3 py-2 mt-2"
+                className="border rounded border-demoGray w-full px-3 py-2 mt-2 focus:ring-demoActionColor focus:border-transparent"
               />
             </Box>
             <LayoutBetween className="pt-6 text-black text-base">
               <div className="flex items-center">
-                <input type="checkbox" className="w-[18px] h-[18px]" />
+                <input type="checkbox"
+                       className="w-[18px] h-[18px] text-demoActionColor bg-transparent border-demoGray rounded focus:ring-demoActionColor checked:bg-demoActionColor checked:border-demoActionColor" />
                 <label className="pl-2 text-[14px]/[22px]">Remember me</label>
               </div>
-              <a className="text-[16px]/[24px] text-demoHeadlines cursor-pointer">
+              <a className="text-[16px]/[24px] text-demoActionColor hover:text-demoGrayDarkest cursor-pointer">
                 Forgot Password
               </a>
             </LayoutBetween>
             <Box className="w-full !pt-8">
               <button
-                className="w-full cta-button bg-demoActionColor hover:bg-demoSecondaryDimmed h-12"
+                className="w-full cta-button bg-transparent border-2 border-demoActionColor rounded hover:bg-demoSecondaryDimmed h-12"
                 type="submit"
               >
                 {loading ? <CircularProgress color="secondary" /> : 'LOG IN'}
@@ -182,7 +183,7 @@ const Login = () => {
             <Box className="w-full !pt-8">
               <button
               onClick={() => navigate(guestCheckoutUrl())}
-                className="w-full social-login-btn h-12"
+                className="w-full social-login-btn h-12 p-2 rounded"
               >
               <span className="guest-login-btn-label">Continue as a Guest</span>
               </button>
@@ -193,7 +194,7 @@ const Login = () => {
             <GridLayout className="pt-6 w-full  items-center text-center text-base">
               <Box className="w-full !pt-8">
                 <button
-                  className="w-full h-12 social-login-btn"
+                  className="w-full h-12 social-login-btn rounded"
                   onClick={() => {
                     window.location.href = `${AUTH0_DOMAIN}/authorize?response_type=code&scope=profile email openid offline_access&client_id=${AUTH0_CLIENT_ID}&redirect_uri=${window.location.origin}/auth0`
                   }}
@@ -212,7 +213,7 @@ const Login = () => {
             <GridLayout className="pt-6 w-full  items-center text-center text-base">
               <Box className="w-full !pt-8">
                 <button
-                  className="w-full h-12 social-login-btn"
+                  className="w-full h-12 social-login-btn rounded"
                   onClick={() => {
                     window.location.href = `${ORY_DOMAIN}/oauth2/auth?response_type=code&scope=openid%20offline_access%20email%20profile&client_id=${ORY_CLIENT_ID}&state=${generateState()}&redirect_uri=${
                       window.location.origin
@@ -237,7 +238,7 @@ const Login = () => {
                 Don't have an account?
               </span>
               <Link to={signupUrl()}>
-                <span className="pl-2 font-semibold hover:cursor-pointer text-[146x]/[24px] font-medium text-dodgerBlue hover:text-yellow">
+                <span className="pl-2 hover:cursor-pointer text-[146x]/[24px] font-medium text-demoActionColor hover:text-demoGrayDarkest">
                   Sign Up
                 </span>
               </Link>

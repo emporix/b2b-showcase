@@ -50,7 +50,7 @@ const DesktopFooter = ({ blok }) => {
             })}>
             {blok.linkLists.map((linkList, index) => (
               <div className={cn('flex flex-col h-full pl-6 xl:pl-0 text-demoGrayDarkest', {
-                'border-r border-white': index < blok.linkLists.length - 1,
+                'border-r border-demoGray': index < blok.linkLists.length - 1,
                 'xl:pl-6': index > 0,
               })}
                    key={'Footer_1_' + index} {...storyblokEditable(

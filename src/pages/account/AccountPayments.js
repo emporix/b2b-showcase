@@ -27,8 +27,8 @@ const PayItem = ({ title, itemKey, className, children, logo }) => {
   return (
     <GridLayout
       className={
-        'p-6 gap-4 border border-bgWhite ' +
-        (active ? 'bg-bgWhite border-tinBlue' : '')
+        'p-6 gap-4 border border-bgWhite !bg-demoGrayBrightest rounded-xl' +
+        (active ? '!bg-demoGrayBrightest border-demoGrayDarker rounded-xl' : '')
       }
     >
       <LayoutBetween>
@@ -38,7 +38,7 @@ const PayItem = ({ title, itemKey, className, children, logo }) => {
             defaultChecked
             onClick={() => setActive(!active)}
           />
-          <TextBold2 className="text-tinBlue">{title}</TextBold2>
+          <TextBold2 className="text-demoGrayDarkest">{title}</TextBold2>
         </Container>
         {logo !== undefined ? <img src={logo} className="w-[60px]" /> : <></>}
       </LayoutBetween>
@@ -58,19 +58,19 @@ const Payments = () => {
         >
           <TextBold7 className="text-darkGray">Card Details</TextBold7>
           <Container>
-            <TextRegular6 className="text-blueGray w-40">
+            <TextRegular6 className="text-demoGrayDarkest w-40">
               Card Number
             </TextRegular6>
-            <TextBold8 className="text-lightBlue">
+            <TextBold8 className="text-demoGrayDarkest">
               {' '}
               1111 2222 3333 4444
             </TextBold8>
           </Container>
           <Container>
-            <TextRegular6 className="text-blueGray w-40">
+            <TextRegular6 className="text-demoGrayDarkest w-40">
               Card Holder Name
             </TextRegular6>
-            <TextBold8 className="text-lightBlue"> Joe W</TextBold8>
+            <TextBold8 className="text-demoGrayDarkest"> Joe W</TextBold8>
           </Container>
           <TextBold9 className="justify-end flex">
             <Link to={paymentEditCardDetailUrl()}>

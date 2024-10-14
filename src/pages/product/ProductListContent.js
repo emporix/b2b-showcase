@@ -12,18 +12,18 @@ import EachProductRow from './EachProductRow'
 import { useAuth } from 'context/auth-provider'
 
 const ProductListViewSettingBar = ({
-  changeDisplayType,
-  productListCount,
-  productListCountsPerPage,
-  changePerPageCount,
-  displayType,
-}) => {
+                                     changeDisplayType,
+                                     productListCount,
+                                     productListCountsPerPage,
+                                     changePerPageCount,
+                                     displayType,
+                                   }) => {
   return (
-    <div className="view-setting-wrapper h-6">
+    <div className="view-setting-wrapper h-12">
       <div className="view-setting-bar gap-6">
         <div className="gap-2">
-          <ul className="setting gap-6 flex justify-between h-[24px]  text-base font-normal">
-          <li className="per-page hidden xl:block">
+          <ul className="gap-6 flex justify-between text-base font-normal">
+            <li className="per-page hidden xl:block">
               <div id="products-per-page" className="products-filter-name">
                 Products Per Page: &nbsp;
                 <select
@@ -38,7 +38,7 @@ const ProductListViewSettingBar = ({
                 </select>
               </div>
             </li>
-                        {/* <li className="product-result-caption hidden lg:block">
+            {/* <li className="product-result-caption hidden lg:block">
               Products found: {productListCount}
             </li> */}
             {/* <li className="product-result-caption  lg:hidden">
@@ -68,13 +68,13 @@ const ProductListViewSettingBar = ({
                 <div className="lg:block products-filter-name">View:</div>
                 <div
                   id="grid-view"
-                  className="cursor-pointer hover:text-yellow"
+                  className="cursor-pointer hover:text-demoSecondaryDimmed"
                   onClick={() => changeDisplayType(true)}
                 >
                   <IconContext.Provider
                     value={{
                       size: 20,
-                      color: displayType ? '#00B6ED' : 'black',
+                      color: displayType ? '#eb0000' : 'black',
                     }}
                   >
                     <>
@@ -90,7 +90,7 @@ const ProductListViewSettingBar = ({
                   <IconContext.Provider
                     value={{
                       size: 20,
-                      color: displayType ? 'black' : '#00B6ED',
+                      color: displayType ? 'black' : '#eb0000',
                     }}
                   >
                     <>
@@ -130,7 +130,7 @@ export const ProductListItems = ({ products, auth, displayType }) => {
                 productCount={stockLevel}
                 item={item}
               />
-            </div>
+            </div>,
           )
           break
         case 2:
@@ -146,7 +146,7 @@ export const ProductListItems = ({ products, auth, displayType }) => {
                 productCount={stockLevel}
                 item={item}
               />
-            </div>
+            </div>,
           )
           break
         default:
@@ -162,7 +162,7 @@ export const ProductListItems = ({ products, auth, displayType }) => {
                 productCount={stockLevel}
                 item={item}
               />
-            </div>
+            </div>,
           )
           itemArr.push(
             <div
@@ -170,7 +170,7 @@ export const ProductListItems = ({ products, auth, displayType }) => {
               className="list-row flex lg:my-4 my-4"
             >
               {subItemArr}
-            </div>
+            </div>,
           )
           // if (i !== products.length - 1)
           //   itemArr.push(
@@ -186,9 +186,9 @@ export const ProductListItems = ({ products, auth, displayType }) => {
 
     if (subItemArr.length) {
       itemArr.push(
-        <div key="" className="list-row flex lg:my-12 my-6">
+        <div key="" className="list-row flex flex-gap-6 py-4">
           {subItemArr}
-        </div>
+        </div>,
       )
       subItemArr = []
     }
@@ -206,7 +206,7 @@ export const ProductListItems = ({ products, auth, displayType }) => {
                 productCount={stockLevel}
                 item={item}
               />
-            </div>
+            </div>,
           )
           break
         default:
@@ -222,7 +222,7 @@ export const ProductListItems = ({ products, auth, displayType }) => {
                 productCount={stockLevel}
                 item={item}
               />
-            </div>
+            </div>,
           )
           ItemArrOnMobile.push(
             <div
@@ -230,7 +230,7 @@ export const ProductListItems = ({ products, auth, displayType }) => {
               className="list-row flex lg:my-12 my-4"
             >
               {subItemArr}
-            </div>
+            </div>,
           )
           // if (i !== products.length - 1)
           //   ItemArrOnMobile.push(
@@ -248,7 +248,7 @@ export const ProductListItems = ({ products, auth, displayType }) => {
       ItemArrOnMobile.push(
         <div key="mobile" className="list-row flex lg:my-12 my-6">
           {subItemArr}
-        </div>
+        </div>,
       )
       subItemArr = []
     }
@@ -262,7 +262,7 @@ export const ProductListItems = ({ products, auth, displayType }) => {
             available={stockLevel}
             item={item}
           />
-        </div>
+        </div>,
       )
       // if (i !== products.length - 1)
       //   itemArr.push(
@@ -282,11 +282,11 @@ export const ProductListItems = ({ products, auth, displayType }) => {
 }
 
 const ProductListPagination = ({
-  changePageNumber,
-  countPerPage,
-  productListCount,
-  pageNumber,
-}) => {
+                                 changePageNumber,
+                                 countPerPage,
+                                 productListCount,
+                                 pageNumber,
+                               }) => {
   let totalPage = Math.round(productListCount / countPerPage)
   let previousPageitems = []
   let next_page_items = []
@@ -301,7 +301,7 @@ const ProductListPagination = ({
         onClick={() => changePageNumber(i)}
       >
         {i}
-      </li>
+      </li>,
     )
 
   for (let i = pageNumber + 1; i < totalPage && i < pageNumber + 3; i++)
@@ -312,7 +312,7 @@ const ProductListPagination = ({
         onClick={() => changePageNumber(i)}
       >
         {i}
-      </li>
+      </li>,
     )
 
   return (

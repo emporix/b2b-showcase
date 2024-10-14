@@ -28,7 +28,7 @@ const PdpAvailiability = ({blok, ...restProps} ) => {
 
   return (<div className={cn('text-demoHeadlines font-bold', {
     "text-demoAlerting": !productAvailable,
-    "text-limeGreen": productAvailable && priceValid
+    "text-green-600": productAvailable && priceValid
   })} {...storyblokEditable(blok)}>
     {availabilityText()} {productAvailable && blok.showAvailableAmount && (priceValid && ` (${stockLevel})`)}
   </div>)
