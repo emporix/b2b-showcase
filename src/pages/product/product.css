@@ -308,7 +308,7 @@
   @apply bg-[white] font-normal text-eerieBlack
 }
 .product-available {
-  @apply text-limeGreen  font-medium text-[14px]/[20px] float-right lg:float-none
+  @apply text-green-600  font-medium text-[14px]/[20px] float-right lg:float-none
 }
 .product-unavailable {
   @apply text-manatee  font-medium text-[14px]/[20px] float-right lg:float-none

@@ -42,6 +42,8 @@ module.exports = {
         'titleOrange': '#FF6D0A',
         'titlePurple': '#AC0AFF',
 
+        // When changing the corporate colors, make sure to also change the colors in the index.css file.
+        // Especially for button hover states etc.
         demoTopNavColor: '#FFFFFF',
         demoMainNavRightColor: '#ffffff',
         demoMainNavLeftColor: '#f2f5f8',

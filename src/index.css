@@ -5,9 +5,9 @@
 body {
   margin: 0;
   min-width: 375px;
-  font-family: FFDINWebPro, -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
+  /*font-family: FFDINWebPro, -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',*/
+  /*  'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',*/
+  /*  sans-serif;*/
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
@@ -156,12 +156,13 @@ code {
 }
 
 .cta-button:hover {
-  background-color: #2590d7 !important;
+  background-color: #eb0000 !important;
+  color: white !important;
 }
 
 .cta-button-checked {
   border-radius: 4px !important;
-  background-color: #207ebd !important;
+  background-color: #eb0000 !important;
   color: white !important;
   font-size: 14px !important;
   line-height: 24px !important;
@@ -171,11 +172,11 @@ code {
 }
 
 input[type='checkbox'] {
-  accent-color: #2590d7;
+  accent-color: #eb0000;
 }
 
 .MuiButtonBase-root.MuiRadio-root.MuiRadio-colorDefault.PrivateSwitchBase-root.MuiRadio-root.MuiRadio-colorDefault.Mui-checked.MuiRadio-root.MuiRadio-colorDefault span {
-  background-color: #2590d7 !important;
+  background-color: #C60000 !important;
 }
 
 .grey-rounded-container {
