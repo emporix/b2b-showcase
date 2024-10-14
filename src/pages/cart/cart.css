@@ -5,7 +5,7 @@
   @apply mx-auto grid grid-cols-1 md:gap-8 gap-8;
 }
 .cart-action-content {
-  @apply gap-6 text-[14px] leading-[18px] font-semibold text-dodgerBlue;
+  @apply gap-6 text-[14px] leading-[18px] font-semibold text-demoGrayDarkest;
 }
 .cart-head-item {
   @apply  !font-bold !text-[14px] !leading-[20px];
@@ -35,8 +35,8 @@
   right: 0;
   width: 20px;
   height: 20px;
-  background-color: #fe6964;
-  color: white;
+  background-color: #eb0000;
+  color: white !important;
   border-radius: 50%;
   display: flex;
   justify-content: center;

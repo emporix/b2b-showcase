@@ -192,7 +192,7 @@ const DesktopContent = () => {
           {message}
         </Alert>
       </Snackbar>
-      <div className="float-right text-[16px]/[24px] font-medium text-dodgerBlue">
+      <div className="float-right text-[16px]/[24px] font-medium !text-demoActionColor hover:!text-demoGrayDarkest">
         <span className="pr-8 cursor-pointer" onClick={clearProductList}>
           Clear List
         </span>

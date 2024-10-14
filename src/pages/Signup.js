@@ -19,7 +19,7 @@ import { isValidEmail } from 'services/addresses.service'
 
 const Input = ({ label, value, action, className, placeholder }) => {
   return (
-    <div className={`!pt-2 w-full text-black text-base ${className}`}>
+    <div className={`!pt-2 w-full text-demoGrayDarkest text-base rounded ${className}`}>
       <label className="pb-2">{label}</label>
       <br />
       <input
@@ -27,7 +27,7 @@ const Input = ({ label, value, action, className, placeholder }) => {
         onChange={(e) => action(e.target.value)}
         value={value}
         type="text"
-        className="border w-full px-3 py-2"
+        className="border rounded border-demoGrayDarkest w-full px-3 py-2 mt-2 focus:ring-demoActionColor focus:border-transparent"
       />
     </div>
   )
@@ -269,7 +269,7 @@ const Signup = (props) => {
   }
 
   return (
-    <GridLayout className="signup_container bg-aliceBlue">
+    <GridLayout className="signup_container bg-demoGrayBrightest">
       <Snackbar
         open={openNotification}
         autoHideDuration={3000}
@@ -293,10 +293,10 @@ const Signup = (props) => {
         </Container>
         <GridLayout className="w-full bg-white p-12  rounded">
           <GridLayout className="text-center">
-            <Heading2 className="text-eerieBlack text-[24px]/[32px] font-semibold">
+            <Heading2 className="text-demoHeadlines text-[24px]/[32px] font-semibold">
               Register as a New User
             </Heading2>
-            <Heading4 className="text-eerieBlack text-[16px]/[24px] font-semibold pt-6">
+            <Heading4 className="text-demoHeadlines text-[16px]/[24px] font-semibold pt-6">
               Welcome! Please enter your details
             </Heading4>
           </GridLayout>
@@ -310,7 +310,7 @@ const Signup = (props) => {
                 value={userEmail}
                 type="email"
                 required
-                className="border w-full px-3 py-2"
+                className="border rounded border-demoGrayDarkest w-full px-3 py-2 mt-2 focus:ring-demoActionColor focus:border-transparent"
               />
               {!isValidEmail(userEmail) && (
                 <h6 style={{ color: 'red' }}>Email is invalid</h6>
@@ -325,7 +325,7 @@ const Signup = (props) => {
                 value={password}
                 type="password"
                 required
-                className="border w-full px-3 py-2"
+                className="border rounded border-demoGrayDarkest w-full px-3 py-2 mt-2 focus:ring-demoActionColor focus:border-transparent"
               />
               {(!password || password.length < 6) && (
                 <h6 style={{ color: 'red' }}>
@@ -343,7 +343,7 @@ const Signup = (props) => {
                 value={confirmPassword}
                 type="password"
                 required
-                className="border w-full px-3 py-2"
+                className="border rounded border-demoGrayDarkest w-full px-3 py-2 mt-2 focus:ring-demoActionColor focus:border-transparent"
               />
               {(!confirmPassword || confirmPassword.length < 6) && (
                 <h6 style={{ color: 'red' }}>
@@ -363,7 +363,7 @@ const Signup = (props) => {
                 onChange={(e) => setFirstName(e.target.value)}
                 value={firstName}
                 type="text"
-                className="border w-full px-3 py-2"
+                className="border rounded border-demoGrayDarkest w-full px-3 py-2 mt-2 focus:ring-demoActionColor focus:border-transparent"
               />
               {!firstName && (
                 <h6 style={{ color: 'red' }}>First Name must be provided</h6>
@@ -378,7 +378,7 @@ const Signup = (props) => {
                 onChange={(e) => setLastName(e.target.value)}
                 value={lastName}
                 type="text"
-                className="border w-full px-3 py-2"
+                className="border rounded border-demoGrayDarkest w-full px-3 py-2 mt-2 focus:ring-demoActionColor focus:border-transparent"
               />
               {!lastName && (
                 <h6 style={{ color: 'red' }}>Last Name must be provided</h6>
@@ -393,7 +393,7 @@ const Signup = (props) => {
                 onChange={(e) => setCompany(e.target.value)}
                 value={company}
                 type="text"
-                className="border w-full px-3 py-2"
+                className="border rounded border-demoGrayDarkest w-full px-3 py-2 mt-2 focus:ring-demoActionColor focus:border-transparent"
               />
             </Box>
 
@@ -404,7 +404,7 @@ const Signup = (props) => {
                 onChange={(e) => setRegistrationId(e.target.value)}
                 value={registrationId}
                 type="text"
-                className="border w-full px-3 py-2"
+                className="border rounded border-demoGrayDarkest w-full px-3 py-2 mt-2 focus:ring-demoActionColor focus:border-transparent"
               />
               {company && !registrationId && (
                 <h6 style={{ color: 'red' }}>
@@ -446,7 +446,7 @@ const Signup = (props) => {
             />
             <Box className="w-full !pt-12">
               <LargePrimaryButton
-                className="w-full cta-button bg-demoActionColor h-12"
+                className="w-full h-12"
                 disabled={isCreationBlocked()}
                 title="Sign Up"
               ></LargePrimaryButton>

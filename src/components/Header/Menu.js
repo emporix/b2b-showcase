@@ -24,7 +24,7 @@ const Menu = ({ blok }) => {
           onMouseLeave={() => setShowMegaMenuContent(false)}
         >
           <span
-            className="hidden lg:block text-demoActionColor font-bold tracking-[-0.075em] text-[46px] mt-[14px]"
+            className="hidden lg:block text-demoActionColor font-bold tracking-[-0.075em] text-[46px] mt-[5px]"
             onMouseOver={() => setShowMegaMenuContent(true)}
           >
             Shop

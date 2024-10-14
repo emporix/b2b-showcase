@@ -14,6 +14,7 @@ import { useCart } from 'context/cart-provider'
 import { border } from '@mui/system'
 import { PROCUREMENT_SYSTEM_URL } from 'constants/localstorage'
 import { useLanguage } from 'context/language-provider'
+import { LargePrimaryButton, MediumPrimaryButton } from '../Utilities/button'
 
 const CartProductContent = ({ children }) => {
   return <div className="cart-product-content">{children}</div>
@@ -140,8 +141,8 @@ export const CartMobileItem = ({ cartItem }) => {
             (cartItem.product.stock === 'Low'
               ? 'text-emporixGold'
               : cartItem.product.stock === 'In'
-              ? 'text-brightGreen '
-              : 'text-primaryBlue')
+              ? 'text-green-600 '
+              : 'text-red-700')
           }
         >
           {cartItem.product.stock} Stock
@@ -227,7 +228,7 @@ export const CartProductBasicInfo = ({ cart }) => {
                 ? 'text-emporixGold'
                 : cart.product?.stock === 'In'
                 ? 'text-brightGreen '
-                : 'text-primaryBlue')
+                : 'text-demoActionColor')
             }
           >
             {cart.product?.stock} Stock
@@ -293,7 +294,7 @@ const CartProductWrapper = ({ cartItem }) => {
     >
       {isHover && (
         <div
-          className="cart-product-wrapper-btn"
+          className="cart-product-wrapper-btn !text-white"
           onClick={() => removeCartItem(cartItem)}
         >
           &#10006;
@@ -389,9 +390,7 @@ const CartGoGuestCheckout = () => {
 const CartGoCheckout = () => {
   return (
     <Link to={checkoutUrl()} className="w-full">
-      <button className="cart-go-checkout-btn py-[12px] px-[14px] bg-demoActionColor rounded text-eerieBlack">
-        GO TO CHECKOUT
-      </button>
+      <LargePrimaryButton title="GO TO CHECKOUT" className="w-full bg-transparent hover:border-transparent" />
     </Link>
   )
 }

@@ -12,6 +12,7 @@ import {
   editReplenishmentOrdersUrl,
 } from '../../services/service.config'
 import { CurrencyBeforeValue } from 'components/Utilities/common'
+import { MediumPrimaryButton } from '../../components/Utilities/button'
 
 const repleishmentOrdersList = [
   {
@@ -84,9 +85,7 @@ const ReplenishmentOrders = () => {
   return (
     <div>
       <Link to={addReplenishmentOrdersUrl()}>
-      <div className="cta-button bg-demoActionColor w-[278px] h-12 flex items-center my-12 md:mx-0 mx-auto">
-          <span className="text-center  w-full">NEW REPLENISHMENT ORDER</span>
-        </div>
+        <MediumPrimaryButton title="NEW REPLENISHMENT ORDER" className="mt-6 mb-4" />
       </Link>
       <TableContainer className="desktop_only">
         <Table sx={{ minWidth: 650 }}>

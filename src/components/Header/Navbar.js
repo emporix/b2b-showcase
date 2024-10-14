@@ -248,7 +248,7 @@ const Navbar = ({blok}) => {
   }, [cartAccount])
 
   return (
-    <header className="header bg-demoTopNavColor border-b border-demoGrayDarker">
+    <header className="header bg-demoTopNavColor border-b border-demoGray">
       {/* Dektop language and currency selection */}
       <div className="desktop_only_flex  text-sm text-demoGrayDarkest">
         <div className="flex items-center">
@@ -325,13 +325,13 @@ const Navbar = ({blok}) => {
               </div>
             </li>
             <li className="px-2">
-              <a className="hover:text-emporixGold" href={`/${tenant}/login`}>
+              <a className="hover:text-demoSecondaryDimmed" href={`/${tenant}/login`}>
                 {blok.loginLabel}
               </a>
             </li>
             |
             <li className="px-2">
-              <a className="hover:text-emporixGold" href={`/${tenant}/signup`}>
+              <a className="hover:text-demoSecondaryDimmed" href={`/${tenant}/signup`}>
                 {blok.signupLabel}
               </a>
             </li>
@@ -362,14 +362,14 @@ const Navbar = ({blok}) => {
             |
             <li className="px-4 flex cursor-pointer" onClick={handleOpenCart}>
               {cartTotal !== 0 ? (
-                <Badge badgeContent={cartTotal} color="warning">
+                <Badge badgeContent={cartTotal} color="error">
                   <AiOutlineShoppingCart size={20} className="cursor-pointer" />
                 </Badge>
               ) : (
                 <AiOutlineShoppingCart size={20} />
               )}
 
-              <div className="pl-[17.5px] text-white flex">
+              <div className="pl-[17.5px] text-demoGrayDarkest flex">
                 <CurrencyBeforeValue
                   currency={cartCurrency}
                   value={cartTotalPrice}

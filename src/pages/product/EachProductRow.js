@@ -7,7 +7,7 @@ import { trimImage } from '../../helpers/images'
 import { useAuth } from 'context/auth-provider'
 import { useCart } from 'context/cart-provider'
 import { formatPrice } from 'helpers/price'
-import { LargePrimaryButton } from 'components/Utilities/button'
+import { LargePrimaryButton, MediumPrimaryButton } from 'components/Utilities/button'
 import { useNavigate } from 'react-router-dom'
 import { useLanguage } from 'context/language-provider'
 import HtmlTextBox from '../../components/storyblok/HtmlTextBox'
@@ -44,7 +44,7 @@ const EachProductRow = ({ item, type, available, rating, productCount }) => {
       return <CurrencyBeforeValue value={price} />
     } else {
       return <span
-        className="text-xs text-primaryBlue font-bold">No Price</span>
+        className="text-xs text-demoGrayDarkest font-bold">No Price</span>
     }
   }
   return (
@@ -118,12 +118,7 @@ const EachProductRow = ({ item, type, available, rating, productCount }) => {
                   setQuantity(value)
                 }}
               />
-              <div
-                className="ml-6 mt-4 h-10 w-40 cursor-pointer cta-button bg-demoActionColor flex items-center justify-center"
-                onClick={handleAddToCart}
-              >
-                <span className="px-4">ADD TO CART</span>
-              </div>
+              <MediumPrimaryButton title="ADD TO CART" onClick={handleAddToCart} className="mt-4" />
             </>
           ) : (
             <div>

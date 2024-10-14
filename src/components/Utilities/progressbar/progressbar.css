@@ -9,7 +9,7 @@
   @apply h-[6px] w-[6px] rounded-[6px] bg-green-600 mx-auto mt-[5px];
 }
 .main-bar {
-  @apply bg-bgWhite h-[2px] mt-[-4px];
+  @apply bg-demoGray h-[2px] mt-[-4px];
 }
 .progress-bar {
   @apply bg-green-600 h-[2px] mt-[-2px];

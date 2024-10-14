@@ -46,7 +46,7 @@ const AccountPersonalInfo = () => {
             <div className="text-center m-auto text-[20px]/[28px] font-semibold">
                 {user.username}
               </div>
-              <span className="account-edit-btn cursor-pointer color-dodgerBlue">
+              <span className="account-edit-btn cursor-pointer !text-demoActionColor hover:!text-demoGrayDarkest">
                 Edit Profile
               </span>
             </div>
@@ -76,7 +76,7 @@ const PaymentProgressBar = () => {
   return (
     <div className="w-full h-6 bg-bgWhite rounded-2xl dark:bg-bgWhite">
       <div
-        className="h-6 bg-emporixGold rounded-2xl dark:bg-emporixGold"
+        className="h-6 bg-demoActionColor rounded-2xl dark:bg-demoSecondaryDimmed"
         style={{ width: '45%' }}
       />
     </div>
@@ -145,7 +145,7 @@ const PortalCaptionBar = ({ title, action_title }) => {
           <span className="inline-block align-middle portal-title">
             {title}
           </span>
-          <span className="text-[16px]/[24px] text-dodgerBlue font-medium">
+          <span className="text-[16px]/[24px] !text-demoActionColor hover:!text-demoGrayDarkest font-medium">
             {action_title}
           </span>
         </div>
@@ -169,7 +169,7 @@ const RecentOrders = () => {
   return (
     <div className="account-recent-orders-wrapper portal-wrapper">
       <PortalCaptionBar
-        className="text-[16px]/[24px] text-dodgerBlue font-medium"
+        className="text-[16px]/[24px] !text-demoActionColor hover:!text-demoGrayDarkest font-medium"
         title="Recent Orders"
         action_title="View All"
       />
@@ -183,7 +183,7 @@ const RecentSavedCarts = () => {
   return (
     <div className="account-saved-carts-wrapper portal-wrapper border border-quartz rounded mt-8 p-6">
       <PortalCaptionBar
-        className="text-[16px]/[24px] text-dodgerBlue font-medium"
+        className="text-[16px]/[24px] !text-demoActionColor hover:!text-demoGrayDarkest font-medium"
         title="Saved Carts"
         action_title="View All"
       />

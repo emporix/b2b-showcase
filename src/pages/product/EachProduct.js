@@ -116,7 +116,7 @@ const EachProduct = ({ item, available, rating, productCount }) => {
           {isLoggedIn ? (
             <>
               <div
-                className="text-[30px] font-demoCorporateFont text-demoHeadlines font-bold">
+                className="text-[30px] font-demoCorporateFont text-demoActionColor font-bold">
                 {price !== null ? (
                   <>
                     <CurrencyBeforeValue value={price} />

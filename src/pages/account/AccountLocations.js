@@ -4,13 +4,12 @@ import { Link } from 'react-router-dom'
 import { addLocationUrl } from '../../services/service.config'
 import LocationService from 'services/location.service'
 import { useEffect } from 'react'
+import { MediumPrimaryButton } from '../../components/Utilities/button'
 
 const AddButton = () => {
   return (
     <Link to={addLocationUrl()}>
-      <div className="cta-button bg-demoActionColor w-full md:w-60 h-10 flex items-center mt-6 md:mt-12">
-        <span className="text-center  w-full">ADD NEW LOCATION </span>
-      </div>
+      <MediumPrimaryButton title="ADD NEW LOCATION" className="mt-6"/>
     </Link>
   )
 }

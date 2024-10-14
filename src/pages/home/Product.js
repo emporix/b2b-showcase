@@ -27,7 +27,7 @@ const EachProduct = (props) => {
           {props.stock} Stock
         </div>
         <div className="flex h-5">
-          <ReactStars size={16} value={props.rating} color2={'#00B6ED'} />(
+          <ReactStars size={16} value={props.rating} color2={'#eb0000'} />(
           {props.total_count})
         </div>
       </div>
@@ -157,7 +157,7 @@ const ProductSlider = ({ auth }) => {
               {item.stock} Stock
             </div>
             <div className="flex h-5">
-              <ReactStars size={16} value={item.rating} color2={'#00B6ED'} />(
+              <ReactStars size={16} value={item.rating} color2={'#eb0000'} />(
               {item.count})
             </div>
           </div>

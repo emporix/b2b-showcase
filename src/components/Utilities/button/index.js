@@ -11,7 +11,7 @@ export const LargePrimaryButton = ({
   return (
     <button
       disabled={disabled}
-      className={'large-primary-btn rounded ' + (className ? className : '')}
+      className={'large-primary-btn rounded disabled:text-demoGray disabled:border-demoGray text-demoGrayDarkest border-2 border-demoActionColor hover:text-white hover:bg-demoSecondaryDimmed hover:border-transparent' + (className ? className : '')}
       onClick={onClick}
     >
       {title}
@@ -28,7 +28,7 @@ export const MediumPrimaryButton = ({
   return (
     <button
       disabled={disabled}
-      className={'medium-primary-btn ' + (className ? className : '')}
+      className={'medium-primary-btn disabled:text-demoGray disabled:border-demoGray text-demoGrayDarkest color-demoActionColor border-2 border-demoActionColor hover:text-white hover:bg-demoSecondaryDimmed hover:border-transparent' + (className ? className : '')}
       onClick={onClick}
     >
       {title}

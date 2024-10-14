@@ -52,14 +52,14 @@ const AddressItem = ({ address, onRemove, onEdit }) => {
       <div className="col-start-3 col-span-1 flex justify-end">
         <button
           onClick={() => onEdit(address.id)}
-          className="inline-block align-middle account-edit-btn"
+          className="inline-block align-middle account-edit-btn !text-demoActionColor hover:!text-demoGrayDarkest"
         >
           Edit
         </button>
         <span className="mx-2">|</span>
         <button
           onClick={() => onRemove(address.id)}
-          className="inline-block align-middle account-edit-btn"
+          className="inline-block align-middle account-edit-btn !text-demoActionColor hover:!text-demoGrayDarkest"
         >
           Remove
         </button>
