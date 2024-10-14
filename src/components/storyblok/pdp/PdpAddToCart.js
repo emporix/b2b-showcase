@@ -108,7 +108,7 @@ const PdpAddToCart = ({ blok, ...restProps }) => {
   }
 
   return (<div {...storyblokEditable(blok)}>
-    {canPurchase ?
+    {console.log(blok) && canPurchase ?
       (<div className="flex flex-row">
         <div className="quantity">
           <Quantity
@@ -157,11 +157,11 @@ const PdpAddToCart = ({ blok, ...restProps }) => {
           className="text-xl font-bold border-b border-demoGray pb-1 mb-4">{blok.title}</div>
         <div className="flex flex-row mb-2">
           <img className="w-44 bg-demoGrayBrightest" src={product.src} alt="" />
-          <div className="flex flex-col">
+          <div className="flex flex-col ml-4">
             <div className="">{brand?.name}</div>
             <div className="font-bold mb-6">{product.name}</div>
             <div>{currentLanguage === 'de' ? 'Einzelpreis' : 'Unit price'}</div>
-            <div className="font-bold">{ePrice} €</div>
+            <div className="font-bold text-demoAlerting">{ePrice} €</div>
           </div>
         </div>
         <div className="mb-5">{blok.text}</div>
@@ -171,13 +171,13 @@ const PdpAddToCart = ({ blok, ...restProps }) => {
             'E-Mail-Adresse' :
             'E-Mail Address'}<span className="text-demoAlerting"> *</span></label>
           <input id="email" name="email"
-                 className="mb-4 focus:border-demoSecondaryDimmed rounded border-demoGrayDarker"
+                 className="mb-4 focus:border-demoSecondaryDimmed focus:ring-transparent rounded border-demoGrayDarker"
                  type={'email'} value={formData.email}
                  required
                  onChange={handleInputChange}></input>
           <div className="mb-4 flex flex-row">
             <input id="privacyPolicy" name="privacyPolicy"
-                   className="focus:ring-0 text-demoSecondaryDimmed border-demoGrayDarker rounded w-6 h-6"
+                   className="focus:ring-0 text-demoSecondaryDimmed border-demoGrayDarker focus:ring-demoActionColor focus:border-demoActionColor rounded w-6 h-6"
                    type={'checkbox'} value={formData.privacyPolicy}
                    required
                    onChange={handleInputChange} />
