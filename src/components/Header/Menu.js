@@ -14,29 +14,36 @@ const Menu = ({ blok }) => {
       <div
         className="z-10 mx-4 xl:mx-auto w-full max-w-screen-xl mt-[56px] flex flex-row">
         <div
-          className="flex w-[233px] h-full bg-demoMainNavLeftColor justify-between items-center pr-[8px]">
+          className="flex w-[233px] h-full bg-demoMainNavLeftColor justify-between items-center pr-[8px]"
+          onMouseLeave={() => setShowMegaMenuContent(false)}
+        >
           <Logo onMouseOver={() => setShowMegaMenuContent(false)} />
         </div>
         <div
-          className="flex w-full pl-[8px] justify-between items-center bg-demoMainNavRightColor">
+          className="flex w-full pl-[8px] justify-between items-center bg-demoMainNavRightColor"
+          onMouseLeave={() => setShowMegaMenuContent(false)}
+        >
           <span
-            className="hidden lg:block text-demoActionColor font-bold tracking-[-0.075em] text-[46px] mt-[14px]">Shop</span>
+            className="hidden lg:block text-demoActionColor font-bold tracking-[-0.075em] text-[46px] mt-[14px]"
+            onMouseOver={() => setShowMegaMenuContent(true)}
+          >
+            Shop
+          </span>
           <div className="mt-[2px]">
             <MegaNav
               blok={blok}
               showMegaMenuContent={showMegaMenuContent}
               setShowMegaMenuContent={setShowMegaMenuContent}
+              onMouseLeave={() => setShowMegaMenuContent(false)}
             />
           </div>
           <div
             className="hidden lg:flex ml-20"
             onMouseOver={() => setShowMegaMenuContent(false)}
           >
-            <>
-              {localStorage.getItem(APPLICATION_ID) &&
-                (<AlgoliaSearchbar />)
-              }
-            </>
+            {localStorage.getItem(APPLICATION_ID) && (
+              <AlgoliaSearchbar />
+            )}
           </div>
         </div>
       </div>
