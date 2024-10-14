@@ -116,7 +116,7 @@ const EachProduct = ({ item, available, rating, productCount }) => {
           {isLoggedIn ? (
             <>
               <div
-                className="text-[30px] font-aldiCondensed text-demoHeadlines font-bold">
+                className="text-[30px] font-demoCorporateFont text-demoHeadlines font-bold">
                 {price !== null ? (
                   <>
                     <CurrencyBeforeValue value={price} />
@@ -132,7 +132,7 @@ const EachProduct = ({ item, available, rating, productCount }) => {
               </div>
             </>
           ) : (
-            <div className="text-[30px] font-aldiCondensed text-demoHeadlines pt-4">
+            <div className="text-[30px] font-demoCorporateFont text-demoHeadlines pt-4">
               {price !== null ? (
                 <>
                   <CurrencyBeforeValue value={price} />

@@ -5,7 +5,7 @@ module.exports = {
   theme: {
     extend: {
       fontFamily: {
-        'aldiCondensed': ['FFDINWebProCondensed'],
+        'demoCorporateFont': ['Helvetica Neue', 'Helvetica', 'Arial', 'sans-serif'],
       },
       colors: {
         white: '#FFFFFF',

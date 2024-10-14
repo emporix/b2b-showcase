@@ -401,7 +401,7 @@ const Navbar = ({blok}) => {
             <div className="flex">
               <Link to={loginUrl()} className="flex">
                 <img src={logo} alt=""></img>
-                <div className="px-4 text-white text-[40px] mt-[-12px] font-normal font-aldiCondensed">ALDI</div>
+                <div className="px-4 text-white text-[40px] mt-[-12px] font-normal font-demoCorporateFont">ALDI</div>
               </Link>
             </div>
             <div className="flex  text-white text-center pt-2" onClick={handleNavOpen}>
@@ -417,7 +417,7 @@ const Navbar = ({blok}) => {
       <div className="mobile_only_flex text-white">
         <Link to={homeUrl()} className="flex">
           <img src={logo} alt=""></img>
-          <p className="font-normal font-aldiCondensed pb-1.5 text-[40px] px-3 pt-1">
+          <p className="font-normal font-demoCorporateFont pb-1.5 text-[40px] px-3 pt-1">
             ALDI
           </p>
         </Link>

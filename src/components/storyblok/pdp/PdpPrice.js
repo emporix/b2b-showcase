@@ -19,14 +19,14 @@ const PdpPrice = ({ blok, ...restProps }) => {
   return (
     <div className="flex flex-col text-demoHeadlines" {...storyblokEditable()}>
       {isDiscounted && <div
-        className="line-through font-aldiCondensed font-bold text-xl">{currentLanguage ===
+        className="line-through font-demoCorporateFont font-bold text-xl">{currentLanguage ===
       'de' ? 'UVP' : 'USP'} {product.price.originalValue}</div>}
       <div className="mb-1 flex flex-row">
         <div
-          className="text-4xl font-aldiCondensed font-bold">{ePrice.toFixed(2)}</div>
+          className="text-4xl font-demoCorporateFont font-bold">{ePrice.toFixed(2)}</div>
         <div>*</div>
         {isDiscounted && <div
-          className="ml-5 self-center bg-demoAlerting h-8 text-white font-aldiCondensed px-1 font-bold text-[30px] leading-[30px]">{`-${discount} %`}</div>}
+          className="ml-5 self-center bg-demoAlerting h-8 text-white font-demoCorporateFont px-1 font-bold text-[30px] leading-[30px]">{`-${discount} %`}</div>}
       </div>
       <div className="flex flex-row text-xs">
         <div className="text-demoGrayDarkest">{getVAT(currentLanguage, true)}</div>
