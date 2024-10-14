@@ -20,8 +20,8 @@ const Menu = ({ blok }) => {
         <div
           className="flex w-full pl-[8px] justify-between items-center bg-demoMainNavRightColor">
           <span
-            className="hidden lg:block text-demoActionColor font-bold font-aldiCondensed tracking-[2px] text-[42px]">Shop</span>
-          <div className="mt-[-10px]">
+            className="hidden lg:block text-demoActionColor font-bold tracking-[-0.075em] text-[46px] mt-[14px]">Shop</span>
+          <div className="mt-[2px]">
             <MegaNav
               blok={blok}
               showMegaMenuContent={showMegaMenuContent}
