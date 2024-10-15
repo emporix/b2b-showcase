@@ -6,7 +6,8 @@ const Checkbox = ({ title, value, onChange }) => {
   return (
     <Container className="gap-2 items-center">
       <input
-        className="checkbox"
+        className="checkbox bg-transparent ring-transparent hover:bg-demoSecondaryDimmed focus:bg-demoSecondaryDimmed checked:bg-demoSecondaryDimmed focus:ring-demoActionColor selected:bg-demoSecondaryDimmed"
+
         type="checkbox"
         checked={value}
         onChange={onChange}

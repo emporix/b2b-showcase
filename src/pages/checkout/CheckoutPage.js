@@ -36,7 +36,7 @@ const PaymentAction = ({ action, disabled }) => {
     <>
       <DesktopMDContainer>
         <LargePrimaryButton
-          className="md:block hidden cta-button bg-demoActionColor"
+          className="md:block hidden"
           title="REVIEW ORDER"
           disabled={disabled}
           onClick={action}
@@ -59,7 +59,7 @@ const ReviewOrderAction = ({ action }) => {
     <>
       <DesktopMDContainer>
         <LargePrimaryButton
-          className="md:block hidden cta-button bg-demoActionColor"
+          className="md:block hidden"
           title="CONFIRM AND PAY"
           onClick={action}
         />
@@ -546,7 +546,7 @@ const CheckoutPage = () => {
                       <DesktopMDContainer>
                         <Coupon />
                         <LargePrimaryButton
-                          className="md:block hidden cta-button bg-demoActionColor"
+                          className="md:block hidden"
                           title="GO TO PAYMENT"
                           disabled={user ? (addresses.length === 0 || shippingMethod == null) : shippingMethod == null}
                           onClick={handlePayment}

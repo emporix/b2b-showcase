@@ -14,6 +14,7 @@ import { getBrand } from '../../../services/product/brand.service'
 import FormattedTextBox from '../FormattedTextBox'
 import { api } from '../../../services/axios'
 import { formatPrice, isPriceValid } from '../../../helpers/price'
+import { LargePrimaryButton } from '../../Utilities/button'
 
 const PdpAddToCart = ({ blok, ...restProps }) => {
   const product = restProps.product
