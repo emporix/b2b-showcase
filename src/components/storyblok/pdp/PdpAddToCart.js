@@ -108,7 +108,7 @@ const PdpAddToCart = ({ blok, ...restProps }) => {
   }
 
   return (<div {...storyblokEditable(blok)}>
-    {console.log(blok) && canPurchase ?
+    {canPurchase ?
       (<div className="flex flex-row">
         <div className="quantity">
           <Quantity
