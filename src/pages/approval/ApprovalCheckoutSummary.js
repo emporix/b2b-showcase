@@ -35,7 +35,7 @@ const ReviewOrderAction = ({ action }) => {
     <>
       <DesktopMDContainer>
         <LargePrimaryButton
-          className="md:block hidden cta-button bg-demoActionColor"
+          className="md:block hidden"
           title="CONFIRM AND PAY"
           onClick={action}
         />
@@ -43,7 +43,7 @@ const ReviewOrderAction = ({ action }) => {
 
       <MobileMDContainer>
         <LargePrimaryButton
-          className="cta-button bg-demoActionColor"
+          className=""
           title="CONFIRM AND PAY"
           onClick={action}
         />

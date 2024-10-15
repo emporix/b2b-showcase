@@ -17,7 +17,7 @@ li.item-active {
   @apply h-[44px] p-3 rounded bg-transparent border-2 border-demoActionColor text-demoGrayDarkest text-[16px]/[24px] font-bold;
 }
 li.index-item-active {
-  @apply lg:font-bold lg:text-lightBlue;
+  @apply h-[44px] p-3 rounded bg-transparent border-2 border-demoActionColor text-demoGrayDarkest text-[16px]/[24px] font-bold;
 }
 .border-bottom-gray {
   @apply border-lightGray border-b border-solid;

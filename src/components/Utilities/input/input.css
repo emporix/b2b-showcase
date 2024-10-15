@@ -1,3 +1,3 @@
 .text-input-normal {
-  @apply px-3 py-2 rounded-[1px] border border-bgWhite hover:border-lightBlue focus:outline-none focus:border-lightBlue text-black;
+  @apply px-3 py-2 rounded border border-bgWhite hover:border-demoActionColor focus:outline-none focus:border-demoActionColor focus:ring-transparent text-demoGrayDarkest;
 }

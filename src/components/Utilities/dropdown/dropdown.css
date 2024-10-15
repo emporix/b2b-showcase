@@ -2,9 +2,7 @@
   @apply w-full;
 }
 .dropdown1 .react-dropdown-select {
-  border: 0px;
-  padding: 0px !important;
-  border-bottom: 1px solid #000000;
+  @apply p-0 border-none border-b border-demoGrayDarkest
 }
 .dropdown1 .react-dropdown-select[aria-expanded='true'] {
   border: 0px !important;

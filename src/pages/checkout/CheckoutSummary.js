@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom'
 
 import './checkout.css'
 import { homeUrl, myAccountMyOrders } from '../../services/service.config'
-import { LargePrimaryButton } from '../../components/Utilities/button'
+import { LargePrimaryButton, MediumPrimaryButton } from '../../components/Utilities/button'
 import { useAuth } from 'context/auth-provider'
 import { usePayment } from './PaymentProvider'
 
@@ -24,7 +24,7 @@ const CheckoutSummary = ({ setFinal, order }) => {
         transactionToken: order?.paymentDetails?.authorizationToken,
         challengeIframeClasses: 'fitToModal',
       })
-      var on3DSstatusUpdatesFn = function (threeDsStatusEvent) {
+      var on3DSstatusUpdatesFn = function(threeDsStatusEvent) {
         if (threeDsStatusEvent.action === 'succeeded') {
           setChallenge(false)
         } else if (threeDsStatusEvent.action === 'error') {
@@ -72,19 +72,13 @@ const CheckoutSummary = ({ setFinal, order }) => {
                 </div>
                 <div>
                   {order?.paymentDetails?.externalPaymentRedirectURL ? (
-                    <button
-                      className="bg-primaryBlue text-[white] px-6 py-0 h-[50px] text-[14px] leading-[14px] md:w-[400px] w-full"
-                      onClick={() => {
-                        window.location.href =
-                          order?.paymentDetails?.externalPaymentRedirectURL
-                      }}
-                    >
-                      FINISH PAYMENT
-                    </button>
+                    <LargePrimaryButton title="FINISH PAYMENT" className="w-full"
+                                        onClick={() => {
+                                          window.location.href =
+                                            order?.paymentDetails?.externalPaymentRedirectURL
+                                        }} />
                   ) : (
-                    <button className="cta-button bg-demoActionColor px-6 py-0 h-[50px] text-[14px] leading-[14px] md:w-[400px] w-full">
-                      VIEW INVOICE
-                    </button>
+                    <LargePrimaryButton title="VIEW INVOICE" className="w-full" />
                   )}
                 </div>
               </div>
@@ -94,6 +88,7 @@ const CheckoutSummary = ({ setFinal, order }) => {
                 <span>
                   Your order number is:
                   <span className="font-bold"> #{order.orderId}</span>
+
                 </span>
               </div>
             </div>
@@ -129,7 +124,7 @@ const CheckoutSummary = ({ setFinal, order }) => {
             <div className="pt-12 w-full flex gap-8 checkout-actions">
               <Link to={homeUrl()}>
                 <LargePrimaryButton
-                  className="md:block hidden cta-button bg-demoActionColor"
+                  className="md:block hidden"
                   title="BACK TO HOME PAGE"
                   onClick={() => setFinal(false)}
                 />
@@ -137,7 +132,7 @@ const CheckoutSummary = ({ setFinal, order }) => {
               {user && (
                 <Link to={myAccountMyOrders()}>
                   <LargePrimaryButton
-                    className="md:block hidden cta-button bg-demoActionColor"
+                    className="md:block hidden"
                     title="GO TO ORDERS"
                     onClick={() => setFinal(false)}
                   />

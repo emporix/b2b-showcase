@@ -171,7 +171,7 @@ const PaymentContent = ({cart}) => {
       <GridLayout className="payment-method-wrapper gap-6">
         <TextBold1>Payment Methods</TextBold1>
         <RadioGroup active="radio1">
-          <GridLayout className="gap-4 border border-quartz rounded p-6">
+          <GridLayout className="gap-4 border border-demoGray rounded p-6">
             <PaymentSpreedly props={{customerId : cart.customerId, grossValue : cart.subtotalAggregate.grossValue, currency: cart.subtotalAggregate.currency}} />
           </GridLayout>
         </RadioGroup>

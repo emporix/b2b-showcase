@@ -11,7 +11,7 @@ export const LargePrimaryButton = ({
   return (
     <button
       disabled={disabled}
-      className={'large-primary-btn rounded disabled:text-demoGray disabled:border-demoGray text-demoGrayDarkest border-2 border-demoActionColor hover:text-white hover:bg-demoSecondaryDimmed hover:border-transparent' + (className ? className : '')}
+      className={'large-primary-btn ' + (className ? className : '')}
       onClick={onClick}
     >
       {title}
