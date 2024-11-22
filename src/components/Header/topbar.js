@@ -127,9 +127,7 @@ const TopNav = ({ title }) => {
       className={
         title === 'home'
           ? 'desktop_only_flex w-full md:h-36 absolute z-10 top-nav-bar'
-          : title === ''
-          ? 'desktop_only_flex h-36 top-nav-bar'
-          : 'desktop_only_flex w-full md:h-60 absolute z-10 top-nav-bar'
+          :  'desktop_only_flex h-36 top-nav-bar'
       }
       style={{'backgroundColor': '#001823 !important'}}
     >
@@ -160,11 +158,6 @@ const TopNav = ({ title }) => {
           </div>
         </div>
       </div>
-      {nav_title_condition && (
-        <div className="md:absolute top-44 left-24 text-eerieBlack font-inter font-semibold text-[24px]/[32px]">
-        {title}
-        </div>
-      )}
     </div>
   )
 }

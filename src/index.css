@@ -79,6 +79,7 @@ code {
 
 .login_container {
   @apply w-full;
+  background-color: #001923 !important;
 }
 
 .page-wrapper {
@@ -95,6 +96,7 @@ code {
 
 .signup_container {
   @apply w-full h-[1980px];
+  background-color: #001923 !important;
 }
 .border-grey-bottom {
   /* @apply border-b border-lightGray; */

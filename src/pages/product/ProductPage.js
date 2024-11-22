@@ -52,7 +52,7 @@ const ProductPage = () => {
           toggleSidebar={handleSideFilterContent}
           setFilterItemFunc={setFilterItemFunc}
         />
-        <div className="md:pt-16 mt-44 w-auto">
+        <div className="mt-2 w-auto">
           <FilterButton
             filtercount={4}
             onClick={() => {

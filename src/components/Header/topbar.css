@@ -174,3 +174,8 @@ input::-webkit-search-cancel-button {
   position: relative;
   bottom: 0;
 }
+
+
+.top-nav-bar {
+  background-color: #001823 !important;
+}
