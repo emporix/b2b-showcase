@@ -8,14 +8,14 @@ import { useCustomStyleContext } from 'context/custom-styles-provider'
 
 const About = () => {
   const { fields } = useContentful()
-  const {banner} = useCustomStyleContext()
+  const { banner } = useCustomStyleContext()
 
   const [introImageUrl, setIntroImageUrl] = useState('')
 
   const { mainImageRight } = fields
 
   useEffect(() => {
-    ;(async () => {
+    ; (async () => {
       if (
         mainImageRight &&
         mainImageRight.fields &&
@@ -28,26 +28,21 @@ const About = () => {
   }, [mainImageRight])
 
   return (
-    <div
-      // style={{ backgroundImage: `url(${landingBg})` }}
-      className="home_about"
-    >
-      {!banner && (
-        <div className="mx-6 md:ml-16 mt-[48px] md:mt-[114px] w-[492px]">
-          <DemoBanner />
-          <div className="text-[48px] md:text-[48px] font-inter font-semibold md:leading-[64px] leading-[56px]">
-            {fields.mainTitle}
-          </div>
-          <div className="text-[18px] leading-[30px] font-inter font-normal pt-[24px] md:max-w-[525px]">
-            {fields.companyMission}
-          </div>
-          <div className="pt-[44px] desktop_only text-sm">
-              <button className="px-6 py-4 font-semibold bg-yellow text-eerieBlack rounded">
-                {fields.startShoppingButtonLabel}
-              </button>
-          </div>
-        </div>
-      ) }
+    <div className="home_about">
+      <video
+        className="mega-banner-media--video"
+        data-object-fit="cover"
+        autoPlay
+        loop
+        muted
+        playsInline
+      >
+        <source
+          type="video/mp4"
+          src="https://static.commerce.aws.flender.cloud/sys-master/images/hca/hf2/10461905322014/40sek_A_FHD.mp4"
+        />
+        Your browser does not support the video tag.
+      </video>
     </div>
   )
 }

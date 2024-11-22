@@ -126,13 +126,14 @@ const TopNav = ({ title }) => {
     <div
       className={
         title === 'home'
-          ? 'desktop_only_flex w-full md:h-36 absolute z-10 bg-white'
+          ? 'desktop_only_flex w-full md:h-36 absolute z-10 top-nav-bar'
           : title === ''
-          ? 'desktop_only_flex h-36'
-          : 'desktop_only_flex w-full md:h-60 absolute z-10 bg-white'
+          ? 'desktop_only_flex h-36 top-nav-bar'
+          : 'desktop_only_flex w-full md:h-60 absolute z-10 top-nav-bar'
       }
+      style={{'backgroundColor': '#001823 !important'}}
     >
-      <div className="px-10 pt-[76px] w-full  flex xl:px-24  h-36 border border-herringSilver">
+      <div className="px-10 pt-[76px] w-full  flex xl:px-24  h-36 border">
         <div
           className="menu-wrapper flex w-full"
           onMouseLeave={() => {

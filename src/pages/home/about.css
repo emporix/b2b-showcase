@@ -2,9 +2,17 @@
   background: url('../../assets/mainpage.svg') no-repeat center;
   height: 36rem;
 } */
-.home_about {
-    background: url('../../assets/mainpage.png') no-repeat;
-    height: 36rem;
-    background-size: cover;
-    margin-top: 9rem;
+
+  .home_about {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+  }
+  
+  .full-width-video {
+    width: 100%;
+    height: auto;
+    object-fit: cover; /* Ensures the video covers its container */
   }
