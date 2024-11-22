@@ -4,9 +4,12 @@ import DemoBanner from './DemoBanner'
 import landingBg from '../../assets/landing_bg.png'
 import './about.css'
 import { Box } from '@mui/material'
+import { useCustomStyleContext } from 'context/custom-styles-provider'
 
 const About = () => {
   const { fields } = useContentful()
+  const {banner} = useCustomStyleContext()
+
   const [introImageUrl, setIntroImageUrl] = useState('')
 
   const { mainImageRight } = fields
@@ -29,7 +32,8 @@ const About = () => {
       // style={{ backgroundImage: `url(${landingBg})` }}
       className="home_about"
     >
-    <div className="mx-6 md:ml-16 mt-[48px] md:mt-[114px] w-[492px]">
+      {!banner && (
+        <div className="mx-6 md:ml-16 mt-[48px] md:mt-[114px] w-[492px]">
           <DemoBanner />
           <div className="text-[48px] md:text-[48px] font-inter font-semibold md:leading-[64px] leading-[56px]">
             {fields.mainTitle}
@@ -42,7 +46,8 @@ const About = () => {
                 {fields.startShoppingButtonLabel}
               </button>
           </div>
-        </div>      
+        </div>
+      ) }
     </div>
   )
 }

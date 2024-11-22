@@ -3,6 +3,7 @@ import logo from '../../assets/local_shipping.svg'
 import electricBolt from '../../assets/electric_bolt.svg'
 import star from '../../assets/stars.svg'
 import verifiedUser from '../../assets/verified_user.svg'
+import { useCustomStyleContext } from 'context/custom-styles-provider'
 
 const EachService = (props) => {
   return (
@@ -20,7 +21,13 @@ const EachService = (props) => {
   )
 }
 const Service = () => {
-  return (
+  const { services } = useCustomStyleContext()
+
+  return services?.overriden ? (
+    <div
+      dangerouslySetInnerHTML={{ __html: services.content }}
+    />
+  ) : (
     <div className="home_service h-[366px]">
       <EachService
         src={logo}
@@ -44,6 +51,7 @@ const Service = () => {
       />
     </div>
   )
+
 }
 
 export default Service

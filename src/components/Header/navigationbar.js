@@ -241,7 +241,7 @@ const Navbar = () => {
   return (
     <header className="header">
       {/* Dektop language and currency selection */}
-      <div className="desktop_only_flex font-inter text-sm text-white">
+      <div className="desktop_only_flex font-inter text-sm text-white header-font">
         <div className='flex items-center'>
           <span className='world-icon'></span>
           {fields.siteLabel}:
@@ -302,7 +302,7 @@ const Navbar = () => {
       </div>
 
       {/* Dektop navigation selection */}
-      <div className="desktop_only_flex font-inter font-normal text-sm text-white">
+      <div className="desktop_only_flex font-inter font-normal text-sm text-white header-font">
         {!user ? (
           <ul className="flex">
             <li className="px-4 flex">
@@ -362,7 +362,7 @@ const Navbar = () => {
                 <AiOutlineShoppingCart size={20} />
               )}
 
-              <div className="pl-[17.5px] text-white flex">
+              <div className="pl-[17.5px] text-white header-font flex">
                 <CurrencyBeforeValue
                   currency={cartCurrency}
                   value={cartTotalPrice}
@@ -378,7 +378,7 @@ const Navbar = () => {
       </div>
 
       {/* mobile menu selection */}
-      <div className="mobile_only_flex pl-[30.25px]  text-white cursor-pointer">
+      <div className="mobile_only_flex pl-[30.25px]  text-white header-font cursor-pointer">
         {!open ? <AiOutlineMenu size={27.5} onClick={handleNavOpen} /> : null}
         {/* absolut mobile navigation */}
         <div
@@ -406,7 +406,7 @@ const Navbar = () => {
         </div>
       </div>
 
-      <div className="mobile_only_flex text-white">
+      <div className="mobile_only_flex text-white header-font">
         <Link to={homeUrl()} className="flex">
           <img src="/atom.png"></img>
           <p className="font-medium text-xl px-3 pt-1">
@@ -415,7 +415,7 @@ const Navbar = () => {
         </Link>
       </div>
 
-      <div className="mobile_only text-white pr-[30px]">
+      <div className="mobile_only text-white header-font pr-[30px]">
         <AiOutlineSearch size={20} />
       </div>
     </header>

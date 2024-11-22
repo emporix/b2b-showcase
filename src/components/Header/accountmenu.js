@@ -27,7 +27,7 @@ export default function AccountMenu(props) {
             <button
                 id="account-menu"
                 onClick={() => setIsOpen(!isOpen)}
-                className="inline-flex justify-center w-full text-sm text-white focus:outline-none"
+                className="inline-flex justify-center w-full text-sm text-white header-font focus:outline-none"
             >
                 <HiOutlineUserCircle size={20} />
                 <div className="pl-2">{props.name}</div>

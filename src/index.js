@@ -13,6 +13,7 @@ import { ContentfulProvider } from './context/contentful-provider'
 import CartProvider from 'context/cart-provider'
 import CurrencyProvider from 'context/currency-context'
 import ProductListProvider from 'context/product-list-context'
+import { CustomSiteProvider } from 'context/custom-styles-provider'
 
 
 const root = ReactDOM.createRoot(document.getElementById('root'))
@@ -21,19 +22,21 @@ root.render(
         <AuthProvider>
             <AppContextProvider>
                 <SitesProvider>
-                    <CartProvider>
-                        <CurrencyProvider>
-                            <QuotesProvider>
-                                <LanguageProvider>
-                                    <ContentfulProvider>
-                                        <ProductListProvider>
-                                            <App />
-                                        </ProductListProvider>
-                                    </ContentfulProvider>
-                                </LanguageProvider>
-                            </QuotesProvider>
-                        </CurrencyProvider>
-                    </CartProvider>
+                    <CustomSiteProvider>                    
+                        <CartProvider>
+                            <CurrencyProvider>
+                                <QuotesProvider>
+                                    <LanguageProvider>
+                                        <ContentfulProvider>
+                                            <ProductListProvider>
+                                                <App />
+                                            </ProductListProvider>
+                                        </ContentfulProvider>
+                                    </LanguageProvider>
+                                </QuotesProvider>
+                            </CurrencyProvider>
+                        </CartProvider>
+                    </CustomSiteProvider>
                 </SitesProvider>
             </AppContextProvider>
         </AuthProvider>

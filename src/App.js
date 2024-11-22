@@ -67,15 +67,15 @@ function App() {
     <Router>
       <Routes>
         <Route
-            path="auth0"
-            exact
-            element={<SocialLoginCallback />}
-          />
-          <Route
-            path="ory"
-            exact
-            element={<SocialLoginCallback />}
-          />
+          path="auth0"
+          exact
+          element={<SocialLoginCallback />}
+        />
+        <Route
+          path="ory"
+          exact
+          element={<SocialLoginCallback />}
+        />
         <Route path="/:tenant">
           <Route index exact element={<Home />} />
 
