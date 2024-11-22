@@ -84,6 +84,7 @@ export const cartUrl = () => `/${getTenant()}/cart`
 export const loginUrl = () => `/${getTenant()}/login`
 export const homeUrl = () => `/${getTenant()}`
 export const signupUrl = () => `/${getTenant()}/signup`
+export const forgotPasswordUrl = () => `/${getTenant()}/forgot-password`
 export const productUrl = () => `/${getTenant()}/product`
 export const addTenantToUrl = (url) => `/${getTenant()}/${url}`
 

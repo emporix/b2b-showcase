@@ -1,4 +1,6 @@
-import React from 'react'
+import React, { useState, useRef, useEffect } from 'react'
+import { useCustomStyleContext } from 'context/custom-styles-provider'
+
 import { Link } from 'react-router-dom'
 import { addTenantToUrl } from '../../services/service.config'
 
@@ -6,7 +8,7 @@ const EachCategory = (props) => {
   return (
     <div>
       <div className="before:bg-yellow before:w-[12px] before:h-[312px] before:absolute before:rounded-l-[4px]">
-        <img src={props.src} alt="" className="w-[276px] h-[312px] object-cover rounded-l-[4px]"/>
+        <img src={props.src} alt="" className="w-[276px] h-[312px] object-cover rounded-l-[4px]" />
       </div>
       <div className="pt-6 font-inter font-semibold text-[20px] leading-[32px]">
         {props.title}
@@ -19,7 +21,39 @@ const EachCategory = (props) => {
 }
 
 const Category = () => {
-  return (
+  const iframeRef = useRef(null);
+
+  const { productCarousel } = useCustomStyleContext()
+
+  const adjustIframeHeight = () => {
+    if (iframeRef.current) {
+      const iframeDocument = iframeRef.current.contentDocument || iframeRef.current.contentWindow.document;
+      iframeRef.current.style.height = (iframeDocument.body.scrollHeight * 1.2) + 'px';
+    }
+  };
+
+  useEffect(() => {
+    if (iframeRef.current) {
+      iframeRef.current.addEventListener('load', adjustIframeHeight);
+    }
+
+    // Clean up event listener on unmount
+    return () => {
+      if (iframeRef.current) {
+        iframeRef.current.removeEventListener('load', adjustIframeHeight);
+      }
+    };
+  }, [productCarousel?.content]);
+
+  return productCarousel?.overriden ? (
+    <div dangerouslySetInnerHTML={{ __html: productCarousel?.content }} />
+     
+    // <iframe
+    //   ref={iframeRef}
+    //   className="w-full"
+    //   srcDoc={productCarousel?.content}
+    // />
+  ) : (
     <div className="home_category">
       <div className="desktop_only font-inter font-bold text-2xl text-center">
         Explore our products

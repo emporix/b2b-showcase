@@ -207,7 +207,10 @@ export const CartProductImageAndReadOnlyQuantity = ({ cartItem }) => {
 
 export const CartProductBasicInfo = ({ cart }) => {
   const { getLocalizedValue } = useLanguage()
-  const yrnParts = cart.itemYrn.split(";")
+  if (cart.itemYrn === undefined) {
+    cart.itemYrn = ('urn:yaas:saasag:caasproduct:product:'+localStorage.getItem("tenant")+';'+cart.product.id)
+  }
+  const yrnParts = cart.itemYrn?.split(";")
 
   return (
     <div className="cart-product-basic-info">
@@ -338,7 +341,7 @@ export const CartVat = ({ value, taxPercentage, currency, taxValue }) => {
       </span>
       <span>
         <CurrencyBeforeValue
-          value={effectiveTaxValue}
+          value={isNaN(effectiveTaxValue) ? taxValue : effectiveTaxValue}
           currency={currency}
         />
       </span>
@@ -417,24 +420,32 @@ export const getShippingCost = (shippingMethod, cartAccount) => {
   return (shippingMethod != null && !hasFreeShipping(cartAccount)) ? shippingMethod?.grossFee : 0
 }
 
-export const getTotalPrice = (value, taxPercentage, shippingCost) => {
-  const price = getSubtotalWithVat(value, taxPercentage)
-  return !isNaN(price) ? (Number(price) + shippingCost) : 0
-}
-
-export const getSubtotalWithVat = (value, taxPercentage) => {
-  const taxValue = value * (taxPercentage / 100)
-  return (value + taxValue).toFixed(2)
+export const getTotalPrice = (subTotalWithVat, shippingCost) => {
+  return !isNaN(subTotalWithVat) ? (Number(subTotalWithVat) + shippingCost) : 0
 }
 
 export const hasFreeShipping = (cartAccount) => {
   return cartAccount?.discounts?.some(discount => discount.discountType === "FREE_SHIPPING")
 }
 
+export const getTaxRates = (taxLines) => {
+  return taxLines.map(line => line.rate).join('%, ')
+}
+
+export const getTaxWithDiscounts = (items) => {
+  const taxWithDiscounts = items.reduce((totalTax, el) => {
+    const itemTaxValue = (el.itemTaxInfo[0]?.netValue - el.totalDiscount?.amount) * (el.itemTaxInfo[0]?.rate / 100)
+    return Number(itemTaxValue) + Number(totalTax)
+  }, 0)
+  return Number(taxWithDiscounts.toFixed(2))
+}
+
 export const CartActionPanel = ({ action, showShipping }) => {
   const { cartAccount, shippingMethod } = useCart()
   const user = JSON.parse(localStorage.getItem(USER))
-  const shippingCost = showShipping !== false ? getShippingCost(shippingMethod, cartAccount) : 0
+  const shippingCost = getShippingCost(shippingMethod, cartAccount)
+  const netValueWithDiscount = Number(cartAccount?.subtotalAggregate?.netValue - cartAccount?.totalDiscount?.amount)
+  const taxWithDiscounts = getTaxWithDiscounts(cartAccount?.items)
   return (
     <div className="cart-action-panel">
       <GridLayout className="gap-4">
@@ -457,9 +468,7 @@ export const CartActionPanel = ({ action, showShipping }) => {
               </span>
               <span id="discount-value" className="font-semibold text-green-600">
                 <CurrencyBeforeValue
-                  value={
-                    Math.trunc(cartAccount.totalDiscount.amount * 100) / 100
-                  }
+                  value={cartAccount?.totalDiscount?.amount}
                   currency={cartAccount.totalDiscount.currency}
                 />
               </span>
@@ -473,10 +482,10 @@ export const CartActionPanel = ({ action, showShipping }) => {
               cartAccount?.taxAggregate &&
               cartAccount?.taxAggregate.lines.length > 0 && (
                 <CartVat
-                  value={cartAccount?.totalPrice?.amount}
-                  taxPercentage={cartAccount?.taxAggregate.lines[0].rate}
+                  value={netValueWithDiscount}
+                  taxPercentage={getTaxRates(cartAccount?.taxAggregate.lines)}
                   currency={cartAccount?.currency}
-                  taxValue={cartAccount?.subtotalAggregate?.taxValue}
+                  taxValue={taxWithDiscounts}
                 />
               )}
           </LayoutBetween>
@@ -484,7 +493,7 @@ export const CartActionPanel = ({ action, showShipping }) => {
             {cartAccount?.subtotalAggregate &&
               cartAccount?.subtotalAggregate.grossValue && (
                 <CartSubTotalIncludeVat
-                  grossValue={getSubtotalWithVat(cartAccount?.totalPrice?.amount, cartAccount?.taxAggregate?.lines[0].rate)}
+                  grossValue={netValueWithDiscount + taxWithDiscounts}
                   currency={cartAccount.currency}
                 />
               )}
@@ -503,7 +512,7 @@ export const CartActionPanel = ({ action, showShipping }) => {
           <div className="cart-total-price-wrapper">
             <LayoutBetween>
               <CartTotalPrice
-                totalValue={getTotalPrice(cartAccount?.totalPrice?.amount, cartAccount?.taxAggregate?.lines[0].rate, shippingCost)}
+                totalValue={getTotalPrice(netValueWithDiscount + taxWithDiscounts, shippingCost)}
                 currency={cartAccount.currency}
               />
             </LayoutBetween>

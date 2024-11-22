@@ -1,7 +1,25 @@
-import React, { useState } from 'react'
+import React, { useState, useRef, useEffect } from 'react'
+import { useCustomStyleContext } from 'context/custom-styles-provider'
 
 const Subscribe = () => {
-  return (
+  const iframeRef = useRef(null);
+
+  const { subscribe } = useCustomStyleContext()
+
+  useEffect(() => {
+    if (iframeRef.current) {
+      iframeRef.current.style.height = (iframeRef.current.contentWindow.document.body.scrollHeight + 200) + 'px';
+    }
+  }, [subscribe?.content]);
+
+
+  return subscribe?.overriden ? (
+    <iframe 
+      ref={iframeRef}
+      className="w-full" 
+      srcDoc={subscribe?.content}
+  />
+  ) :(
     <div className="subscribe">
       <div className="pt-12 md:pt-24 w-2/3 max-w-[600px] capitalize font-semibold text-[32px] leading-[44px] md:text-[32px] md:leading-[48px] mx-auto">
         Subscribe to our Newsletter and get the latest news and offers
